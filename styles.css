@@ -500,6 +500,10 @@ body::-webkit-scrollbar {
     align-items: flex-start;
   }
   
+  .section:first-child {
+    padding-top: 100px; /* Keep top padding for nav */
+  }
+  
   /* Hide split sections on mobile - content will be merged via JS */
   #secLeadershipExperience2,
   #secProjects2,
