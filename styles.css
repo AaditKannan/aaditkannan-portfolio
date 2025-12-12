@@ -592,11 +592,11 @@ body::-webkit-scrollbar {
   }
 
   .overview-photo {
-    display: none; /* Hide desktop photo on mobile */
+    display: none !important; /* Hide desktop photo on mobile */
   }
   
   .overview-photo-mobile {
-    display: flex; /* Show mobile photo */
+    display: flex !important; /* Show mobile photo */
     justify-content: center;
     align-items: center;
     width: 220px;
