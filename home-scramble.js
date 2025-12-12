@@ -6,9 +6,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const subtitle = document.querySelector('.home-subtitle');
   const viewResumeBtn = document.querySelector('.view-resume-btn');
   
-  // Change subtitle text on mobile
+  // Change subtitle text on mobile - MUST happen before scramble
   if (window.innerWidth < 768 && subtitle) {
-    subtitle.textContent = 'MECHE @ UC BERKELEY, LIFTING, TRAVELING';
+    const mobileText = 'MECHE @ UC BERKELEY, LIFTING, TRAVELING';
+    // Set it immediately before any animation
+    subtitle.textContent = mobileText;
   }
   
   if (subtitle) {

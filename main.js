@@ -478,14 +478,21 @@ function animateSection(section) {
     if (section.body) {
       fadeInContent(section.body, bodyDelay);
     }
-    // Start subheading earlier too if it exists (only animate once)
+    // Animate subheading with scramble reveal instead of fade (prevents duplicates)
     if (section.subheading && section.subheadingText) {
-      fadeInContent(section.subheading, bodyDelay);
+      // Use scramble animation for subheadings to prevent duplicate fade issues
+      scrambleReveal(section.subheading, section.subheadingText, {
+        duration: CONFIG.isMobile ? CONFIG.scrambleDuration * 0.5 : CONFIG.scrambleDuration * 0.6,
+        delay: bodyDelay
+      });
     }
   } else {
     // If no heading, just fade in content immediately
-    if (section.subheading) {
-      fadeInContent(section.subheading, 0);
+    if (section.subheading && section.subheadingText) {
+      // Use scramble for subheadings even when no heading
+      scrambleReveal(section.subheading, section.subheadingText, {
+        duration: CONFIG.isMobile ? CONFIG.scrambleDuration * 0.5 : CONFIG.scrambleDuration * 0.6
+      });
     }
     if (section.body) {
       fadeInContent(section.body, 0);
