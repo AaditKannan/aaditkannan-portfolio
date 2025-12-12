@@ -450,13 +450,28 @@ function initScrollFallback() {
  * Animate a section when it enters viewport
  */
 function animateSection(section) {
+  // Prevent duplicate animations - check if already animated
+  if (section.animated && section.heading && section.heading.classList.contains('animated')) {
+    return; // Already animated, skip
+  }
+  
+  // Mark as animated immediately to prevent duplicate calls
+  section.animated = true;
+  
   // Animate heading with scramble reveal
   if (section.heading && section.headingText) {
+    // Mark heading as animating
+    section.heading.classList.add('animating');
+    
     // Start body content fade-in halfway through scramble animation for snappier feel
     const bodyDelay = CONFIG.scrambleDuration * 0.4; // Start at 40% of scramble duration
     
     scrambleReveal(section.heading, section.headingText, {
-      duration: CONFIG.isMobile ? CONFIG.scrambleDuration * 0.7 : CONFIG.scrambleDuration
+      duration: CONFIG.isMobile ? CONFIG.scrambleDuration * 0.7 : CONFIG.scrambleDuration,
+      onComplete: () => {
+        section.heading.classList.remove('animating');
+        section.heading.classList.add('animated');
+      }
     });
     
     // Start body content animation earlier (during scramble)
