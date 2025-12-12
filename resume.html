@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Aadit Kannan - Mechanical Engineering Student at UC Berkeley">
+  <title>Aadit Kannan | Resume</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css">
+  <style>
+    /* Fix scrollbar shifting */
+    html {
+      scrollbar-gutter: stable;
+      overflow-y: scroll;
+    }
+    
+    /* Resume page - slightly lighter black background */
+    body {
+      background: #0a0a0a !important;
+    }
+    body::after {
+      display: none !important;
+    }
+    /* Navigation Bar - Match home page style */
+    .nav-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1001;
+      padding: 30px 40px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+      background: transparent;
+      height: 104px;
+      box-sizing: border-box;
+    }
+    .nav-link {
+      color: #FFFFFF;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 400;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      transition: all 0.3s ease;
+      padding: 10px 20px;
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      border-radius: 25px;
+      background: rgba(0, 0, 0, 0.2);
+      backdrop-filter: blur(10px);
+      font-family: 'Courier Prime', 'JetBrains Mono', 'Courier New', monospace;
+      line-height: 1;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      height: 44px;
+      box-sizing: border-box;
+    }
+    .nav-link:hover {
+      background: rgba(255, 255, 255, 0.15);
+      border-color: rgba(255, 255, 255, 0.6);
+    }
+    .nav-link.active {
+      background: rgba(255, 255, 255, 0.2);
+      border-color: rgba(255, 255, 255, 0.6);
+    }
+    /* First section - center vertically with space from nav */
+    .section:first-child {
+      padding-top: 140px;
+      align-items: center;
+    }
+    
+    /* All sections need space from nav bar */
+    .section {
+      padding-top: 140px;
+    }
+
+    /* Berkeley Logo */
+    .berkeley-logo {
+      width: 60px;
+      height: 60px;
+      vertical-align: middle;
+      display: inline-block;
+      opacity: 0.95;
+      flex-shrink: 0;
+      margin-left: 16px;
+    }
+
+    .entry-title {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    /* Contact Links - Centered and Styled */
+    .contact-links {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-top: 24px;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .contact-link {
+      padding: 10px 16px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 20px;
+      background: rgba(0, 0, 0, 0.2);
+      backdrop-filter: blur(10px);
+      transition: all 0.3s ease;
+      text-align: center;
+      white-space: nowrap;
+      font-size: 14px;
+    }
+
+    .contact-link:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.5);
+      transform: translateY(-2px);
+    }
+
+    @media (max-width: 768px) {
+      .contact-links {
+        grid-template-columns: 1fr;
+        max-width: 100%;
+      }
+    }
+
+    /* Custom Cursor Styles */
+    * {
+      cursor: none !important;
+    }
+
+    .custom-cursor {
+      position: fixed;
+      width: 20px;
+      height: 20px;
+      border: 2px solid #FFFFFF;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: width 0.2s ease, height 0.2s ease, border-width 0.2s ease;
+    }
+
+    .custom-cursor.cursor-hover {
+      width: 40px;
+      height: 40px;
+      border-width: 3px;
+    }
+
+    .cursor-trail {
+      position: fixed;
+      width: 8px;
+      height: 8px;
+      background: rgba(255, 255, 255, 0.6);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9998;
+      transform: translate(-50%, -50%);
+      transition: opacity 0.3s ease;
+    }
+
+    /* Show default cursor on mobile */
+    @media (max-width: 768px) {
+      * {
+        cursor: auto !important;
+      }
+    }
+
+    /* Scroll Down Indicator Arrow */
+    .scroll-indicator {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 30px;
+      height: 30px;
+      opacity: 0;
+      transition: opacity 0.5s ease-in-out;
+      z-index: 999;
+      pointer-events: none;
+    }
+
+    .scroll-indicator.visible {
+      opacity: 1;
+    }
+
+    .scroll-arrow {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 15px;
+      height: 15px;
+      border-right: 2px solid rgba(255, 255, 255, 0.7);
+      border-bottom: 2px solid rgba(255, 255, 255, 0.7);
+      transform: translate(-50%, -50%) rotate(45deg);
+      animation: bounce 2s infinite;
+    }
+
+    @keyframes bounce {
+      0%, 20%, 50%, 80%, 100% {
+        transform: translate(-50%, -50%) translateY(0) rotate(45deg);
+      }
+      40% {
+        transform: translate(-50%, -50%) translateY(-10px) rotate(45deg);
+      }
+      60% {
+        transform: translate(-50%, -50%) translateY(-5px) rotate(45deg);
+      }
+    }
+
+    .scroll-indicator.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    /* Back to Top Arrow */
+    .back-to-top {
+      position: fixed;
+      bottom: 40px;
+      right: 40px;
+      width: 50px;
+      height: 50px;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
+      z-index: 999;
+      cursor: pointer;
+      background: rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .back-to-top.visible {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .back-to-top:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.5);
+      transform: translateY(-5px);
+    }
+
+    .back-to-top-arrow {
+      width: 16px;
+      height: 16px;
+      border-left: 2px solid rgba(255, 255, 255, 0.9);
+      border-top: 2px solid rgba(255, 255, 255, 0.9);
+      transform: rotate(45deg);
+    }
+
+    @media (max-width: 768px) {
+      .scroll-indicator {
+        display: none; /* Hide on mobile */
+      }
+
+      .back-to-top {
+        bottom: 20px;
+        right: 20px;
+        width: 45px;
+        height: 45px;
+      }
+
+      .back-to-top-arrow {
+        width: 14px;
+        height: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation Bar -->
+  <nav class="nav-bar">
+            <a href="index.html" class="nav-link">HOME</a>
+            <a href="resume.html" class="nav-link active">RESUME</a>
+            <a href="connect.html" class="nav-link">CONNECT</a>
+            <a href="footage.html" class="nav-link">FOOTAGE</a>
+  </nav>
+
+  <!-- Section Index (Progress Indicator) -->
+  <nav class="section-index" id="sectionIndex">
+    <div class="dot active" data-section="overview" id="dotOverview"></div>
+    <div class="dot" data-section="education" id="dotEducation"></div>
+    <div class="dot" data-section="workexperience" id="dotWorkExperience"></div>
+    <div class="dot" data-section="leadershipexperience" id="dotLeadershipExperience" data-group="leadership"></div>
+    <div class="dot dot-connected" data-section="leadershipexperience2" id="dotLeadershipExperience2" data-group="leadership"></div>
+    <div class="dot" data-section="projects1" id="dotProjects1" data-group="projects"></div>
+    <div class="dot dot-connected" data-section="projects2" id="dotProjects2" data-group="projects"></div>
+    <div class="dot" data-section="volunteering1" id="dotVolunteering1" data-group="volunteering"></div>
+            <div class="dot dot-connected" data-section="volunteering2" id="dotVolunteering2" data-group="volunteering"></div>
+            <div class="dot" data-section="skills" id="dotSkills"></div>
+          </nav>
+
+  <!-- Section 1: Overview -->
+  <section class="section" id="secOverview">
+    <div class="section-content overview-layout">
+      <div class="overview-text">
+        <h1 class="heading" id="hOverview">AADIT KANNAN</h1>
+        <p class="subheading" id="subOverview">// Mechanical Engineering Student</p>
+        <div class="body-content" id="bodyOverview">
+          <p class="about-text">
+            Mechanical engineering student at UC Berkeley, passionate about robotics, physics, and math. Currently working as a member of Berkeley's Formula Electric team, on the accumulator (battery). Outside the classroom interests include lifting, drone photography, and traveling.
+          </p>
+          <div class="contact-links">
+            <a href="mailto:aaditkannan@berkeley.edu" class="contact-link">Email: aaditkannan@berkeley.edu</a>
+            <a href="tel:+17345460380" class="contact-link">Phone: +1 (734) 546-0380</a>
+            <a href="https://www.linkedin.com/in/aaditkannan" target="_blank" rel="noopener noreferrer" class="contact-link">LinkedIn</a>
+                    <a href="/resume.pdf" download class="contact-link">Resume PDF</a>
+          </div>
+        </div>
+      </div>
+      <div class="overview-photo">
+        <img src="./assets/photo.jpg" alt="Aadit Kannan" class="profile-photo" onerror="this.style.opacity='0.3'; this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22300%22 height=%22300%22%3E%3Crect fill=%22%231a1a1a%22 width=%22300%22 height=%22300%22/%3E%3C/svg%3E';">
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 2: Education -->
+  <section class="section" id="secEducation">
+    <div class="section-content">
+      <h2 class="heading" id="hEducation">EDUCATION</h2>
+      <p class="subheading" id="subEducation">// Where I've learned</p>
+      <div class="body-content" id="bodyEducation">
+        <div class="entry">
+          <h3 class="entry-title">
+            <span>University of California, Berkeley</span>
+            <img src="./assets/berkeley-logo.svg" alt="UC Berkeley" class="berkeley-logo" onerror="this.style.display='none'">
+          </h3>
+          <p class="entry-date">(Aug 2025 - Present)</p>
+          <ul class="entry-list">
+            <li>B.S. in Mechanical Engineering: Sophomore Standing</li>
+            <li>Relevant Coursework: Engin 7 (Python/Matlab), Chem 1A, Physics 7A</li>
+            <li>Clubs: Formula Electric (accumulator subteam)</li>
+          </ul>
+        </div>
+        <div class="entry">
+          <h3 class="entry-title">Santa Clara High School</h3>
+          <p class="entry-date">(Aug 2021 - Jun 2025)</p>
+          <ul class="entry-list">
+            <li>Relevant Coursework (AP + DE): Calc BC, Linear Algebra, Physics C, Chemistry, CSP, Physics 1, Stats, Research, Macro</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 3: Work Experience -->
+  <section class="section" id="secWorkExperience">
+    <div class="section-content">
+      <h2 class="heading" id="hWorkExperience">WORK EXPERIENCE</h2>
+      <p class="subheading" id="subWorkExperience">// Jobs & internships</p>
+      <div class="body-content" id="bodyWorkExperience">
+        <div class="entry">
+          <h3 class="entry-title">Posha (Formerly Nymble) Robotics</h3>
+          <p class="entry-role">Mechanical Engineering Intern</p>
+          <p class="entry-date">(Jun 2023 - Aug 2023)</p>
+          <ul class="entry-list">
+            <li>Repaired 20+ customer cooking robots by troubleshooting electrical and mechanical systems, and debugging</li>
+          </ul>
+        </div>
+        <div class="entry">
+          <h3 class="entry-title">Bay Club</h3>
+          <p class="entry-role">Squash Coach</p>
+          <p class="entry-date">(Aug 2024 - Aug 2025)</p>
+          <ul class="entry-list">
+            <li>Coached 15+ students age 5-12 in tournament prep, designing drills, workouts, and lessons</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 4: Leadership Experience -->
+  <section class="section" id="secLeadershipExperience">
+    <div class="section-content">
+      <h2 class="heading" id="hLeadershipExperience">TECHNICAL EXPERIENCE</h2>
+      <p class="subheading" id="subLeadershipExperience">// Engineering teams</p>
+      <div class="body-content" id="bodyLeadershipExperience">
+        <div class="entry">
+          <h3 class="entry-title">Formula Electric</h3>
+          <p class="entry-role">Accumulator Mechanical</p>
+          <p class="entry-date">(Sep 2025 - Present)</p>
+          <ul class="entry-list">
+            <li>Designed the attic casing for the high-voltage accumulator to manage the 588 V pack</li>
+          </ul>
+        </div>
+        <div class="entry">
+          <h3 class="entry-title">Robotics (FIRST)</h3>
+          <p class="entry-role">Captain (Zenith #20424), Hardware Lead (Deja Vu #13216)</p>
+          <p class="entry-date">(Aug 2021 - Aug 2025)</p>
+          <ul class="entry-list">
+            <li>Mentored 30+ members in Java and CAD, improving team functionality and leading teams to regional competitions</li>
+            <li>Designed robot in CAD with 500+ parts, performing FEA to optimize custom components for stress, winning robot design award (x3)</li>
+            <li>For outreach, raised over $5000 across teams, launched an innovative parts exchange program, developed both team websites</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 4b: Leadership Experience Continued (no heading) -->
+  <section class="section" id="secLeadershipExperience2">
+    <div class="section-content">
+      <div class="body-content" id="bodyLeadershipExperience2">
+        <div class="entry">
+          <h3 class="entry-title">STEM Leadership Institute (SLI)</h3>
+          <p class="entry-role">Student Leadership Committee (SLC), Program Member</p>
+          <p class="entry-date">(Aug 2019 - Aug 2025)</p>
+          <ul class="entry-list">
+            <li>Trained 120 middle school STEM students on Arduino and C++ for science fair projects (SLC)</li>
+            <li>Designed mock competition and mentored 5 FIRST Lego League teams (SLC)</li>
+            <li>As part of a 6 year selective program, established career interests through 1800+ hours of STEM sessions and advanced coursework</li>
+            <li>Gained experience with CO2 laser cutter, CNC mill, 3D printer (FDM + SLA), CNC, and woodshop tools</li>
+          </ul>
+        </div>
+        <div class="entry">
+          <h3 class="entry-title">Pear Volunteering</h3>
+          <p class="entry-role">Founder</p>
+          <p class="entry-date">(Aug 2023 - Aug 2025)</p>
+          <ul class="entry-list">
+            <li>Developed an app/website to connect 2000+ students, 20+ event organizers, and school admin, facilitating volunteer opportunities</li>
+            <li>Implemented secure webhook/CMS-integrated system for scalable, high-volume data handling and encrypted user communication</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 5: Projects Part 1 -->
+  <section class="section" id="secProjects1">
+    <div class="section-content">
+      <h2 class="heading" id="hProjects1">PROJECTS</h2>
+      <p class="subheading" id="subProjects1">// My projects</p>
+      <div class="body-content" id="bodyProjects1">
+        <div class="entry">
+          <h3 class="entry-title">Inventry</h3>
+          <p class="entry-date">(2025 - Present)</p>
+          <ul class="entry-list">
+            <li>Developed website for robotics part inventory tracking, utilizing AI invoice indexing and dynamic webscraping for 1000+ part catalogs</li>
+            <li>Integrated part-lending service with incentives, imposed extensive privacy measures for user interaction, now developing a part market</li>
+          </ul>
+        </div>
+        <div class="entry">
+          <h3 class="entry-title">Circuit Minds</h3>
+          <p class="entry-date">(2022 - 2024)</p>
+          <ul class="entry-list">
+            <li>Created free educational content to inspire youth interest in engineering</li>
+            <li>Designed small vehicle kits for K-8 students to assemble</li>
+          </ul>
+        </div>
+        <div class="entry">
+          <h3 class="entry-title">Construction Acclimation Regulation</h3>
+          <p class="entry-date">(2022 - 2023)</p>
+          <ul class="entry-list">
+            <li>Gathered construction site data to develop alternative devices to costly acclimation probes, and to cut $118M from Palo Alto's spending</li>
+            <li>Built website and functioning probe, earned praise from city construction officials</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 6: Projects Part 2 (no heading) -->
+  <section class="section" id="secProjects2">
+    <div class="section-content">
+      <div class="body-content" id="bodyProjects2">
+        <div class="entry">
+          <h3 class="entry-title">Beachsweep</h3>
+          <p class="entry-date">(2023 - 2023)</p>
+          <ul class="entry-list">
+            <li>For a Hackathon, designed a website for organizing drone beach clean ups</li>
+            <li>Utilized solar powered drone docks that work to maintain beach cleanliness, collaborate with human initiatives to streamline efficiency</li>
+            <li>Designed a CV drone trash detection system</li>
+          </ul>
+        </div>
+        <div class="entry">
+          <h3 class="entry-title">Friendly Fires</h3>
+          <p class="entry-date">(2021 - 2022)</p>
+          <ul class="entry-list">
+            <li>Created a mining tool attachment that consists of a compact and simple sensor array, capable of consistently detecting coal-seam fires, aiming to save countless lives lost in a dangerous and often neglected space</li>
+          </ul>
+        </div>
+        <div class="entry">
+          <h3 class="entry-title">Prototype Ø Flood</h3>
+          <p class="entry-date">(2020 - 2021)</p>
+          <ul class="entry-list">
+            <li>Designed a low-cost flood detection system intended for addressing the lack of alert technology in Jakarta, Indonesia</li>
+            <li>Won certificate of achievement from the American Society of Civil Engineers</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 5: Leadership & Volunteering Part 1 -->
+  <section class="section" id="secVolunteering1">
+    <div class="section-content">
+      <h2 class="heading" id="hVolunteering1">VOLUNTEERING</h2>
+      <p class="subheading" id="subVolunteering1">// How I help</p>
+      <div class="body-content" id="bodyVolunteering1">
+        <div class="entry">
+          <h3 class="entry-title">49ers STEM Leadership Institute</h3>
+          <p class="entry-role">Mentor and Lab Assistant</p>
+          <p class="entry-date">(Aug 2021 - Jun 2025)</p>
+          <ul class="entry-list">
+            <li>At the STEM Leadership Institute, provided support to students in utilizing CO2 laser cutters, 3D printers, vinyl cutters, and CNC machines, while also offering technical mentorship</li>
+          </ul>
+        </div>
+        <div class="entry">
+          <h3 class="entry-title">Family Supportive Housing</h3>
+          <p class="entry-role">Dinner Server</p>
+          <p class="entry-date">(Aug 2021 - Aug 2023)</p>
+          <ul class="entry-list">
+            <li>Volunteered as a dinner server for underserved families at Family Supportive Housing in San Jose</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 5b: Leadership & Volunteering Part 2 (no heading) -->
+  <section class="section" id="secVolunteering2">
+    <div class="section-content">
+      <div class="body-content" id="bodyVolunteering2">
+        <div class="entry">
+          <h3 class="entry-title">Tulip Kids Afterschool</h3>
+          <p class="entry-role">Programming Tutor</p>
+          <p class="entry-date">(May 2019 - Jul 2022)</p>
+          <ul class="entry-list">
+            <li>Tutored K-8 students in entry-level Python programming and Scratch at a local afterschool program</li>
+            <li>Designed hands-on learning lessons to teach students the basic workings of circuits</li>
+          </ul>
+        </div>
+        <div class="entry">
+          <h3 class="entry-title">California Scholarship Federation</h3>
+          <p class="entry-role">Lunch Server</p>
+          <p class="entry-date">(Aug 2023 - Jul 2025)</p>
+          <ul class="entry-list">
+            <li>Volunteered in the school cafeteria to serve lunch</li>
+          </ul>
+        </div>
+        <div class="entry">
+          <h3 class="entry-title">FIRST Tech Challenge</h3>
+          <p class="entry-role">Field Technical Advisor</p>
+          <p class="entry-date">(Dec 2023 - Jan 2024)</p>
+          <ul class="entry-list">
+            <li>Provided technical support to multiple teams and contributed to the smooth operation of the robotics competition at FIRST Tech Challenge</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 6: Skills -->
+  <section class="section" id="secSkills">
+    <div class="section-content">
+      <h2 class="heading" id="hSkills">SKILLS</h2>
+      <p class="subheading" id="subSkills">// What I know</p>
+      <div class="body-content skills-grid" id="bodySkills">
+        <div class="skills-column">
+          <h3 class="skills-category">Mechanical Engineering</h3>
+          <ul class="skills-list">
+            <li>Solidworks</li>
+            <li>Fusion360</li>
+            <li>FEA (Solidworks Sim/SimScale/Fusion Simulation)</li>
+            <li>CAD/CAM/CAE</li>
+            <li>XFLR5</li>
+            <li>Machining</li>
+            <li>Blender</li>
+            <li>VCarve</li>
+          </ul>
+        </div>
+        <div class="skills-column">
+          <h3 class="skills-category">Software Development</h3>
+          <ul class="skills-list">
+            <li>Python</li>
+            <li>Java</li>
+            <li>HTML/CSS/JS</li>
+            <li>Git</li>
+            <li>OOP</li>
+            <li>Android Studio</li>
+            <li>Web Design</li>
+            <li>Node.Js</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- Scroll Down Indicator Arrow -->
+  <div class="scroll-indicator" id="scrollIndicator">
+    <div class="scroll-arrow"></div>
+  </div>
+
+  <!-- Back to Top Arrow -->
+  <div class="back-to-top" id="backToTop" aria-label="Back to top">
+    <div class="back-to-top-arrow"></div>
+  </div>
+
+  <script type="module" src="/main.js"></script>
+  <script src="/cursor-effect.js"></script>
+  <script>
+    // Scroll indicator - show quickly after page load
+    (function() {
+      const scrollIndicator = document.getElementById('scrollIndicator');
+      if (!scrollIndicator) return;
+
+      let hasScrolled = false;
+
+      function showIndicator() {
+        if (!hasScrolled) {
+          scrollIndicator.classList.add('visible');
+        }
+      }
+
+      function hideIndicator() {
+        scrollIndicator.classList.remove('visible');
+        scrollIndicator.classList.add('hidden');
+      }
+
+      // Show indicator after 1 second (quicker than before)
+      setTimeout(showIndicator, 1000);
+
+      // Hide indicator when user scrolls
+      window.addEventListener('scroll', () => {
+        hasScrolled = true;
+        hideIndicator();
+      }, { passive: true });
+    })();
+
+    // Back to top arrow - show when scrolled down
+    (function() {
+      const backToTop = document.getElementById('backToTop');
+      if (!backToTop) return;
+
+      const skillsSection = document.getElementById('secSkills');
+      if (!skillsSection) return;
+
+      function checkScroll() {
+        const skillsRect = skillsSection.getBoundingClientRect();
+        const windowHeight = window.innerHeight;
+        
+        // Show when Skills section is in view or user has scrolled past it
+        if (skillsRect.top < windowHeight * 0.8) {
+          backToTop.classList.add('visible');
+        } else {
+          backToTop.classList.remove('visible');
+        }
+      }
+
+      // Check on scroll
+      window.addEventListener('scroll', checkScroll, { passive: true });
+      
+      // Check on load
+      checkScroll();
+
+      // Scroll to top on click
+      backToTop.addEventListener('click', () => {
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        });
+      });
+    })();
+  </script>
+</body>
+</html>
+

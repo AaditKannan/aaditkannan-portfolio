@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Aadit Kannan - Connect & Schedule">
+  <title>Aadit Kannan | Connect</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    html {
+      scrollbar-gutter: stable;
+      overflow-y: scroll;
+    }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      color: #FFFFFF;
+      overflow-x: hidden;
+      position: relative;
+      min-height: 100vh;
+      background: #0a0a0a;
+      font-weight: 400;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      overflow-y: scroll;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* Navigation Bar */
+    .nav-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1001;
+      padding: 30px 40px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+      background: transparent;
+      height: 104px;
+      box-sizing: border-box;
+    }
+
+    .nav-link {
+      color: #FFFFFF;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 400;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      transition: all 0.3s ease;
+      padding: 10px 20px;
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      border-radius: 25px;
+      background: rgba(0, 0, 0, 0.2);
+      backdrop-filter: blur(10px);
+      font-family: 'Courier Prime', 'JetBrains Mono', 'Courier New', monospace;
+      display: inline-flex;
+      align-items: center;
+      height: 44px;
+      box-sizing: border-box;
+      line-height: 1;
+    }
+
+    .nav-link:hover {
+      background: rgba(255, 255, 255, 0.15);
+      border-color: rgba(255, 255, 255, 0.6);
+    }
+
+    .nav-link.active {
+      background: rgba(255, 255, 255, 0.2);
+      border-color: rgba(255, 255, 255, 0.6);
+    }
+
+    /* Connect Page Content */
+    .connect-container {
+      min-height: 100vh;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 140px 40px 80px;
+      position: relative;
+    }
+
+    .connect-content {
+      width: 100%;
+      max-width: 1400px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: start;
+    }
+
+    .connect-left {
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+    }
+
+    .connect-heading {
+      font-family: 'Courier Prime', 'JetBrains Mono', 'Courier New', monospace;
+      font-size: 64px;
+      font-weight: 700;
+      color: #FFFFFF;
+      margin-bottom: 0;
+      letter-spacing: 0.02em;
+      line-height: 1.1;
+      opacity: 0;
+    }
+
+    .connect-subheading {
+      font-family: 'Courier Prime', 'JetBrains Mono', 'Courier New', monospace;
+      font-size: 20px;
+      font-weight: 400;
+      color: #CCCCCC;
+      margin-top: 16px;
+      letter-spacing: 0.01em;
+      opacity: 0;
+    }
+
+    .contact-info {
+      margin-top: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .contact-info.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .contact-item {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .contact-label {
+      font-family: 'Courier Prime', 'JetBrains Mono', 'Courier New', monospace;
+      font-size: 12px;
+      font-weight: 400;
+      color: #888888;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    .contact-value {
+      font-family: 'Inter', sans-serif;
+      font-size: 18px;
+      font-weight: 400;
+      color: #FFFFFF;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    .contact-value:hover {
+      color: #CCCCCC;
+    }
+
+    .contact-value.email {
+      word-break: break-all;
+    }
+
+    .connect-right {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .calendar-description {
+      font-family: 'Courier Prime', 'JetBrains Mono', 'Courier New', monospace;
+      font-size: 16px;
+      font-weight: 400;
+      color: #CCCCCC;
+      letter-spacing: 0.01em;
+      line-height: 1.6;
+      margin-top: 20px;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .calendar-description.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .calendar-wrapper {
+      position: relative;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      min-height: 600px;
+      margin-top: 60px;
+    }
+
+    .calendar-iframe {
+      border: 0;
+      width: 100%;
+      height: 600px;
+      min-height: 600px;
+      display: block;
+      border-radius: 12px;
+    }
+
+    /* Custom Cursor Styles */
+    * {
+      cursor: none !important;
+    }
+
+    .custom-cursor {
+      position: fixed;
+      width: 20px;
+      height: 20px;
+      border: 2px solid #FFFFFF;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: width 0.2s ease, height 0.2s ease, border-width 0.2s ease;
+    }
+
+    .custom-cursor.cursor-hover {
+      width: 40px;
+      height: 40px;
+      border-width: 3px;
+    }
+
+    .cursor-trail {
+      position: fixed;
+      width: 8px;
+      height: 8px;
+      background: rgba(255, 255, 255, 0.6);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9998;
+      transform: translate(-50%, -50%);
+      transition: opacity 0.3s ease;
+    }
+
+    /* Show default cursor on mobile */
+    @media (max-width: 1024px) {
+      .connect-content {
+        grid-template-columns: 1fr;
+        gap: 60px;
+      }
+
+      .connect-left {
+        text-align: center;
+        align-items: center;
+      }
+
+      .contact-info {
+        align-items: center;
+        text-align: center;
+      }
+    }
+
+    @media (max-width: 768px) {
+      * {
+        cursor: auto !important;
+      }
+
+      .connect-heading {
+        font-size: 48px;
+      }
+
+      .connect-subheading {
+        font-size: 18px;
+      }
+
+      .contact-value {
+        font-size: 16px;
+      }
+
+      .calendar-iframe {
+        height: 500px;
+      }
+
+      .nav-bar {
+        padding: 20px 15px;
+        gap: 10px;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+        height: 104px;
+        box-sizing: border-box;
+      }
+
+      .nav-link {
+        font-size: 11px;
+        padding: 8px 16px;
+        height: 44px;
+      }
+
+      .connect-content {
+        gap: 40px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation Bar -->
+  <nav class="nav-bar">
+    <a href="index.html" class="nav-link">HOME</a>
+    <a href="resume.html" class="nav-link">RESUME</a>
+    <a href="connect.html" class="nav-link active">CONNECT</a>
+    <a href="footage.html" class="nav-link">FOOTAGE</a>
+  </nav>
+
+  <!-- Connect Page Content -->
+  <div class="connect-container">
+    <div class="connect-content">
+      <div class="connect-left">
+        <h1 class="connect-heading" id="connectHeading">CONNECT</h1>
+        <p class="connect-subheading" id="connectSubheading">// Schedule a meeting or reach out</p>
+        
+        <div class="contact-info" id="contactInfo">
+          <div class="contact-item">
+            <span class="contact-label">Email</span>
+            <a href="mailto:aaditkannan@berkeley.edu" class="contact-value email">aaditkannan@berkeley.edu</a>
+          </div>
+          <div class="contact-item">
+            <span class="contact-label">Phone</span>
+            <a href="tel:+17345460380" class="contact-value">+1 (734) 546-0380</a>
+          </div>
+          <div class="contact-item">
+            <span class="contact-label">LinkedIn</span>
+            <a href="https://www.linkedin.com/in/aaditkannan" target="_blank" rel="noopener noreferrer" class="contact-value">linkedin.com/in/aaditkannan</a>
+          </div>
+        </div>
+        
+        <p class="calendar-description" id="calendarDescription">View my availability and reach out via email, or send me a message.</p>
+      </div>
+
+      <div class="connect-right">
+        <div class="calendar-wrapper">
+          <iframe 
+            src="https://calendar.google.com/calendar/embed?src=aaditkannan%40berkeley.edu&ctz=America%2FLos_Angeles" 
+            class="calendar-iframe"
+            frameborder="0" 
+            scrolling="no"
+          ></iframe>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/cursor-effect.js"></script>
+  <script type="module" src="/connect-scramble.js"></script>
+</body>
+</html>

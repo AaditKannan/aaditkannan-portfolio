@@ -1,0 +1,576 @@
+/* Reset & Base Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --bg-black: #000000;
+  --text-white: #FFFFFF;
+  --text-light: #E0E0E0;
+  --text-gray: #CCCCCC;
+  --accent: #FFFFFF;
+  --dot-active: #FFFFFF;
+  --dot-inactive: rgba(255, 255, 255, 0.3);
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-snap-type: y mandatory;
+  scroll-padding-top: 0;
+  scrollbar-gutter: stable;
+  overflow-y: scroll;
+}
+
+body {
+  font-family: 'Courier Prime', 'JetBrains Mono', 'Courier New', monospace;
+  background-color: #0a0a0a; /* Slightly lighter black */
+  color: var(--text-white);
+  line-height: 1.6;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  scroll-snap-type: y mandatory;
+  position: relative;
+}
+
+/* Background Video - Only for home page */
+/* Video styles are in index.html inline styles */
+
+/* Section Styles */
+.section {
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  padding: 80px 120px;
+  padding-top: 140px;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  overflow-y: visible;
+}
+
+.section:first-child {
+  padding-top: 140px;
+}
+
+.section-content {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Typography - Typewriter font for headings, Inter for body */
+.heading {
+  font-family: 'Courier Prime', 'JetBrains Mono', 'Courier New', monospace;
+  font-size: 64px;
+  font-weight: 700;
+  color: var(--text-white);
+  margin-bottom: 16px;
+  line-height: 1.1;
+  letter-spacing: 0.02em;
+}
+
+.subheading {
+  font-family: 'Courier Prime', 'JetBrains Mono', 'Courier New', monospace;
+  font-size: 24px;
+  font-weight: 400;
+  color: var(--text-gray);
+  margin-bottom: 48px;
+  letter-spacing: 0.01em;
+}
+
+.body-content {
+  font-size: 16px;
+  color: var(--text-light);
+  line-height: 1.8;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+.body-content.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Overview Layout */
+.overview-layout {
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  gap: 80px;
+  align-items: start;
+}
+
+.overview-text {
+  flex: 1;
+}
+
+.overview-photo {
+  position: sticky;
+  top: 120px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  width: 300px;
+  height: 300px;
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: #1a1a1a;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+}
+
+.profile-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* About Text */
+.about-text {
+  margin-bottom: 32px;
+  max-width: 800px;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+/* Contact Links */
+.contact-links {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-top: 24px;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.contact-link {
+  color: #FFFFFF;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 20px;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 25px;
+  background: rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(10px);
+  text-align: center;
+  white-space: nowrap;
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: 0.05em;
+  font-family: 'Courier Prime', 'JetBrains Mono', 'Courier New', monospace;
+  height: 44px;
+  box-sizing: border-box;
+  line-height: 1;
+}
+
+.contact-link:hover {
+  color: #FFFFFF;
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.6);
+  transform: translateY(-2px);
+  text-decoration: none;
+}
+
+@media (max-width: 768px) {
+  .contact-links {
+    grid-template-columns: 1fr;
+    max-width: 100%;
+  }
+}
+
+/* Entry Styles (Education, Experience, Projects, Volunteering) */
+.entry {
+  margin-bottom: 48px;
+}
+
+.entry:last-child {
+  margin-bottom: 0;
+}
+
+.entry-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--text-white);
+  margin-bottom: 4px;
+  font-family: 'Courier Prime', 'JetBrains Mono', 'Courier New', monospace;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.berkeley-logo {
+  width: 60px;
+  height: 60px;
+  vertical-align: middle;
+  display: inline-block;
+  opacity: 0.95;
+  flex-shrink: 0;
+  margin-left: 16px;
+}
+
+.entry-role {
+  font-size: 16px;
+  font-weight: 400;
+  color: var(--text-gray);
+  margin-bottom: 4px;
+}
+
+.entry-date {
+  font-size: 14px;
+  color: var(--text-gray);
+  margin-bottom: 12px;
+  font-style: italic;
+}
+
+.entry-list {
+  list-style: none;
+  padding-left: 0;
+}
+
+.entry-list li {
+  position: relative;
+  padding-left: 24px;
+  margin-bottom: 8px;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.entry-list li::before {
+  content: '•';
+  position: absolute;
+  left: 8px;
+  color: var(--text-gray);
+  font-weight: bold;
+}
+
+/* Skills Grid */
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 64px;
+  max-width: 900px;
+}
+
+.skills-category {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-white);
+  margin-bottom: 16px;
+}
+
+.skills-list {
+  list-style: none;
+  padding: 0;
+}
+
+.skills-list li {
+  margin-bottom: 8px;
+  color: var(--text-light);
+}
+
+/* CTA Section */
+.cta-content {
+  text-align: center;
+}
+
+.cta-buttons {
+  display: flex;
+  gap: 24px;
+  justify-content: center;
+  margin-bottom: 48px;
+  flex-wrap: wrap;
+}
+
+.cta-button {
+  padding: 16px 32px;
+  border: 2px solid var(--text-white);
+  color: var(--text-white);
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  background: transparent;
+  display: inline-block;
+}
+
+.cta-button:hover {
+  background: var(--text-white);
+  color: var(--bg-black);
+  transform: translateY(-2px);
+}
+
+.cta-contact {
+  color: var(--text-gray);
+  font-size: 14px;
+}
+
+.cta-contact p {
+  margin-bottom: 8px;
+}
+
+/* Section Index (Progress Indicator) */
+.section-index {
+  position: fixed;
+  right: 40px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  opacity: 0;
+  animation: fadeIn 1s ease-out 0.5s forwards;
+  transition: transform 0.3s ease, gap 0.3s ease;
+  padding: 10px;
+  border-radius: 20px;
+}
+
+.section-index:hover {
+  transform: translateY(-50%) scale(1.15);
+  gap: 22px;
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(10px);
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--dot-inactive);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.dot:hover {
+  transform: scale(1.2);
+  background: var(--dot-active);
+}
+
+/* Tooltip for dots */
+.dot::before {
+  content: attr(data-tooltip);
+  position: absolute;
+  right: 30px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0, 0, 0, 0.85);
+  color: #FFFFFF;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 400;
+  font-family: 'Courier Prime', 'JetBrains Mono', 'Courier New', monospace;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  z-index: 1003;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
+.dot:hover::before {
+  opacity: 1;
+}
+
+/* Dotted line connector for related dots */
+.dot-connected {
+  position: relative;
+}
+
+.dot-connected::after {
+  content: '';
+  position: absolute;
+  top: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 2px;
+  height: 20px;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.4) 0px,
+    rgba(255, 255, 255, 0.4) 3px,
+    transparent 3px,
+    transparent 6px
+  );
+  pointer-events: none;
+  z-index: 999;
+}
+
+.dot.active.dot-connected::after {
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.6) 0px,
+    rgba(255, 255, 255, 0.6) 3px,
+    transparent 3px,
+    transparent 6px
+  );
+}
+
+.dot:hover.dot-connected::after {
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.7) 0px,
+    rgba(255, 255, 255, 0.7) 3px,
+    transparent 3px,
+    transparent 6px
+  );
+}
+
+.dot.active {
+  background: var(--dot-active);
+  transform: scale(1.2);
+}
+
+.dot.active::after {
+  content: '';
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border: 1px solid var(--dot-active);
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0.3;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .section {
+    padding: 60px 80px;
+  }
+
+  .heading {
+    font-size: 48px;
+  }
+
+  .subheading {
+    font-size: 20px;
+  }
+
+  .skills-grid {
+    gap: 48px;
+  }
+}
+
+@media (max-width: 768px) {
+  .section {
+    padding: 60px 40px;
+    min-height: 100vh;
+    padding-top: 120px;
+    padding-bottom: 100px;
+    align-items: center;
+  }
+  
+  .section:first-child {
+    padding-top: 120px;
+  }
+  
+  .nav-bar {
+    padding: 15px 20px;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  
+  .nav-link {
+    font-size: 12px;
+  }
+
+  .heading {
+    font-size: 36px;
+  }
+
+  .subheading {
+    font-size: 18px;
+    margin-bottom: 32px;
+  }
+
+  .body-content {
+    font-size: 14px;
+  }
+
+  .section-index {
+    display: none; /* Hide on mobile for cleaner look */
+  }
+
+  .skills-grid {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+
+  .cta-buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .cta-button {
+    width: 100%;
+    max-width: 300px;
+    text-align: center;
+  }
+
+  .entry {
+    margin-bottom: 32px;
+  }
+}
+
+@media (max-width: 480px) {
+  .section {
+    padding: 40px 24px;
+    padding-top: 100px;
+    padding-bottom: 80px;
+    align-items: center;
+  }
+  
+  .section:first-child {
+    padding-top: 100px;
+  }
+
+  .heading {
+    font-size: 32px;
+  }
+
+  .subheading {
+    font-size: 16px;
+  }
+}
+
+/* Animation States */
+.heading,
+.subheading {
+  opacity: 0;
+}
+
+.heading.animated,
+.subheading.animated {
+  opacity: 1;
+}
+
+/* Smooth Scrolling */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  html {
+    scroll-behavior: auto;
+  }
+}
+
