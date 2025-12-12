@@ -9,8 +9,8 @@ const CONFIG = {
   scrambleChars: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()',
   scrambleDuration: 500, // ms - faster animation
   fadeInDelay: 0, // ms after scramble starts - start immediately
-  fadeInDuration: 300, // ms - faster fade
-  intersectionThreshold: 0.3, // Trigger earlier
+  fadeInDuration: 600, // ms - smoother, longer fade
+  intersectionThreshold: 0.2, // Trigger even earlier for smoother experience
   scrollThrottle: 16, // ~60fps
   isMobile: window.innerWidth < 768
 };
@@ -417,8 +417,16 @@ function scrambleReveal(element, finalText, options = {}) {
 function fadeInContent(element, delay = 0) {
   if (!element) return;
   
+  // Start with initial state
+  element.style.opacity = '0';
+  element.style.transform = 'translateY(20px)';
+  element.style.transition = 'none';
+  
+  // Force reflow
+  element.offsetHeight;
+  
   setTimeout(() => {
-    element.style.transition = `opacity ${CONFIG.fadeInDuration}ms ease-out, transform ${CONFIG.fadeInDuration}ms ease-out`;
+    element.style.transition = `opacity ${CONFIG.fadeInDuration}ms cubic-bezier(0.4, 0, 0.2, 1), transform ${CONFIG.fadeInDuration}ms cubic-bezier(0.4, 0, 0.2, 1)`;
     element.style.opacity = '1';
     element.style.transform = 'translateY(0)';
     element.classList.add('visible');

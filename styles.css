@@ -578,15 +578,33 @@ body::-webkit-scrollbar {
 
   .overview-layout {
     grid-template-columns: 1fr;
-    gap: 32px;
+    gap: 24px;
     justify-items: center;
   }
 
+  .overview-text {
+    order: 2; /* Text comes after photo on mobile */
+  }
+
   .overview-photo {
+    order: 1; /* Photo comes first on mobile */
     position: static;
     width: 220px;
     height: 220px;
     margin: 0 auto;
+  }
+  
+  /* On mobile, show photo right after subheading */
+  .subheading {
+    margin-bottom: 24px !important;
+  }
+  
+  .about-text {
+    display: none; /* Hide bio text on mobile, show only photo after subheading */
+  }
+  
+  .contact-links {
+    margin-top: 0 !important;
   }
 
   .profile-photo {
