@@ -258,6 +258,7 @@
       text-stroke: 1px #000000;
       paint-order: stroke fill;
       text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+      white-space: nowrap;
     }
 
     .footer-link {
@@ -362,9 +363,16 @@
       }
 
       .footer-text {
-        font-size: 12px;
+        font-size: 11px;
         line-height: 1.4;
-        word-break: break-word;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      
+      .footer-left,
+      .footer-right {
+        max-width: calc(50% - 40px);
       }
       
       .linkedin-icon {
