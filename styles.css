@@ -481,6 +481,16 @@ body::-webkit-scrollbar {
 @media (max-width: 768px) {
   html {
     scroll-snap-type: none;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+  }
+  
+  body {
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  .section {
+    scroll-margin-top: 100px; /* Account for nav bar */
   }
   
   body {
