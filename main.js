@@ -37,11 +37,107 @@ let sectionIndexDots = [];
 let rafId = null;
 
 /**
+ * Merge split sections on mobile
+ */
+function mergeSplitSectionsOnMobile() {
+  if (window.innerWidth >= 768) return; // Only on mobile
+  
+  // Merge LeadershipExperience2 into LeadershipExperience
+  const leadership2 = document.getElementById('bodyLeadershipExperience2');
+  const leadership1 = document.getElementById('bodyLeadershipExperience');
+  if (leadership2 && leadership1) {
+    const entries = leadership2.querySelectorAll('.entry');
+    entries.forEach(entry => {
+      leadership1.appendChild(entry.cloneNode(true));
+    });
+  }
+  
+  // Merge Projects2 into Projects1
+  const projects2 = document.getElementById('bodyProjects2');
+  const projects1 = document.getElementById('bodyProjects1');
+  if (projects2 && projects1) {
+    const entries = projects2.querySelectorAll('.entry');
+    entries.forEach(entry => {
+      projects1.appendChild(entry.cloneNode(true));
+    });
+  }
+  
+  // Merge Volunteering2 into Volunteering1
+  const volunteering2 = document.getElementById('bodyVolunteering2');
+  const volunteering1 = document.getElementById('bodyVolunteering1');
+  if (volunteering2 && volunteering1) {
+    const entries = volunteering2.querySelectorAll('.entry');
+    entries.forEach(entry => {
+      volunteering1.appendChild(entry.cloneNode(true));
+    });
+  }
+}
+
+/**
+ * Mobile scroll helper
+ */
+function initMobileScrollHelper() {
+  if (window.innerWidth >= 768) return; // Only on mobile
+  
+  const helper = document.getElementById('mobileScrollHelper');
+  if (!helper) return;
+  
+  let lastScrollTop = 0;
+  let scrollTimeout = null;
+  
+  function updateHelper() {
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    const windowHeight = window.innerHeight;
+    const documentHeight = document.documentElement.scrollHeight;
+    
+    // Show helper if not at bottom and user hasn't scrolled recently
+    if (scrollTop + windowHeight < documentHeight - 100) {
+      if (scrollTop > lastScrollTop) {
+        // Scrolling down - hide helper
+        helper.classList.remove('visible');
+      } else if (scrollTop < lastScrollTop - 50) {
+        // Scrolling up significantly - show helper
+        clearTimeout(scrollTimeout);
+        scrollTimeout = setTimeout(() => {
+          helper.classList.add('visible');
+        }, 1000);
+      }
+    } else {
+      // Near bottom - hide helper
+      helper.classList.remove('visible');
+    }
+    
+    lastScrollTop = scrollTop;
+  }
+  
+  // Show helper initially after 2 seconds
+  setTimeout(() => {
+    if (window.pageYOffset < 100) {
+      helper.classList.add('visible');
+    }
+  }, 2000);
+  
+  // Update on scroll
+  window.addEventListener('scroll', updateHelper, { passive: true });
+  
+  // Click to scroll down
+  helper.addEventListener('click', () => {
+    window.scrollBy({
+      top: window.innerHeight * 0.8,
+      behavior: 'smooth'
+    });
+  });
+}
+
+/**
  * Initialize page - called on DOM load
  */
 document.addEventListener('DOMContentLoaded', () => {
   // Detect mobile
   CONFIG.isMobile = window.innerWidth < 768;
+  
+  // Merge split sections on mobile (do this first before initializing sections)
+  mergeSplitSectionsOnMobile();
   
   // Initialize section references
   initializeSections();
@@ -57,6 +153,9 @@ document.addEventListener('DOMContentLoaded', () => {
   
   // Handle window resize
   window.addEventListener('resize', handleResize);
+  
+  // Initialize mobile scroll helper
+  initMobileScrollHelper();
   
   // Initialize background video
   initBackgroundVideo();
