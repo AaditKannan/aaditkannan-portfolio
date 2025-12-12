@@ -536,12 +536,13 @@ function scrambleReveal(element, finalText, options = {}) {
     element.dataset.originalText = finalText;
   }
   
-  const startTime = Date.now();
   const chars = finalText.split('');
   const scrambleChars = CONFIG.scrambleChars.split('');
   
   function animate() {
-    const elapsed = Date.now() - startTime;
+    const startTime = Date.now();
+    function animateFrame() {
+      const elapsed = Date.now() - startTime;
     const progress = Math.min(elapsed / duration, 1);
     
     // Smoother easing function (ease-in-out for more flowy feel)
