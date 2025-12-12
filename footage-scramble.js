@@ -26,17 +26,17 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 600);
   }
 
-  // Fade in videos after description
+  // Fade in videos after description (faster)
   if (videoWrapper1) {
     setTimeout(() => {
       videoWrapper1.classList.add('visible');
-    }, 900);
+    }, 400);
   }
 
   if (videoWrapper2) {
     setTimeout(() => {
       videoWrapper2.classList.add('visible');
-    }, 1100);
+    }, 500);
   }
 });
 
