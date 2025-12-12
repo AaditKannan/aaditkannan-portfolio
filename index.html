@@ -346,8 +346,19 @@
 
       .footer-content {
         flex-direction: column;
-        gap: 12px;
+        gap: 16px;
         align-items: center;
+      }
+
+      .footer-left,
+      .footer-right {
+        padding: 0;
+        justify-content: center;
+        max-width: 100%;
+      }
+      
+      .footer-center {
+        order: -1; /* LinkedIn icon first on mobile */
       }
 
       .footer-text {
