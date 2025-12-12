@@ -543,7 +543,7 @@ function scrambleReveal(element, finalText, options = {}) {
     const startTime = Date.now();
     function animateFrame() {
       const elapsed = Date.now() - startTime;
-    const progress = Math.min(elapsed / duration, 1);
+      const progress = Math.min(elapsed / duration, 1);
     
     // Smoother easing function (ease-in-out for more flowy feel)
     const eased = progress < 0.5
@@ -579,15 +579,18 @@ function scrambleReveal(element, finalText, options = {}) {
     element.textContent = scrambled;
     element.style.opacity = Math.min(0.2 + opacityProgress * 0.8, 1);
     
-    if (progress < 1) {
-      rafId = requestAnimationFrame(animate);
-    } else {
-      // Ensure final text is set
-      element.textContent = finalText;
-      element.style.opacity = '1';
-      element.classList.add('animated');
-      onComplete();
+      if (progress < 1) {
+        rafId = requestAnimationFrame(animateFrame);
+      } else {
+        // Ensure final text is set
+        element.textContent = finalText;
+        element.style.opacity = '1';
+        element.classList.add('animated');
+        element.dataset.scrambling = 'false'; // Clear flag when done
+        onComplete();
+      }
     }
+    rafId = requestAnimationFrame(animateFrame);
   }
   
   // Start animation
