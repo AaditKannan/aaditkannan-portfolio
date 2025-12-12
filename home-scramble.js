@@ -6,6 +6,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const subtitle = document.querySelector('.home-subtitle');
   const viewResumeBtn = document.querySelector('.view-resume-btn');
   
+  // Change subtitle text on mobile
+  if (window.innerWidth < 768 && subtitle) {
+    subtitle.textContent = 'MECH E @ UC BERKELEY';
+  }
+  
   if (subtitle) {
     const originalText = subtitle.textContent.trim();
     scrambleReveal(subtitle, originalText, { duration: 800 });
