@@ -479,10 +479,20 @@ body::-webkit-scrollbar {
 }
 
 @media (max-width: 768px) {
+  html {
+    scroll-snap-type: none;
+  }
+  
+  body {
+    scroll-snap-type: none;
+  }
+  
   .section {
     padding: 100px 24px 60px;
     min-height: 100vh;
     align-items: flex-start;
+    scroll-snap-align: none;
+    scroll-snap-stop: normal;
   }
   
   .section:first-child {
