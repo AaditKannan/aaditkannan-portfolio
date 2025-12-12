@@ -14,13 +14,25 @@
   <style>
     /* Fix scrollbar shifting */
     html {
-      scrollbar-gutter: stable;
       overflow-y: scroll;
+      /* Hide scrollbar but keep functionality */
+      scrollbar-width: none; /* Firefox */
+      -ms-overflow-style: none; /* IE and Edge */
+    }
+    html::-webkit-scrollbar {
+      display: none; /* Chrome, Safari, Opera */
     }
     
     /* Resume page - slightly lighter black background */
     body {
       background: #0a0a0a !important;
+      overflow-y: scroll;
+      /* Hide scrollbar but keep functionality */
+      scrollbar-width: none; /* Firefox */
+      -ms-overflow-style: none; /* IE and Edge */
+    }
+    body::-webkit-scrollbar {
+      display: none; /* Chrome, Safari, Opera */
     }
     body::after {
       display: none !important;
@@ -150,6 +162,9 @@
       z-index: 9999;
       transform: translate(-50%, -50%);
       transition: width 0.2s ease, height 0.2s ease, border-width 0.2s ease;
+      background: rgba(255, 255, 255, 0.1);
+      opacity: 1;
+      display: block;
     }
 
     .custom-cursor.cursor-hover {
@@ -286,10 +301,10 @@
 <body>
   <!-- Navigation Bar -->
   <nav class="nav-bar">
-            <a href="index.html" class="nav-link">HOME</a>
-            <a href="resume.html" class="nav-link active">RESUME</a>
-            <a href="connect.html" class="nav-link">CONNECT</a>
-            <a href="footage.html" class="nav-link">FOOTAGE</a>
+            <a href="/" class="nav-link">HOME</a>
+            <a href="/resume" class="nav-link active">RESUME</a>
+            <a href="/connect" class="nav-link">CONNECT</a>
+            <a href="/footage" class="nav-link">FOOTAGE</a>
   </nav>
 
   <!-- Section Index (Progress Indicator) -->

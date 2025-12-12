@@ -19,8 +19,14 @@ html {
   scroll-behavior: smooth;
   scroll-snap-type: y mandatory;
   scroll-padding-top: 0;
-  scrollbar-gutter: stable;
   overflow-y: scroll;
+  /* Hide scrollbar but keep functionality */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+html::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
 }
 
 body {
@@ -33,6 +39,14 @@ body {
   -moz-osx-font-smoothing: grayscale;
   scroll-snap-type: y mandatory;
   position: relative;
+  overflow-y: scroll;
+  /* Hide scrollbar but keep functionality */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+body::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
 }
 
 /* Background Video - Only for home page */

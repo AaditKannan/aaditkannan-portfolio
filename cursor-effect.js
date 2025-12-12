@@ -4,10 +4,22 @@
  */
 
 (function() {
+  // Check if custom cursor should be enabled
+  const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+  
+  // Don't create custom cursor on touch devices
+  if (isTouchDevice) {
+    return;
+  }
+  
   // Create cursor element
   const cursor = document.createElement('div');
   cursor.className = 'custom-cursor';
   document.body.appendChild(cursor);
+  
+  // Make sure cursor is visible initially
+  cursor.style.opacity = '1';
+  cursor.style.display = 'block';
   
   // Create trail elements
   const trailCount = 8;

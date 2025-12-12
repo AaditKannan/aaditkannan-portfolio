@@ -18,8 +18,13 @@
     }
 
     html {
-      scrollbar-gutter: stable;
       overflow-y: scroll;
+      /* Hide scrollbar but keep functionality */
+      scrollbar-width: none; /* Firefox */
+      -ms-overflow-style: none; /* IE and Edge */
+    }
+    html::-webkit-scrollbar {
+      display: none; /* Chrome, Safari, Opera */
     }
 
     body {
@@ -32,6 +37,13 @@
       font-weight: 400;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
+      overflow-y: scroll;
+      /* Hide scrollbar but keep functionality */
+      scrollbar-width: none; /* Firefox */
+      -ms-overflow-style: none; /* IE and Edge */
+    }
+    body::-webkit-scrollbar {
+      display: none; /* Chrome, Safari, Opera */
     }
 
     /* Background Video - optimized for performance */
@@ -363,7 +375,9 @@
       z-index: 9999;
       transform: translate(-50%, -50%);
       transition: width 0.2s ease, height 0.2s ease, border-width 0.2s ease;
-      mix-blend-mode: difference;
+      background: rgba(255, 255, 255, 0.1);
+      opacity: 1;
+      display: block;
     }
 
     .custom-cursor.cursor-hover {
@@ -415,10 +429,10 @@
 
   <!-- Navigation Bar -->
   <nav class="nav-bar">
-            <a href="index.html" class="nav-link active">HOME</a>
-            <a href="resume.html" class="nav-link">RESUME</a>
-            <a href="connect.html" class="nav-link">CONNECT</a>
-            <a href="footage.html" class="nav-link">FOOTAGE</a>
+            <a href="/" class="nav-link active">HOME</a>
+            <a href="/resume" class="nav-link">RESUME</a>
+            <a href="/connect" class="nav-link">CONNECT</a>
+            <a href="/footage" class="nav-link">FOOTAGE</a>
   </nav>
 
   <!-- Home Page Content -->
@@ -427,7 +441,7 @@
       <h1 class="home-name">AADIT KANNAN</h1>
       <p class="home-subtitle">MECHANICAL ENGINEERING @ UC BERKELEY, LIFTING, AND TRAVELING</p>
       <div style="margin-top: 28px; display: flex; justify-content: center;">
-        <a href="resume.html" class="view-resume-btn">VIEW RESUME</a>
+                <a href="/resume" class="view-resume-btn">VIEW RESUME</a>
       </div>
     </div>
   </div>
