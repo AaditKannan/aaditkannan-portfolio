@@ -508,9 +508,16 @@ function animateSection(section) {
  */
 function scrambleReveal(element, finalText, options = {}) {
   const duration = options.duration || CONFIG.scrambleDuration;
+  const delay = options.delay || 0;
   const onComplete = options.onComplete || (() => {});
   
   if (!element || !finalText) return;
+  
+  // Prevent duplicate scramble animations
+  if (element.dataset.scrambling === 'true') {
+    return; // Already scrambling
+  }
+  element.dataset.scrambling = 'true';
   
   // Disable scramble on mobile for very long text (performance)
   if (CONFIG.isMobile && finalText.length > 50) {
