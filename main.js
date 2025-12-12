@@ -510,6 +510,17 @@ function scrambleReveal(element, finalText, options = {}) {
 function fadeInContent(element, delay = 0) {
   if (!element) return;
   
+  // Prevent duplicate animations - if already visible or already animated, skip
+  if (element.classList.contains('visible') || element.style.opacity === '1') {
+    return;
+  }
+  
+  // Mark as animating to prevent duplicate calls
+  if (element.dataset.animating === 'true') {
+    return;
+  }
+  element.dataset.animating = 'true';
+  
   // Start with initial state
   const transformY = CONFIG.isMobile ? '10px' : '20px';
   element.style.opacity = '0';
@@ -528,6 +539,10 @@ function fadeInContent(element, delay = 0) {
     element.style.opacity = '1';
     element.style.transform = 'translateY(0)';
     element.classList.add('visible');
+    // Clear animating flag after animation completes
+    setTimeout(() => {
+      element.dataset.animating = 'false';
+    }, duration);
   }, delay);
 }
 
