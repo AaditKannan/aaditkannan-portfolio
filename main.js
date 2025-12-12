@@ -10,7 +10,7 @@ const CONFIG = {
   scrambleDuration: 500, // ms - faster animation
   fadeInDelay: 0, // ms after scramble starts - start immediately
   fadeInDuration: 600, // ms - smoother, longer fade
-  intersectionThreshold: 0.2, // Trigger even earlier for smoother experience
+  intersectionThreshold: 0.15, // Trigger even earlier for smoother experience on mobile
   scrollThrottle: 16, // ~60fps
   isMobile: window.innerWidth < 768
 };

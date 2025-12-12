@@ -313,6 +313,19 @@
         margin-bottom: 0;
         line-height: 1.4;
       }
+      
+      .home-subtitle::before {
+        content: "MechE @ UC Berkeley";
+      }
+      
+      .home-subtitle {
+        font-size: 0; /* Hide original text */
+      }
+      
+      .home-subtitle::before {
+        font-size: clamp(11px, 2.5vw, 14px);
+        display: block;
+      }
 
       .nav-bar {
         padding: 15px 12px;
@@ -336,6 +349,10 @@
         letter-spacing: 0.1em;
         margin-top: 16px;
         min-height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
       }
 
       .footer {
