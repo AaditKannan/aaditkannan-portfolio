@@ -130,6 +130,60 @@ function initMobileScrollHelper() {
 }
 
 /**
+ * Mobile section navigation arrow
+ */
+function initMobileSectionNav() {
+  if (window.innerWidth >= 768) return; // Only on mobile
+  
+  const navArrow = document.getElementById('mobileSectionNav');
+  if (!navArrow) return;
+  
+  const sections = document.querySelectorAll('.section');
+  let currentSectionIndex = 0;
+  
+  function updateNavArrow() {
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    const windowHeight = window.innerHeight;
+    
+    // Find current section
+    let newIndex = 0;
+    sections.forEach((section, index) => {
+      const rect = section.getBoundingClientRect();
+      if (rect.top <= windowHeight * 0.3) {
+        newIndex = index;
+      }
+    });
+    
+    currentSectionIndex = newIndex;
+    
+    // Show arrow if not at last section
+    if (currentSectionIndex < sections.length - 1) {
+      navArrow.classList.add('visible');
+    } else {
+      navArrow.classList.remove('visible');
+    }
+  }
+  
+  // Update on scroll
+  window.addEventListener('scroll', updateNavArrow, { passive: true });
+  
+  // Initial check
+  updateNavArrow();
+  
+  // Click to scroll to next section
+  navArrow.addEventListener('click', () => {
+    if (currentSectionIndex < sections.length - 1) {
+      const nextSection = sections[currentSectionIndex + 1];
+      const nextSectionTop = nextSection.getBoundingClientRect().top + window.pageYOffset - 100; // Account for nav
+      window.scrollTo({
+        top: nextSectionTop,
+        behavior: 'smooth'
+      });
+    }
+  });
+}
+
+/**
  * Initialize page - called on DOM load
  */
 document.addEventListener('DOMContentLoaded', () => {
