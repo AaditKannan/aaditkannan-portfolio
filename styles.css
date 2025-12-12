@@ -588,17 +588,27 @@ body::-webkit-scrollbar {
     justify-items: center;
   }
 
-  .overview-text {
-    display: flex;
-    flex-direction: column;
-  }
-
   .overview-photo {
-    order: -1; /* Photo comes before text content on mobile */
-    position: static;
+    display: none; /* Hide desktop photo on mobile */
+  }
+  
+  .overview-photo-mobile {
+    display: flex; /* Show mobile photo */
+    justify-content: center;
+    align-items: center;
     width: 220px;
     height: 220px;
-    margin: 0 auto 24px auto;
+    margin: 20px auto;
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: #1a1a1a;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+  }
+  
+  .overview-photo-mobile .profile-photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
   
   /* On mobile, photo appears right after subheading */
@@ -607,12 +617,10 @@ body::-webkit-scrollbar {
   }
   
   .about-text {
-    order: 1; /* Bio text comes after photo */
-    margin-top: 24px;
+    margin-top: 0;
   }
   
   .contact-links {
-    order: 2; /* Contact links come last */
     margin-top: 24px !important;
   }
 
