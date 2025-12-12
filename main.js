@@ -402,20 +402,14 @@ function animateSection(section) {
     const bodyDelay = CONFIG.scrambleDuration * 0.4; // Start at 40% of scramble duration
     
     scrambleReveal(section.heading, section.headingText, {
-      duration: CONFIG.isMobile ? CONFIG.scrambleDuration * 0.7 : CONFIG.scrambleDuration,
-      onComplete: () => {
-        // Animate subheading
-        if (section.subheading && section.subheadingText) {
-          fadeInContent(section.subheading, 50);
-        }
-      }
+      duration: CONFIG.isMobile ? CONFIG.scrambleDuration * 0.7 : CONFIG.scrambleDuration
     });
     
     // Start body content animation earlier (during scramble)
     if (section.body) {
       fadeInContent(section.body, bodyDelay);
     }
-    // Start subheading earlier too if it exists
+    // Start subheading earlier too if it exists (only animate once)
     if (section.subheading && section.subheadingText) {
       fadeInContent(section.subheading, bodyDelay);
     }
