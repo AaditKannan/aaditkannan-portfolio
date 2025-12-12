@@ -339,7 +339,9 @@ function setInitialStyles() {
       section.heading.style.opacity = '0';
     }
     if (section.subheading) {
-      section.subheading.style.opacity = '0';
+      // Don't set opacity for subheadings - they'll use scramble animation
+      // Just ensure they start visible (scramble will handle the animation)
+      section.subheading.style.opacity = '1';
     }
   });
 }
@@ -524,8 +526,14 @@ function scrambleReveal(element, finalText, options = {}) {
     element.textContent = finalText;
     element.style.opacity = '1';
     element.classList.add('animated');
+    element.dataset.scrambling = 'false';
     onComplete();
     return;
+  }
+  
+  // Store original text if not already stored
+  if (!element.dataset.originalText) {
+    element.dataset.originalText = finalText;
   }
   
   const startTime = Date.now();
