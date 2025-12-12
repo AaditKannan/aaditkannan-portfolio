@@ -487,13 +487,6 @@ body::-webkit-scrollbar {
   
   body {
     -webkit-overflow-scrolling: touch;
-  }
-  
-  .section {
-    scroll-margin-top: 100px; /* Account for nav bar */
-  }
-  
-  body {
     scroll-snap-type: none;
   }
   
