@@ -140,6 +140,10 @@ body::-webkit-scrollbar {
   display: block;
 }
 
+.overview-photo-mobile {
+  display: none; /* Hidden by default on desktop */
+}
+
 /* About Text */
 .about-text {
   margin-bottom: 32px;
