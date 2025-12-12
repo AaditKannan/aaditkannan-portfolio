@@ -224,45 +224,8 @@
       border-radius: 12px;
     }
 
-    /* Custom Cursor Styles */
-    * {
-      cursor: none !important;
-    }
+    /* Custom cursor removed - using default cursor */
 
-    .custom-cursor {
-      position: fixed;
-      width: 20px;
-      height: 20px;
-      border: 2px solid #FFFFFF;
-      border-radius: 50%;
-      pointer-events: none;
-      z-index: 9999;
-      transform: translate(-50%, -50%);
-      transition: width 0.2s ease, height 0.2s ease, border-width 0.2s ease;
-      background: rgba(255, 255, 255, 0.1);
-      opacity: 1;
-      display: block;
-    }
-
-    .custom-cursor.cursor-hover {
-      width: 40px;
-      height: 40px;
-      border-width: 3px;
-    }
-
-    .cursor-trail {
-      position: fixed;
-      width: 8px;
-      height: 8px;
-      background: rgba(255, 255, 255, 0.6);
-      border-radius: 50%;
-      pointer-events: none;
-      z-index: 9998;
-      transform: translate(-50%, -50%);
-      transition: opacity 0.3s ease;
-    }
-
-    /* Show default cursor on mobile */
     @media (max-width: 1024px) {
       .connect-content {
         grid-template-columns: 1fr;
