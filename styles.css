@@ -589,28 +589,31 @@ body::-webkit-scrollbar {
   }
 
   .overview-text {
-    order: 2; /* Text comes after photo on mobile */
+    display: flex;
+    flex-direction: column;
   }
 
   .overview-photo {
-    order: 1; /* Photo comes first on mobile */
+    order: -1; /* Photo comes before text content on mobile */
     position: static;
     width: 220px;
     height: 220px;
-    margin: 0 auto;
+    margin: 0 auto 24px auto;
   }
   
-  /* On mobile, show photo right after subheading */
+  /* On mobile, photo appears right after subheading */
   .subheading {
-    margin-bottom: 24px !important;
+    margin-bottom: 0 !important;
   }
   
   .about-text {
-    display: none; /* Hide bio text on mobile, show only photo after subheading */
+    order: 1; /* Bio text comes after photo */
+    margin-top: 24px;
   }
   
   .contact-links {
-    margin-top: 0 !important;
+    order: 2; /* Contact links come last */
+    margin-top: 24px !important;
   }
 
   .profile-photo {
