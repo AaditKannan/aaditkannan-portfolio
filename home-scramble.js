@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
   
   // Change subtitle text on mobile
   if (window.innerWidth < 768 && subtitle) {
-    subtitle.textContent = 'MECH E @ UC BERKELEY';
+    subtitle.textContent = 'MECHE @ UC BERKELEY';
   }
   
   if (subtitle) {
