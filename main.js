@@ -418,15 +418,20 @@ function fadeInContent(element, delay = 0) {
   if (!element) return;
   
   // Start with initial state
+  const transformY = CONFIG.isMobile ? '10px' : '20px';
   element.style.opacity = '0';
-  element.style.transform = 'translateY(20px)';
+  element.style.transform = `translateY(${transformY})`;
   element.style.transition = 'none';
   
   // Force reflow
   element.offsetHeight;
   
+  // Use longer, smoother fade on mobile
+  const duration = CONFIG.isMobile ? 800 : CONFIG.fadeInDuration;
+  const easing = CONFIG.isMobile ? 'cubic-bezier(0.25, 0.46, 0.45, 0.94)' : 'cubic-bezier(0.4, 0, 0.2, 1)';
+  
   setTimeout(() => {
-    element.style.transition = `opacity ${CONFIG.fadeInDuration}ms cubic-bezier(0.4, 0, 0.2, 1), transform ${CONFIG.fadeInDuration}ms cubic-bezier(0.4, 0, 0.2, 1)`;
+    element.style.transition = `opacity ${duration}ms ${easing}, transform ${duration}ms ${easing}`;
     element.style.opacity = '1';
     element.style.transform = 'translateY(0)';
     element.classList.add('visible');

@@ -617,7 +617,7 @@ body::-webkit-scrollbar {
   }
   
   .about-text {
-    margin-top: 0;
+    margin-top: 24px; /* Keep bio text visible with spacing */
   }
   
   .contact-links {
