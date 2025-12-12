@@ -564,15 +564,27 @@ function scrambleReveal(element, finalText, options = {}) {
 function fadeInContent(element, delay = 0) {
   if (!element) return;
   
-  // Prevent duplicate animations - if already visible or already animated, skip
-  if (element.classList.contains('visible') || element.style.opacity === '1') {
-    return;
+  // Prevent duplicate animations - check multiple conditions
+  if (element.classList.contains('visible')) {
+    return; // Already visible
   }
   
-  // Mark as animating to prevent duplicate calls
+  // Check if already animating (more robust check)
   if (element.dataset.animating === 'true') {
-    return;
+    return; // Already animating
   }
+  
+  // Check if opacity is already 1 or transitioning
+  const computedOpacity = window.getComputedStyle(element).opacity;
+  if (computedOpacity === '1' || element.style.transition !== 'none' && element.style.transition !== '') {
+    // If it's already visible or has a transition, don't animate again
+    if (computedOpacity === '1') {
+      element.classList.add('visible');
+      return;
+    }
+  }
+  
+  // Mark as animating immediately to prevent duplicate calls
   element.dataset.animating = 'true';
   
   // Start with initial state
@@ -589,13 +601,21 @@ function fadeInContent(element, delay = 0) {
   const easing = CONFIG.isMobile ? 'cubic-bezier(0.25, 0.46, 0.45, 0.94)' : 'cubic-bezier(0.4, 0, 0.2, 1)';
   
   setTimeout(() => {
+    // Double-check we're still supposed to animate (in case element was removed/modified)
+    if (!element || element.dataset.animating !== 'true') {
+      return;
+    }
+    
     element.style.transition = `opacity ${duration}ms ${easing}, transform ${duration}ms ${easing}`;
     element.style.opacity = '1';
     element.style.transform = 'translateY(0)';
     element.classList.add('visible');
+    
     // Clear animating flag after animation completes
     setTimeout(() => {
-      element.dataset.animating = 'false';
+      if (element) {
+        element.dataset.animating = 'false';
+      }
     }, duration);
   }, delay);
 }
