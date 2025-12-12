@@ -269,65 +269,111 @@
 
     @media (max-width: 768px) {
       .home-container {
-        padding: 0 24px;
+        padding: 0 20px;
+        min-height: calc(100vh - 200px);
       }
       
       .home-name {
-        font-size: clamp(56px, 6vw, 100px);
+        font-size: clamp(42px, 10vw, 72px);
+        line-height: 0.95;
+        white-space: normal;
+        word-break: break-word;
       }
 
       .home-subtitle {
-        font-size: clamp(12px, 1.1vw, 16px);
+        font-size: clamp(11px, 2.5vw, 14px);
+        margin-top: 16px;
+        line-height: 1.4;
       }
 
       .nav-bar {
-        padding: 20px 15px;
-        gap: 10px;
+        padding: 15px 12px;
+        gap: 8px;
         flex-wrap: wrap;
-        justify-content: flex-end;
+        justify-content: center;
+        height: auto;
+        min-height: 90px;
       }
 
       .nav-link {
-        font-size: 11px;
-        padding: 8px 16px;
+        font-size: 10px;
+        padding: 8px 14px;
+        height: 40px;
+        min-width: 60px;
       }
 
       .view-resume-btn {
-        padding: 10px 24px;
+        padding: 12px 28px;
         font-size: 12px;
         letter-spacing: 0.1em;
+        margin-top: 24px;
+        min-height: 44px;
       }
 
       .footer {
         flex-direction: column;
         gap: 12px;
         text-align: center;
-        padding: 20px 20px;
+        padding: 20px 16px;
+        position: relative;
       }
 
       .footer-content {
         flex-direction: column;
-        gap: 16px;
-      }
-
-      .footer-left,
-      .footer-right {
-        padding: 0;
-        justify-content: center;
+        gap: 12px;
+        align-items: center;
       }
 
       .footer-text {
-        font-size: 14px;
+        font-size: 12px;
+        line-height: 1.4;
+        word-break: break-word;
       }
       
       .linkedin-icon {
-        width: 24px;
-        height: 24px;
+        width: 28px;
+        height: 28px;
       }
       
       .linkedin-icon-wrapper {
-        width: 58px;
-        height: 58px;
+        width: 56px;
+        height: 56px;
+        min-width: 56px;
+        min-height: 56px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .home-container {
+        padding: 0 16px;
+      }
+
+      .home-name {
+        font-size: clamp(36px, 12vw, 56px);
+      }
+
+      .home-subtitle {
+        font-size: clamp(10px, 3vw, 12px);
+      }
+
+      .nav-bar {
+        padding: 12px 8px;
+        gap: 6px;
+      }
+
+      .nav-link {
+        font-size: 9px;
+        padding: 6px 12px;
+        height: 36px;
+      }
+
+      .view-resume-btn {
+        padding: 10px 24px;
+        font-size: 11px;
+      }
+
+      .footer-text {
+        font-size: 11px;
       }
     }
 

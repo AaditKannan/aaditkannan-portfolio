@@ -244,43 +244,100 @@
     }
 
     @media (max-width: 768px) {
-      * {
-        cursor: auto !important;
+      .connect-container {
+        padding: 100px 20px 60px;
       }
 
       .connect-heading {
-        font-size: 48px;
+        font-size: 36px;
+        line-height: 1.1;
       }
 
       .connect-subheading {
-        font-size: 18px;
+        font-size: 16px;
+      }
+
+      .contact-info {
+        gap: 20px;
+      }
+
+      .contact-label {
+        font-size: 11px;
       }
 
       .contact-value {
-        font-size: 16px;
+        font-size: 15px;
+        word-break: break-word;
+      }
+
+      .calendar-wrapper {
+        margin-top: 30px;
+        min-height: 500px;
       }
 
       .calendar-iframe {
         height: 500px;
+        min-height: 500px;
+      }
+
+      .calendar-description {
+        font-size: 14px;
+        margin-top: 16px;
       }
 
       .nav-bar {
-        padding: 20px 15px;
-        gap: 10px;
+        padding: 15px 12px;
+        gap: 8px;
         flex-wrap: wrap;
-        justify-content: flex-end;
-        height: 104px;
-        box-sizing: border-box;
+        justify-content: center;
+        height: auto;
+        min-height: 90px;
       }
 
       .nav-link {
-        font-size: 11px;
-        padding: 8px 16px;
-        height: 44px;
+        font-size: 10px;
+        padding: 8px 14px;
+        height: 40px;
+        min-width: 60px;
       }
 
       .connect-content {
+        grid-template-columns: 1fr;
         gap: 40px;
+      }
+
+      .connect-left {
+        text-align: center;
+        align-items: center;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .connect-container {
+        padding: 90px 16px 50px;
+      }
+
+      .connect-heading {
+        font-size: 28px;
+      }
+
+      .connect-subheading {
+        font-size: 14px;
+      }
+
+      .contact-value {
+        font-size: 14px;
+      }
+
+      .calendar-iframe {
+        height: 400px;
+        min-height: 400px;
+      }
+
+      .nav-link {
+        font-size: 9px;
+        padding: 6px 12px;
+        height: 36px;
       }
     }
   </style>
