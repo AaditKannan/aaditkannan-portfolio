@@ -495,7 +495,7 @@ body::-webkit-scrollbar {
   }
   
   .section {
-    padding: 100px 24px 60px;
+    padding: 60px 24px 40px; /* Reduced padding for less space between sections */
     min-height: auto; /* Allow sections to be shorter on mobile */
     align-items: flex-start;
   }
