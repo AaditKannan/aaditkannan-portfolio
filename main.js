@@ -316,8 +316,8 @@ function initScrollAnimations() {
     });
   }, {
     root: null,
-    rootMargin: '0px 0px -50% 0px', // Trigger when section is 50% visible
-    threshold: [0.3, 0.5, 0.7] // Multiple thresholds for better detection
+    rootMargin: CONFIG.isMobile ? '0px 0px -20% 0px' : '0px 0px -50% 0px', // Trigger earlier on mobile (80% visible)
+    threshold: CONFIG.isMobile ? [0.1, 0.2, 0.3] : [0.3, 0.5, 0.7] // Lower thresholds on mobile for earlier trigger
   });
   
   // Observe all sections

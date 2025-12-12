@@ -507,6 +507,16 @@ body::-webkit-scrollbar {
     display: none !important;
   }
   
+  /* Hide Berkeley logo on mobile */
+  .berkeley-logo {
+    display: none !important;
+  }
+  
+  /* Shift contact icons up slightly */
+  .contact-links {
+    margin-bottom: 20px; /* Add bottom margin to shift up */
+  }
+  
   /* Mobile scroll helper - floating scroll indicator */
   .mobile-scroll-helper {
     position: fixed;
