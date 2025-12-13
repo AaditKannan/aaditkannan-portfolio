@@ -382,7 +382,11 @@
         gap: 12px;
         text-align: center;
         padding: 20px 16px;
-        position: relative;
+        position: fixed !important; /* Ensure footer is visible */
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 1000;
       }
 
       .footer-content {
@@ -400,6 +404,14 @@
       .footer-center {
         order: 0; /* LinkedIn icon centered */
         display: flex !important; /* Ensure LinkedIn icon is visible */
+        visibility: visible !important;
+        opacity: 1 !important;
+      }
+      
+      .linkedin-icon-wrapper {
+        display: flex !important;
+        visibility: visible !important;
+        opacity: 1 !important;
       }
 
       .footer-text {
