@@ -137,16 +137,46 @@ function initMobileScrollHelper() {
   }
   
   function updateHelper() {
+    const scrollY = window.scrollY || window.pageYOffset;
     const nextSection = getNextSection();
+    const currentIndex = getCurrentSectionIndex();
     
+    // Show down arrow if there's a next section
     if (nextSection) {
-      // Always show helper if there's a next section
       helper.classList.add('visible');
     } else {
-      // Hide if at last section
       helper.classList.remove('visible');
     }
+    
+    // Show up arrow if past first section
+    if (currentIndex > 0 && scrollY > 100) {
+      upHelper.classList.add('visible');
+    } else {
+      upHelper.classList.remove('visible');
+    }
   }
+  
+  // Click to scroll up
+  upHelper.addEventListener('click', () => {
+    const currentIndex = getCurrentSectionIndex();
+    if (currentIndex > 0) {
+      const prevSection = SECTIONS[currentIndex - 1];
+      if (prevSection && prevSection.element) {
+        const sectionId = prevSection.element.id.replace('sec', '');
+        const section = SECTIONS.find(s => s.id === sectionId);
+        const targetElement = section && section.heading ? section.heading : prevSection.element;
+        
+        const navBarHeight = 104;
+        const elementTop = targetElement.getBoundingClientRect().top + window.pageYOffset;
+        const scrollPosition = elementTop - navBarHeight - 20;
+        
+        window.scrollTo({
+          top: Math.max(0, scrollPosition),
+          behavior: 'smooth'
+        });
+      }
+    }
+  });
   
   // Show helper immediately
   updateHelper();
@@ -270,11 +300,6 @@ document.addEventListener('DOMContentLoaded', () => {
   
   // Initialize mobile scroll helper
   initMobileScrollHelper();
-  
-  // Initialize section scroll indicators on mobile
-  if (CONFIG.isMobile) {
-    initSectionScrollIndicators();
-  }
   
   // Initialize background video
   initBackgroundVideo();
