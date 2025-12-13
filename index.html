@@ -295,12 +295,20 @@
     }
 
     @media (max-width: 768px) {
+      /* Prevent scrolling on home page */
+      body.home-page {
+        overflow: hidden;
+        height: 100vh;
+      }
+      
       .home-container {
         padding: 0 20px;
         min-height: 100vh;
+        max-height: 100vh;
         padding-top: 0; /* Remove top padding, use flexbox centering */
         align-items: center; /* Center vertically */
         justify-content: center;
+        overflow: hidden;
       }
       
       .home-content-wrapper {
@@ -368,21 +376,18 @@
         align-items: center;
       }
 
+      /* Hide footer text on mobile, only show LinkedIn icon */
       .footer-left,
       .footer-right {
-        padding: 0;
-        justify-content: center;
-        max-width: 100%;
+        display: none !important; /* Hide phone and email text on mobile */
       }
-      
+
       .footer-center {
-        order: -1; /* LinkedIn icon first on mobile */
+        order: 0; /* LinkedIn icon centered */
       }
 
       .footer-text {
-        font-size: 11px;
-        line-height: 1.4;
-        white-space: nowrap;
+        display: none !important; /* Hide all footer text on mobile */
         overflow: hidden;
         text-overflow: ellipsis;
       }
