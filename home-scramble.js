@@ -6,16 +6,17 @@ document.addEventListener('DOMContentLoaded', () => {
   const subtitle = document.querySelector('.home-subtitle');
   const viewResumeBtn = document.querySelector('.view-resume-btn');
   
-  // Change subtitle text on mobile - MUST happen before scramble
+  // Change subtitle text on mobile BEFORE scrambling
   if (window.innerWidth < 768 && subtitle) {
-    const mobileText = 'MECHE @ UC BERKELEY, LIFTING, TRAVELING';
-    // Set it immediately before any animation
-    subtitle.textContent = mobileText;
+    subtitle.textContent = 'MECHE @ UC BERKELEY, LIFTING, TRAVELING';
   }
   
   if (subtitle) {
-    const originalText = subtitle.textContent.trim();
-    scrambleReveal(subtitle, originalText, { duration: 800 });
+    // Get the text AFTER potentially changing it for mobile
+    const finalText = subtitle.textContent.trim();
+    // Reset to scrambled state first
+    subtitle.textContent = '';
+    scrambleReveal(subtitle, finalText, { duration: 800 });
   }
   
   if (viewResumeBtn) {

@@ -339,9 +339,9 @@ function setInitialStyles() {
       section.heading.style.opacity = '0';
     }
     if (section.subheading) {
-      // Don't set opacity for subheadings - they'll use scramble animation
-      // Just ensure they start visible (scramble will handle the animation)
-      section.subheading.style.opacity = '1';
+      // For scramble animation, start with empty text instead of opacity 0
+      section.subheading.textContent = '';
+      section.subheading.style.opacity = '1'; // Keep visible for scramble effect
     }
   });
 }
@@ -358,22 +358,27 @@ function initScrollAnimations() {
   }
   
   // Create Intersection Observer with more sensitive trigger
+  // Use single threshold to prevent multiple triggers
   intersectionObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
         const sectionId = entry.target.id.replace('sec', '');
         const section = SECTIONS.find(s => s.id === sectionId);
         
+        // Double-check to prevent race conditions
         if (section && !section.animated) {
-          section.animated = true;
-          animateSection(section);
+          section.animated = true; // Set immediately to prevent duplicate calls
+          // Use requestAnimationFrame to ensure this happens in next frame
+          requestAnimationFrame(() => {
+            animateSection(section);
+          });
         }
       }
     });
   }, {
     root: null,
     rootMargin: CONFIG.isMobile ? '0px 0px -20% 0px' : '0px 0px -50% 0px', // Trigger earlier on mobile (80% visible)
-    threshold: CONFIG.isMobile ? [0.1, 0.2, 0.3] : [0.3, 0.5, 0.7] // Lower thresholds on mobile for earlier trigger
+    threshold: CONFIG.isMobile ? 0.15 : 0.3 // Single threshold to prevent multiple triggers
   });
   
   // Observe all sections
@@ -480,21 +485,35 @@ function animateSection(section) {
     if (section.body) {
       fadeInContent(section.body, bodyDelay);
     }
-    // Animate subheading with scramble reveal instead of fade (prevents duplicates)
+    // Animate subheading with scramble reveal instead of fade (prevents duplicate animations)
     if (section.subheading && section.subheadingText) {
-      // Use scramble animation for subheadings to prevent duplicate fade issues
-      scrambleReveal(section.subheading, section.subheadingText, {
-        duration: CONFIG.isMobile ? CONFIG.scrambleDuration * 0.5 : CONFIG.scrambleDuration * 0.6,
-        delay: bodyDelay
-      });
+      // Mark subheading as animating to prevent duplicates
+      if (section.subheading.dataset.animating !== 'true') {
+        section.subheading.dataset.animating = 'true';
+        scrambleReveal(section.subheading, section.subheadingText, {
+          duration: CONFIG.isMobile ? CONFIG.scrambleDuration * 0.6 : CONFIG.scrambleDuration * 0.8,
+          delay: bodyDelay,
+          onComplete: () => {
+            section.subheading.dataset.animating = 'false';
+            section.subheading.classList.add('visible');
+          }
+        });
+      }
     }
   } else {
-    // If no heading, just fade in content immediately
+    // If no heading, just animate content immediately
     if (section.subheading && section.subheadingText) {
-      // Use scramble for subheadings even when no heading
-      scrambleReveal(section.subheading, section.subheadingText, {
-        duration: CONFIG.isMobile ? CONFIG.scrambleDuration * 0.5 : CONFIG.scrambleDuration * 0.6
-      });
+      // Use scramble for subheading
+      if (section.subheading.dataset.animating !== 'true') {
+        section.subheading.dataset.animating = 'true';
+        scrambleReveal(section.subheading, section.subheadingText, {
+          duration: CONFIG.isMobile ? CONFIG.scrambleDuration * 0.6 : CONFIG.scrambleDuration * 0.8,
+          onComplete: () => {
+            section.subheading.dataset.animating = 'false';
+            section.subheading.classList.add('visible');
+          }
+        });
+      }
     }
     if (section.body) {
       fadeInContent(section.body, 0);
@@ -510,40 +529,26 @@ function animateSection(section) {
  */
 function scrambleReveal(element, finalText, options = {}) {
   const duration = options.duration || CONFIG.scrambleDuration;
-  const delay = options.delay || 0;
   const onComplete = options.onComplete || (() => {});
   
   if (!element || !finalText) return;
-  
-  // Prevent duplicate scramble animations
-  if (element.dataset.scrambling === 'true') {
-    return; // Already scrambling
-  }
-  element.dataset.scrambling = 'true';
   
   // Disable scramble on mobile for very long text (performance)
   if (CONFIG.isMobile && finalText.length > 50) {
     element.textContent = finalText;
     element.style.opacity = '1';
     element.classList.add('animated');
-    element.dataset.scrambling = 'false';
     onComplete();
     return;
   }
   
-  // Store original text if not already stored
-  if (!element.dataset.originalText) {
-    element.dataset.originalText = finalText;
-  }
-  
+  const startTime = Date.now();
   const chars = finalText.split('');
   const scrambleChars = CONFIG.scrambleChars.split('');
   
   function animate() {
-    const startTime = Date.now();
-    function animateFrame() {
-      const elapsed = Date.now() - startTime;
-      const progress = Math.min(elapsed / duration, 1);
+    const elapsed = Date.now() - startTime;
+    const progress = Math.min(elapsed / duration, 1);
     
     // Smoother easing function (ease-in-out for more flowy feel)
     const eased = progress < 0.5
@@ -579,18 +584,15 @@ function scrambleReveal(element, finalText, options = {}) {
     element.textContent = scrambled;
     element.style.opacity = Math.min(0.2 + opacityProgress * 0.8, 1);
     
-      if (progress < 1) {
-        rafId = requestAnimationFrame(animateFrame);
-      } else {
-        // Ensure final text is set
-        element.textContent = finalText;
-        element.style.opacity = '1';
-        element.classList.add('animated');
-        element.dataset.scrambling = 'false'; // Clear flag when done
-        onComplete();
-      }
+    if (progress < 1) {
+      rafId = requestAnimationFrame(animate);
+    } else {
+      // Ensure final text is set
+      element.textContent = finalText;
+      element.style.opacity = '1';
+      element.classList.add('animated');
+      onComplete();
     }
-    rafId = requestAnimationFrame(animateFrame);
   }
   
   // Start animation
