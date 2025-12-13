@@ -2,6 +2,7 @@
  * Resume Page - Scroll-Driven Animation System
  * Modern, vertically-staged resume experience with scramble reveal animations
  * Performance-optimized using Intersection Observer and requestAnimationFrame
+ * Updated: Subheadings now use scramble animation to prevent duplicate animations
  */
 
 // Configuration
