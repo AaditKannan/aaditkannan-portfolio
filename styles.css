@@ -536,8 +536,8 @@ body::-webkit-scrollbar {
     align-items: center;
     justify-content: center;
     z-index: 999;
-    opacity: 0;
-    visibility: hidden;
+    opacity: 1; /* Start visible */
+    visibility: visible; /* Start visible */
     transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
     cursor: pointer;
   }
