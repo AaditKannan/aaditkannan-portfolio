@@ -38,41 +38,62 @@ let intersectionObserver = null;
 let sectionIndexDots = [];
 let rafId = null;
 
+// Track if merge has already been done to prevent duplicates
+let sectionsMerged = false;
+
 /**
  * Merge split sections on mobile
  */
 function mergeSplitSectionsOnMobile() {
   if (window.innerWidth >= 768) return; // Only on mobile
+  if (sectionsMerged) return; // Prevent duplicate merges
   
   // Merge LeadershipExperience2 into LeadershipExperience
   const leadership2 = document.getElementById('bodyLeadershipExperience2');
   const leadership1 = document.getElementById('bodyLeadershipExperience');
+  const secLeadership2 = document.getElementById('secLeadershipExperience2');
   if (leadership2 && leadership1) {
     const entries = leadership2.querySelectorAll('.entry');
     entries.forEach(entry => {
       leadership1.appendChild(entry.cloneNode(true));
     });
+    // Hide the second section after merging
+    if (secLeadership2) {
+      secLeadership2.style.display = 'none';
+    }
   }
   
   // Merge Projects2 into Projects1
   const projects2 = document.getElementById('bodyProjects2');
   const projects1 = document.getElementById('bodyProjects1');
+  const secProjects2 = document.getElementById('secProjects2');
   if (projects2 && projects1) {
     const entries = projects2.querySelectorAll('.entry');
     entries.forEach(entry => {
       projects1.appendChild(entry.cloneNode(true));
     });
+    // Hide the second section after merging
+    if (secProjects2) {
+      secProjects2.style.display = 'none';
+    }
   }
   
   // Merge Volunteering2 into Volunteering1
   const volunteering2 = document.getElementById('bodyVolunteering2');
   const volunteering1 = document.getElementById('bodyVolunteering1');
+  const secVolunteering2 = document.getElementById('secVolunteering2');
   if (volunteering2 && volunteering1) {
     const entries = volunteering2.querySelectorAll('.entry');
     entries.forEach(entry => {
       volunteering1.appendChild(entry.cloneNode(true));
     });
+    // Hide the second section after merging
+    if (secVolunteering2) {
+      secVolunteering2.style.display = 'none';
+    }
   }
+  
+  sectionsMerged = true; // Mark as merged
 }
 
 /**
@@ -154,7 +175,6 @@ function initMobileScrollHelper() {
   function updateHelper() {
     const scrollY = window.scrollY || window.pageYOffset;
     const nextSection = getNextSection();
-    const currentIndex = getCurrentSectionIndex();
     
     // Show down arrow if there's a next section
     if (nextSection) {
@@ -162,41 +182,12 @@ function initMobileScrollHelper() {
     } else {
       helper.classList.remove('visible');
     }
-    
-    // Show up arrow if past first section
-    if (currentIndex > 0 && scrollY > 100) {
-      upHelper.classList.add('visible');
-    } else {
-      upHelper.classList.remove('visible');
-    }
   }
   
   // Make sure arrow is visible initially
   setTimeout(() => {
     updateHelper();
   }, 100);
-  
-  // Click to scroll up
-  upHelper.addEventListener('click', () => {
-    const currentIndex = getCurrentSectionIndex();
-    if (currentIndex > 0) {
-      const prevSection = SECTIONS[currentIndex - 1];
-      if (prevSection && prevSection.element) {
-        const sectionId = prevSection.element.id.replace('sec', '');
-        const section = SECTIONS.find(s => s.id === sectionId);
-        const targetElement = section && section.heading ? section.heading : prevSection.element;
-        
-        const navBarHeight = 104;
-        const elementTop = targetElement.getBoundingClientRect().top + window.pageYOffset;
-        const scrollPosition = elementTop - navBarHeight - 20;
-        
-        window.scrollTo({
-          top: Math.max(0, scrollPosition),
-          behavior: 'smooth'
-        });
-      }
-    }
-  });
   
   // Show helper immediately - force visibility
   helper.classList.add('visible');
@@ -210,11 +201,8 @@ function initMobileScrollHelper() {
   // Update on scroll
   window.addEventListener('scroll', updateHelper, { passive: true });
   
-  // Click to scroll to next section
-  helper.addEventListener('click', (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    
+  // Scroll function to avoid duplication
+  function scrollToNextSection() {
     const nextSection = getNextSection();
     
     if (nextSection) {
@@ -246,6 +234,20 @@ function initMobileScrollHelper() {
         });
       }
     }
+  }
+
+  // Click and touch handlers for mobile scroll
+  helper.addEventListener('click', (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    scrollToNextSection();
+  });
+  
+  // Also support touch events for better mobile compatibility
+  helper.addEventListener('touchend', (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    scrollToNextSection();
   });
 }
 

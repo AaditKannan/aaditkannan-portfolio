@@ -194,6 +194,14 @@ body::-webkit-scrollbar {
   text-decoration: none;
 }
 
+/* Resume PDF link hover - light red */
+.contact-link[href*="resume.pdf"]:hover,
+.contact-link[download]:hover {
+  background: rgba(255, 182, 193, 0.3); /* Light red/pink background */
+  border-color: rgba(255, 182, 193, 0.6); /* Light red/pink border */
+  color: #FFFFFF;
+}
+
 @media (max-width: 768px) {
   .contact-links {
     grid-template-columns: 1fr;
@@ -559,6 +567,7 @@ body::-webkit-scrollbar {
     transform: rotate(45deg);
     animation: bounceDown 2s infinite;
     margin-top: -2px; /* Adjust position to center better in box */
+    pointer-events: none; /* Allow clicks to pass through to parent */
   }
   
   .mobile-scroll-helper-up {
