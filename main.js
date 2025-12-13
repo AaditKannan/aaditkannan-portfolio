@@ -211,8 +211,12 @@ function initMobileScrollHelper() {
   window.addEventListener('scroll', updateHelper, { passive: true });
   
   // Click to scroll to next section
-  helper.addEventListener('click', () => {
+  helper.addEventListener('click', (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    
     const nextSection = getNextSection();
+    
     if (nextSection) {
       // Get the section's heading element to scroll to
       const sectionId = nextSection.id.replace('sec', '');
