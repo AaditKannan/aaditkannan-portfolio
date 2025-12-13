@@ -3,6 +3,7 @@
  * Modern, vertically-staged resume experience with scramble reveal animations
  * Performance-optimized using Intersection Observer and requestAnimationFrame
  * Updated: Subheadings now use scramble animation to prevent duplicate animations
+ * Repo is now public - triggering Vercel deployment
  */
 
 // Configuration
