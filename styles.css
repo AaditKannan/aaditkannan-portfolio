@@ -508,12 +508,8 @@ body::-webkit-scrollbar {
   
   /* Section scroll indicators removed - using fixed scroll helpers instead */
   
-  /* Hide split sections on mobile - content will be merged via JS */
-  #secLeadershipExperience2,
-  #secProjects2,
-  #secVolunteering2 {
-    display: none !important;
-  }
+  /* Show split sections on mobile - arrows navigate between them */
+  /* No need to hide sections anymore */
   
   /* Hide Berkeley logo on mobile */
   .berkeley-logo {

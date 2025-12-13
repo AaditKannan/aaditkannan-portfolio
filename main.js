@@ -171,6 +171,11 @@ function initMobileScrollHelper() {
     }
   }
   
+  // Make sure arrow is visible initially
+  setTimeout(() => {
+    updateHelper();
+  }, 100);
+  
   // Click to scroll up
   upHelper.addEventListener('click', () => {
     const currentIndex = getCurrentSectionIndex();
