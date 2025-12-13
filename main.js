@@ -84,50 +84,72 @@ function initMobileScrollHelper() {
   const helper = document.getElementById('mobileScrollHelper');
   if (!helper) return;
   
-  let lastScrollTop = 0;
-  let scrollTimeout = null;
-  
-  function updateHelper() {
-    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-    const windowHeight = window.innerHeight;
-    const documentHeight = document.documentElement.scrollHeight;
+  function getCurrentSectionIndex() {
+    const scrollY = window.scrollY || window.pageYOffset;
+    const viewportHeight = window.innerHeight;
+    const viewportCenter = scrollY + viewportHeight / 2;
     
-    // Show helper if not at bottom and user hasn't scrolled recently
-    if (scrollTop + windowHeight < documentHeight - 100) {
-      if (scrollTop > lastScrollTop) {
-        // Scrolling down - hide helper
-        helper.classList.remove('visible');
-      } else if (scrollTop < lastScrollTop - 50) {
-        // Scrolling up significantly - show helper quickly
-        clearTimeout(scrollTimeout);
-        scrollTimeout = setTimeout(() => {
-          helper.classList.add('visible');
-        }, 300);
+    let currentIndex = 0;
+    let minDistance = Infinity;
+    
+    SECTIONS.forEach((section, index) => {
+      if (section.element) {
+        try {
+          const rect = section.element.getBoundingClientRect();
+          const sectionTop = rect.top + scrollY;
+          const sectionCenter = sectionTop + rect.height / 2;
+          const distance = Math.abs(viewportCenter - sectionCenter);
+          
+          if (distance < minDistance) {
+            minDistance = distance;
+            currentIndex = index;
+          }
+        } catch (e) {
+          // Element not available
+        }
       }
-    } else {
-      // Near bottom - hide helper
-      helper.classList.remove('visible');
-    }
+    });
     
-    lastScrollTop = scrollTop;
+    return currentIndex;
   }
   
-  // Show helper initially after 0.5 seconds (faster appearance)
-  setTimeout(() => {
-    if (window.pageYOffset < 100) {
-      helper.classList.add('visible');
+  function getNextSection() {
+    const currentIndex = getCurrentSectionIndex();
+    const nextIndex = currentIndex + 1;
+    
+    if (nextIndex < SECTIONS.length && SECTIONS[nextIndex].element) {
+      return SECTIONS[nextIndex].element;
     }
-  }, 500);
+    return null;
+  }
+  
+  function updateHelper() {
+    const nextSection = getNextSection();
+    
+    if (nextSection) {
+      // Always show helper if there's a next section
+      helper.classList.add('visible');
+    } else {
+      // Hide if at last section
+      helper.classList.remove('visible');
+    }
+  }
+  
+  // Show helper immediately
+  updateHelper();
   
   // Update on scroll
   window.addEventListener('scroll', updateHelper, { passive: true });
   
-  // Click to scroll down
+  // Click to scroll to next section
   helper.addEventListener('click', () => {
-    window.scrollBy({
-      top: window.innerHeight * 0.8,
-      behavior: 'smooth'
-    });
+    const nextSection = getNextSection();
+    if (nextSection) {
+      nextSection.scrollIntoView({ 
+        behavior: 'smooth', 
+        block: 'start' 
+      });
+    }
   });
 }
 
