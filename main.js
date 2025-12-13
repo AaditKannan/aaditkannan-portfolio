@@ -347,6 +347,7 @@ function setInitialStyles() {
     }
     if (section.subheading) {
       // For scramble animation, start with empty text instead of opacity 0
+      // But preserve the text in subheadingText for scrambling
       section.subheading.textContent = '';
       section.subheading.style.opacity = '1'; // Keep visible for scramble effect
     }
@@ -492,14 +493,35 @@ function animateSection(section) {
     if (section.body) {
       fadeInContent(section.body, bodyDelay);
     }
-    // Animate subheading with fade-in (reverted from scramble)
+    // Animate subheading with scramble reveal (jumble animation)
     if (section.subheading && section.subheadingText) {
-      fadeInContent(section.subheading, bodyDelay);
+      // Mark subheading as animating to prevent duplicates
+      if (section.subheading.dataset.animating !== 'true') {
+        section.subheading.dataset.animating = 'true';
+        scrambleReveal(section.subheading, section.subheadingText, {
+          duration: CONFIG.isMobile ? CONFIG.scrambleDuration * 0.6 : CONFIG.scrambleDuration * 0.8,
+          delay: bodyDelay,
+          onComplete: () => {
+            section.subheading.dataset.animating = 'false';
+            section.subheading.classList.add('visible');
+          }
+        });
+      }
     }
   } else {
     // If no heading, just animate content immediately
-    if (section.subheading) {
-      fadeInContent(section.subheading, 0);
+    if (section.subheading && section.subheadingText) {
+      // Use scramble for subheading
+      if (section.subheading.dataset.animating !== 'true') {
+        section.subheading.dataset.animating = 'true';
+        scrambleReveal(section.subheading, section.subheadingText, {
+          duration: CONFIG.isMobile ? CONFIG.scrambleDuration * 0.6 : CONFIG.scrambleDuration * 0.8,
+          onComplete: () => {
+            section.subheading.dataset.animating = 'false';
+            section.subheading.classList.add('visible');
+          }
+        });
+      }
     }
     if (section.body) {
       fadeInContent(section.body, 0);
