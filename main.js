@@ -198,8 +198,14 @@ function initMobileScrollHelper() {
     }
   });
   
-  // Show helper immediately
+  // Show helper immediately - force visibility
+  helper.classList.add('visible');
   updateHelper();
+  
+  // Also update after DOM is fully ready
+  setTimeout(() => {
+    updateHelper();
+  }, 500);
   
   // Update on scroll
   window.addEventListener('scroll', updateHelper, { passive: true });

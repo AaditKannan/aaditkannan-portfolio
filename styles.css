@@ -669,7 +669,8 @@ body::-webkit-scrollbar {
 
   .subheading {
     font-size: 16px;
-    margin-bottom: 28px;
+    margin-top: 16px; /* Spacing above subheading */
+    margin-bottom: 24px; /* Spacing below subheading before body text */
   }
 
   .body-content {
@@ -758,7 +759,8 @@ body::-webkit-scrollbar {
   
   /* On mobile, photo appears right after subheading */
   .subheading {
-    margin-bottom: 0 !important;
+    margin-top: 16px; /* Spacing above subheading */
+    margin-bottom: 20px; /* Spacing below subheading before body text */
   }
   
   .about-text {
