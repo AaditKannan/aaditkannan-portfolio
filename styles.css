@@ -611,6 +611,8 @@ body::-webkit-scrollbar {
     transform: rotate(45deg);
     animation: bounceDown 2s infinite;
   }
+  
+  .section {
     scroll-snap-align: none;
     scroll-snap-stop: normal;
   }
