@@ -765,6 +765,43 @@ function handleResize() {
   }, 250);
 }
 
+/**
+ * Initialize scroll indicators between sections on mobile
+ */
+function initSectionScrollIndicators() {
+  if (!CONFIG.isMobile) return;
+  
+  // Add scroll indicators between sections
+  SECTIONS.forEach((section, index) => {
+    if (index === 0 || !section.element) return; // Skip first section
+    
+    const indicator = document.createElement('div');
+    indicator.className = 'section-scroll-indicator';
+    indicator.innerHTML = '<div class="scroll-indicator-arrow"></div>';
+    
+    // Insert before section
+    section.element.parentNode.insertBefore(indicator, section.element);
+    
+    // Make it clickable to scroll to section
+    indicator.addEventListener('click', () => {
+      section.element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+    
+    // Show/hide based on scroll position
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          indicator.classList.add('visible');
+        } else {
+          indicator.classList.remove('visible');
+        }
+      });
+    }, { threshold: 0.1 });
+    
+    observer.observe(section.element);
+  });
+}
+
 // Cleanup on page unload
 window.addEventListener('beforeunload', () => {
   if (rafId) {
