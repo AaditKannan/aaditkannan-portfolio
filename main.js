@@ -95,7 +95,17 @@ function initMobileScrollHelper() {
     SECTIONS.forEach((section, index) => {
       if (section.element) {
         try {
+          // Skip hidden sections
+          const computedStyle = window.getComputedStyle(section.element);
+          if (computedStyle.display === 'none' || computedStyle.visibility === 'hidden') {
+            return; // Skip this section
+          }
+          
           const rect = section.element.getBoundingClientRect();
+          if (rect.width === 0 || rect.height === 0) {
+            return; // Skip if not visible
+          }
+          
           const sectionTop = rect.top + scrollY;
           const sectionCenter = sectionTop + rect.height / 2;
           const distance = Math.abs(viewportCenter - sectionCenter);
@@ -117,19 +127,24 @@ function initMobileScrollHelper() {
     const currentIndex = getCurrentSectionIndex();
     
     // Find the next visible section (skip hidden split sections on mobile)
+    // Start from currentIndex + 1 and keep looking until we find a visible section
     for (let i = currentIndex + 1; i < SECTIONS.length; i++) {
       const section = SECTIONS[i];
       if (section.element) {
         // Check if section is visible (not hidden by CSS)
-        const rect = section.element.getBoundingClientRect();
         const computedStyle = window.getComputedStyle(section.element);
+        const rect = section.element.getBoundingClientRect();
         
-        // Skip if display is none or element is not in viewport
-        if (computedStyle.display !== 'none' && 
-            computedStyle.visibility !== 'hidden' &&
-            rect.width > 0 && rect.height > 0) {
-          return section.element;
+        // Skip if display is none, visibility is hidden, or has no dimensions
+        if (computedStyle.display === 'none' || 
+            computedStyle.visibility === 'hidden' ||
+            rect.width === 0 || 
+            rect.height === 0) {
+          continue; // Skip this section and keep looking
         }
+        
+        // Found a visible section!
+        return section.element;
       }
     }
     
