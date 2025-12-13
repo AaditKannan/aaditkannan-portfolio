@@ -145,10 +145,33 @@ function initMobileScrollHelper() {
   helper.addEventListener('click', () => {
     const nextSection = getNextSection();
     if (nextSection) {
-      nextSection.scrollIntoView({ 
-        behavior: 'smooth', 
-        block: 'start' 
-      });
+      // Get the section's heading element to scroll to
+      const sectionId = nextSection.id.replace('sec', '');
+      const section = SECTIONS.find(s => s.id === sectionId);
+      const targetElement = section && section.heading ? section.heading : nextSection;
+      
+      // Calculate scroll position accounting for nav bar (about 104px on mobile)
+      const navBarHeight = 104;
+      const elementTop = targetElement.getBoundingClientRect().top + window.pageYOffset;
+      const scrollPosition = elementTop - navBarHeight - 20; // 20px padding
+      
+      // Check if section is already visible - if so, scroll just a bit more
+      const rect = nextSection.getBoundingClientRect();
+      const isPartiallyVisible = rect.top < window.innerHeight && rect.bottom > 0;
+      
+      if (isPartiallyVisible && rect.top > navBarHeight) {
+        // Section is already visible, just scroll to show heading at top
+        window.scrollTo({
+          top: scrollPosition,
+          behavior: 'smooth'
+        });
+      } else {
+        // Section not visible, scroll to start with nav bar offset
+        window.scrollTo({
+          top: Math.max(0, scrollPosition),
+          behavior: 'smooth'
+        });
+      }
     }
   });
 }
