@@ -16,6 +16,13 @@
       "source": "/footage",
       "destination": "/footage.html"
     }
+  ],
+  "redirects": [
+    {
+      "source": "/education",
+      "destination": "/resume",
+      "permanent": true
+    }
   ]
 }
 

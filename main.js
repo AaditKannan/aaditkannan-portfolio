@@ -103,6 +103,7 @@ function initMobileScrollHelper() {
   if (window.innerWidth >= 768) return; // Only on mobile
   
   const helper = document.getElementById('mobileScrollHelper');
+  const upHelper = document.getElementById('mobileScrollHelperUp');
   if (!helper) return;
   
   function getCurrentSectionIndex() {
@@ -175,12 +176,21 @@ function initMobileScrollHelper() {
   function updateHelper() {
     const scrollY = window.scrollY || window.pageYOffset;
     const nextSection = getNextSection();
+    const currentIndex = getCurrentSectionIndex();
+    const firstSection = SECTIONS[0] && SECTIONS[0].element;
     
     // Show down arrow if there's a next section
     if (nextSection) {
       helper.classList.add('visible');
     } else {
       helper.classList.remove('visible');
+    }
+    
+    // Show up arrow if past first section
+    if (upHelper && firstSection && currentIndex > 0 && scrollY > 100) {
+      upHelper.classList.add('visible');
+    } else if (upHelper) {
+      upHelper.classList.remove('visible');
     }
   }
   
@@ -236,7 +246,7 @@ function initMobileScrollHelper() {
     }
   }
 
-  // Click and touch handlers for mobile scroll
+  // Click and touch handlers for mobile scroll down
   helper.addEventListener('click', (e) => {
     e.preventDefault();
     e.stopPropagation();
@@ -249,6 +259,43 @@ function initMobileScrollHelper() {
     e.stopPropagation();
     scrollToNextSection();
   });
+  
+  // Scroll up function
+  function scrollToTop() {
+    const firstSection = SECTIONS[0];
+    if (firstSection && firstSection.element) {
+      const navBarHeight = 104;
+      const targetElement = firstSection.heading || firstSection.element;
+      const elementTop = targetElement.getBoundingClientRect().top + window.pageYOffset;
+      const scrollPosition = elementTop - navBarHeight - 20;
+      
+      window.scrollTo({
+        top: Math.max(0, scrollPosition),
+        behavior: 'smooth'
+      });
+    } else {
+      // Fallback to top of page
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    }
+  }
+  
+  // Click and touch handlers for mobile scroll up
+  if (upHelper) {
+    upHelper.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      scrollToTop();
+    });
+    
+    upHelper.addEventListener('touchend', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      scrollToTop();
+    });
+  }
 }
 
 /**
