@@ -295,10 +295,7 @@
             <a href="mailto:aaditkannan@berkeley.edu" class="contact-link">Email: aaditkannan@berkeley.edu</a>
             <a href="tel:+17345460380" class="contact-link">Phone: +1 (734) 546-0380</a>
             <a href="https://www.linkedin.com/in/aaditkannan" target="_blank" rel="noopener noreferrer" class="contact-link">LinkedIn</a>
-                    <span class="contact-link resume-pdf-link">
-                      <span class="resume-default-text">Resume PDF</span>
-                      <span class="resume-hover-text">Currently Unavailable</span>
-                    </span>
+                    <span class="contact-link resume-pdf-link" id="resumePdfLink">Resume PDF</span>
           </div>
         </div>
       </div>
@@ -663,6 +660,81 @@
           top: 0,
           behavior: 'smooth'
         });
+      });
+    })();
+
+    // Resume PDF link scramble animation on hover
+    (function() {
+      const resumePdfLink = document.getElementById('resumePdfLink');
+      if (!resumePdfLink) return;
+
+      const defaultText = 'Resume PDF';
+      const hoverText = 'Currently Unavailable';
+      const scrambleChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()'.split('');
+      let animationFrame = null;
+      let isAnimating = false;
+
+      function scrambleReveal(element, finalText, duration = 400) {
+        const startTime = Date.now();
+        const startText = defaultText;
+        const chars = finalText.split('');
+        const startChars = startText.split('');
+
+        function animate() {
+          const elapsed = Date.now() - startTime;
+          const progress = Math.min(elapsed / duration, 1);
+          const eased = 1 - Math.pow(1 - progress, 3);
+
+          // Generate scrambled text that transitions from start to final
+          const scrambled = chars.map((char, index) => {
+            // Skip spaces and punctuation, keep them in place
+            if (char === ' ' || char === '\n' || !/[a-zA-Z0-9]/.test(char)) {
+              return char;
+            }
+
+            // Gradually reveal correct characters from left to right
+            const revealIndex = Math.floor(eased * chars.length);
+            if (index < revealIndex) {
+              return char; // Revealed character
+            } else if (index === revealIndex && progress > 0.9) {
+              return char; // Final character
+            } else {
+              // Scrambled character - use random from scrambleChars
+              return scrambleChars[Math.floor(Math.random() * scrambleChars.length)];
+            }
+          }).join('');
+
+          element.textContent = scrambled;
+
+          if (progress < 1) {
+            animationFrame = requestAnimationFrame(animate);
+          } else {
+            element.textContent = finalText;
+            isAnimating = false;
+          }
+        }
+
+        isAnimating = true;
+        animate();
+      }
+
+      function resetText() {
+        if (animationFrame) {
+          cancelAnimationFrame(animationFrame);
+          animationFrame = null;
+        }
+        isAnimating = false;
+        resumePdfLink.textContent = defaultText;
+      }
+
+      resumePdfLink.addEventListener('mouseenter', () => {
+        if (!isAnimating) {
+          scrambleReveal(resumePdfLink, hoverText, 400);
+        }
+      });
+
+      resumePdfLink.addEventListener('mouseleave', () => {
+        resetText();
       });
     })();
   </script>

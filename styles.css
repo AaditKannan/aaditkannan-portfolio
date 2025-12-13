@@ -194,11 +194,12 @@ body::-webkit-scrollbar {
   text-decoration: none;
 }
 
-/* Resume PDF link - non-clickable, text change on hover */
+/* Resume PDF link - non-clickable, text change on hover with scramble */
 .resume-pdf-link {
   cursor: default;
   pointer-events: auto; /* Allow hover */
   text-decoration: none;
+  position: relative;
 }
 
 .resume-pdf-link .resume-hover-text {
@@ -209,18 +210,9 @@ body::-webkit-scrollbar {
   background: rgba(255, 182, 193, 0.3) !important; /* Light red/pink background */
   border-color: rgba(255, 182, 193, 0.6) !important; /* Light red/pink border */
   cursor: default;
-  transform: none;
+  transform: translateY(-2px); /* Lift up like other buttons */
   pointer-events: auto;
-}
-
-.resume-pdf-link:hover .resume-default-text {
-  display: none;
-}
-
-.resume-pdf-link:hover .resume-hover-text {
-  display: inline;
-  color: rgba(255, 182, 193, 1); /* Light red text color */
-  font-weight: 400;
+  color: rgba(255, 182, 193, 1) !important; /* Light red text color */
 }
 
 @media (max-width: 768px) {
