@@ -115,11 +115,24 @@ function initMobileScrollHelper() {
   
   function getNextSection() {
     const currentIndex = getCurrentSectionIndex();
-    const nextIndex = currentIndex + 1;
     
-    if (nextIndex < SECTIONS.length && SECTIONS[nextIndex].element) {
-      return SECTIONS[nextIndex].element;
+    // Find the next visible section (skip hidden split sections on mobile)
+    for (let i = currentIndex + 1; i < SECTIONS.length; i++) {
+      const section = SECTIONS[i];
+      if (section.element) {
+        // Check if section is visible (not hidden by CSS)
+        const rect = section.element.getBoundingClientRect();
+        const computedStyle = window.getComputedStyle(section.element);
+        
+        // Skip if display is none or element is not in viewport
+        if (computedStyle.display !== 'none' && 
+            computedStyle.visibility !== 'hidden' &&
+            rect.width > 0 && rect.height > 0) {
+          return section.element;
+        }
+      }
     }
+    
     return null;
   }
   
