@@ -327,7 +327,7 @@
         align-items: center;
         justify-content: center;
         gap: 0; /* Tight spacing between elements */
-        margin-top: -40px; /* Move content up */
+        margin-top: -50px; /* Move content up a little more */
       }
       
       .home-name {
@@ -343,7 +343,7 @@
 
       .home-subtitle {
         font-size: clamp(11px, 2.5vw, 14px);
-        margin-top: 12px; /* Reduced gap from name */
+        margin-top: 16px; /* Equal spacing from name */
         margin-bottom: 0;
         line-height: 1.4;
       }
@@ -353,8 +353,9 @@
         gap: 8px;
         flex-wrap: wrap;
         justify-content: center;
-        height: auto;
-        min-height: 90px;
+        height: 104px; /* Match resume menu height */
+        box-sizing: border-box;
+        min-height: 104px;
       }
 
       .nav-link {
@@ -368,7 +369,7 @@
         padding: 12px 28px;
         font-size: 12px;
         letter-spacing: 0.1em;
-        margin-top: 8px; /* Close gap between subtitle and button */
+        margin-top: 16px; /* Equal spacing from subtitle */
         min-height: 44px;
         display: flex;
         align-items: center;
