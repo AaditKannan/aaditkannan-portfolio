@@ -98,11 +98,11 @@ function initMobileScrollHelper() {
         // Scrolling down - hide helper
         helper.classList.remove('visible');
       } else if (scrollTop < lastScrollTop - 50) {
-        // Scrolling up significantly - show helper
+        // Scrolling up significantly - show helper quickly
         clearTimeout(scrollTimeout);
         scrollTimeout = setTimeout(() => {
           helper.classList.add('visible');
-        }, 1000);
+        }, 300);
       }
     } else {
       // Near bottom - hide helper
@@ -112,12 +112,12 @@ function initMobileScrollHelper() {
     lastScrollTop = scrollTop;
   }
   
-  // Show helper initially after 2 seconds
+  // Show helper initially after 0.5 seconds (faster appearance)
   setTimeout(() => {
     if (window.pageYOffset < 100) {
       helper.classList.add('visible');
     }
-  }, 2000);
+  }, 500);
   
   // Update on scroll
   window.addEventListener('scroll', updateHelper, { passive: true });
