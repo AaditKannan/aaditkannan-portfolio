@@ -158,27 +158,29 @@
       white-space: nowrap;
     }
 
-    /* Contact Links - Centered and Styled */
+    /* Contact Links - Single row layout */
     .contact-links {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
-      margin-top: 24px;
-      max-width: 600px;
-      margin-left: auto;
-      margin-right: auto;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-start;
+      gap: 16px;
+      margin-top: 32px;
     }
 
     .contact-link {
-      padding: 10px 16px;
-      border: 1px solid rgba(255, 255, 255, 0.3);
-      border-radius: 20px;
-      background: rgba(0, 0, 0, 0.2);
+      padding: 12px 24px;
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.05);
       backdrop-filter: blur(10px);
       transition: all 0.3s ease;
       text-align: center;
       white-space: nowrap;
-      font-size: 14px;
+      font-size: 15px;
+      font-family: 'Courier Prime', 'JetBrains Mono', 'Courier New', monospace;
+      color: #ffffff;
+      text-decoration: none;
+      letter-spacing: 0.02em;
     }
 
     .contact-link:hover {
@@ -189,8 +191,9 @@
 
     @media (max-width: 768px) {
       .contact-links {
-        grid-template-columns: 1fr;
-        max-width: 100%;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
       }
     }
 
