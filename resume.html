@@ -168,52 +168,56 @@
 
     /* Contact Links - Inline text links */
     .contact-links {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: flex-start;
-      align-items: center;
-      gap: 8px;
-      margin-top: 20px;
+      display: flex !important;
+      flex-wrap: nowrap !important;
+      justify-content: flex-start !important;
+      align-items: center !important;
+      gap: 24px !important;
+      margin-top: 20px !important;
+      max-width: none !important;
+      grid-template-columns: none !important;
     }
 
     .contact-link {
-      padding: 0;
-      border: none;
-      background: transparent;
-      transition: all 0.3s ease;
-      white-space: nowrap;
-      font-size: 13px;
-      font-family: 'Courier Prime', 'JetBrains Mono', 'Courier New', monospace;
-      color: rgba(255, 255, 255, 0.7);
-      text-decoration: none;
-      letter-spacing: 0.05em;
-      border-bottom: 1px solid transparent;
-      cursor: pointer;
+      padding: 0 !important;
+      border: none !important;
+      border-radius: 0 !important;
+      background: transparent !important;
+      transition: all 0.3s ease !important;
+      white-space: nowrap !important;
+      font-size: 13px !important;
+      font-family: 'Courier Prime', 'JetBrains Mono', 'Courier New', monospace !important;
+      color: rgba(255, 255, 255, 0.7) !important;
+      text-decoration: none !important;
+      letter-spacing: 0.05em !important;
+      border-bottom: 1px solid transparent !important;
+      cursor: pointer !important;
+      height: auto !important;
+      width: auto !important;
+      min-width: 0 !important;
+      min-height: 0 !important;
+    }
+    
+    .contact-link::before {
+      display: none !important;
     }
 
     .contact-link:hover {
-      color: #FFFFFF;
-      border-bottom-color: rgba(255, 255, 255, 0.5);
-    }
-    
-    .contact-links::after {
-      display: none;
-    }
-    
-    .contact-link:not(:last-child)::after {
-      content: "·";
-      margin-left: 8px;
-      color: rgba(255, 255, 255, 0.4);
+      color: #FFFFFF !important;
+      border-bottom-color: rgba(255, 255, 255, 0.5) !important;
+      background: transparent !important;
+      transform: none !important;
     }
 
     @media (max-width: 768px) {
       .contact-links {
-        justify-content: center;
-        gap: 6px;
+        justify-content: center !important;
+        flex-wrap: wrap !important;
+        gap: 16px !important;
       }
       
       .contact-link {
-        font-size: 12px;
+        font-size: 12px !important;
       }
     }
 
