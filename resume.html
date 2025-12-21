@@ -155,39 +155,44 @@
     /* Contact Links - Single row layout */
     .contact-links {
       display: flex;
-      flex-wrap: wrap;
+      flex-wrap: nowrap;
       justify-content: flex-start;
-      gap: 16px;
-      margin-top: 32px;
+      gap: 12px;
+      margin-top: 24px;
     }
 
     .contact-link {
-      padding: 12px 24px;
-      border: 1px solid rgba(255, 255, 255, 0.5);
-      border-radius: 8px;
-      background: rgba(255, 255, 255, 0.05);
-      backdrop-filter: blur(10px);
+      padding: 8px 16px;
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      border-radius: 4px;
+      background: transparent;
       transition: all 0.3s ease;
       text-align: center;
       white-space: nowrap;
-      font-size: 15px;
+      font-size: 12px;
       font-family: 'Courier Prime', 'JetBrains Mono', 'Courier New', monospace;
-      color: #ffffff;
+      color: rgba(255, 255, 255, 0.8);
       text-decoration: none;
-      letter-spacing: 0.02em;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
     }
 
     .contact-link:hover {
-      background: rgba(255, 255, 255, 0.1);
-      border-color: rgba(255, 255, 255, 0.5);
-      transform: translateY(-2px);
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(255, 255, 255, 0.6);
+      color: #FFFFFF;
     }
 
     @media (max-width: 768px) {
       .contact-links {
-        flex-direction: column;
-        align-items: stretch;
-        gap: 12px;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+      }
+      
+      .contact-link {
+        padding: 6px 12px;
+        font-size: 11px;
       }
     }
 
@@ -336,10 +341,9 @@
             Mechanical engineering student at UC Berkeley, passionate about robotics, physics, and math. Currently working as a member of Berkeley's Formula Electric team, on the accumulator (battery). Outside the classroom interests include lifting, drone photography, and traveling.
           </p>
           <div class="contact-links">
-            <a href="mailto:aaditkannan@berkeley.edu" class="contact-link">Email: aaditkannan@berkeley.edu</a>
-            <a href="tel:+17345460380" class="contact-link">Phone: +1 (734) 546-0380</a>
+            <a href="mailto:aaditkannan@berkeley.edu" class="contact-link">Email</a>
             <a href="https://www.linkedin.com/in/aaditkannan" target="_blank" rel="noopener noreferrer" class="contact-link">LinkedIn</a>
-                    <span class="contact-link resume-pdf-link" id="resumePdfLink">Resume PDF</span>
+            <span class="contact-link resume-pdf-link" id="resumePdfLink">Resume PDF</span>
           </div>
         </div>
       </div>
