@@ -132,11 +132,26 @@
       margin-left: 16px;
     }
 
+    .entry-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 4px;
+    }
+
     .entry-title {
       display: flex;
       align-items: center;
       flex-wrap: wrap;
       gap: 16px;
+      margin: 0;
+    }
+
+    .entry-date {
+      margin: 0;
+      white-space: nowrap;
     }
 
     /* Contact Links - Centered and Styled */
@@ -339,11 +354,13 @@
       <h2 class="heading" id="hEducation">EDUCATION</h2>
       <div class="body-content" id="bodyEducation">
         <div class="entry">
-          <h3 class="entry-title">
-            <span>University of California, Berkeley</span>
-            <img src="./assets/berkeley-logo.svg" alt="UC Berkeley" class="berkeley-logo" onerror="this.style.display='none'">
-          </h3>
-          <p class="entry-date">(Aug 2025 - Present)</p>
+          <div class="entry-header">
+            <h3 class="entry-title">
+              <span>University of California, Berkeley</span>
+              <img src="./assets/berkeley-logo.svg" alt="UC Berkeley" class="berkeley-logo" onerror="this.style.display='none'">
+            </h3>
+            <p class="entry-date">(Aug 2025 - Present)</p>
+          </div>
           <ul class="entry-list">
             <li>B.S. in Mechanical Engineering: Sophomore Standing</li>
             <li>Relevant Coursework: Engin 7 (Python/Matlab), Chem 1A, Physics 7A</li>
@@ -351,8 +368,10 @@
           </ul>
         </div>
         <div class="entry">
-          <h3 class="entry-title">Santa Clara High School</h3>
-          <p class="entry-date">(Aug 2021 - Jun 2025)</p>
+          <div class="entry-header">
+            <h3 class="entry-title">Santa Clara High School</h3>
+            <p class="entry-date">(Aug 2021 - Jun 2025)</p>
+          </div>
           <ul class="entry-list">
             <li>Relevant Coursework (AP + DE): Calc BC, Linear Algebra, Physics C, Chemistry, CSP, Physics 1, Stats, Research, Macro</li>
           </ul>
@@ -367,17 +386,21 @@
       <h2 class="heading" id="hWorkExperience">WORK EXPERIENCE</h2>
       <div class="body-content" id="bodyWorkExperience">
         <div class="entry">
-          <h3 class="entry-title">Posha (Formerly Nymble) Robotics</h3>
+          <div class="entry-header">
+            <h3 class="entry-title">Posha (Formerly Nymble) Robotics</h3>
+            <p class="entry-date">(Jun 2023 - Aug 2023)</p>
+          </div>
           <p class="entry-role">Mechanical Engineering Intern</p>
-          <p class="entry-date">(Jun 2023 - Aug 2023)</p>
           <ul class="entry-list">
             <li>Repaired 20+ customer cooking robots by troubleshooting electrical and mechanical systems, and debugging</li>
           </ul>
         </div>
         <div class="entry">
-          <h3 class="entry-title">Bay Club</h3>
+          <div class="entry-header">
+            <h3 class="entry-title">Bay Club</h3>
+            <p class="entry-date">(Aug 2024 - Aug 2025)</p>
+          </div>
           <p class="entry-role">Squash Coach</p>
-          <p class="entry-date">(Aug 2024 - Aug 2025)</p>
           <ul class="entry-list">
             <li>Coached 15+ students age 5-12 in tournament prep, designing drills, workouts, and lessons</li>
           </ul>
@@ -392,17 +415,21 @@
       <h2 class="heading" id="hLeadershipExperience">TECHNICAL EXPERIENCE</h2>
       <div class="body-content" id="bodyLeadershipExperience">
         <div class="entry">
-          <h3 class="entry-title">Formula Electric</h3>
+          <div class="entry-header">
+            <h3 class="entry-title">Formula Electric</h3>
+            <p class="entry-date">(Sep 2025 - Present)</p>
+          </div>
           <p class="entry-role">Accumulator Mechanical</p>
-          <p class="entry-date">(Sep 2025 - Present)</p>
           <ul class="entry-list">
             <li>Designed the attic casing for the high-voltage accumulator to manage the 588 V pack</li>
           </ul>
         </div>
         <div class="entry">
-          <h3 class="entry-title">Robotics (FIRST)</h3>
+          <div class="entry-header">
+            <h3 class="entry-title">Robotics (FIRST)</h3>
+            <p class="entry-date">(Aug 2021 - Aug 2025)</p>
+          </div>
           <p class="entry-role">Captain (Zenith #20424), Hardware Lead (Deja Vu #13216)</p>
-          <p class="entry-date">(Aug 2021 - Aug 2025)</p>
           <ul class="entry-list">
             <li>Mentored 30+ members in Java and CAD, improving team functionality and leading teams to regional competitions</li>
             <li>Designed robot in CAD with 500+ parts, performing FEA to optimize custom components for stress, winning robot design award (x3)</li>
@@ -418,9 +445,11 @@
     <div class="section-content">
       <div class="body-content" id="bodyLeadershipExperience2">
         <div class="entry">
-          <h3 class="entry-title">STEM Leadership Institute (SLI)</h3>
+          <div class="entry-header">
+            <h3 class="entry-title">STEM Leadership Institute (SLI)</h3>
+            <p class="entry-date">(Aug 2019 - Aug 2025)</p>
+          </div>
           <p class="entry-role">Student Leadership Committee (SLC), Program Member</p>
-          <p class="entry-date">(Aug 2019 - Aug 2025)</p>
           <ul class="entry-list">
             <li>Trained 120 middle school STEM students on Arduino and C++ for science fair projects (SLC)</li>
             <li>Designed mock competition and mentored 5 FIRST Lego League teams (SLC)</li>
@@ -429,9 +458,11 @@
           </ul>
         </div>
         <div class="entry">
-          <h3 class="entry-title">Pear Volunteering</h3>
+          <div class="entry-header">
+            <h3 class="entry-title">Pear Volunteering</h3>
+            <p class="entry-date">(Aug 2023 - Aug 2025)</p>
+          </div>
           <p class="entry-role">Founder</p>
-          <p class="entry-date">(Aug 2023 - Aug 2025)</p>
           <ul class="entry-list">
             <li>Developed an app/website to connect 2000+ students, 20+ event organizers, and school admin, facilitating volunteer opportunities</li>
             <li>Implemented secure webhook/CMS-integrated system for scalable, high-volume data handling and encrypted user communication</li>
@@ -447,24 +478,30 @@
       <h2 class="heading" id="hProjects1">PROJECTS</h2>
       <div class="body-content" id="bodyProjects1">
         <div class="entry">
-          <h3 class="entry-title">Inventry</h3>
-          <p class="entry-date">(2025 - Present)</p>
+          <div class="entry-header">
+            <h3 class="entry-title">Inventry</h3>
+            <p class="entry-date">(2025 - Present)</p>
+          </div>
           <ul class="entry-list">
             <li>Developed website for robotics part inventory tracking, utilizing AI invoice indexing and dynamic webscraping for 1000+ part catalogs</li>
             <li>Integrated part-lending service with incentives, imposed extensive privacy measures for user interaction, now developing a part market</li>
           </ul>
         </div>
         <div class="entry">
-          <h3 class="entry-title">Circuit Minds</h3>
-          <p class="entry-date">(2022 - 2024)</p>
+          <div class="entry-header">
+            <h3 class="entry-title">Circuit Minds</h3>
+            <p class="entry-date">(2022 - 2024)</p>
+          </div>
           <ul class="entry-list">
             <li>Created free educational content to inspire youth interest in engineering</li>
             <li>Designed small vehicle kits for K-8 students to assemble</li>
           </ul>
         </div>
         <div class="entry">
-          <h3 class="entry-title">Construction Acclimation Regulation</h3>
-          <p class="entry-date">(2022 - 2023)</p>
+          <div class="entry-header">
+            <h3 class="entry-title">Construction Acclimation Regulation</h3>
+            <p class="entry-date">(2022 - 2023)</p>
+          </div>
           <ul class="entry-list">
             <li>Gathered construction site data to develop alternative devices to costly acclimation probes, and to cut $118M from Palo Alto's spending</li>
             <li>Built website and functioning probe, earned praise from city construction officials</li>
@@ -479,8 +516,10 @@
     <div class="section-content">
       <div class="body-content" id="bodyProjects2">
         <div class="entry">
-          <h3 class="entry-title">Beachsweep</h3>
-          <p class="entry-date">(2023 - 2023)</p>
+          <div class="entry-header">
+            <h3 class="entry-title">Beachsweep</h3>
+            <p class="entry-date">(2023 - 2023)</p>
+          </div>
           <ul class="entry-list">
             <li>For a Hackathon, designed a website for organizing drone beach clean ups</li>
             <li>Utilized solar powered drone docks that work to maintain beach cleanliness, collaborate with human initiatives to streamline efficiency</li>
@@ -488,15 +527,19 @@
           </ul>
         </div>
         <div class="entry">
-          <h3 class="entry-title">Friendly Fires</h3>
-          <p class="entry-date">(2021 - 2022)</p>
+          <div class="entry-header">
+            <h3 class="entry-title">Friendly Fires</h3>
+            <p class="entry-date">(2021 - 2022)</p>
+          </div>
           <ul class="entry-list">
             <li>Created a mining tool attachment that consists of a compact and simple sensor array, capable of consistently detecting coal-seam fires, aiming to save countless lives lost in a dangerous and often neglected space</li>
           </ul>
         </div>
         <div class="entry">
-          <h3 class="entry-title">Prototype Ø Flood</h3>
-          <p class="entry-date">(2020 - 2021)</p>
+          <div class="entry-header">
+            <h3 class="entry-title">Prototype Ø Flood</h3>
+            <p class="entry-date">(2020 - 2021)</p>
+          </div>
           <ul class="entry-list">
             <li>Designed a low-cost flood detection system intended for addressing the lack of alert technology in Jakarta, Indonesia</li>
             <li>Won certificate of achievement from the American Society of Civil Engineers</li>
@@ -512,17 +555,21 @@
       <h2 class="heading" id="hVolunteering1">VOLUNTEERING</h2>
       <div class="body-content" id="bodyVolunteering1">
         <div class="entry">
-          <h3 class="entry-title">49ers STEM Leadership Institute</h3>
+          <div class="entry-header">
+            <h3 class="entry-title">49ers STEM Leadership Institute</h3>
+            <p class="entry-date">(Aug 2021 - Jun 2025)</p>
+          </div>
           <p class="entry-role">Mentor and Lab Assistant</p>
-          <p class="entry-date">(Aug 2021 - Jun 2025)</p>
           <ul class="entry-list">
             <li>At the STEM Leadership Institute, provided support to students in utilizing CO2 laser cutters, 3D printers, vinyl cutters, and CNC machines, while also offering technical mentorship</li>
           </ul>
         </div>
         <div class="entry">
-          <h3 class="entry-title">Family Supportive Housing</h3>
+          <div class="entry-header">
+            <h3 class="entry-title">Family Supportive Housing</h3>
+            <p class="entry-date">(Aug 2021 - Aug 2023)</p>
+          </div>
           <p class="entry-role">Dinner Server</p>
-          <p class="entry-date">(Aug 2021 - Aug 2023)</p>
           <ul class="entry-list">
             <li>Volunteered as a dinner server for underserved families at Family Supportive Housing in San Jose</li>
           </ul>
@@ -536,26 +583,32 @@
     <div class="section-content">
       <div class="body-content" id="bodyVolunteering2">
         <div class="entry">
-          <h3 class="entry-title">Tulip Kids Afterschool</h3>
+          <div class="entry-header">
+            <h3 class="entry-title">Tulip Kids Afterschool</h3>
+            <p class="entry-date">(May 2019 - Jul 2022)</p>
+          </div>
           <p class="entry-role">Programming Tutor</p>
-          <p class="entry-date">(May 2019 - Jul 2022)</p>
           <ul class="entry-list">
             <li>Tutored K-8 students in entry-level Python programming and Scratch at a local afterschool program</li>
             <li>Designed hands-on learning lessons to teach students the basic workings of circuits</li>
           </ul>
         </div>
         <div class="entry">
-          <h3 class="entry-title">California Scholarship Federation</h3>
+          <div class="entry-header">
+            <h3 class="entry-title">California Scholarship Federation</h3>
+            <p class="entry-date">(Aug 2023 - Jul 2025)</p>
+          </div>
           <p class="entry-role">Lunch Server</p>
-          <p class="entry-date">(Aug 2023 - Jul 2025)</p>
           <ul class="entry-list">
             <li>Volunteered in the school cafeteria to serve lunch</li>
           </ul>
         </div>
         <div class="entry">
-          <h3 class="entry-title">FIRST Tech Challenge</h3>
+          <div class="entry-header">
+            <h3 class="entry-title">FIRST Tech Challenge</h3>
+            <p class="entry-date">(Dec 2023 - Jan 2024)</p>
+          </div>
           <p class="entry-role">Field Technical Advisor</p>
-          <p class="entry-date">(Dec 2023 - Jan 2024)</p>
           <ul class="entry-list">
             <li>Provided technical support to multiple teams and contributed to the smooth operation of the robotics competition at FIRST Tech Challenge</li>
           </ul>
