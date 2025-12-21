@@ -132,12 +132,14 @@
 
     /* Overview section alignment */
     .overview-layout {
-      align-items: start;
+      align-items: stretch;
     }
     
     .overview-text {
       display: flex;
       flex-direction: column;
+      justify-content: space-between;
+      min-height: 380px;
     }
     
     .overview-text .heading {
@@ -146,11 +148,19 @@
     
     .overview-text .subheading {
       margin-top: 0;
-      margin-bottom: 20px;
+      margin-bottom: 16px;
+    }
+    
+    .overview-text .body-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
     }
     
     .overview-photo {
-      align-self: start;
+      align-self: stretch;
+      height: 380px;
     }
     
     .profile-photo {
