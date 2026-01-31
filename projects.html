@@ -55,12 +55,6 @@
     html, body {
       overflow: hidden;
       height: 100%;
-      scrollbar-width: none;
-      -ms-overflow-style: none;
-    }
-
-    html::-webkit-scrollbar, body::-webkit-scrollbar {
-      display: none;
     }
 
     body {
@@ -75,8 +69,8 @@
     .bg-pattern {
       position: fixed;
       inset: 0;
-      background-image: radial-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-      background-size: 32px 32px;
+      background-image: radial-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+      background-size: 40px 40px;
       z-index: -1;
     }
 
@@ -122,32 +116,30 @@
       border-bottom-color: #FFFFFF;
     }
 
-    /* Canvas container */
+    /* Canvas container - full viewport, no interaction needed */
     #graphCanvas {
       position: fixed;
       inset: 0;
       width: 100%;
       height: 100%;
-      cursor: grab;
-    }
-
-    #graphCanvas:active {
-      cursor: grabbing;
     }
 
     /* Project detail panel */
     .project-panel {
       position: fixed;
-      top: 100px;
-      right: -480px;
-      width: 440px;
-      max-height: calc(100vh - 140px);
-      background: rgba(0, 0, 0, 0.97);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0.95);
+      width: 420px;
+      max-height: 80vh;
+      background: rgba(0, 0, 0, 0.98);
       border: 1px solid var(--border-subtle);
       border-radius: 2px;
       padding: 36px;
       z-index: 1000;
-      transition: right 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.25s ease;
       overflow-y: auto;
       backdrop-filter: blur(20px);
       scrollbar-width: thin;
@@ -168,7 +160,9 @@
     }
 
     .project-panel.visible {
-      right: 30px;
+      opacity: 1;
+      visibility: visible;
+      transform: translate(-50%, -50%) scale(1);
     }
 
     .project-panel-close {
@@ -333,19 +327,6 @@
       letter-spacing: 0.05em;
     }
 
-    /* Instructions */
-    .instructions {
-      position: fixed;
-      bottom: 30px;
-      right: 30px;
-      font-size: 11px;
-      color: var(--text-gray);
-      text-align: right;
-      z-index: 100;
-      font-family: 'Courier Prime', monospace;
-      letter-spacing: 0.05em;
-    }
-
     /* Node tooltip */
     .node-tooltip {
       position: fixed;
@@ -364,6 +345,22 @@
 
     .node-tooltip.visible {
       opacity: 1;
+    }
+
+    /* Overlay when panel is open */
+    .overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.6);
+      z-index: 999;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.25s ease;
+    }
+
+    .overlay.visible {
+      opacity: 1;
+      visibility: visible;
     }
 
     /* Image lightbox */
@@ -436,26 +433,9 @@
       }
 
       .project-panel {
-        top: auto;
-        bottom: 0;
-        right: 0;
-        left: 0;
-        width: 100%;
+        width: calc(100% - 32px);
         max-height: 70vh;
-        border-radius: 0;
-        border-top: 1px solid var(--border-subtle);
-        transform: translateY(100%);
-        transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         padding: 28px;
-      }
-
-      .project-panel.visible {
-        right: 0;
-        transform: translateY(0);
-      }
-
-      .instructions {
-        display: none;
       }
 
       .project-title {
@@ -464,15 +444,6 @@
 
       .project-description {
         font-size: 13px;
-      }
-
-      .project-links {
-        gap: 8px;
-      }
-
-      .project-link {
-        padding: 8px 12px;
-        font-size: 11px;
       }
     }
   </style>
@@ -494,6 +465,9 @@
 
   <!-- Node Tooltip -->
   <div class="node-tooltip" id="nodeTooltip"></div>
+
+  <!-- Overlay -->
+  <div class="overlay" id="overlay"></div>
 
   <!-- Project Detail Panel -->
   <div class="project-panel" id="projectPanel">
@@ -520,13 +494,8 @@
     <img id="lightboxImage" src="" alt="Full size image">
   </div>
 
-  <!-- Instructions -->
-  <div class="instructions">
-    CLICK TO VIEW • DRAG TO PAN • SCROLL TO ZOOM
-  </div>
-
   <script>
-    // Project data with links and images
+    // Project data - sized by importance (1.0 = standard, larger = more important, smaller = less)
     const projects = [
       {
         id: 'formula-electric',
@@ -536,7 +505,7 @@
         description: 'Designed and manufactured the attic casing for the high-voltage accumulator (battery) for Berkeley\'s Formula Electric racing team. Implemented waterproofing and high-dielectric-strength insulation to safely manage the 588V battery pack.',
         tags: ['CAD', 'Manufacturing', 'High Voltage', 'Composites'],
         connections: ['robotics-first', 'inventry'],
-        size: 1.4,
+        size: 1.5,  // Major current project
         links: [
           { type: 'website', url: 'https://ev.berkeley.edu/', label: 'Team Website' }
         ],
@@ -550,7 +519,7 @@
         description: 'Led robotics teams as Captain of Zenith #20424 and Hardware Lead of Deja Vu #13216. Mentored 30+ members in Java and CAD, designed robots with 500+ parts using FEA optimization, and won robot design awards 3 times. Raised over $5000 and developed team websites.',
         tags: ['CAD', 'FEA', 'Java', 'Leadership', 'Mentoring'],
         connections: ['inventry', 'pear-volunteering', 'formula-electric'],
-        size: 1.3,
+        size: 1.4,  // Major long-term project
         links: [
           { type: 'website', url: 'https://www.thebluealliance.com/team/20424', label: 'Zenith #20424' },
           { type: 'website', url: 'https://www.thebluealliance.com/team/13216', label: 'Deja Vu #13216' }
@@ -565,67 +534,7 @@
         description: 'Developed a website for robotics part inventory tracking, utilizing AI invoice indexing and dynamic webscraping for 1000+ part catalogs. Integrated part-lending service with incentives and extensive privacy measures. Currently developing a parts marketplace.',
         tags: ['Web Dev', 'AI', 'Webscraping', 'Database'],
         connections: ['robotics-first', 'pear-volunteering'],
-        size: 1.2,
-        links: [],
-        images: []
-      },
-      {
-        id: 'atlas-smr',
-        title: 'Atlas SMR',
-        category: 'research',
-        date: '2024',
-        description: 'Developed an interactive web tool to evaluate Small Modular Reactor (SMR) feasibility in rural areas, integrating geospatial data and weighted scoring to compare site viability. Added hybrid SMR–solar modeling to visualize energy demand, environmental constraints, and overall system potential.',
-        tags: ['Web Dev', 'GIS', 'Energy', 'Data Viz'],
-        connections: ['construction-acclimation', 'friendly-fires'],
-        size: 1.1,
-        links: [],
-        images: []
-      },
-      {
-        id: 'construction-acclimation',
-        title: 'Construction Acclimation',
-        category: 'research',
-        date: '2022 - 2023',
-        description: 'Gathered construction site data to develop alternative devices to costly acclimation probes, aiming to cut $118M from Palo Alto\'s spending. Built a website and functioning probe prototype that earned praise from city construction officials.',
-        tags: ['Hardware', 'Data Collection', 'Web Dev', 'City Planning'],
-        connections: ['atlas-smr', 'prototype-flood'],
-        size: 1.0,
-        links: [],
-        images: []
-      },
-      {
-        id: 'beachsweep',
-        title: 'Beachsweep',
-        category: 'hardware',
-        date: '2023',
-        description: 'Hackathon project designing a website for organizing drone beach cleanups. Utilized solar-powered drone docks that work to maintain beach cleanliness and collaborate with human initiatives. Designed a computer vision drone trash detection system.',
-        tags: ['Drones', 'Computer Vision', 'Solar', 'Web Dev'],
-        connections: ['friendly-fires', 'prototype-flood'],
-        size: 1.0,
-        links: [],
-        images: []
-      },
-      {
-        id: 'friendly-fires',
-        title: 'Friendly Fires',
-        category: 'social',
-        date: '2021 - 2022',
-        description: 'Created a mining tool attachment consisting of a compact sensor array capable of consistently detecting coal-seam fires, aiming to save lives in dangerous and often neglected mining conditions.',
-        tags: ['Sensors', 'Safety', 'Hardware', 'Mining'],
-        connections: ['prototype-flood', 'atlas-smr', 'beachsweep'],
-        size: 1.0,
-        links: [],
-        images: []
-      },
-      {
-        id: 'prototype-flood',
-        title: 'Prototype Ø Flood',
-        category: 'social',
-        date: '2020 - 2021',
-        description: 'Designed a low-cost flood detection system intended for addressing the lack of alert technology in Jakarta, Indonesia. Won certificate of achievement from the American Society of Civil Engineers.',
-        tags: ['Sensors', 'IoT', 'Social Impact', 'International'],
-        connections: ['friendly-fires', 'construction-acclimation', 'beachsweep'],
-        size: 1.0,
+        size: 1.2,  // Current active project
         links: [],
         images: []
       },
@@ -637,7 +546,67 @@
         description: 'Developed an app and website to connect 2000+ students, 20+ event organizers, and school admin for volunteer opportunities. Implemented secure webhook/CMS-integrated system for scalable, high-volume data handling and encrypted user communication.',
         tags: ['App Dev', 'Web Dev', 'CMS', 'Security'],
         connections: ['robotics-first', 'inventry'],
-        size: 1.2,
+        size: 1.15,  // Significant project
+        links: [],
+        images: []
+      },
+      {
+        id: 'atlas-smr',
+        title: 'Atlas SMR',
+        category: 'research',
+        date: '2024',
+        description: 'Developed an interactive web tool to evaluate Small Modular Reactor (SMR) feasibility in rural areas, integrating geospatial data and weighted scoring to compare site viability. Added hybrid SMR–solar modeling to visualize energy demand, environmental constraints, and overall system potential.',
+        tags: ['Web Dev', 'GIS', 'Energy', 'Data Viz'],
+        connections: ['construction-acclimation', 'friendly-fires'],
+        size: 0.9,  // Smaller research project
+        links: [],
+        images: []
+      },
+      {
+        id: 'construction-acclimation',
+        title: 'Construction Acclimation',
+        category: 'research',
+        date: '2022 - 2023',
+        description: 'Gathered construction site data to develop alternative devices to costly acclimation probes, aiming to cut $118M from Palo Alto\'s spending. Built a website and functioning probe prototype that earned praise from city construction officials.',
+        tags: ['Hardware', 'Data Collection', 'Web Dev', 'City Planning'],
+        connections: ['atlas-smr', 'prototype-flood'],
+        size: 0.8,  // Older project
+        links: [],
+        images: []
+      },
+      {
+        id: 'beachsweep',
+        title: 'Beachsweep',
+        category: 'hardware',
+        date: '2023',
+        description: 'Hackathon project designing a website for organizing drone beach cleanups. Utilized solar-powered drone docks that work to maintain beach cleanliness and collaborate with human initiatives. Designed a computer vision drone trash detection system.',
+        tags: ['Drones', 'Computer Vision', 'Solar', 'Web Dev'],
+        connections: ['friendly-fires', 'prototype-flood'],
+        size: 0.75,  // Hackathon project
+        links: [],
+        images: []
+      },
+      {
+        id: 'friendly-fires',
+        title: 'Friendly Fires',
+        category: 'social',
+        date: '2021 - 2022',
+        description: 'Created a mining tool attachment consisting of a compact sensor array capable of consistently detecting coal-seam fires, aiming to save lives in dangerous and often neglected mining conditions.',
+        tags: ['Sensors', 'Safety', 'Hardware', 'Mining'],
+        connections: ['prototype-flood', 'atlas-smr', 'beachsweep'],
+        size: 0.75,  // Older project
+        links: [],
+        images: []
+      },
+      {
+        id: 'prototype-flood',
+        title: 'Prototype Ø Flood',
+        category: 'social',
+        date: '2020 - 2021',
+        description: 'Designed a low-cost flood detection system intended for addressing the lack of alert technology in Jakarta, Indonesia. Won certificate of achievement from the American Society of Civil Engineers.',
+        tags: ['Sensors', 'IoT', 'Social Impact', 'International'],
+        connections: ['friendly-fires', 'construction-acclimation', 'beachsweep'],
+        size: 0.7,  // Earliest project
         links: [],
         images: []
       }
@@ -646,9 +615,7 @@
     // SVG icons
     const icons = {
       website: '<svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>',
-      github: '<svg viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>',
-      demo: '<svg viewBox="0 0 24 24"><path d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg>',
-      doc: '<svg viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>'
+      github: '<svg viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>'
     };
 
     // Canvas setup
@@ -657,6 +624,7 @@
     const tooltip = document.getElementById('nodeTooltip');
     const panel = document.getElementById('projectPanel');
     const panelClose = document.getElementById('panelClose');
+    const overlay = document.getElementById('overlay');
     const lightbox = document.getElementById('lightbox');
     const lightboxClose = document.getElementById('lightboxClose');
     const lightboxImage = document.getElementById('lightboxImage');
@@ -664,20 +632,10 @@
     let width, height;
     let nodes = [];
     let edges = [];
-    let offsetX = 0, offsetY = 0;
-    let scale = 1;
-    let isDragging = false;
-    let dragStartX, dragStartY;
     let hoveredNode = null;
     let selectedNode = null;
     let animationFrame;
     let time = 0;
-
-    // Physics simulation parameters
-    const REPULSION = 18000;
-    const ATTRACTION = 0.006;
-    const DAMPING = 0.88;
-    const CENTER_GRAVITY = 0.008;
 
     function resize() {
       width = window.innerWidth;
@@ -686,24 +644,63 @@
       canvas.height = height * window.devicePixelRatio;
       canvas.style.width = width + 'px';
       canvas.style.height = height + 'px';
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
       ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+      initNodes();
     }
 
     function initNodes() {
       const centerX = width / 2;
       const centerY = height / 2;
-      const radius = Math.min(width, height) * 0.28;
-
-      nodes = projects.map((project, i) => {
-        const angle = (i / projects.length) * Math.PI * 2 - Math.PI / 2;
+      
+      // Calculate available space
+      const navHeight = 80;
+      const padding = 120;
+      const availableHeight = height - navHeight - padding;
+      const availableWidth = width - padding * 2;
+      
+      // Base radius for layout - fit all nodes comfortably
+      const layoutRadius = Math.min(availableWidth, availableHeight) * 0.38;
+      
+      // Position nodes in a fixed constellation layout
+      // Major projects in center, smaller ones on outside
+      const sortedProjects = [...projects].sort((a, b) => b.size - a.size);
+      
+      nodes = sortedProjects.map((project, i) => {
+        let x, y;
+        const baseRadius = 14 + (project.size * 12); // Node visual size
+        
+        if (i === 0) {
+          // Largest project at center-top
+          x = centerX;
+          y = centerY - layoutRadius * 0.3;
+        } else if (i === 1) {
+          // Second largest slightly offset
+          x = centerX - layoutRadius * 0.45;
+          y = centerY - layoutRadius * 0.1;
+        } else if (i === 2) {
+          // Third
+          x = centerX + layoutRadius * 0.5;
+          y = centerY;
+        } else if (i === 3) {
+          // Fourth
+          x = centerX + layoutRadius * 0.15;
+          y = centerY + layoutRadius * 0.35;
+        } else {
+          // Remaining projects in outer ring
+          const outerIndex = i - 4;
+          const outerCount = sortedProjects.length - 4;
+          const angle = (outerIndex / outerCount) * Math.PI * 1.4 + Math.PI * 0.8;
+          x = centerX + Math.cos(angle) * layoutRadius * 0.85;
+          y = centerY + Math.sin(angle) * layoutRadius * 0.7;
+        }
+        
         return {
           ...project,
-          x: centerX + Math.cos(angle) * radius + (Math.random() - 0.5) * 80,
-          y: centerY + Math.sin(angle) * radius + (Math.random() - 0.5) * 80,
-          vx: 0,
-          vy: 0,
-          baseRadius: 20 * (project.size || 1),
-          phase: Math.random() * Math.PI * 2
+          x,
+          y,
+          baseRadius,
+          currentRadius: baseRadius
         };
       });
 
@@ -724,49 +721,9 @@
       });
     }
 
-    function simulate() {
-      nodes.forEach(node => {
-        nodes.forEach(other => {
-          if (node === other) return;
-          const dx = node.x - other.x;
-          const dy = node.y - other.y;
-          const dist = Math.sqrt(dx * dx + dy * dy) || 1;
-          const force = REPULSION / (dist * dist);
-          node.vx += (dx / dist) * force;
-          node.vy += (dy / dist) * force;
-        });
-
-        const centerX = width / 2;
-        const centerY = height / 2;
-        node.vx += (centerX - node.x) * CENTER_GRAVITY;
-        node.vy += (centerY - node.y) * CENTER_GRAVITY;
-      });
-
-      edges.forEach(edge => {
-        const dx = edge.target.x - edge.source.x;
-        const dy = edge.target.y - edge.source.y;
-        const dist = Math.sqrt(dx * dx + dy * dy) || 1;
-        const force = dist * ATTRACTION;
-        edge.source.vx += (dx / dist) * force;
-        edge.source.vy += (dy / dist) * force;
-        edge.target.vx -= (dx / dist) * force;
-        edge.target.vy -= (dy / dist) * force;
-      });
-
-      nodes.forEach(node => {
-        node.vx *= DAMPING;
-        node.vy *= DAMPING;
-        node.x += node.vx;
-        node.y += node.vy;
-      });
-    }
-
     function draw() {
       time += 0.016;
       ctx.clearRect(0, 0, width, height);
-      ctx.save();
-      ctx.translate(offsetX, offsetY);
-      ctx.scale(scale, scale);
 
       // Draw edges
       edges.forEach(edge => {
@@ -776,18 +733,19 @@
         ctx.beginPath();
         ctx.moveTo(edge.source.x, edge.source.y);
         ctx.lineTo(edge.target.x, edge.target.y);
-        ctx.strokeStyle = 'rgba(255, 255, 255, 0.06)';
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.04)';
         ctx.lineWidth = 1;
         ctx.stroke();
 
-        const speed = 0.15;
+        // Subtle traveling dot
+        const speed = 0.08;
         const progress = ((time * speed) % 1);
         const px = edge.source.x + dx * progress;
         const py = edge.source.y + dy * progress;
         
         ctx.beginPath();
-        ctx.arc(px, py, 1.5, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(255, 255, 255, 0.25)';
+        ctx.arc(px, py, 1, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.15)';
         ctx.fill();
       });
 
@@ -796,66 +754,69 @@
         const isHovered = node === hoveredNode;
         const isSelected = node === selectedNode;
         
-        const breathe = Math.sin(time * 1.5 + node.phase) * 0.08 + 1;
-        const nodeRadius = node.baseRadius * (isHovered ? 1.15 : isSelected ? 1.1 : breathe);
+        // Smooth radius transition on hover
+        const targetRadius = isHovered ? node.baseRadius * 1.15 : node.baseRadius;
+        node.currentRadius += (targetRadius - node.currentRadius) * 0.15;
+        const nodeRadius = node.currentRadius;
 
-        if (isHovered || isSelected) {
+        // Glow effect only on hover
+        if (isHovered) {
           const glowGradient = ctx.createRadialGradient(
-            node.x, node.y, nodeRadius * 0.5,
-            node.x, node.y, nodeRadius * 2.5
+            node.x, node.y, nodeRadius * 0.3,
+            node.x, node.y, nodeRadius * 2
           );
-          glowGradient.addColorStop(0, 'rgba(255, 255, 255, 0.15)');
+          glowGradient.addColorStop(0, 'rgba(255, 255, 255, 0.12)');
           glowGradient.addColorStop(1, 'transparent');
           ctx.beginPath();
-          ctx.arc(node.x, node.y, nodeRadius * 2.5, 0, Math.PI * 2);
+          ctx.arc(node.x, node.y, nodeRadius * 2, 0, Math.PI * 2);
           ctx.fillStyle = glowGradient;
           ctx.fill();
         }
 
+        // Node ring
         ctx.beginPath();
         ctx.arc(node.x, node.y, nodeRadius, 0, Math.PI * 2);
         ctx.strokeStyle = isHovered || isSelected 
-          ? 'rgba(255, 255, 255, 0.9)' 
-          : 'rgba(255, 255, 255, 0.25)';
+          ? 'rgba(255, 255, 255, 0.7)' 
+          : 'rgba(255, 255, 255, 0.15)';
         ctx.lineWidth = isHovered || isSelected ? 1.5 : 1;
         ctx.stroke();
 
+        // Inner fill
         ctx.beginPath();
         ctx.arc(node.x, node.y, nodeRadius - 1, 0, Math.PI * 2);
         ctx.fillStyle = isHovered || isSelected 
-          ? 'rgba(255, 255, 255, 0.08)' 
-          : 'rgba(255, 255, 255, 0.02)';
+          ? 'rgba(255, 255, 255, 0.04)' 
+          : 'rgba(255, 255, 255, 0.01)';
         ctx.fill();
 
+        // Center dot - glows on hover
+        const dotRadius = isHovered ? 3 : 2;
         ctx.beginPath();
-        ctx.arc(node.x, node.y, 2, 0, Math.PI * 2);
+        ctx.arc(node.x, node.y, dotRadius, 0, Math.PI * 2);
+        ctx.fillStyle = isHovered 
+          ? 'rgba(255, 255, 255, 0.95)' 
+          : 'rgba(255, 255, 255, 0.3)';
+        ctx.fill();
+
+        // Node label
+        ctx.font = `500 ${isHovered ? 12 : 11}px 'Inter', sans-serif`;
         ctx.fillStyle = isHovered || isSelected 
           ? 'rgba(255, 255, 255, 0.9)' 
           : 'rgba(255, 255, 255, 0.4)';
-        ctx.fill();
-
-        ctx.font = `500 11px 'Inter', sans-serif`;
-        ctx.fillStyle = isHovered || isSelected 
-          ? 'rgba(255, 255, 255, 0.95)' 
-          : 'rgba(255, 255, 255, 0.5)';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'top';
-        ctx.fillText(node.title, node.x, node.y + nodeRadius + 12);
+        ctx.fillText(node.title, node.x, node.y + nodeRadius + 10);
       });
 
-      ctx.restore();
-      simulate();
       animationFrame = requestAnimationFrame(draw);
     }
 
     function getNodeAtPosition(x, y) {
-      const transformedX = (x - offsetX) / scale;
-      const transformedY = (y - offsetY) / scale;
-
       for (let i = nodes.length - 1; i >= 0; i--) {
         const node = nodes[i];
-        const dx = transformedX - node.x;
-        const dy = transformedY - node.y;
+        const dx = x - node.x;
+        const dy = y - node.y;
         const hitRadius = node.baseRadius * 1.5;
         if (dx * dx + dy * dy < hitRadius * hitRadius) {
           return node;
@@ -921,11 +882,13 @@
         `<span class="project-tag">${tag}</span>`
       ).join('');
 
+      overlay.classList.add('visible');
       panel.classList.add('visible');
     }
 
     function hidePanel() {
       panel.classList.remove('visible');
+      overlay.classList.remove('visible');
       selectedNode = null;
     }
 
@@ -939,21 +902,10 @@
     }
 
     // Event listeners
-    canvas.addEventListener('mousedown', (e) => {
-      isDragging = true;
-      dragStartX = e.clientX - offsetX;
-      dragStartY = e.clientY - offsetY;
-    });
-
     canvas.addEventListener('mousemove', (e) => {
-      if (isDragging) {
-        offsetX = e.clientX - dragStartX;
-        offsetY = e.clientY - dragStartY;
-      }
-
       const node = getNodeAtPosition(e.clientX, e.clientY);
       hoveredNode = node;
-      canvas.style.cursor = node ? 'pointer' : 'grab';
+      canvas.style.cursor = node ? 'pointer' : 'default';
 
       if (node) {
         tooltip.textContent = node.title;
@@ -965,12 +917,7 @@
       }
     });
 
-    canvas.addEventListener('mouseup', () => {
-      isDragging = false;
-    });
-
     canvas.addEventListener('mouseleave', () => {
-      isDragging = false;
       hoveredNode = null;
       tooltip.classList.remove('visible');
     });
@@ -982,62 +929,22 @@
       }
     });
 
-    canvas.addEventListener('wheel', (e) => {
-      e.preventDefault();
-      const delta = e.deltaY > 0 ? 0.92 : 1.08;
-      const newScale = Math.max(0.4, Math.min(2.5, scale * delta));
-      
-      const mouseX = e.clientX;
-      const mouseY = e.clientY;
-      offsetX = mouseX - (mouseX - offsetX) * (newScale / scale);
-      offsetY = mouseY - (mouseY - offsetY) * (newScale / scale);
-      scale = newScale;
-    }, { passive: false });
-
     panelClose.addEventListener('click', hidePanel);
+    overlay.addEventListener('click', hidePanel);
     lightboxClose.addEventListener('click', closeLightbox);
     lightbox.addEventListener('click', (e) => {
       if (e.target === lightbox) closeLightbox();
     });
 
     // Touch events for mobile
-    let touchStartX, touchStartY, lastTouchDist;
-
-    canvas.addEventListener('touchstart', (e) => {
-      if (e.touches.length === 1) {
-        touchStartX = e.touches[0].clientX - offsetX;
-        touchStartY = e.touches[0].clientY - offsetY;
-      } else if (e.touches.length === 2) {
-        lastTouchDist = Math.hypot(
-          e.touches[0].clientX - e.touches[1].clientX,
-          e.touches[0].clientY - e.touches[1].clientY
-        );
-      }
-    }, { passive: true });
-
-    canvas.addEventListener('touchmove', (e) => {
-      e.preventDefault();
-      if (e.touches.length === 1) {
-        offsetX = e.touches[0].clientX - touchStartX;
-        offsetY = e.touches[0].clientY - touchStartY;
-      } else if (e.touches.length === 2) {
-        const dist = Math.hypot(
-          e.touches[0].clientX - e.touches[1].clientX,
-          e.touches[0].clientY - e.touches[1].clientY
-        );
-        const delta = dist / lastTouchDist;
-        scale = Math.max(0.4, Math.min(2.5, scale * delta));
-        lastTouchDist = dist;
-      }
-    }, { passive: false });
-
     canvas.addEventListener('touchend', (e) => {
       if (e.changedTouches.length === 1) {
-        const node = getNodeAtPosition(
-          e.changedTouches[0].clientX,
-          e.changedTouches[0].clientY
-        );
-        if (node) showPanel(node);
+        const touch = e.changedTouches[0];
+        const node = getNodeAtPosition(touch.clientX, touch.clientY);
+        if (node) {
+          e.preventDefault();
+          showPanel(node);
+        }
       }
     });
 
@@ -1046,7 +953,7 @@
       if (e.key === 'Escape') {
         if (lightbox.classList.contains('visible')) {
           closeLightbox();
-        } else {
+        } else if (panel.classList.contains('visible')) {
           hidePanel();
         }
       }
@@ -1055,7 +962,6 @@
     // Initialize
     window.addEventListener('resize', resize);
     resize();
-    initNodes();
     draw();
   </script>
 </body>
