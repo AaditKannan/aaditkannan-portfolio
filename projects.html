@@ -5,10 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
   
   <!-- Primary Meta Tags -->
-  <title>Aadit Kannan | Projects - Interactive Portfolio</title>
-  <meta name="title" content="Aadit Kannan | Projects - Interactive Portfolio">
-  <meta name="description" content="Explore Aadit Kannan's engineering projects - from Formula Electric battery systems to robotics, flood detection, and web development. Interactive graph view of all projects.">
-  <meta name="keywords" content="Aadit Kannan projects, engineering projects, robotics, Formula Electric, UC Berkeley, portfolio, interactive projects">
+  <title>Aadit Kannan | Projects</title>
+  <meta name="title" content="Aadit Kannan | Projects">
+  <meta name="description" content="Explore Aadit Kannan's engineering projects - from Formula Electric battery systems to robotics, flood detection, and web development.">
+  <meta name="keywords" content="Aadit Kannan projects, engineering projects, robotics, Formula Electric, UC Berkeley, portfolio">
   <meta name="author" content="Aadit Kannan">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://aaditkannan.com/projects">
@@ -16,15 +16,15 @@
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://aaditkannan.com/projects">
-  <meta property="og:title" content="Aadit Kannan | Projects - Interactive Portfolio">
-  <meta property="og:description" content="Explore Aadit Kannan's engineering projects with an interactive graph visualization.">
+  <meta property="og:title" content="Aadit Kannan | Projects">
+  <meta property="og:description" content="Explore Aadit Kannan's engineering projects.">
   <meta property="og:image" content="https://aaditkannan.com/assets/photo.jpg">
   
   <!-- Twitter -->
   <meta property="twitter:card" content="summary_large_image">
   <meta property="twitter:url" content="https://aaditkannan.com/projects">
-  <meta property="twitter:title" content="Aadit Kannan | Projects - Interactive Portfolio">
-  <meta property="twitter:description" content="Explore Aadit Kannan's engineering projects with an interactive graph visualization.">
+  <meta property="twitter:title" content="Aadit Kannan | Projects">
+  <meta property="twitter:description" content="Explore Aadit Kannan's engineering projects.">
   <meta property="twitter:image" content="https://aaditkannan.com/assets/photo.jpg">
   
   <!-- Favicon -->
@@ -44,18 +44,12 @@
     }
 
     :root {
-      --bg-dark: #050508;
-      --bg-card: rgba(15, 15, 20, 0.95);
+      --bg-dark: #000000;
       --text-white: #FFFFFF;
-      --text-gray: #888;
-      --accent-cyan: #00d4ff;
-      --accent-purple: #a855f7;
-      --accent-pink: #ec4899;
-      --accent-orange: #f97316;
-      --accent-green: #22c55e;
-      --accent-blue: #3b82f6;
-      --glow-cyan: rgba(0, 212, 255, 0.4);
-      --glow-purple: rgba(168, 85, 247, 0.4);
+      --text-gray: #666;
+      --text-light: #999;
+      --border-subtle: rgba(255, 255, 255, 0.08);
+      --border-hover: rgba(255, 255, 255, 0.2);
     }
 
     html, body {
@@ -77,31 +71,12 @@
       -moz-osx-font-smoothing: grayscale;
     }
 
-    /* Animated gradient background */
-    .bg-gradient {
+    /* Subtle dot grid background */
+    .bg-pattern {
       position: fixed;
       inset: 0;
-      background: 
-        radial-gradient(ellipse 80% 50% at 20% 40%, rgba(0, 212, 255, 0.08) 0%, transparent 50%),
-        radial-gradient(ellipse 60% 40% at 80% 60%, rgba(168, 85, 247, 0.08) 0%, transparent 50%),
-        radial-gradient(ellipse 50% 30% at 50% 80%, rgba(236, 72, 153, 0.05) 0%, transparent 50%);
-      z-index: -2;
-      animation: gradientShift 20s ease-in-out infinite;
-    }
-
-    @keyframes gradientShift {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.7; }
-    }
-
-    /* Grid background */
-    .bg-grid {
-      position: fixed;
-      inset: 0;
-      background-image: 
-        linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
-      background-size: 50px 50px;
+      background-image: radial-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+      background-size: 32px 32px;
       z-index: -1;
     }
 
@@ -117,7 +92,7 @@
       justify-content: center;
       align-items: center;
       gap: 40px;
-      background: linear-gradient(to bottom, rgba(5, 5, 8, 0.95) 0%, transparent 100%);
+      background: linear-gradient(to bottom, rgba(0, 0, 0, 0.95) 0%, transparent 100%);
       height: 80px;
       box-sizing: border-box;
     }
@@ -165,19 +140,16 @@
       position: fixed;
       top: 100px;
       right: -450px;
-      width: 420px;
+      width: 400px;
       max-height: calc(100vh - 140px);
-      background: var(--bg-card);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 16px;
-      padding: 32px;
+      background: rgba(0, 0, 0, 0.95);
+      border: 1px solid var(--border-subtle);
+      border-radius: 2px;
+      padding: 40px;
       z-index: 1000;
       transition: right 0.4s cubic-bezier(0.16, 1, 0.3, 1);
       overflow-y: auto;
       backdrop-filter: blur(20px);
-      box-shadow: 
-        0 0 60px rgba(0, 0, 0, 0.5),
-        0 0 40px var(--panel-glow, rgba(0, 212, 255, 0.1));
     }
 
     .project-panel.visible {
@@ -188,11 +160,11 @@
       position: absolute;
       top: 20px;
       right: 20px;
-      width: 32px;
-      height: 32px;
-      background: rgba(255, 255, 255, 0.1);
-      border: none;
-      border-radius: 8px;
+      width: 28px;
+      height: 28px;
+      background: transparent;
+      border: 1px solid var(--border-subtle);
+      border-radius: 0;
       cursor: pointer;
       display: flex;
       align-items: center;
@@ -201,16 +173,15 @@
     }
 
     .project-panel-close:hover {
-      background: rgba(255, 255, 255, 0.2);
-      transform: scale(1.1);
+      border-color: var(--border-hover);
     }
 
     .project-panel-close::before,
     .project-panel-close::after {
       content: '';
       position: absolute;
-      width: 14px;
-      height: 2px;
+      width: 12px;
+      height: 1px;
       background: #fff;
     }
 
@@ -224,126 +195,52 @@
 
     .project-category {
       display: inline-block;
-      padding: 4px 12px;
-      background: var(--category-color, var(--accent-cyan));
-      color: #000;
       font-size: 10px;
-      font-weight: 700;
-      letter-spacing: 0.1em;
+      font-weight: 500;
+      letter-spacing: 0.2em;
       text-transform: uppercase;
-      border-radius: 20px;
+      color: var(--text-gray);
       margin-bottom: 16px;
+      font-family: 'Courier Prime', monospace;
     }
 
     .project-title {
-      font-family: 'Courier Prime', monospace;
-      font-size: 28px;
-      font-weight: 700;
+      font-family: 'Inter', sans-serif;
+      font-size: 24px;
+      font-weight: 600;
       margin-bottom: 8px;
-      line-height: 1.2;
+      line-height: 1.3;
+      letter-spacing: -0.02em;
     }
 
     .project-date {
-      font-size: 14px;
+      font-size: 13px;
       color: var(--text-gray);
-      margin-bottom: 24px;
-      font-style: italic;
+      margin-bottom: 28px;
+      font-family: 'Courier Prime', monospace;
     }
 
     .project-description {
-      font-size: 15px;
+      font-size: 14px;
       line-height: 1.8;
-      color: rgba(255, 255, 255, 0.85);
-      margin-bottom: 24px;
+      color: var(--text-light);
+      margin-bottom: 28px;
     }
 
     .project-tags {
       display: flex;
       flex-wrap: wrap;
       gap: 8px;
-      margin-bottom: 24px;
     }
 
     .project-tag {
       padding: 6px 12px;
-      background: rgba(255, 255, 255, 0.08);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      border-radius: 6px;
-      font-size: 12px;
-      color: rgba(255, 255, 255, 0.8);
-      font-family: 'JetBrains Mono', monospace;
-    }
-
-    .project-links {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
-
-    .project-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 10px 18px;
       background: transparent;
-      border: 1px solid rgba(255, 255, 255, 0.3);
-      border-radius: 8px;
-      color: #fff;
-      font-size: 13px;
-      text-decoration: none;
-      transition: all 0.2s ease;
-    }
-
-    .project-link:hover {
-      background: rgba(255, 255, 255, 0.1);
-      border-color: rgba(255, 255, 255, 0.5);
-      transform: translateY(-2px);
-    }
-
-    /* Category legend */
-    .legend {
-      position: fixed;
-      bottom: 30px;
-      left: 30px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      z-index: 100;
-      background: rgba(5, 5, 8, 0.8);
-      padding: 20px;
-      border-radius: 12px;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      backdrop-filter: blur(10px);
-    }
-
-    .legend-title {
+      border: 1px solid var(--border-subtle);
       font-size: 11px;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
       color: var(--text-gray);
-      margin-bottom: 8px;
       font-family: 'Courier Prime', monospace;
-    }
-
-    .legend-item {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 12px;
-      color: rgba(255, 255, 255, 0.7);
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
-
-    .legend-item:hover {
-      color: #fff;
-    }
-
-    .legend-dot {
-      width: 12px;
-      height: 12px;
-      border-radius: 50%;
-      box-shadow: 0 0 10px currentColor;
+      letter-spacing: 0.05em;
     }
 
     /* Instructions */
@@ -351,20 +248,32 @@
       position: fixed;
       bottom: 30px;
       right: 30px;
-      font-size: 12px;
+      font-size: 11px;
       color: var(--text-gray);
       text-align: right;
       z-index: 100;
-      font-family: 'JetBrains Mono', monospace;
+      font-family: 'Courier Prime', monospace;
+      letter-spacing: 0.05em;
     }
 
-    .instructions kbd {
-      display: inline-block;
-      padding: 2px 8px;
-      background: rgba(255, 255, 255, 0.1);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      border-radius: 4px;
-      margin: 0 2px;
+    /* Node tooltip */
+    .node-tooltip {
+      position: fixed;
+      padding: 8px 14px;
+      background: rgba(0, 0, 0, 0.95);
+      border: 1px solid var(--border-subtle);
+      font-size: 12px;
+      color: #fff;
+      pointer-events: none;
+      z-index: 1002;
+      opacity: 0;
+      transition: opacity 0.15s ease;
+      font-family: 'Inter', sans-serif;
+      letter-spacing: 0.02em;
+    }
+
+    .node-tooltip.visible {
+      opacity: 1;
     }
 
     /* Mobile responsive */
@@ -387,7 +296,8 @@
         left: 0;
         width: 100%;
         max-height: 60vh;
-        border-radius: 24px 24px 0 0;
+        border-radius: 0;
+        border-top: 1px solid var(--border-subtle);
         transform: translateY(100%);
         transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
       }
@@ -397,51 +307,22 @@
         transform: translateY(0);
       }
 
-      .legend {
-        bottom: 20px;
-        left: 20px;
-        padding: 14px;
-        font-size: 11px;
-      }
-
       .instructions {
         display: none;
       }
 
       .project-title {
-        font-size: 22px;
+        font-size: 20px;
       }
 
       .project-description {
-        font-size: 14px;
+        font-size: 13px;
       }
-    }
-
-    /* Node hover tooltip */
-    .node-tooltip {
-      position: fixed;
-      padding: 8px 14px;
-      background: rgba(0, 0, 0, 0.9);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      border-radius: 8px;
-      font-size: 13px;
-      color: #fff;
-      pointer-events: none;
-      z-index: 1002;
-      opacity: 0;
-      transition: opacity 0.2s ease;
-      font-family: 'Courier Prime', monospace;
-      white-space: nowrap;
-    }
-
-    .node-tooltip.visible {
-      opacity: 1;
     }
   </style>
 </head>
 <body>
-  <div class="bg-gradient"></div>
-  <div class="bg-grid"></div>
+  <div class="bg-pattern"></div>
 
   <!-- Navigation Bar -->
   <nav class="nav-bar">
@@ -466,34 +347,11 @@
     <p class="project-date" id="panelDate">2024 - Present</p>
     <p class="project-description" id="panelDescription">Project description goes here...</p>
     <div class="project-tags" id="panelTags"></div>
-    <div class="project-links" id="panelLinks"></div>
-  </div>
-
-  <!-- Category Legend -->
-  <div class="legend">
-    <div class="legend-title">Categories</div>
-    <div class="legend-item" data-category="hardware">
-      <div class="legend-dot" style="background: #00d4ff; color: #00d4ff;"></div>
-      <span>Hardware / Robotics</span>
-    </div>
-    <div class="legend-item" data-category="software">
-      <div class="legend-dot" style="background: #a855f7; color: #a855f7;"></div>
-      <span>Software / Web</span>
-    </div>
-    <div class="legend-item" data-category="research">
-      <div class="legend-dot" style="background: #22c55e; color: #22c55e;"></div>
-      <span>Research</span>
-    </div>
-    <div class="legend-item" data-category="social">
-      <div class="legend-dot" style="background: #f97316; color: #f97316;"></div>
-      <span>Social Impact</span>
-    </div>
   </div>
 
   <!-- Instructions -->
   <div class="instructions">
-    <kbd>Click</kbd> node to view details<br>
-    <kbd>Drag</kbd> to pan • <kbd>Scroll</kbd> to zoom
+    CLICK TO VIEW • DRAG TO PAN • SCROLL TO ZOOM
   </div>
 
   <script>
@@ -506,8 +364,8 @@
         date: '2025 - Present',
         description: 'Designed and manufactured the attic casing for the high-voltage accumulator (battery) for Berkeley\'s Formula Electric racing team. Implemented waterproofing and high-dielectric-strength insulation to safely manage the 588V battery pack.',
         tags: ['CAD', 'Manufacturing', 'High Voltage', 'Composites'],
-        color: '#00d4ff',
-        connections: ['robotics-first', 'inventry']
+        connections: ['robotics-first', 'inventry'],
+        size: 1.4
       },
       {
         id: 'robotics-first',
@@ -516,8 +374,8 @@
         date: '2021 - 2025',
         description: 'Led robotics teams as Captain of Zenith #20424 and Hardware Lead of Deja Vu #13216. Mentored 30+ members in Java and CAD, designed robots with 500+ parts using FEA optimization, and won robot design awards 3 times. Raised over $5000 and developed team websites.',
         tags: ['CAD', 'FEA', 'Java', 'Leadership', 'Mentoring'],
-        color: '#00d4ff',
-        connections: ['inventry', 'pear-volunteering', 'formula-electric']
+        connections: ['inventry', 'pear-volunteering', 'formula-electric'],
+        size: 1.3
       },
       {
         id: 'inventry',
@@ -526,8 +384,8 @@
         date: '2025 - Present',
         description: 'Developed a website for robotics part inventory tracking, utilizing AI invoice indexing and dynamic webscraping for 1000+ part catalogs. Integrated part-lending service with incentives and extensive privacy measures. Currently developing a parts marketplace.',
         tags: ['Web Dev', 'AI', 'Webscraping', 'Database'],
-        color: '#a855f7',
-        connections: ['robotics-first', 'pear-volunteering']
+        connections: ['robotics-first', 'pear-volunteering'],
+        size: 1.2
       },
       {
         id: 'atlas-smr',
@@ -536,8 +394,8 @@
         date: '2024',
         description: 'Developed an interactive web tool to evaluate Small Modular Reactor (SMR) feasibility in rural areas, integrating geospatial data and weighted scoring to compare site viability. Added hybrid SMR–solar modeling to visualize energy demand, environmental constraints, and overall system potential.',
         tags: ['Web Dev', 'GIS', 'Energy', 'Data Viz'],
-        color: '#22c55e',
-        connections: ['construction-acclimation', 'friendly-fires']
+        connections: ['construction-acclimation', 'friendly-fires'],
+        size: 1.1
       },
       {
         id: 'construction-acclimation',
@@ -546,8 +404,8 @@
         date: '2022 - 2023',
         description: 'Gathered construction site data to develop alternative devices to costly acclimation probes, aiming to cut $118M from Palo Alto\'s spending. Built a website and functioning probe prototype that earned praise from city construction officials.',
         tags: ['Hardware', 'Data Collection', 'Web Dev', 'City Planning'],
-        color: '#22c55e',
-        connections: ['atlas-smr', 'prototype-flood']
+        connections: ['atlas-smr', 'prototype-flood'],
+        size: 1.0
       },
       {
         id: 'beachsweep',
@@ -556,8 +414,8 @@
         date: '2023',
         description: 'Hackathon project designing a website for organizing drone beach cleanups. Utilized solar-powered drone docks that work to maintain beach cleanliness and collaborate with human initiatives. Designed a computer vision drone trash detection system.',
         tags: ['Drones', 'Computer Vision', 'Solar', 'Web Dev'],
-        color: '#00d4ff',
-        connections: ['friendly-fires', 'prototype-flood']
+        connections: ['friendly-fires', 'prototype-flood'],
+        size: 1.0
       },
       {
         id: 'friendly-fires',
@@ -566,8 +424,8 @@
         date: '2021 - 2022',
         description: 'Created a mining tool attachment consisting of a compact sensor array capable of consistently detecting coal-seam fires, aiming to save lives in dangerous and often neglected mining conditions.',
         tags: ['Sensors', 'Safety', 'Hardware', 'Mining'],
-        color: '#f97316',
-        connections: ['prototype-flood', 'atlas-smr', 'beachsweep']
+        connections: ['prototype-flood', 'atlas-smr', 'beachsweep'],
+        size: 1.0
       },
       {
         id: 'prototype-flood',
@@ -576,8 +434,8 @@
         date: '2020 - 2021',
         description: 'Designed a low-cost flood detection system intended for addressing the lack of alert technology in Jakarta, Indonesia. Won certificate of achievement from the American Society of Civil Engineers.',
         tags: ['Sensors', 'IoT', 'Social Impact', 'International'],
-        color: '#f97316',
-        connections: ['friendly-fires', 'construction-acclimation', 'beachsweep']
+        connections: ['friendly-fires', 'construction-acclimation', 'beachsweep'],
+        size: 1.0
       },
       {
         id: 'pear-volunteering',
@@ -586,8 +444,8 @@
         date: '2023 - 2025',
         description: 'Developed an app and website to connect 2000+ students, 20+ event organizers, and school admin for volunteer opportunities. Implemented secure webhook/CMS-integrated system for scalable, high-volume data handling and encrypted user communication.',
         tags: ['App Dev', 'Web Dev', 'CMS', 'Security'],
-        color: '#a855f7',
-        connections: ['robotics-first', 'inventry']
+        connections: ['robotics-first', 'inventry'],
+        size: 1.2
       }
     ];
 
@@ -608,12 +466,13 @@
     let hoveredNode = null;
     let selectedNode = null;
     let animationFrame;
+    let time = 0;
 
     // Physics simulation parameters
-    const REPULSION = 15000;
-    const ATTRACTION = 0.008;
-    const DAMPING = 0.85;
-    const CENTER_GRAVITY = 0.01;
+    const REPULSION = 18000;
+    const ATTRACTION = 0.006;
+    const DAMPING = 0.88;
+    const CENTER_GRAVITY = 0.008;
 
     function resize() {
       width = window.innerWidth;
@@ -628,18 +487,18 @@
     function initNodes() {
       const centerX = width / 2;
       const centerY = height / 2;
-      const radius = Math.min(width, height) * 0.3;
+      const radius = Math.min(width, height) * 0.28;
 
       nodes = projects.map((project, i) => {
-        const angle = (i / projects.length) * Math.PI * 2;
+        const angle = (i / projects.length) * Math.PI * 2 - Math.PI / 2;
         return {
           ...project,
-          x: centerX + Math.cos(angle) * radius + (Math.random() - 0.5) * 100,
-          y: centerY + Math.sin(angle) * radius + (Math.random() - 0.5) * 100,
+          x: centerX + Math.cos(angle) * radius + (Math.random() - 0.5) * 80,
+          y: centerY + Math.sin(angle) * radius + (Math.random() - 0.5) * 80,
           vx: 0,
           vy: 0,
-          radius: 24,
-          pulsePhase: Math.random() * Math.PI * 2
+          baseRadius: 20 * (project.size || 1),
+          phase: Math.random() * Math.PI * 2
         };
       });
 
@@ -702,96 +561,94 @@
     }
 
     function draw() {
+      time += 0.016;
       ctx.clearRect(0, 0, width, height);
       ctx.save();
       ctx.translate(offsetX, offsetY);
       ctx.scale(scale, scale);
 
-      const time = Date.now() / 1000;
-
       // Draw edges
       edges.forEach(edge => {
-        const gradient = ctx.createLinearGradient(
-          edge.source.x, edge.source.y,
-          edge.target.x, edge.target.y
-        );
-        gradient.addColorStop(0, edge.source.color + '40');
-        gradient.addColorStop(1, edge.target.color + '40');
-
+        const dx = edge.target.x - edge.source.x;
+        const dy = edge.target.y - edge.source.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        
+        // Subtle animated dash
         ctx.beginPath();
         ctx.moveTo(edge.source.x, edge.source.y);
         ctx.lineTo(edge.target.x, edge.target.y);
-        ctx.strokeStyle = gradient;
-        ctx.lineWidth = 1.5;
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.06)';
+        ctx.lineWidth = 1;
         ctx.stroke();
 
-        // Animated particles along edges
-        const progress = (time * 0.3) % 1;
-        const px = edge.source.x + (edge.target.x - edge.source.x) * progress;
-        const py = edge.source.y + (edge.target.y - edge.source.y) * progress;
+        // Small traveling dot
+        const speed = 0.15;
+        const progress = ((time * speed) % 1);
+        const px = edge.source.x + dx * progress;
+        const py = edge.source.y + dy * progress;
+        
         ctx.beginPath();
-        ctx.arc(px, py, 2, 0, Math.PI * 2);
-        ctx.fillStyle = '#fff';
-        ctx.globalAlpha = 0.5;
+        ctx.arc(px, py, 1.5, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.25)';
         ctx.fill();
-        ctx.globalAlpha = 1;
       });
 
       // Draw nodes
       nodes.forEach(node => {
         const isHovered = node === hoveredNode;
         const isSelected = node === selectedNode;
-        const pulse = Math.sin(time * 2 + node.pulsePhase) * 0.15 + 1;
-        const nodeRadius = node.radius * (isHovered || isSelected ? 1.3 : pulse);
+        
+        // Subtle breathing animation
+        const breathe = Math.sin(time * 1.5 + node.phase) * 0.08 + 1;
+        const nodeRadius = node.baseRadius * (isHovered ? 1.15 : isSelected ? 1.1 : breathe);
 
-        // Glow effect
-        const glowRadius = nodeRadius * 2.5;
-        const glow = ctx.createRadialGradient(
-          node.x, node.y, nodeRadius * 0.5,
-          node.x, node.y, glowRadius
-        );
-        glow.addColorStop(0, node.color + (isHovered || isSelected ? '60' : '30'));
-        glow.addColorStop(1, 'transparent');
-        ctx.beginPath();
-        ctx.arc(node.x, node.y, glowRadius, 0, Math.PI * 2);
-        ctx.fillStyle = glow;
-        ctx.fill();
-
-        // Outer ring
-        if (isSelected) {
+        // Outer glow for hovered/selected
+        if (isHovered || isSelected) {
+          const glowGradient = ctx.createRadialGradient(
+            node.x, node.y, nodeRadius * 0.5,
+            node.x, node.y, nodeRadius * 2.5
+          );
+          glowGradient.addColorStop(0, 'rgba(255, 255, 255, 0.15)');
+          glowGradient.addColorStop(1, 'transparent');
           ctx.beginPath();
-          ctx.arc(node.x, node.y, nodeRadius + 8, 0, Math.PI * 2);
-          ctx.strokeStyle = node.color + '80';
-          ctx.lineWidth = 2;
-          ctx.setLineDash([4, 4]);
-          ctx.stroke();
-          ctx.setLineDash([]);
+          ctx.arc(node.x, node.y, nodeRadius * 2.5, 0, Math.PI * 2);
+          ctx.fillStyle = glowGradient;
+          ctx.fill();
         }
 
-        // Node circle
+        // Node ring
         ctx.beginPath();
         ctx.arc(node.x, node.y, nodeRadius, 0, Math.PI * 2);
-        ctx.fillStyle = node.color;
+        ctx.strokeStyle = isHovered || isSelected 
+          ? 'rgba(255, 255, 255, 0.9)' 
+          : 'rgba(255, 255, 255, 0.25)';
+        ctx.lineWidth = isHovered || isSelected ? 1.5 : 1;
+        ctx.stroke();
+
+        // Inner fill
+        ctx.beginPath();
+        ctx.arc(node.x, node.y, nodeRadius - 1, 0, Math.PI * 2);
+        ctx.fillStyle = isHovered || isSelected 
+          ? 'rgba(255, 255, 255, 0.08)' 
+          : 'rgba(255, 255, 255, 0.02)';
         ctx.fill();
 
-        // Inner highlight
-        const highlight = ctx.createRadialGradient(
-          node.x - nodeRadius * 0.3, node.y - nodeRadius * 0.3, 0,
-          node.x, node.y, nodeRadius
-        );
-        highlight.addColorStop(0, 'rgba(255, 255, 255, 0.4)');
-        highlight.addColorStop(1, 'transparent');
+        // Center dot
         ctx.beginPath();
-        ctx.arc(node.x, node.y, nodeRadius, 0, Math.PI * 2);
-        ctx.fillStyle = highlight;
+        ctx.arc(node.x, node.y, 2, 0, Math.PI * 2);
+        ctx.fillStyle = isHovered || isSelected 
+          ? 'rgba(255, 255, 255, 0.9)' 
+          : 'rgba(255, 255, 255, 0.4)';
         ctx.fill();
 
         // Node label
-        ctx.font = '600 11px "Courier Prime", monospace';
-        ctx.fillStyle = '#fff';
+        ctx.font = `500 11px 'Inter', sans-serif`;
+        ctx.fillStyle = isHovered || isSelected 
+          ? 'rgba(255, 255, 255, 0.95)' 
+          : 'rgba(255, 255, 255, 0.5)';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'top';
-        ctx.fillText(node.title, node.x, node.y + nodeRadius + 10);
+        ctx.fillText(node.title, node.x, node.y + nodeRadius + 12);
       });
 
       ctx.restore();
@@ -807,7 +664,8 @@
         const node = nodes[i];
         const dx = transformedX - node.x;
         const dy = transformedY - node.y;
-        if (dx * dx + dy * dy < node.radius * node.radius * 1.5) {
+        const hitRadius = node.baseRadius * 1.5;
+        if (dx * dx + dy * dy < hitRadius * hitRadius) {
           return node;
         }
       }
@@ -817,9 +675,7 @@
     function showPanel(node) {
       selectedNode = node;
       
-      document.getElementById('panelCategory').textContent = 
-        node.category.charAt(0).toUpperCase() + node.category.slice(1);
-      document.getElementById('panelCategory').style.background = node.color;
+      document.getElementById('panelCategory').textContent = node.category.toUpperCase();
       document.getElementById('panelTitle').textContent = node.title;
       document.getElementById('panelDate').textContent = node.date;
       document.getElementById('panelDescription').textContent = node.description;
@@ -829,7 +685,6 @@
         `<span class="project-tag">${tag}</span>`
       ).join('');
 
-      panel.style.setProperty('--panel-glow', node.color + '30');
       panel.classList.add('visible');
     }
 
@@ -884,8 +739,8 @@
 
     canvas.addEventListener('wheel', (e) => {
       e.preventDefault();
-      const delta = e.deltaY > 0 ? 0.9 : 1.1;
-      const newScale = Math.max(0.3, Math.min(3, scale * delta));
+      const delta = e.deltaY > 0 ? 0.92 : 1.08;
+      const newScale = Math.max(0.4, Math.min(2.5, scale * delta));
       
       // Zoom toward cursor
       const mouseX = e.clientX;
@@ -923,7 +778,7 @@
           e.touches[0].clientY - e.touches[1].clientY
         );
         const delta = dist / lastTouchDist;
-        scale = Math.max(0.3, Math.min(3, scale * delta));
+        scale = Math.max(0.4, Math.min(2.5, scale * delta));
         lastTouchDist = dist;
       }
     }, { passive: false });
@@ -938,19 +793,9 @@
       }
     });
 
-    // Legend click handlers
-    document.querySelectorAll('.legend-item').forEach(item => {
-      item.addEventListener('click', () => {
-        const category = item.dataset.category;
-        const categoryNodes = nodes.filter(n => n.category === category);
-        if (categoryNodes.length > 0) {
-          // Center view on category nodes
-          const avgX = categoryNodes.reduce((sum, n) => sum + n.x, 0) / categoryNodes.length;
-          const avgY = categoryNodes.reduce((sum, n) => sum + n.y, 0) / categoryNodes.length;
-          offsetX = width / 2 - avgX * scale;
-          offsetY = height / 2 - avgY * scale;
-        }
-      });
+    // Keyboard escape to close panel
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') hidePanel();
     });
 
     // Initialize
@@ -964,4 +809,3 @@
   </script>
 </body>
 </html>
-
