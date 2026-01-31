@@ -139,17 +139,32 @@
     .project-panel {
       position: fixed;
       top: 100px;
-      right: -450px;
-      width: 400px;
+      right: -480px;
+      width: 440px;
       max-height: calc(100vh - 140px);
-      background: rgba(0, 0, 0, 0.95);
+      background: rgba(0, 0, 0, 0.97);
       border: 1px solid var(--border-subtle);
       border-radius: 2px;
-      padding: 40px;
+      padding: 36px;
       z-index: 1000;
       transition: right 0.4s cubic-bezier(0.16, 1, 0.3, 1);
       overflow-y: auto;
       backdrop-filter: blur(20px);
+      scrollbar-width: thin;
+      scrollbar-color: rgba(255,255,255,0.1) transparent;
+    }
+
+    .project-panel::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    .project-panel::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .project-panel::-webkit-scrollbar-thumb {
+      background: rgba(255,255,255,0.1);
+      border-radius: 2px;
     }
 
     .project-panel.visible {
@@ -216,15 +231,90 @@
     .project-date {
       font-size: 13px;
       color: var(--text-gray);
-      margin-bottom: 28px;
+      margin-bottom: 24px;
       font-family: 'Courier Prime', monospace;
+    }
+
+    /* Project images */
+    .project-images {
+      margin-bottom: 24px;
+      display: none;
+    }
+
+    .project-images.has-images {
+      display: block;
+    }
+
+    .project-image-main {
+      width: 100%;
+      aspect-ratio: 16/10;
+      object-fit: cover;
+      border: 1px solid var(--border-subtle);
+      margin-bottom: 8px;
+      background: rgba(255,255,255,0.02);
+    }
+
+    .project-image-thumbs {
+      display: flex;
+      gap: 8px;
+    }
+
+    .project-image-thumb {
+      width: 60px;
+      height: 40px;
+      object-fit: cover;
+      border: 1px solid var(--border-subtle);
+      cursor: pointer;
+      opacity: 0.6;
+      transition: all 0.2s ease;
+      background: rgba(255,255,255,0.02);
+    }
+
+    .project-image-thumb:hover,
+    .project-image-thumb.active {
+      opacity: 1;
+      border-color: var(--border-hover);
     }
 
     .project-description {
       font-size: 14px;
       line-height: 1.8;
       color: var(--text-light);
-      margin-bottom: 28px;
+      margin-bottom: 24px;
+    }
+
+    /* Project links */
+    .project-links {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+
+    .project-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 16px;
+      background: transparent;
+      border: 1px solid var(--border-subtle);
+      color: var(--text-light);
+      text-decoration: none;
+      font-size: 12px;
+      font-family: 'Courier Prime', monospace;
+      letter-spacing: 0.05em;
+      transition: all 0.2s ease;
+    }
+
+    .project-link:hover {
+      border-color: var(--border-hover);
+      color: #fff;
+    }
+
+    .project-link svg {
+      width: 14px;
+      height: 14px;
+      fill: currentColor;
     }
 
     .project-tags {
@@ -276,6 +366,62 @@
       opacity: 1;
     }
 
+    /* Image lightbox */
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.95);
+      z-index: 2000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .lightbox.visible {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .lightbox img {
+      max-width: 90%;
+      max-height: 90%;
+      object-fit: contain;
+    }
+
+    .lightbox-close {
+      position: absolute;
+      top: 30px;
+      right: 30px;
+      width: 40px;
+      height: 40px;
+      background: transparent;
+      border: 1px solid var(--border-subtle);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .lightbox-close::before,
+    .lightbox-close::after {
+      content: '';
+      position: absolute;
+      width: 16px;
+      height: 1px;
+      background: #fff;
+    }
+
+    .lightbox-close::before {
+      transform: rotate(45deg);
+    }
+
+    .lightbox-close::after {
+      transform: rotate(-45deg);
+    }
+
     /* Mobile responsive */
     @media (max-width: 768px) {
       .nav-bar {
@@ -295,11 +441,12 @@
         right: 0;
         left: 0;
         width: 100%;
-        max-height: 60vh;
+        max-height: 70vh;
         border-radius: 0;
         border-top: 1px solid var(--border-subtle);
         transform: translateY(100%);
         transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        padding: 28px;
       }
 
       .project-panel.visible {
@@ -317,6 +464,15 @@
 
       .project-description {
         font-size: 13px;
+      }
+
+      .project-links {
+        gap: 8px;
+      }
+
+      .project-link {
+        padding: 8px 12px;
+        font-size: 11px;
       }
     }
   </style>
@@ -345,8 +501,23 @@
     <span class="project-category" id="panelCategory">Category</span>
     <h2 class="project-title" id="panelTitle">Project Title</h2>
     <p class="project-date" id="panelDate">2024 - Present</p>
+    
+    <div class="project-images" id="panelImages">
+      <img class="project-image-main" id="panelImageMain" src="" alt="Project image">
+      <div class="project-image-thumbs" id="panelImageThumbs"></div>
+    </div>
+    
     <p class="project-description" id="panelDescription">Project description goes here...</p>
+    
+    <div class="project-links" id="panelLinks"></div>
+    
     <div class="project-tags" id="panelTags"></div>
+  </div>
+
+  <!-- Image Lightbox -->
+  <div class="lightbox" id="lightbox">
+    <button class="lightbox-close" id="lightboxClose" aria-label="Close"></button>
+    <img id="lightboxImage" src="" alt="Full size image">
   </div>
 
   <!-- Instructions -->
@@ -355,7 +526,7 @@
   </div>
 
   <script>
-    // Project data
+    // Project data with links and images
     const projects = [
       {
         id: 'formula-electric',
@@ -365,7 +536,11 @@
         description: 'Designed and manufactured the attic casing for the high-voltage accumulator (battery) for Berkeley\'s Formula Electric racing team. Implemented waterproofing and high-dielectric-strength insulation to safely manage the 588V battery pack.',
         tags: ['CAD', 'Manufacturing', 'High Voltage', 'Composites'],
         connections: ['robotics-first', 'inventry'],
-        size: 1.4
+        size: 1.4,
+        links: [
+          { type: 'website', url: 'https://ev.berkeley.edu/', label: 'Team Website' }
+        ],
+        images: []
       },
       {
         id: 'robotics-first',
@@ -375,7 +550,12 @@
         description: 'Led robotics teams as Captain of Zenith #20424 and Hardware Lead of Deja Vu #13216. Mentored 30+ members in Java and CAD, designed robots with 500+ parts using FEA optimization, and won robot design awards 3 times. Raised over $5000 and developed team websites.',
         tags: ['CAD', 'FEA', 'Java', 'Leadership', 'Mentoring'],
         connections: ['inventry', 'pear-volunteering', 'formula-electric'],
-        size: 1.3
+        size: 1.3,
+        links: [
+          { type: 'website', url: 'https://www.thebluealliance.com/team/20424', label: 'Zenith #20424' },
+          { type: 'website', url: 'https://www.thebluealliance.com/team/13216', label: 'Deja Vu #13216' }
+        ],
+        images: []
       },
       {
         id: 'inventry',
@@ -385,7 +565,9 @@
         description: 'Developed a website for robotics part inventory tracking, utilizing AI invoice indexing and dynamic webscraping for 1000+ part catalogs. Integrated part-lending service with incentives and extensive privacy measures. Currently developing a parts marketplace.',
         tags: ['Web Dev', 'AI', 'Webscraping', 'Database'],
         connections: ['robotics-first', 'pear-volunteering'],
-        size: 1.2
+        size: 1.2,
+        links: [],
+        images: []
       },
       {
         id: 'atlas-smr',
@@ -395,7 +577,9 @@
         description: 'Developed an interactive web tool to evaluate Small Modular Reactor (SMR) feasibility in rural areas, integrating geospatial data and weighted scoring to compare site viability. Added hybrid SMR–solar modeling to visualize energy demand, environmental constraints, and overall system potential.',
         tags: ['Web Dev', 'GIS', 'Energy', 'Data Viz'],
         connections: ['construction-acclimation', 'friendly-fires'],
-        size: 1.1
+        size: 1.1,
+        links: [],
+        images: []
       },
       {
         id: 'construction-acclimation',
@@ -405,7 +589,9 @@
         description: 'Gathered construction site data to develop alternative devices to costly acclimation probes, aiming to cut $118M from Palo Alto\'s spending. Built a website and functioning probe prototype that earned praise from city construction officials.',
         tags: ['Hardware', 'Data Collection', 'Web Dev', 'City Planning'],
         connections: ['atlas-smr', 'prototype-flood'],
-        size: 1.0
+        size: 1.0,
+        links: [],
+        images: []
       },
       {
         id: 'beachsweep',
@@ -415,7 +601,9 @@
         description: 'Hackathon project designing a website for organizing drone beach cleanups. Utilized solar-powered drone docks that work to maintain beach cleanliness and collaborate with human initiatives. Designed a computer vision drone trash detection system.',
         tags: ['Drones', 'Computer Vision', 'Solar', 'Web Dev'],
         connections: ['friendly-fires', 'prototype-flood'],
-        size: 1.0
+        size: 1.0,
+        links: [],
+        images: []
       },
       {
         id: 'friendly-fires',
@@ -425,7 +613,9 @@
         description: 'Created a mining tool attachment consisting of a compact sensor array capable of consistently detecting coal-seam fires, aiming to save lives in dangerous and often neglected mining conditions.',
         tags: ['Sensors', 'Safety', 'Hardware', 'Mining'],
         connections: ['prototype-flood', 'atlas-smr', 'beachsweep'],
-        size: 1.0
+        size: 1.0,
+        links: [],
+        images: []
       },
       {
         id: 'prototype-flood',
@@ -435,7 +625,9 @@
         description: 'Designed a low-cost flood detection system intended for addressing the lack of alert technology in Jakarta, Indonesia. Won certificate of achievement from the American Society of Civil Engineers.',
         tags: ['Sensors', 'IoT', 'Social Impact', 'International'],
         connections: ['friendly-fires', 'construction-acclimation', 'beachsweep'],
-        size: 1.0
+        size: 1.0,
+        links: [],
+        images: []
       },
       {
         id: 'pear-volunteering',
@@ -445,9 +637,19 @@
         description: 'Developed an app and website to connect 2000+ students, 20+ event organizers, and school admin for volunteer opportunities. Implemented secure webhook/CMS-integrated system for scalable, high-volume data handling and encrypted user communication.',
         tags: ['App Dev', 'Web Dev', 'CMS', 'Security'],
         connections: ['robotics-first', 'inventry'],
-        size: 1.2
+        size: 1.2,
+        links: [],
+        images: []
       }
     ];
+
+    // SVG icons
+    const icons = {
+      website: '<svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>',
+      github: '<svg viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>',
+      demo: '<svg viewBox="0 0 24 24"><path d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg>',
+      doc: '<svg viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>'
+    };
 
     // Canvas setup
     const canvas = document.getElementById('graphCanvas');
@@ -455,6 +657,9 @@
     const tooltip = document.getElementById('nodeTooltip');
     const panel = document.getElementById('projectPanel');
     const panelClose = document.getElementById('panelClose');
+    const lightbox = document.getElementById('lightbox');
+    const lightboxClose = document.getElementById('lightboxClose');
+    const lightboxImage = document.getElementById('lightboxImage');
 
     let width, height;
     let nodes = [];
@@ -521,7 +726,6 @@
 
     function simulate() {
       nodes.forEach(node => {
-        // Repulsion between nodes
         nodes.forEach(other => {
           if (node === other) return;
           const dx = node.x - other.x;
@@ -532,14 +736,12 @@
           node.vy += (dy / dist) * force;
         });
 
-        // Center gravity
         const centerX = width / 2;
         const centerY = height / 2;
         node.vx += (centerX - node.x) * CENTER_GRAVITY;
         node.vy += (centerY - node.y) * CENTER_GRAVITY;
       });
 
-      // Attraction along edges
       edges.forEach(edge => {
         const dx = edge.target.x - edge.source.x;
         const dy = edge.target.y - edge.source.y;
@@ -551,7 +753,6 @@
         edge.target.vy -= (dy / dist) * force;
       });
 
-      // Apply velocities with damping
       nodes.forEach(node => {
         node.vx *= DAMPING;
         node.vy *= DAMPING;
@@ -571,9 +772,7 @@
       edges.forEach(edge => {
         const dx = edge.target.x - edge.source.x;
         const dy = edge.target.y - edge.source.y;
-        const dist = Math.sqrt(dx * dx + dy * dy);
         
-        // Subtle animated dash
         ctx.beginPath();
         ctx.moveTo(edge.source.x, edge.source.y);
         ctx.lineTo(edge.target.x, edge.target.y);
@@ -581,7 +780,6 @@
         ctx.lineWidth = 1;
         ctx.stroke();
 
-        // Small traveling dot
         const speed = 0.15;
         const progress = ((time * speed) % 1);
         const px = edge.source.x + dx * progress;
@@ -598,11 +796,9 @@
         const isHovered = node === hoveredNode;
         const isSelected = node === selectedNode;
         
-        // Subtle breathing animation
         const breathe = Math.sin(time * 1.5 + node.phase) * 0.08 + 1;
         const nodeRadius = node.baseRadius * (isHovered ? 1.15 : isSelected ? 1.1 : breathe);
 
-        // Outer glow for hovered/selected
         if (isHovered || isSelected) {
           const glowGradient = ctx.createRadialGradient(
             node.x, node.y, nodeRadius * 0.5,
@@ -616,7 +812,6 @@
           ctx.fill();
         }
 
-        // Node ring
         ctx.beginPath();
         ctx.arc(node.x, node.y, nodeRadius, 0, Math.PI * 2);
         ctx.strokeStyle = isHovered || isSelected 
@@ -625,7 +820,6 @@
         ctx.lineWidth = isHovered || isSelected ? 1.5 : 1;
         ctx.stroke();
 
-        // Inner fill
         ctx.beginPath();
         ctx.arc(node.x, node.y, nodeRadius - 1, 0, Math.PI * 2);
         ctx.fillStyle = isHovered || isSelected 
@@ -633,7 +827,6 @@
           : 'rgba(255, 255, 255, 0.02)';
         ctx.fill();
 
-        // Center dot
         ctx.beginPath();
         ctx.arc(node.x, node.y, 2, 0, Math.PI * 2);
         ctx.fillStyle = isHovered || isSelected 
@@ -641,7 +834,6 @@
           : 'rgba(255, 255, 255, 0.4)';
         ctx.fill();
 
-        // Node label
         ctx.font = `500 11px 'Inter', sans-serif`;
         ctx.fillStyle = isHovered || isSelected 
           ? 'rgba(255, 255, 255, 0.95)' 
@@ -680,6 +872,50 @@
       document.getElementById('panelDate').textContent = node.date;
       document.getElementById('panelDescription').textContent = node.description;
       
+      // Handle images
+      const imagesContainer = document.getElementById('panelImages');
+      const mainImage = document.getElementById('panelImageMain');
+      const thumbsContainer = document.getElementById('panelImageThumbs');
+      
+      if (node.images && node.images.length > 0) {
+        imagesContainer.classList.add('has-images');
+        mainImage.src = node.images[0];
+        mainImage.onclick = () => openLightbox(node.images[0]);
+        
+        if (node.images.length > 1) {
+          thumbsContainer.innerHTML = node.images.map((img, i) => 
+            `<img class="project-image-thumb ${i === 0 ? 'active' : ''}" src="${img}" data-index="${i}" alt="Thumbnail ${i + 1}">`
+          ).join('');
+          
+          thumbsContainer.querySelectorAll('.project-image-thumb').forEach(thumb => {
+            thumb.onclick = () => {
+              mainImage.src = thumb.src;
+              mainImage.onclick = () => openLightbox(thumb.src);
+              thumbsContainer.querySelectorAll('.project-image-thumb').forEach(t => t.classList.remove('active'));
+              thumb.classList.add('active');
+            };
+          });
+        } else {
+          thumbsContainer.innerHTML = '';
+        }
+      } else {
+        imagesContainer.classList.remove('has-images');
+      }
+      
+      // Handle links
+      const linksContainer = document.getElementById('panelLinks');
+      if (node.links && node.links.length > 0) {
+        linksContainer.innerHTML = node.links.map(link => {
+          const icon = icons[link.type] || icons.website;
+          return `<a href="${link.url}" target="_blank" rel="noopener noreferrer" class="project-link">${icon}${link.label}</a>`;
+        }).join('');
+        linksContainer.style.display = 'flex';
+      } else {
+        linksContainer.innerHTML = '';
+        linksContainer.style.display = 'none';
+      }
+      
+      // Handle tags
       const tagsContainer = document.getElementById('panelTags');
       tagsContainer.innerHTML = node.tags.map(tag => 
         `<span class="project-tag">${tag}</span>`
@@ -691,6 +927,15 @@
     function hidePanel() {
       panel.classList.remove('visible');
       selectedNode = null;
+    }
+
+    function openLightbox(src) {
+      lightboxImage.src = src;
+      lightbox.classList.add('visible');
+    }
+
+    function closeLightbox() {
+      lightbox.classList.remove('visible');
     }
 
     // Event listeners
@@ -742,7 +987,6 @@
       const delta = e.deltaY > 0 ? 0.92 : 1.08;
       const newScale = Math.max(0.4, Math.min(2.5, scale * delta));
       
-      // Zoom toward cursor
       const mouseX = e.clientX;
       const mouseY = e.clientY;
       offsetX = mouseX - (mouseX - offsetX) * (newScale / scale);
@@ -751,6 +995,10 @@
     }, { passive: false });
 
     panelClose.addEventListener('click', hidePanel);
+    lightboxClose.addEventListener('click', closeLightbox);
+    lightbox.addEventListener('click', (e) => {
+      if (e.target === lightbox) closeLightbox();
+    });
 
     // Touch events for mobile
     let touchStartX, touchStartY, lastTouchDist;
@@ -793,16 +1041,19 @@
       }
     });
 
-    // Keyboard escape to close panel
+    // Keyboard escape to close
     document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') hidePanel();
+      if (e.key === 'Escape') {
+        if (lightbox.classList.contains('visible')) {
+          closeLightbox();
+        } else {
+          hidePanel();
+        }
+      }
     });
 
     // Initialize
-    window.addEventListener('resize', () => {
-      resize();
-    });
-
+    window.addEventListener('resize', resize);
     resize();
     initNodes();
     draw();
