@@ -13,7 +13,8 @@ export default defineConfig({
                 main: './index.html',
                 resume: './resume.html',
                 connect: './connect.html',
-                footage: './footage.html'
+                footage: './footage.html',
+                projects: './projects.html'
             }
     }
   }
