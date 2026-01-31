@@ -299,30 +299,113 @@
     .modal-close::before { transform: rotate(45deg); }
     .modal-close::after { transform: rotate(-45deg); }
 
-    .modal-image {
+    /* Gallery */
+    .modal-gallery {
       width: 100%;
-      aspect-ratio: 2.5/1;
+      position: relative;
+      flex-shrink: 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .gallery-main {
+      width: 100%;
+      aspect-ratio: 2/1;
       background: rgba(255,255,255,0.02);
       display: flex;
       align-items: center;
       justify-content: center;
-      border-bottom: 1px solid var(--border);
-      flex-shrink: 0;
-      position: relative;
+      overflow: hidden;
     }
 
-    .modal-image img {
+    .gallery-main img {
       width: 100%;
       height: 100%;
       object-fit: cover;
+      cursor: zoom-in;
     }
 
-    .modal-image-placeholder {
+    .gallery-main-placeholder {
       color: var(--text-muted);
       font-size: 11px;
       letter-spacing: 0.1em;
       text-transform: uppercase;
       font-family: 'Courier Prime', monospace;
+    }
+
+    .gallery-thumbs {
+      display: flex;
+      gap: 2px;
+      padding: 2px;
+      background: rgba(0,0,0,0.5);
+      overflow-x: auto;
+    }
+
+    .gallery-thumb {
+      width: 80px;
+      height: 50px;
+      flex-shrink: 0;
+      background: rgba(255,255,255,0.03);
+      border: 2px solid transparent;
+      cursor: pointer;
+      overflow: hidden;
+      transition: all 0.2s;
+      opacity: 0.5;
+    }
+
+    .gallery-thumb:hover {
+      opacity: 0.8;
+    }
+
+    .gallery-thumb.active {
+      border-color: #fff;
+      opacity: 1;
+    }
+
+    .gallery-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .gallery-nav {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 40px;
+      height: 40px;
+      background: rgba(0,0,0,0.6);
+      border: 1px solid var(--border);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+      z-index: 5;
+    }
+
+    .gallery-nav:hover {
+      background: rgba(0,0,0,0.8);
+      border-color: var(--border-light);
+    }
+
+    .gallery-nav.prev { left: 12px; }
+    .gallery-nav.next { right: 12px; }
+
+    .gallery-nav svg {
+      width: 16px;
+      height: 16px;
+      fill: #fff;
+    }
+
+    .gallery-counter {
+      position: absolute;
+      bottom: 60px;
+      right: 12px;
+      padding: 4px 10px;
+      background: rgba(0,0,0,0.7);
+      font-size: 11px;
+      font-family: 'Courier Prime', monospace;
+      color: var(--text-dim);
     }
 
     .modal-body {
@@ -522,6 +605,55 @@
       fill: currentColor;
     }
 
+    /* Lightbox */
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.95);
+      z-index: 300;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s;
+    }
+
+    .lightbox.visible {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .lightbox img {
+      max-width: 95%;
+      max-height: 95%;
+      object-fit: contain;
+    }
+
+    .lightbox-close {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      width: 40px;
+      height: 40px;
+      background: transparent;
+      border: 1px solid var(--border);
+      cursor: pointer;
+    }
+
+    .lightbox-close::before,
+    .lightbox-close::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 18px;
+      height: 1px;
+      background: #fff;
+    }
+    .lightbox-close::before { transform: translate(-50%, -50%) rotate(45deg); }
+    .lightbox-close::after { transform: translate(-50%, -50%) rotate(-45deg); }
+
     /* Responsive */
     @media (max-width: 768px) {
       .nav-bar {
@@ -561,6 +693,9 @@
         width: 100%;
         height: 120px;
       }
+
+      .gallery-nav { display: none; }
+      .gallery-thumb { width: 60px; height: 40px; }
     }
   </style>
 </head>
@@ -585,10 +720,13 @@
   <div class="modal-overlay" id="modalOverlay"></div>
   <div class="modal" id="modal">
     <button class="modal-close" id="modalClose"></button>
-    <div class="modal-image" id="modalImage">
-      <span class="modal-image-placeholder">Project Photo</span>
-    </div>
+    <div class="modal-gallery" id="modalGallery"></div>
     <div class="modal-body" id="modalBody"></div>
+  </div>
+
+  <div class="lightbox" id="lightbox">
+    <button class="lightbox-close" id="lightboxClose"></button>
+    <img id="lightboxImg" src="" alt="">
   </div>
 
   <script>
@@ -602,9 +740,13 @@
         featured: true,
         excerpt: 'High-voltage battery system for Berkeley\'s Formula Electric racing team.',
         description: 'Designed and manufactured the attic casing for the high-voltage accumulator (battery) for Berkeley\'s Formula Electric racing team. Implemented waterproofing and high-dielectric-strength insulation to safely manage the 588V battery pack.',
-        tags: ['CAD', 'Manufacturing', 'High Voltage', 'Composites'],
+        tags: ['Solidworks', 'Solidworks PDM', 'CAD/CAM/CAE'],
         links: [{ url: 'https://ev.berkeley.edu/', label: 'Team Website' }],
-        image: '',
+        images: [
+          '/assets/formula-e-car.jpg',
+          '/assets/formula-e-cad-1.jpg',
+          '/assets/formula-e-cad-2.jpg'
+        ],
         subprojects: []
       },
       {
@@ -618,7 +760,7 @@
         description: 'Four years of competitive robotics across two teams: Zenith #20424 and Deja Vu #13216. Progressed from team member to Hardware Lead to Captain, mentoring 30+ students, designing robots with 500+ parts, and winning multiple design awards.',
         tags: ['CAD', 'FEA', 'Java', 'Leadership', 'Mentoring'],
         links: [],
-        image: '',
+        images: [],
         subprojects: [
           {
             name: 'Zenith #20424 — Captain',
@@ -660,7 +802,7 @@
         description: 'Developed a website for robotics part inventory tracking, utilizing AI invoice indexing and dynamic webscraping for 1000+ part catalogs. Integrated part-lending service with incentives and extensive privacy measures. Currently developing a parts marketplace.',
         tags: ['Web Dev', 'AI', 'Webscraping', 'Database'],
         links: [],
-        image: '',
+        images: [],
         subprojects: []
       },
       {
@@ -673,7 +815,7 @@
         description: 'Developed an app and website to connect 2000+ students, 20+ event organizers, and school admin for volunteer opportunities. Implemented secure webhook/CMS-integrated system for scalable, high-volume data handling and encrypted user communication.',
         tags: ['App Dev', 'Web Dev', 'CMS', 'Security'],
         links: [],
-        image: '',
+        images: [],
         subprojects: []
       },
       {
@@ -686,7 +828,7 @@
         description: 'Developed an interactive web tool to evaluate Small Modular Reactor (SMR) feasibility in rural areas, integrating geospatial data and weighted scoring to compare site viability. Added hybrid SMR–solar modeling to visualize energy demand, environmental constraints, and overall system potential.',
         tags: ['Web Dev', 'GIS', 'Energy', 'Data Viz'],
         links: [],
-        image: '',
+        images: [],
         subprojects: []
       },
       {
@@ -699,7 +841,7 @@
         description: 'Gathered construction site data to develop alternative devices to costly acclimation probes, aiming to cut $118M from Palo Alto\'s spending. Built a website and functioning probe prototype that earned praise from city construction officials.',
         tags: ['Hardware', 'Data Collection', 'Web Dev'],
         links: [],
-        image: '',
+        images: [],
         subprojects: []
       },
       {
@@ -712,7 +854,7 @@
         description: 'Hackathon project designing a website for organizing drone beach cleanups. Utilized solar-powered drone docks that work to maintain beach cleanliness and collaborate with human initiatives. Designed a computer vision drone trash detection system.',
         tags: ['Drones', 'Computer Vision', 'Solar'],
         links: [],
-        image: '',
+        images: [],
         subprojects: []
       },
       {
@@ -725,7 +867,7 @@
         description: 'Created a mining tool attachment consisting of a compact sensor array capable of consistently detecting coal-seam fires, aiming to save lives in dangerous and often neglected mining conditions.',
         tags: ['Sensors', 'Safety', 'Hardware'],
         links: [],
-        image: '',
+        images: [],
         subprojects: []
       },
       {
@@ -738,13 +880,15 @@
         description: 'Designed a low-cost flood detection system intended for addressing the lack of alert technology in Jakarta, Indonesia. Won certificate of achievement from the American Society of Civil Engineers.',
         tags: ['Sensors', 'IoT', 'International'],
         links: [],
-        image: '',
+        images: [],
         subprojects: []
       }
     ];
 
     const icons = {
-      link: '<svg viewBox="0 0 24 24"><path d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg>'
+      link: '<svg viewBox="0 0 24 24"><path d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg>',
+      prev: '<svg viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>',
+      next: '<svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>'
     };
 
     // Render grid
@@ -752,7 +896,9 @@
     grid.innerHTML = projects.map(p => `
       <div class="project-card${p.featured ? ' featured' : ''}" data-id="${p.id}">
         <div class="project-image">
-          ${p.image ? `<img src="${p.image}" alt="${p.title}">` : '<span class="project-image-placeholder">Photo</span>'}
+          ${p.images && p.images.length > 0 
+            ? `<img src="${p.images[0]}" alt="${p.title}" style="object-position: center 30%;">` 
+            : '<span class="project-image-placeholder">Photo</span>'}
         </div>
         <div class="project-content">
           <div class="project-meta">
@@ -768,20 +914,82 @@
       </div>
     `).join('');
 
-    // Modal
+    // Modal & Gallery state
     const modal = document.getElementById('modal');
     const overlay = document.getElementById('modalOverlay');
     const closeBtn = document.getElementById('modalClose');
     const modalBody = document.getElementById('modalBody');
+    const modalGallery = document.getElementById('modalGallery');
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightboxImg');
+    const lightboxClose = document.getElementById('lightboxClose');
+
+    let currentImages = [];
+    let currentIndex = 0;
+
+    function updateGallery() {
+      if (currentImages.length === 0) {
+        modalGallery.innerHTML = `
+          <div class="gallery-main">
+            <span class="gallery-main-placeholder">Project Photos</span>
+          </div>
+        `;
+        return;
+      }
+
+      const thumbsHTML = currentImages.length > 1 
+        ? `<div class="gallery-thumbs">
+            ${currentImages.map((img, i) => `
+              <div class="gallery-thumb${i === currentIndex ? ' active' : ''}" data-index="${i}">
+                <img src="${img}" alt="Thumbnail ${i+1}">
+              </div>
+            `).join('')}
+          </div>`
+        : '';
+
+      const navHTML = currentImages.length > 1
+        ? `<button class="gallery-nav prev">${icons.prev}</button>
+           <button class="gallery-nav next">${icons.next}</button>
+           <div class="gallery-counter">${currentIndex + 1} / ${currentImages.length}</div>`
+        : '';
+
+      modalGallery.innerHTML = `
+        <div class="gallery-main">
+          <img src="${currentImages[currentIndex]}" alt="Project image" id="galleryMainImg" style="object-position: center 30%;">
+        </div>
+        ${thumbsHTML}
+        ${navHTML}
+      `;
+
+      // Bind gallery events
+      const mainImg = document.getElementById('galleryMainImg');
+      if (mainImg) {
+        mainImg.onclick = () => {
+          lightboxImg.src = currentImages[currentIndex];
+          lightbox.classList.add('visible');
+        };
+      }
+
+      modalGallery.querySelectorAll('.gallery-thumb').forEach(thumb => {
+        thumb.onclick = () => {
+          currentIndex = parseInt(thumb.dataset.index);
+          updateGallery();
+        };
+      });
+
+      const prevBtn = modalGallery.querySelector('.gallery-nav.prev');
+      const nextBtn = modalGallery.querySelector('.gallery-nav.next');
+      if (prevBtn) prevBtn.onclick = () => { currentIndex = (currentIndex - 1 + currentImages.length) % currentImages.length; updateGallery(); };
+      if (nextBtn) nextBtn.onclick = () => { currentIndex = (currentIndex + 1) % currentImages.length; updateGallery(); };
+    }
 
     function openModal(id) {
       const p = projects.find(x => x.id === id);
       if (!p) return;
 
-      const imageEl = document.getElementById('modalImage');
-      imageEl.innerHTML = p.image 
-        ? `<img src="${p.image}" alt="${p.title}">` 
-        : '<span class="modal-image-placeholder">Project Photo</span>';
+      currentImages = p.images || [];
+      currentIndex = 0;
+      updateGallery();
 
       let linksHTML = '';
       if (p.links.length > 0) {
@@ -839,6 +1047,10 @@
       document.body.style.overflow = '';
     }
 
+    function closeLightbox() {
+      lightbox.classList.remove('visible');
+    }
+
     grid.addEventListener('click', e => {
       const card = e.target.closest('.project-card');
       if (card) openModal(card.dataset.id);
@@ -846,8 +1058,18 @@
 
     closeBtn.addEventListener('click', closeModal);
     overlay.addEventListener('click', closeModal);
+    lightboxClose.addEventListener('click', closeLightbox);
+    lightbox.addEventListener('click', e => { if (e.target === lightbox) closeLightbox(); });
+
     document.addEventListener('keydown', e => {
-      if (e.key === 'Escape') closeModal();
+      if (e.key === 'Escape') {
+        if (lightbox.classList.contains('visible')) closeLightbox();
+        else closeModal();
+      }
+      if (modal.classList.contains('visible') && currentImages.length > 1) {
+        if (e.key === 'ArrowLeft') { currentIndex = (currentIndex - 1 + currentImages.length) % currentImages.length; updateGallery(); }
+        if (e.key === 'ArrowRight') { currentIndex = (currentIndex + 1) % currentImages.length; updateGallery(); }
+      }
     });
   </script>
 </body>
