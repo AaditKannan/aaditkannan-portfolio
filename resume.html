@@ -349,6 +349,7 @@
   <nav class="nav-bar">
             <a href="/" class="nav-link">HOME</a>
             <a href="/resume" class="nav-link active">RESUME</a>
+            <a href="/projects" class="nav-link">PROJECTS</a>
             <a href="/connect" class="nav-link">CONNECT</a>
             <a href="/footage" class="nav-link">FOOTAGE</a>
   </nav>
@@ -378,12 +379,12 @@
         </div>
         <div class="body-content" id="bodyOverview">
           <p class="about-text">
-            Mechanical engineering student at UC Berkeley interested in robotics, space, and drone technology. Currently part of Formula Electric, working on the high-voltage accumulator, while building custom robotic systems independently.
+            Mechanical engineering student at UC Berkeley intersted in robotics, materials research, and space. Currently working on the high-voltage accumulator as a part of Formula Electric, while researching thin-film oxide heterostructures for next gen low-power memory and logic devices.
           </p>
           <div class="contact-links">
             <a href="mailto:aaditkannan@berkeley.edu" class="contact-link">Email: aaditkannan@berkeley.edu</a>
             <a href="https://www.linkedin.com/in/aaditkannan" target="_blank" rel="noopener noreferrer" class="contact-link">LinkedIn</a>
-            <span class="contact-link resume-pdf-link" id="resumePdfLink">Resume PDF</span>
+            <a href="/KannanAaditResumeJanuary.pdf" target="_blank" rel="noopener noreferrer" class="contact-link">Resume PDF</a>
           </div>
         </div>
       </div>
@@ -408,6 +409,7 @@
           </div>
           <ul class="entry-list">
             <li>B.S. in Mechanical Engineering: Sophomore Standing</li>
+            <li>Current Coursework: Engin 29, Multivariable Calculus, Physics 7B (Electricity and Magnetism)</li>
             <li>Relevant Coursework: Engin 7 (Python/Matlab), Chem 1A, Physics 7A</li>
             <li>Clubs: Formula Electric (accumulator subteam)</li>
           </ul>
@@ -466,7 +468,7 @@
           </div>
           <p class="entry-role">Accumulator Mechanical</p>
           <ul class="entry-list">
-            <li>Designed the attic casing for the high-voltage accumulator to manage the 588 V pack</li>
+            <li>Designed and manufactured the attic casing for the high-voltage accumulator (battery), implementing waterproofing, high-dielectric-strength insulation to manage the 588V pack</li>
           </ul>
         </div>
         <div class="entry">
@@ -496,7 +498,7 @@
           </div>
           <p class="entry-role">Student Leadership Committee (SLC), Program Member</p>
           <ul class="entry-list">
-            <li>Trained 120 middle school STEM students on Arduino and C++ for science fair projects (SLC)</li>
+            <li>Trained 120 middle school STEM students on Arduino for science fair projects (SLC)</li>
             <li>Designed mock competition and mentored 5 FIRST Lego League teams (SLC)</li>
             <li>As part of a 6 year selective program, established career interests through 1800+ hours of STEM sessions and advanced coursework</li>
             <li>Gained experience with CO2 laser cutter, CNC mill, 3D printer (FDM + SLA), CNC, and woodshop tools</li>
@@ -534,12 +536,12 @@
         </div>
         <div class="entry">
           <div class="entry-header">
-            <h3 class="entry-title">Circuit Minds</h3>
-            <p class="entry-date">(2022 - 2024)</p>
+            <h3 class="entry-title">SMR Feasibility Tool</h3>
+            <p class="entry-date">(2024)</p>
           </div>
           <ul class="entry-list">
-            <li>Created free educational content to inspire youth interest in engineering</li>
-            <li>Designed small vehicle kits for K-8 students to assemble</li>
+            <li>Developed an interactive web tool to evaluate SMR feasibility in rural areas, integrating geospatial data and weighted scoring to compare site viability</li>
+            <li>Added hybrid SMR–solar modeling to visualize energy demand, environmental constraints, and overall system potential</li>
           </ul>
         </div>
         <div class="entry">
@@ -786,80 +788,6 @@
       });
     })();
 
-    // Resume PDF link scramble animation on hover
-    (function() {
-      const resumePdfLink = document.getElementById('resumePdfLink');
-      if (!resumePdfLink) return;
-
-      const defaultText = 'Resume PDF';
-      const hoverText = 'Unavailable';
-      const scrambleChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()'.split('');
-      let animationFrame = null;
-      let isAnimating = false;
-
-      function scrambleReveal(element, finalText, duration = 400) {
-        const startTime = Date.now();
-        const startText = defaultText;
-        const chars = finalText.split('');
-        const startChars = startText.split('');
-
-        function animate() {
-          const elapsed = Date.now() - startTime;
-          const progress = Math.min(elapsed / duration, 1);
-          const eased = 1 - Math.pow(1 - progress, 3);
-
-          // Generate scrambled text that transitions from start to final
-          const scrambled = chars.map((char, index) => {
-            // Skip spaces and punctuation, keep them in place
-            if (char === ' ' || char === '\n' || !/[a-zA-Z0-9]/.test(char)) {
-              return char;
-            }
-
-            // Gradually reveal correct characters from left to right
-            const revealIndex = Math.floor(eased * chars.length);
-            if (index < revealIndex) {
-              return char; // Revealed character
-            } else if (index === revealIndex && progress > 0.9) {
-              return char; // Final character
-            } else {
-              // Scrambled character - use random from scrambleChars
-              return scrambleChars[Math.floor(Math.random() * scrambleChars.length)];
-            }
-          }).join('');
-
-          element.textContent = scrambled;
-
-          if (progress < 1) {
-            animationFrame = requestAnimationFrame(animate);
-          } else {
-            element.textContent = finalText;
-            isAnimating = false;
-          }
-        }
-
-        isAnimating = true;
-        animate();
-      }
-
-      function resetText() {
-        if (animationFrame) {
-          cancelAnimationFrame(animationFrame);
-          animationFrame = null;
-        }
-        isAnimating = false;
-        resumePdfLink.textContent = defaultText;
-      }
-
-      resumePdfLink.addEventListener('mouseenter', () => {
-        if (!isAnimating) {
-          scrambleReveal(resumePdfLink, hoverText, 400);
-        }
-      });
-
-      resumePdfLink.addEventListener('mouseleave', () => {
-        resetText();
-      });
-    })();
   </script>
 </body>
 </html>

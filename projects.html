@@ -1,0 +1,967 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+  
+  <!-- Primary Meta Tags -->
+  <title>Aadit Kannan | Projects - Interactive Portfolio</title>
+  <meta name="title" content="Aadit Kannan | Projects - Interactive Portfolio">
+  <meta name="description" content="Explore Aadit Kannan's engineering projects - from Formula Electric battery systems to robotics, flood detection, and web development. Interactive graph view of all projects.">
+  <meta name="keywords" content="Aadit Kannan projects, engineering projects, robotics, Formula Electric, UC Berkeley, portfolio, interactive projects">
+  <meta name="author" content="Aadit Kannan">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://aaditkannan.com/projects">
+  
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://aaditkannan.com/projects">
+  <meta property="og:title" content="Aadit Kannan | Projects - Interactive Portfolio">
+  <meta property="og:description" content="Explore Aadit Kannan's engineering projects with an interactive graph visualization.">
+  <meta property="og:image" content="https://aaditkannan.com/assets/photo.jpg">
+  
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://aaditkannan.com/projects">
+  <meta property="twitter:title" content="Aadit Kannan | Projects - Interactive Portfolio">
+  <meta property="twitter:description" content="Explore Aadit Kannan's engineering projects with an interactive graph visualization.">
+  <meta property="twitter:image" content="https://aaditkannan.com/assets/photo.jpg">
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="/favicon-simple.svg">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg-dark: #050508;
+      --bg-card: rgba(15, 15, 20, 0.95);
+      --text-white: #FFFFFF;
+      --text-gray: #888;
+      --accent-cyan: #00d4ff;
+      --accent-purple: #a855f7;
+      --accent-pink: #ec4899;
+      --accent-orange: #f97316;
+      --accent-green: #22c55e;
+      --accent-blue: #3b82f6;
+      --glow-cyan: rgba(0, 212, 255, 0.4);
+      --glow-purple: rgba(168, 85, 247, 0.4);
+    }
+
+    html, body {
+      overflow: hidden;
+      height: 100%;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+
+    html::-webkit-scrollbar, body::-webkit-scrollbar {
+      display: none;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--bg-dark);
+      color: var(--text-white);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* Animated gradient background */
+    .bg-gradient {
+      position: fixed;
+      inset: 0;
+      background: 
+        radial-gradient(ellipse 80% 50% at 20% 40%, rgba(0, 212, 255, 0.08) 0%, transparent 50%),
+        radial-gradient(ellipse 60% 40% at 80% 60%, rgba(168, 85, 247, 0.08) 0%, transparent 50%),
+        radial-gradient(ellipse 50% 30% at 50% 80%, rgba(236, 72, 153, 0.05) 0%, transparent 50%);
+      z-index: -2;
+      animation: gradientShift 20s ease-in-out infinite;
+    }
+
+    @keyframes gradientShift {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.7; }
+    }
+
+    /* Grid background */
+    .bg-grid {
+      position: fixed;
+      inset: 0;
+      background-image: 
+        linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+      background-size: 50px 50px;
+      z-index: -1;
+    }
+
+    /* Navigation Bar */
+    .nav-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1001;
+      padding: 24px 40px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 40px;
+      background: linear-gradient(to bottom, rgba(5, 5, 8, 0.95) 0%, transparent 100%);
+      height: 80px;
+      box-sizing: border-box;
+    }
+
+    .nav-link {
+      color: rgba(255, 255, 255, 0.7);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      transition: all 0.3s ease;
+      padding: 8px 0;
+      border: none;
+      border-bottom: 1px solid transparent;
+      background: transparent;
+      font-family: 'Courier Prime', 'JetBrains Mono', 'Courier New', monospace;
+    }
+
+    .nav-link:hover {
+      color: #FFFFFF;
+      border-bottom-color: rgba(255, 255, 255, 0.5);
+    }
+
+    .nav-link.active {
+      color: #FFFFFF;
+      border-bottom-color: #FFFFFF;
+    }
+
+    /* Canvas container */
+    #graphCanvas {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      cursor: grab;
+    }
+
+    #graphCanvas:active {
+      cursor: grabbing;
+    }
+
+    /* Project detail panel */
+    .project-panel {
+      position: fixed;
+      top: 100px;
+      right: -450px;
+      width: 420px;
+      max-height: calc(100vh - 140px);
+      background: var(--bg-card);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      padding: 32px;
+      z-index: 1000;
+      transition: right 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      overflow-y: auto;
+      backdrop-filter: blur(20px);
+      box-shadow: 
+        0 0 60px rgba(0, 0, 0, 0.5),
+        0 0 40px var(--panel-glow, rgba(0, 212, 255, 0.1));
+    }
+
+    .project-panel.visible {
+      right: 30px;
+    }
+
+    .project-panel-close {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      width: 32px;
+      height: 32px;
+      background: rgba(255, 255, 255, 0.1);
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+    }
+
+    .project-panel-close:hover {
+      background: rgba(255, 255, 255, 0.2);
+      transform: scale(1.1);
+    }
+
+    .project-panel-close::before,
+    .project-panel-close::after {
+      content: '';
+      position: absolute;
+      width: 14px;
+      height: 2px;
+      background: #fff;
+    }
+
+    .project-panel-close::before {
+      transform: rotate(45deg);
+    }
+
+    .project-panel-close::after {
+      transform: rotate(-45deg);
+    }
+
+    .project-category {
+      display: inline-block;
+      padding: 4px 12px;
+      background: var(--category-color, var(--accent-cyan));
+      color: #000;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      border-radius: 20px;
+      margin-bottom: 16px;
+    }
+
+    .project-title {
+      font-family: 'Courier Prime', monospace;
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      line-height: 1.2;
+    }
+
+    .project-date {
+      font-size: 14px;
+      color: var(--text-gray);
+      margin-bottom: 24px;
+      font-style: italic;
+    }
+
+    .project-description {
+      font-size: 15px;
+      line-height: 1.8;
+      color: rgba(255, 255, 255, 0.85);
+      margin-bottom: 24px;
+    }
+
+    .project-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 24px;
+    }
+
+    .project-tag {
+      padding: 6px 12px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 6px;
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.8);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .project-links {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .project-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 18px;
+      background: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 8px;
+      color: #fff;
+      font-size: 13px;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+
+    .project-link:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.5);
+      transform: translateY(-2px);
+    }
+
+    /* Category legend */
+    .legend {
+      position: fixed;
+      bottom: 30px;
+      left: 30px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      z-index: 100;
+      background: rgba(5, 5, 8, 0.8);
+      padding: 20px;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+    }
+
+    .legend-title {
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-gray);
+      margin-bottom: 8px;
+      font-family: 'Courier Prime', monospace;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.7);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .legend-item:hover {
+      color: #fff;
+    }
+
+    .legend-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      box-shadow: 0 0 10px currentColor;
+    }
+
+    /* Instructions */
+    .instructions {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      font-size: 12px;
+      color: var(--text-gray);
+      text-align: right;
+      z-index: 100;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .instructions kbd {
+      display: inline-block;
+      padding: 2px 8px;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 4px;
+      margin: 0 2px;
+    }
+
+    /* Mobile responsive */
+    @media (max-width: 768px) {
+      .nav-bar {
+        padding: 20px 24px;
+        gap: 24px;
+        height: 70px;
+      }
+
+      .nav-link {
+        font-size: 11px;
+        letter-spacing: 0.1em;
+      }
+
+      .project-panel {
+        top: auto;
+        bottom: 0;
+        right: 0;
+        left: 0;
+        width: 100%;
+        max-height: 60vh;
+        border-radius: 24px 24px 0 0;
+        transform: translateY(100%);
+        transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+
+      .project-panel.visible {
+        right: 0;
+        transform: translateY(0);
+      }
+
+      .legend {
+        bottom: 20px;
+        left: 20px;
+        padding: 14px;
+        font-size: 11px;
+      }
+
+      .instructions {
+        display: none;
+      }
+
+      .project-title {
+        font-size: 22px;
+      }
+
+      .project-description {
+        font-size: 14px;
+      }
+    }
+
+    /* Node hover tooltip */
+    .node-tooltip {
+      position: fixed;
+      padding: 8px 14px;
+      background: rgba(0, 0, 0, 0.9);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 8px;
+      font-size: 13px;
+      color: #fff;
+      pointer-events: none;
+      z-index: 1002;
+      opacity: 0;
+      transition: opacity 0.2s ease;
+      font-family: 'Courier Prime', monospace;
+      white-space: nowrap;
+    }
+
+    .node-tooltip.visible {
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-gradient"></div>
+  <div class="bg-grid"></div>
+
+  <!-- Navigation Bar -->
+  <nav class="nav-bar">
+    <a href="/" class="nav-link">HOME</a>
+    <a href="/resume" class="nav-link">RESUME</a>
+    <a href="/projects" class="nav-link active">PROJECTS</a>
+    <a href="/connect" class="nav-link">CONNECT</a>
+    <a href="/footage" class="nav-link">FOOTAGE</a>
+  </nav>
+
+  <!-- Graph Canvas -->
+  <canvas id="graphCanvas"></canvas>
+
+  <!-- Node Tooltip -->
+  <div class="node-tooltip" id="nodeTooltip"></div>
+
+  <!-- Project Detail Panel -->
+  <div class="project-panel" id="projectPanel">
+    <button class="project-panel-close" id="panelClose" aria-label="Close"></button>
+    <span class="project-category" id="panelCategory">Category</span>
+    <h2 class="project-title" id="panelTitle">Project Title</h2>
+    <p class="project-date" id="panelDate">2024 - Present</p>
+    <p class="project-description" id="panelDescription">Project description goes here...</p>
+    <div class="project-tags" id="panelTags"></div>
+    <div class="project-links" id="panelLinks"></div>
+  </div>
+
+  <!-- Category Legend -->
+  <div class="legend">
+    <div class="legend-title">Categories</div>
+    <div class="legend-item" data-category="hardware">
+      <div class="legend-dot" style="background: #00d4ff; color: #00d4ff;"></div>
+      <span>Hardware / Robotics</span>
+    </div>
+    <div class="legend-item" data-category="software">
+      <div class="legend-dot" style="background: #a855f7; color: #a855f7;"></div>
+      <span>Software / Web</span>
+    </div>
+    <div class="legend-item" data-category="research">
+      <div class="legend-dot" style="background: #22c55e; color: #22c55e;"></div>
+      <span>Research</span>
+    </div>
+    <div class="legend-item" data-category="social">
+      <div class="legend-dot" style="background: #f97316; color: #f97316;"></div>
+      <span>Social Impact</span>
+    </div>
+  </div>
+
+  <!-- Instructions -->
+  <div class="instructions">
+    <kbd>Click</kbd> node to view details<br>
+    <kbd>Drag</kbd> to pan • <kbd>Scroll</kbd> to zoom
+  </div>
+
+  <script>
+    // Project data
+    const projects = [
+      {
+        id: 'formula-electric',
+        title: 'Formula Electric',
+        category: 'hardware',
+        date: '2025 - Present',
+        description: 'Designed and manufactured the attic casing for the high-voltage accumulator (battery) for Berkeley\'s Formula Electric racing team. Implemented waterproofing and high-dielectric-strength insulation to safely manage the 588V battery pack.',
+        tags: ['CAD', 'Manufacturing', 'High Voltage', 'Composites'],
+        color: '#00d4ff',
+        connections: ['robotics-first', 'inventry']
+      },
+      {
+        id: 'robotics-first',
+        title: 'Robotics (FIRST)',
+        category: 'hardware',
+        date: '2021 - 2025',
+        description: 'Led robotics teams as Captain of Zenith #20424 and Hardware Lead of Deja Vu #13216. Mentored 30+ members in Java and CAD, designed robots with 500+ parts using FEA optimization, and won robot design awards 3 times. Raised over $5000 and developed team websites.',
+        tags: ['CAD', 'FEA', 'Java', 'Leadership', 'Mentoring'],
+        color: '#00d4ff',
+        connections: ['inventry', 'pear-volunteering', 'formula-electric']
+      },
+      {
+        id: 'inventry',
+        title: 'Inventry',
+        category: 'software',
+        date: '2025 - Present',
+        description: 'Developed a website for robotics part inventory tracking, utilizing AI invoice indexing and dynamic webscraping for 1000+ part catalogs. Integrated part-lending service with incentives and extensive privacy measures. Currently developing a parts marketplace.',
+        tags: ['Web Dev', 'AI', 'Webscraping', 'Database'],
+        color: '#a855f7',
+        connections: ['robotics-first', 'pear-volunteering']
+      },
+      {
+        id: 'smr-feasibility',
+        title: 'SMR Feasibility Tool',
+        category: 'research',
+        date: '2024',
+        description: 'Developed an interactive web tool to evaluate Small Modular Reactor (SMR) feasibility in rural areas, integrating geospatial data and weighted scoring to compare site viability. Added hybrid SMR–solar modeling to visualize energy demand, environmental constraints, and overall system potential.',
+        tags: ['Web Dev', 'GIS', 'Energy', 'Data Viz'],
+        color: '#22c55e',
+        connections: ['construction-acclimation', 'friendly-fires']
+      },
+      {
+        id: 'construction-acclimation',
+        title: 'Construction Acclimation',
+        category: 'research',
+        date: '2022 - 2023',
+        description: 'Gathered construction site data to develop alternative devices to costly acclimation probes, aiming to cut $118M from Palo Alto\'s spending. Built a website and functioning probe prototype that earned praise from city construction officials.',
+        tags: ['Hardware', 'Data Collection', 'Web Dev', 'City Planning'],
+        color: '#22c55e',
+        connections: ['smr-feasibility', 'prototype-flood']
+      },
+      {
+        id: 'beachsweep',
+        title: 'Beachsweep',
+        category: 'hardware',
+        date: '2023',
+        description: 'Hackathon project designing a website for organizing drone beach cleanups. Utilized solar-powered drone docks that work to maintain beach cleanliness and collaborate with human initiatives. Designed a computer vision drone trash detection system.',
+        tags: ['Drones', 'Computer Vision', 'Solar', 'Web Dev'],
+        color: '#00d4ff',
+        connections: ['friendly-fires', 'prototype-flood']
+      },
+      {
+        id: 'friendly-fires',
+        title: 'Friendly Fires',
+        category: 'social',
+        date: '2021 - 2022',
+        description: 'Created a mining tool attachment consisting of a compact sensor array capable of consistently detecting coal-seam fires, aiming to save lives in dangerous and often neglected mining conditions.',
+        tags: ['Sensors', 'Safety', 'Hardware', 'Mining'],
+        color: '#f97316',
+        connections: ['prototype-flood', 'smr-feasibility', 'beachsweep']
+      },
+      {
+        id: 'prototype-flood',
+        title: 'Prototype Ø Flood',
+        category: 'social',
+        date: '2020 - 2021',
+        description: 'Designed a low-cost flood detection system intended for addressing the lack of alert technology in Jakarta, Indonesia. Won certificate of achievement from the American Society of Civil Engineers.',
+        tags: ['Sensors', 'IoT', 'Social Impact', 'International'],
+        color: '#f97316',
+        connections: ['friendly-fires', 'construction-acclimation', 'beachsweep']
+      },
+      {
+        id: 'pear-volunteering',
+        title: 'Pear Volunteering',
+        category: 'software',
+        date: '2023 - 2025',
+        description: 'Developed an app and website to connect 2000+ students, 20+ event organizers, and school admin for volunteer opportunities. Implemented secure webhook/CMS-integrated system for scalable, high-volume data handling and encrypted user communication.',
+        tags: ['App Dev', 'Web Dev', 'CMS', 'Security'],
+        color: '#a855f7',
+        connections: ['robotics-first', 'inventry']
+      }
+    ];
+
+    // Canvas setup
+    const canvas = document.getElementById('graphCanvas');
+    const ctx = canvas.getContext('2d');
+    const tooltip = document.getElementById('nodeTooltip');
+    const panel = document.getElementById('projectPanel');
+    const panelClose = document.getElementById('panelClose');
+
+    let width, height;
+    let nodes = [];
+    let edges = [];
+    let offsetX = 0, offsetY = 0;
+    let scale = 1;
+    let isDragging = false;
+    let dragStartX, dragStartY;
+    let hoveredNode = null;
+    let selectedNode = null;
+    let animationFrame;
+
+    // Physics simulation parameters
+    const REPULSION = 15000;
+    const ATTRACTION = 0.008;
+    const DAMPING = 0.85;
+    const CENTER_GRAVITY = 0.01;
+
+    function resize() {
+      width = window.innerWidth;
+      height = window.innerHeight;
+      canvas.width = width * window.devicePixelRatio;
+      canvas.height = height * window.devicePixelRatio;
+      canvas.style.width = width + 'px';
+      canvas.style.height = height + 'px';
+      ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+    }
+
+    function initNodes() {
+      const centerX = width / 2;
+      const centerY = height / 2;
+      const radius = Math.min(width, height) * 0.3;
+
+      nodes = projects.map((project, i) => {
+        const angle = (i / projects.length) * Math.PI * 2;
+        return {
+          ...project,
+          x: centerX + Math.cos(angle) * radius + (Math.random() - 0.5) * 100,
+          y: centerY + Math.sin(angle) * radius + (Math.random() - 0.5) * 100,
+          vx: 0,
+          vy: 0,
+          radius: 24,
+          pulsePhase: Math.random() * Math.PI * 2
+        };
+      });
+
+      // Build edges from connections
+      edges = [];
+      nodes.forEach(node => {
+        if (node.connections) {
+          node.connections.forEach(targetId => {
+            const target = nodes.find(n => n.id === targetId);
+            if (target && !edges.find(e => 
+              (e.source.id === node.id && e.target.id === targetId) ||
+              (e.source.id === targetId && e.target.id === node.id)
+            )) {
+              edges.push({ source: node, target });
+            }
+          });
+        }
+      });
+    }
+
+    function simulate() {
+      nodes.forEach(node => {
+        // Repulsion between nodes
+        nodes.forEach(other => {
+          if (node === other) return;
+          const dx = node.x - other.x;
+          const dy = node.y - other.y;
+          const dist = Math.sqrt(dx * dx + dy * dy) || 1;
+          const force = REPULSION / (dist * dist);
+          node.vx += (dx / dist) * force;
+          node.vy += (dy / dist) * force;
+        });
+
+        // Center gravity
+        const centerX = width / 2;
+        const centerY = height / 2;
+        node.vx += (centerX - node.x) * CENTER_GRAVITY;
+        node.vy += (centerY - node.y) * CENTER_GRAVITY;
+      });
+
+      // Attraction along edges
+      edges.forEach(edge => {
+        const dx = edge.target.x - edge.source.x;
+        const dy = edge.target.y - edge.source.y;
+        const dist = Math.sqrt(dx * dx + dy * dy) || 1;
+        const force = dist * ATTRACTION;
+        edge.source.vx += (dx / dist) * force;
+        edge.source.vy += (dy / dist) * force;
+        edge.target.vx -= (dx / dist) * force;
+        edge.target.vy -= (dy / dist) * force;
+      });
+
+      // Apply velocities with damping
+      nodes.forEach(node => {
+        node.vx *= DAMPING;
+        node.vy *= DAMPING;
+        node.x += node.vx;
+        node.y += node.vy;
+      });
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, width, height);
+      ctx.save();
+      ctx.translate(offsetX, offsetY);
+      ctx.scale(scale, scale);
+
+      const time = Date.now() / 1000;
+
+      // Draw edges
+      edges.forEach(edge => {
+        const gradient = ctx.createLinearGradient(
+          edge.source.x, edge.source.y,
+          edge.target.x, edge.target.y
+        );
+        gradient.addColorStop(0, edge.source.color + '40');
+        gradient.addColorStop(1, edge.target.color + '40');
+
+        ctx.beginPath();
+        ctx.moveTo(edge.source.x, edge.source.y);
+        ctx.lineTo(edge.target.x, edge.target.y);
+        ctx.strokeStyle = gradient;
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+
+        // Animated particles along edges
+        const progress = (time * 0.3) % 1;
+        const px = edge.source.x + (edge.target.x - edge.source.x) * progress;
+        const py = edge.source.y + (edge.target.y - edge.source.y) * progress;
+        ctx.beginPath();
+        ctx.arc(px, py, 2, 0, Math.PI * 2);
+        ctx.fillStyle = '#fff';
+        ctx.globalAlpha = 0.5;
+        ctx.fill();
+        ctx.globalAlpha = 1;
+      });
+
+      // Draw nodes
+      nodes.forEach(node => {
+        const isHovered = node === hoveredNode;
+        const isSelected = node === selectedNode;
+        const pulse = Math.sin(time * 2 + node.pulsePhase) * 0.15 + 1;
+        const nodeRadius = node.radius * (isHovered || isSelected ? 1.3 : pulse);
+
+        // Glow effect
+        const glowRadius = nodeRadius * 2.5;
+        const glow = ctx.createRadialGradient(
+          node.x, node.y, nodeRadius * 0.5,
+          node.x, node.y, glowRadius
+        );
+        glow.addColorStop(0, node.color + (isHovered || isSelected ? '60' : '30'));
+        glow.addColorStop(1, 'transparent');
+        ctx.beginPath();
+        ctx.arc(node.x, node.y, glowRadius, 0, Math.PI * 2);
+        ctx.fillStyle = glow;
+        ctx.fill();
+
+        // Outer ring
+        if (isSelected) {
+          ctx.beginPath();
+          ctx.arc(node.x, node.y, nodeRadius + 8, 0, Math.PI * 2);
+          ctx.strokeStyle = node.color + '80';
+          ctx.lineWidth = 2;
+          ctx.setLineDash([4, 4]);
+          ctx.stroke();
+          ctx.setLineDash([]);
+        }
+
+        // Node circle
+        ctx.beginPath();
+        ctx.arc(node.x, node.y, nodeRadius, 0, Math.PI * 2);
+        ctx.fillStyle = node.color;
+        ctx.fill();
+
+        // Inner highlight
+        const highlight = ctx.createRadialGradient(
+          node.x - nodeRadius * 0.3, node.y - nodeRadius * 0.3, 0,
+          node.x, node.y, nodeRadius
+        );
+        highlight.addColorStop(0, 'rgba(255, 255, 255, 0.4)');
+        highlight.addColorStop(1, 'transparent');
+        ctx.beginPath();
+        ctx.arc(node.x, node.y, nodeRadius, 0, Math.PI * 2);
+        ctx.fillStyle = highlight;
+        ctx.fill();
+
+        // Node label
+        ctx.font = '600 11px "Courier Prime", monospace';
+        ctx.fillStyle = '#fff';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'top';
+        ctx.fillText(node.title, node.x, node.y + nodeRadius + 10);
+      });
+
+      ctx.restore();
+      simulate();
+      animationFrame = requestAnimationFrame(draw);
+    }
+
+    function getNodeAtPosition(x, y) {
+      const transformedX = (x - offsetX) / scale;
+      const transformedY = (y - offsetY) / scale;
+
+      for (let i = nodes.length - 1; i >= 0; i--) {
+        const node = nodes[i];
+        const dx = transformedX - node.x;
+        const dy = transformedY - node.y;
+        if (dx * dx + dy * dy < node.radius * node.radius * 1.5) {
+          return node;
+        }
+      }
+      return null;
+    }
+
+    function showPanel(node) {
+      selectedNode = node;
+      
+      document.getElementById('panelCategory').textContent = 
+        node.category.charAt(0).toUpperCase() + node.category.slice(1);
+      document.getElementById('panelCategory').style.background = node.color;
+      document.getElementById('panelTitle').textContent = node.title;
+      document.getElementById('panelDate').textContent = node.date;
+      document.getElementById('panelDescription').textContent = node.description;
+      
+      const tagsContainer = document.getElementById('panelTags');
+      tagsContainer.innerHTML = node.tags.map(tag => 
+        `<span class="project-tag">${tag}</span>`
+      ).join('');
+
+      panel.style.setProperty('--panel-glow', node.color + '30');
+      panel.classList.add('visible');
+    }
+
+    function hidePanel() {
+      panel.classList.remove('visible');
+      selectedNode = null;
+    }
+
+    // Event listeners
+    canvas.addEventListener('mousedown', (e) => {
+      isDragging = true;
+      dragStartX = e.clientX - offsetX;
+      dragStartY = e.clientY - offsetY;
+    });
+
+    canvas.addEventListener('mousemove', (e) => {
+      if (isDragging) {
+        offsetX = e.clientX - dragStartX;
+        offsetY = e.clientY - dragStartY;
+      }
+
+      const node = getNodeAtPosition(e.clientX, e.clientY);
+      hoveredNode = node;
+      canvas.style.cursor = node ? 'pointer' : 'grab';
+
+      if (node) {
+        tooltip.textContent = node.title;
+        tooltip.style.left = e.clientX + 15 + 'px';
+        tooltip.style.top = e.clientY + 15 + 'px';
+        tooltip.classList.add('visible');
+      } else {
+        tooltip.classList.remove('visible');
+      }
+    });
+
+    canvas.addEventListener('mouseup', () => {
+      isDragging = false;
+    });
+
+    canvas.addEventListener('mouseleave', () => {
+      isDragging = false;
+      hoveredNode = null;
+      tooltip.classList.remove('visible');
+    });
+
+    canvas.addEventListener('click', (e) => {
+      const node = getNodeAtPosition(e.clientX, e.clientY);
+      if (node) {
+        showPanel(node);
+      }
+    });
+
+    canvas.addEventListener('wheel', (e) => {
+      e.preventDefault();
+      const delta = e.deltaY > 0 ? 0.9 : 1.1;
+      const newScale = Math.max(0.3, Math.min(3, scale * delta));
+      
+      // Zoom toward cursor
+      const mouseX = e.clientX;
+      const mouseY = e.clientY;
+      offsetX = mouseX - (mouseX - offsetX) * (newScale / scale);
+      offsetY = mouseY - (mouseY - offsetY) * (newScale / scale);
+      scale = newScale;
+    }, { passive: false });
+
+    panelClose.addEventListener('click', hidePanel);
+
+    // Touch events for mobile
+    let touchStartX, touchStartY, lastTouchDist;
+
+    canvas.addEventListener('touchstart', (e) => {
+      if (e.touches.length === 1) {
+        touchStartX = e.touches[0].clientX - offsetX;
+        touchStartY = e.touches[0].clientY - offsetY;
+      } else if (e.touches.length === 2) {
+        lastTouchDist = Math.hypot(
+          e.touches[0].clientX - e.touches[1].clientX,
+          e.touches[0].clientY - e.touches[1].clientY
+        );
+      }
+    }, { passive: true });
+
+    canvas.addEventListener('touchmove', (e) => {
+      e.preventDefault();
+      if (e.touches.length === 1) {
+        offsetX = e.touches[0].clientX - touchStartX;
+        offsetY = e.touches[0].clientY - touchStartY;
+      } else if (e.touches.length === 2) {
+        const dist = Math.hypot(
+          e.touches[0].clientX - e.touches[1].clientX,
+          e.touches[0].clientY - e.touches[1].clientY
+        );
+        const delta = dist / lastTouchDist;
+        scale = Math.max(0.3, Math.min(3, scale * delta));
+        lastTouchDist = dist;
+      }
+    }, { passive: false });
+
+    canvas.addEventListener('touchend', (e) => {
+      if (e.changedTouches.length === 1) {
+        const node = getNodeAtPosition(
+          e.changedTouches[0].clientX,
+          e.changedTouches[0].clientY
+        );
+        if (node) showPanel(node);
+      }
+    });
+
+    // Legend click handlers
+    document.querySelectorAll('.legend-item').forEach(item => {
+      item.addEventListener('click', () => {
+        const category = item.dataset.category;
+        const categoryNodes = nodes.filter(n => n.category === category);
+        if (categoryNodes.length > 0) {
+          // Center view on category nodes
+          const avgX = categoryNodes.reduce((sum, n) => sum + n.x, 0) / categoryNodes.length;
+          const avgY = categoryNodes.reduce((sum, n) => sum + n.y, 0) / categoryNodes.length;
+          offsetX = width / 2 - avgX * scale;
+          offsetY = height / 2 - avgY * scale;
+        }
+      });
+    });
+
+    // Initialize
+    window.addEventListener('resize', () => {
+      resize();
+    });
+
+    resize();
+    initNodes();
+    draw();
+  </script>
+</body>
+</html>
+
