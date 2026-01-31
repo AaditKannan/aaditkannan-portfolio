@@ -287,8 +287,8 @@
       position: absolute;
       top: 16px;
       right: 16px;
-      width: 32px;
-      height: 32px;
+      width: 40px;
+      height: 40px;
       background: rgba(0,0,0,0.5);
       border: 1px solid var(--border);
       cursor: pointer;
@@ -296,18 +296,31 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      transition: all 0.2s ease;
+    }
+
+    .modal-close:hover {
+      background: rgba(255,255,255,0.1);
+      border-color: var(--border-light);
     }
 
     .modal-close::before,
     .modal-close::after {
       content: '';
       position: absolute;
-      width: 14px;
-      height: 1px;
+      width: 16px;
+      height: 2px;
       background: #fff;
+      transition: all 0.2s ease;
     }
     .modal-close::before { transform: rotate(45deg); }
     .modal-close::after { transform: rotate(-45deg); }
+    
+    .modal-close:hover::before,
+    .modal-close:hover::after {
+      background: #fff;
+      width: 18px;
+    }
 
     /* Gallery */
     .modal-gallery {
@@ -616,6 +629,131 @@
       fill: currentColor;
     }
 
+    /* Footage Teaser Section */
+    .footage-teaser {
+      margin-top: 80px;
+      padding-top: 60px;
+      border-top: 1px solid var(--border);
+    }
+
+    .footage-link {
+      display: block;
+      position: relative;
+      padding: 32px 40px;
+      background: rgba(255,255,255,0.02);
+      border: 1px solid var(--border);
+      text-decoration: none;
+      overflow: hidden;
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .footage-link:hover {
+      background: rgba(255,255,255,0.04);
+      border-color: var(--border-light);
+      transform: translateY(-2px);
+    }
+
+    .footage-content {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .footage-icon {
+      width: 56px;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border);
+      flex-shrink: 0;
+      transition: all 0.3s ease;
+    }
+
+    .footage-icon svg {
+      width: 28px;
+      height: 28px;
+      color: var(--text-dim);
+      transition: color 0.3s ease;
+    }
+
+    .footage-link:hover .footage-icon {
+      background: rgba(255,255,255,0.08);
+      border-color: var(--border-light);
+    }
+
+    .footage-link:hover .footage-icon svg {
+      color: #fff;
+    }
+
+    .footage-text {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .footage-label {
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      font-family: 'Courier Prime', monospace;
+    }
+
+    .footage-title {
+      font-size: 18px;
+      font-weight: 500;
+      color: var(--text-dim);
+      letter-spacing: -0.01em;
+      transition: color 0.3s ease;
+    }
+
+    .footage-link:hover .footage-title {
+      color: #fff;
+    }
+
+    .footage-arrow {
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      opacity: 0.4;
+      transition: all 0.3s ease;
+      transform: translateX(0);
+    }
+
+    .footage-arrow svg {
+      width: 20px;
+      height: 20px;
+      color: #fff;
+    }
+
+    .footage-link:hover .footage-arrow {
+      opacity: 1;
+      transform: translateX(8px);
+    }
+
+    .footage-glow {
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.03), transparent);
+      transition: left 0.6s ease;
+      z-index: 1;
+    }
+
+    .footage-link:hover .footage-glow {
+      left: 100%;
+    }
+
     /* Lightbox */
     .lightbox {
       position: fixed;
@@ -707,6 +845,43 @@
 
       .gallery-nav { display: none; }
       .gallery-thumb { width: 60px; height: 40px; }
+
+      .footage-teaser {
+        margin-top: 48px;
+        padding-top: 40px;
+      }
+
+      .footage-link {
+        padding: 24px;
+      }
+
+      .footage-content {
+        gap: 16px;
+      }
+
+      .footage-icon {
+        width: 48px;
+        height: 48px;
+      }
+
+      .footage-icon svg {
+        width: 24px;
+        height: 24px;
+      }
+
+      .footage-title {
+        font-size: 15px;
+      }
+
+      .footage-arrow {
+        width: 32px;
+        height: 32px;
+      }
+
+      .footage-arrow svg {
+        width: 16px;
+        height: 16px;
+      }
     }
   </style>
 </head>
@@ -716,7 +891,6 @@
     <a href="/resume" class="nav-link">RESUME</a>
     <a href="/projects" class="nav-link active">PROJECTS</a>
     <a href="/connect" class="nav-link">CONNECT</a>
-    <a href="/footage" class="nav-link">FOOTAGE</a>
   </nav>
 
   <main>
@@ -725,6 +899,30 @@
     </header>
 
     <div class="projects-grid" id="projectsGrid"></div>
+
+    <!-- Footage Link Section -->
+    <section class="footage-teaser">
+      <a href="/footage" class="footage-link">
+        <div class="footage-content">
+          <div class="footage-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14v-4z" />
+              <rect x="3" y="6" width="12" height="12" rx="2" />
+            </svg>
+          </div>
+          <div class="footage-text">
+            <span class="footage-label">WATCH</span>
+            <span class="footage-title">Project Footage & Behind the Scenes</span>
+          </div>
+          <div class="footage-arrow">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+          </div>
+        </div>
+        <div class="footage-glow"></div>
+      </a>
+    </section>
   </main>
 
   <div class="modal-overlay" id="modalOverlay"></div>
