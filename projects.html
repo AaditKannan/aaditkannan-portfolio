@@ -8,7 +8,6 @@
   <meta name="title" content="Aadit Kannan | Projects">
   <meta name="description" content="Explore Aadit Kannan's engineering projects - from Formula Electric battery systems to robotics and web development.">
   <meta name="author" content="Aadit Kannan">
-  <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://aaditkannan.com/projects">
   
   <meta property="og:type" content="website">
@@ -30,14 +29,13 @@
     :root {
       --bg: #000;
       --text: #fff;
-      --text-dim: #666;
-      --text-muted: #444;
+      --text-dim: #888;
+      --text-muted: #555;
       --border: rgba(255,255,255,0.08);
+      --border-light: rgba(255,255,255,0.15);
     }
 
-    html {
-      scroll-behavior: smooth;
-    }
+    html { scroll-behavior: smooth; }
 
     body {
       font-family: 'Inter', -apple-system, sans-serif;
@@ -121,7 +119,7 @@
     }
 
     .project-card:hover {
-      border-color: rgba(255,255,255,0.15);
+      border-color: var(--border-light);
       background: rgba(255,255,255,0.03);
     }
 
@@ -220,6 +218,20 @@
       50% { opacity: 0.4; }
     }
 
+    /* Sub-project count badge */
+    .subproject-count {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 8px;
+      background: rgba(255,255,255,0.06);
+      border-radius: 3px;
+      font-size: 10px;
+      color: var(--text-dim);
+      font-family: 'Courier Prime', monospace;
+      margin-left: 8px;
+    }
+
     /* Modal */
     .modal-overlay {
       position: fixed;
@@ -242,8 +254,8 @@
       left: 50%;
       transform: translate(-50%, -50%) scale(0.95);
       width: 90%;
-      max-width: 700px;
-      max-height: 85vh;
+      max-width: 800px;
+      max-height: 90vh;
       background: #0a0a0a;
       border: 1px solid var(--border);
       z-index: 201;
@@ -289,13 +301,14 @@
 
     .modal-image {
       width: 100%;
-      aspect-ratio: 16/9;
+      aspect-ratio: 2.5/1;
       background: rgba(255,255,255,0.02);
       display: flex;
       align-items: center;
       justify-content: center;
       border-bottom: 1px solid var(--border);
       flex-shrink: 0;
+      position: relative;
     }
 
     .modal-image img {
@@ -315,6 +328,7 @@
     .modal-body {
       padding: 32px;
       overflow-y: auto;
+      flex: 1;
     }
 
     .modal-header {
@@ -347,7 +361,7 @@
       font-size: 15px;
       line-height: 1.8;
       color: rgba(255,255,255,0.75);
-      margin-bottom: 28px;
+      margin-bottom: 24px;
     }
 
     .modal-links {
@@ -372,7 +386,7 @@
     }
 
     .modal-link:hover {
-      border-color: rgba(255,255,255,0.3);
+      border-color: var(--border-light);
       color: #fff;
     }
 
@@ -386,6 +400,7 @@
       display: flex;
       flex-wrap: wrap;
       gap: 8px;
+      margin-bottom: 32px;
     }
 
     .modal-tag {
@@ -394,6 +409,117 @@
       font-size: 11px;
       color: var(--text-muted);
       font-family: 'Courier Prime', monospace;
+    }
+
+    /* Sub-projects section */
+    .subprojects-section {
+      border-top: 1px solid var(--border);
+      padding-top: 28px;
+    }
+
+    .subprojects-title {
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      font-family: 'Courier Prime', monospace;
+      margin-bottom: 20px;
+    }
+
+    .subproject-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .subproject-item {
+      display: flex;
+      gap: 16px;
+      padding: 16px;
+      background: rgba(255,255,255,0.02);
+      border: 1px solid var(--border);
+      transition: all 0.2s;
+    }
+
+    .subproject-item:hover {
+      border-color: var(--border-light);
+    }
+
+    .subproject-image {
+      width: 120px;
+      height: 80px;
+      flex-shrink: 0;
+      background: rgba(255,255,255,0.03);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .subproject-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .subproject-image-placeholder {
+      font-size: 9px;
+      color: var(--text-muted);
+      font-family: 'Courier Prime', monospace;
+      letter-spacing: 0.1em;
+    }
+
+    .subproject-content {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .subproject-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 6px;
+      gap: 12px;
+    }
+
+    .subproject-name {
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+    }
+
+    .subproject-date {
+      font-size: 11px;
+      color: var(--text-muted);
+      font-family: 'Courier Prime', monospace;
+      white-space: nowrap;
+    }
+
+    .subproject-desc {
+      font-size: 13px;
+      color: var(--text-dim);
+      line-height: 1.5;
+    }
+
+    .subproject-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      margin-top: 8px;
+      font-size: 11px;
+      color: var(--text-dim);
+      text-decoration: none;
+      font-family: 'Courier Prime', monospace;
+    }
+
+    .subproject-link:hover {
+      color: #fff;
+    }
+
+    .subproject-link svg {
+      width: 12px;
+      height: 12px;
+      fill: currentColor;
     }
 
     /* Responsive */
@@ -426,6 +552,15 @@
       
       .modal-body { padding: 24px; }
       .modal-title { font-size: 22px; }
+
+      .subproject-item {
+        flex-direction: column;
+      }
+
+      .subproject-image {
+        width: 100%;
+        height: 120px;
+      }
     }
   </style>
 </head>
@@ -453,16 +588,7 @@
     <div class="modal-image" id="modalImage">
       <span class="modal-image-placeholder">Project Photo</span>
     </div>
-    <div class="modal-body">
-      <div class="modal-header">
-        <p class="modal-category" id="modalCategory"></p>
-        <h2 class="modal-title" id="modalTitle"></h2>
-        <p class="modal-date" id="modalDate"></p>
-      </div>
-      <p class="modal-description" id="modalDescription"></p>
-      <div class="modal-links" id="modalLinks"></div>
-      <div class="modal-tags" id="modalTags"></div>
-    </div>
+    <div class="modal-body" id="modalBody"></div>
   </div>
 
   <script>
@@ -478,23 +604,51 @@
         description: 'Designed and manufactured the attic casing for the high-voltage accumulator (battery) for Berkeley\'s Formula Electric racing team. Implemented waterproofing and high-dielectric-strength insulation to safely manage the 588V battery pack.',
         tags: ['CAD', 'Manufacturing', 'High Voltage', 'Composites'],
         links: [{ url: 'https://ev.berkeley.edu/', label: 'Team Website' }],
-        image: ''
+        image: '',
+        subprojects: []
       },
       {
         id: 'robotics-first',
         title: 'Robotics (FIRST)',
         category: 'Hardware',
-        date: 'Sep 2021 — May 2025',
+        date: '2021 — 2025',
         active: false,
         featured: true,
-        excerpt: 'Led two competitive robotics teams, mentoring 30+ members.',
-        description: 'Led robotics teams as Captain of Zenith #20424 and Hardware Lead of Deja Vu #13216. Mentored 30+ members in Java and CAD, designed robots with 500+ parts using FEA optimization, and won robot design awards 3 times. Raised over $5000 and developed team websites.',
+        excerpt: 'Led two competitive robotics teams across 4 seasons, building 6 robots.',
+        description: 'Four years of competitive robotics across two teams: Zenith #20424 and Deja Vu #13216. Progressed from team member to Hardware Lead to Captain, mentoring 30+ students, designing robots with 500+ parts, and winning multiple design awards.',
         tags: ['CAD', 'FEA', 'Java', 'Leadership', 'Mentoring'],
-        links: [
-          { url: 'https://www.thebluealliance.com/team/20424', label: 'Zenith #20424' },
-          { url: 'https://www.thebluealliance.com/team/13216', label: 'Deja Vu #13216' }
-        ],
-        image: ''
+        links: [],
+        image: '',
+        subprojects: [
+          {
+            name: 'Zenith #20424 — Captain',
+            date: '2024-25',
+            desc: 'Led the team as Captain. Designed and built robot for INTO THE DEEP challenge.',
+            image: '',
+            link: { url: 'https://www.thebluealliance.com/team/20424/2025', label: 'View Season' }
+          },
+          {
+            name: 'Zenith #20424 — Hardware Lead',
+            date: '2023-24',
+            desc: 'CENTERSTAGE season. Designed custom intake and scoring mechanisms.',
+            image: '',
+            link: { url: 'https://www.thebluealliance.com/team/20424/2024', label: 'View Season' }
+          },
+          {
+            name: 'Deja Vu #13216 — Hardware Lead',
+            date: '2022-23',
+            desc: 'POWERPLAY season. Won Inspire Award, designed robot with 500+ custom parts.',
+            image: '',
+            link: { url: 'https://www.thebluealliance.com/team/13216/2023', label: 'View Season' }
+          },
+          {
+            name: 'Deja Vu #13216 — Member',
+            date: '2021-22',
+            desc: 'FREIGHT FRENZY season. First year on the team, learned CAD and manufacturing.',
+            image: '',
+            link: { url: 'https://www.thebluealliance.com/team/13216/2022', label: 'View Season' }
+          }
+        ]
       },
       {
         id: 'inventry',
@@ -506,7 +660,8 @@
         description: 'Developed a website for robotics part inventory tracking, utilizing AI invoice indexing and dynamic webscraping for 1000+ part catalogs. Integrated part-lending service with incentives and extensive privacy measures. Currently developing a parts marketplace.',
         tags: ['Web Dev', 'AI', 'Webscraping', 'Database'],
         links: [],
-        image: ''
+        image: '',
+        subprojects: []
       },
       {
         id: 'pear-volunteering',
@@ -518,7 +673,8 @@
         description: 'Developed an app and website to connect 2000+ students, 20+ event organizers, and school admin for volunteer opportunities. Implemented secure webhook/CMS-integrated system for scalable, high-volume data handling and encrypted user communication.',
         tags: ['App Dev', 'Web Dev', 'CMS', 'Security'],
         links: [],
-        image: ''
+        image: '',
+        subprojects: []
       },
       {
         id: 'atlas-smr',
@@ -530,7 +686,8 @@
         description: 'Developed an interactive web tool to evaluate Small Modular Reactor (SMR) feasibility in rural areas, integrating geospatial data and weighted scoring to compare site viability. Added hybrid SMR–solar modeling to visualize energy demand, environmental constraints, and overall system potential.',
         tags: ['Web Dev', 'GIS', 'Energy', 'Data Viz'],
         links: [],
-        image: ''
+        image: '',
+        subprojects: []
       },
       {
         id: 'construction-acclimation',
@@ -542,7 +699,8 @@
         description: 'Gathered construction site data to develop alternative devices to costly acclimation probes, aiming to cut $118M from Palo Alto\'s spending. Built a website and functioning probe prototype that earned praise from city construction officials.',
         tags: ['Hardware', 'Data Collection', 'Web Dev'],
         links: [],
-        image: ''
+        image: '',
+        subprojects: []
       },
       {
         id: 'beachsweep',
@@ -554,7 +712,8 @@
         description: 'Hackathon project designing a website for organizing drone beach cleanups. Utilized solar-powered drone docks that work to maintain beach cleanliness and collaborate with human initiatives. Designed a computer vision drone trash detection system.',
         tags: ['Drones', 'Computer Vision', 'Solar'],
         links: [],
-        image: ''
+        image: '',
+        subprojects: []
       },
       {
         id: 'friendly-fires',
@@ -566,7 +725,8 @@
         description: 'Created a mining tool attachment consisting of a compact sensor array capable of consistently detecting coal-seam fires, aiming to save lives in dangerous and often neglected mining conditions.',
         tags: ['Sensors', 'Safety', 'Hardware'],
         links: [],
-        image: ''
+        image: '',
+        subprojects: []
       },
       {
         id: 'prototype-flood',
@@ -578,7 +738,8 @@
         description: 'Designed a low-cost flood detection system intended for addressing the lack of alert technology in Jakarta, Indonesia. Won certificate of achievement from the American Society of Civil Engineers.',
         tags: ['Sensors', 'IoT', 'International'],
         links: [],
-        image: ''
+        image: '',
+        subprojects: []
       }
     ];
 
@@ -598,7 +759,10 @@
             <span class="project-category">${p.category}</span>
             <span class="project-date">${p.active ? '<span class="status-dot"></span>' : ''}${p.date.split('—')[0].trim()}</span>
           </div>
-          <h3 class="project-title">${p.title}</h3>
+          <h3 class="project-title">
+            ${p.title}
+            ${p.subprojects && p.subprojects.length > 0 ? `<span class="subproject-count">${p.subprojects.length} items</span>` : ''}
+          </h3>
           <p class="project-excerpt">${p.excerpt}</p>
         </div>
       </div>
@@ -608,27 +772,61 @@
     const modal = document.getElementById('modal');
     const overlay = document.getElementById('modalOverlay');
     const closeBtn = document.getElementById('modalClose');
+    const modalBody = document.getElementById('modalBody');
 
     function openModal(id) {
       const p = projects.find(x => x.id === id);
       if (!p) return;
-
-      document.getElementById('modalCategory').textContent = p.category;
-      document.getElementById('modalTitle').innerHTML = p.active ? `<span class="status-dot"></span>${p.title}` : p.title;
-      document.getElementById('modalDate').textContent = p.date;
-      document.getElementById('modalDescription').textContent = p.description;
 
       const imageEl = document.getElementById('modalImage');
       imageEl.innerHTML = p.image 
         ? `<img src="${p.image}" alt="${p.title}">` 
         : '<span class="modal-image-placeholder">Project Photo</span>';
 
-      const linksEl = document.getElementById('modalLinks');
-      linksEl.innerHTML = p.links.length 
-        ? p.links.map(l => `<a href="${l.url}" target="_blank" rel="noopener" class="modal-link">${icons.link}${l.label}</a>`).join('')
-        : '';
+      let linksHTML = '';
+      if (p.links.length > 0) {
+        linksHTML = `<div class="modal-links">${p.links.map(l => 
+          `<a href="${l.url}" target="_blank" rel="noopener" class="modal-link">${icons.link}${l.label}</a>`
+        ).join('')}</div>`;
+      }
 
-      document.getElementById('modalTags').innerHTML = p.tags.map(t => `<span class="modal-tag">${t}</span>`).join('');
+      let subprojectsHTML = '';
+      if (p.subprojects && p.subprojects.length > 0) {
+        subprojectsHTML = `
+          <div class="subprojects-section">
+            <h4 class="subprojects-title">Timeline — ${p.subprojects.length} Items</h4>
+            <div class="subproject-list">
+              ${p.subprojects.map(s => `
+                <div class="subproject-item">
+                  <div class="subproject-image">
+                    ${s.image ? `<img src="${s.image}" alt="${s.name}">` : '<span class="subproject-image-placeholder">Photo</span>'}
+                  </div>
+                  <div class="subproject-content">
+                    <div class="subproject-header">
+                      <span class="subproject-name">${s.name}</span>
+                      <span class="subproject-date">${s.date}</span>
+                    </div>
+                    <p class="subproject-desc">${s.desc}</p>
+                    ${s.link ? `<a href="${s.link.url}" target="_blank" rel="noopener" class="subproject-link">${icons.link}${s.link.label}</a>` : ''}
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        `;
+      }
+
+      modalBody.innerHTML = `
+        <div class="modal-header">
+          <p class="modal-category">${p.category}</p>
+          <h2 class="modal-title">${p.active ? '<span class="status-dot"></span>' : ''}${p.title}</h2>
+          <p class="modal-date">${p.date}</p>
+        </div>
+        <p class="modal-description">${p.description}</p>
+        ${linksHTML}
+        <div class="modal-tags">${p.tags.map(t => `<span class="modal-tag">${t}</span>`).join('')}</div>
+        ${subprojectsHTML}
+      `;
 
       overlay.classList.add('visible');
       modal.classList.add('visible');
