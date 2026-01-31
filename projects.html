@@ -18,7 +18,7 @@
   <link rel="icon" type="image/svg+xml" href="/favicon-simple.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
   <style>
     * {
       margin: 0;
@@ -44,10 +44,12 @@
     html::-webkit-scrollbar { display: none; }
 
     body {
-      font-family: 'Inter', -apple-system, sans-serif;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
       background: var(--bg);
       color: var(--text);
+      font-weight: 400;
       -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
       line-height: 1.6;
       overflow-y: scroll;
       scrollbar-width: none;
@@ -101,12 +103,14 @@
     }
 
     .page-title {
-      font-size: 13px;
-      font-weight: 500;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: rgba(255, 255, 255, 0.7);
       font-family: 'Courier Prime', 'JetBrains Mono', 'Courier New', monospace;
+      font-size: clamp(48px, 8vw, 64px);
+      font-weight: 700;
+      color: #FFFFFF;
+      letter-spacing: 0.02em;
+      line-height: 1.1;
+      opacity: 0;
+      margin: 0;
     }
 
     /* Project grid */
@@ -717,7 +721,7 @@
 
   <main>
     <header class="page-header">
-      <h1 class="page-title">PROJECTS</h1>
+      <h1 class="page-title" id="projectsHeading">PROJECTS</h1>
     </header>
 
     <div class="projects-grid" id="projectsGrid"></div>
@@ -736,6 +740,50 @@
   </div>
 
   <script>
+    // Scramble animation for heading
+    function scrambleReveal(element, finalText, options = {}) {
+      const duration = options.duration || 600;
+      const delay = options.delay || 0;
+      const scrambleChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()';
+      
+      setTimeout(() => {
+        const startTime = Date.now();
+        const chars = finalText.split('');
+        const scrambleCharsArray = scrambleChars.split('');
+        
+        function animate() {
+          const elapsed = Date.now() - startTime;
+          const progress = Math.min(elapsed / duration, 1);
+          const eased = 1 - Math.pow(1 - progress, 3);
+
+          const scrambled = chars.map((char, index) => {
+            if (char === ' ' || char === '\n' || !/[a-zA-Z0-9]/.test(char)) return char;
+            const revealIndex = Math.floor(eased * chars.length);
+            if (index < revealIndex) return char;
+            else if (index === revealIndex && progress > 0.9) return char;
+            else return scrambleCharsArray[Math.floor(Math.random() * scrambleCharsArray.length)];
+          }).join('');
+          
+          element.textContent = scrambled;
+          element.style.opacity = '1';
+          
+          if (progress < 1) requestAnimationFrame(animate);
+          else { element.textContent = finalText; element.style.opacity = '1'; }
+        }
+        
+        requestAnimationFrame(animate);
+      }, delay);
+    }
+
+    // Run scramble on page load
+    document.addEventListener('DOMContentLoaded', () => {
+      const heading = document.getElementById('projectsHeading');
+      if (heading) {
+        const originalText = heading.textContent.trim();
+        scrambleReveal(heading, originalText, { duration: 600 });
+      }
+    });
+
     const projects = [
       {
         id: 'formula-electric',
