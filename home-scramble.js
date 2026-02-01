@@ -139,4 +139,3 @@ function scrambleRevealHTML(element, finalHTML, options = {}) {
     requestAnimationFrame(animate);
   }, delay);
 }
-
