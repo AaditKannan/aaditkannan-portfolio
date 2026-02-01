@@ -359,13 +359,18 @@
       background: #e8e8e8 !important;
     }
 
-    /* Deja Vu INTO THE DEEP - light grey background */
+    /* Deja Vu INTO THE DEEP - zoom to fill purple */
     .project-card[data-id="dejavu-2024-25"] .project-image {
-      background: #e8e8e8 !important;
+      background: #c9a9c9 !important;
     }
 
     .project-card[data-id="dejavu-2024-25"] .project-image img {
-      background: #e8e8e8 !important;
+      object-fit: cover;
+      transform: scale(1.35);
+    }
+
+    .project-card[data-id="dejavu-2024-25"]:hover .project-image img {
+      transform: scale(1.38);
     }
 
     /* Deja Vu CENTERSTAGE - light grey background */
@@ -1306,21 +1311,21 @@
 
     <div class="filter-bar">
       <div class="filter-row">
-        <div class="filter-group">
-          <span class="filter-label">Category</span>
-          <button class="filter-btn active" data-filter="all">All</button>
-          <button class="filter-btn" data-filter="hardware">Hardware</button>
-          <button class="filter-btn" data-filter="software">Software</button>
-          <button class="filter-btn" data-filter="research">Research</button>
-        </div>
-        <div class="filter-group">
-          <span class="filter-label">Year</span>
-          <button class="filter-btn year-filter active" data-year="all">All</button>
-          <button class="filter-btn year-filter" data-year="2025">2025</button>
-          <button class="filter-btn year-filter" data-year="2024">2024</button>
-          <button class="filter-btn year-filter" data-year="2023">2023</button>
-          <button class="filter-btn year-filter" data-year="2022">2022</button>
-          <button class="filter-btn year-filter" data-year="2021">2021</button>
+      <div class="filter-group">
+        <span class="filter-label">Category</span>
+        <button class="filter-btn active" data-filter="all">All</button>
+        <button class="filter-btn" data-filter="hardware">Hardware</button>
+        <button class="filter-btn" data-filter="software">Software</button>
+        <button class="filter-btn" data-filter="research">Research</button>
+      </div>
+      <div class="filter-group">
+        <span class="filter-label">Year</span>
+        <button class="filter-btn year-filter active" data-year="all">All</button>
+        <button class="filter-btn year-filter" data-year="2025">2025</button>
+        <button class="filter-btn year-filter" data-year="2024">2024</button>
+        <button class="filter-btn year-filter" data-year="2023">2023</button>
+        <button class="filter-btn year-filter" data-year="2022">2022</button>
+        <button class="filter-btn year-filter" data-year="2021">2021</button>
         </div>
         <div class="filter-group view-group">
           <span class="filter-label">View</span>
