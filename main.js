@@ -570,7 +570,31 @@ function initScrollAnimations() {
     }
   }, { passive: true });
 
-  // Removed wheel event section snapping - it was causing jumpy scroll behavior
+  // Add wheel event for smooth section snapping (optional enhancement)
+  let isScrolling = false;
+  window.addEventListener('wheel', (e) => {
+    if (isScrolling) return;
+    
+    // Only enhance scroll snapping, don't hijack
+    const delta = e.deltaY;
+    if (Math.abs(delta) > 50) { // Significant scroll
+      const currentSection = getCurrentSection();
+      if (currentSection) {
+        const nextSection = delta > 0 
+          ? getNextSection(currentSection)
+          : getPreviousSection(currentSection);
+        
+        if (nextSection && nextSection.element) {
+          isScrolling = true;
+          nextSection.element.scrollIntoView({ 
+            behavior: 'smooth', 
+            block: 'start' 
+          });
+          setTimeout(() => { isScrolling = false; }, 800);
+        }
+      }
+    }
+  }, { passive: true });
 }
 
 /**
