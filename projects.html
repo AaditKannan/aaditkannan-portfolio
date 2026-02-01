@@ -220,46 +220,6 @@
       grid-column: span 5;
     }
 
-    /* Rotate and scale the robot image to fill better */
-    .project-card[data-id="dejavu-2024-25"] .project-image img {
-      transform: rotate(15deg) scale(1.1) translateY(-5%);
-      object-fit: contain;
-    }
-
-    .project-card[data-id="dejavu-2024-25"]:hover .project-image img {
-      transform: rotate(15deg) scale(1.15) translateY(-5%);
-    }
-
-    /* CENTERSTAGE robot - zoom in to fill frame */
-    .project-card[data-id="dejavu-2023-24"] .project-image img {
-      transform: scale(1.8);
-      object-fit: cover;
-    }
-
-    .project-card[data-id="dejavu-2023-24"]:hover .project-image img {
-      transform: scale(1.85);
-    }
-
-    /* Zenith POWERPLAY robot */
-    .project-card[data-id="zenith-2022-23"] .project-image img {
-      transform: scale(1.5);
-      object-fit: cover;
-    }
-
-    .project-card[data-id="zenith-2022-23"]:hover .project-image img {
-      transform: scale(1.55);
-    }
-
-    /* Zenith FREIGHT FRENZY robot */
-    .project-card[data-id="zenith-2021-22"] .project-image img {
-      transform: scale(1.5);
-      object-fit: cover;
-    }
-
-    .project-card[data-id="zenith-2021-22"]:hover .project-image img {
-      transform: scale(1.55);
-    }
-
     .project-card {
       background: rgba(255,255,255,0.02);
       border: 1px solid var(--border);
@@ -312,11 +272,11 @@
       height: 100%;
       object-fit: contain;
       background: #000;
-      transition: transform 0.5s ease;
+      transition: transform 0.3s ease;
     }
 
     .project-card:hover .project-image img {
-      transform: scale(1.02);
+      transform: scale(1.03);
     }
 
     .project-image-placeholder {
@@ -577,8 +537,9 @@
     .gallery-main img {
       width: 100%;
       height: 100%;
-      object-fit: cover;
+      object-fit: contain;
       object-position: center;
+      background: #000;
     }
 
     .gallery-main-placeholder {
