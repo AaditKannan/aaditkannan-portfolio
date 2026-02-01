@@ -875,6 +875,44 @@
     .detail-close::before { transform: rotate(45deg); }
     .detail-close::after { transform: rotate(-45deg); }
 
+    /* ESC hint animation */
+    .esc-hint {
+      position: fixed;
+      top: 112px;
+      right: 100px;
+      font-size: 13px;
+      color: rgba(255,255,255,0.5);
+      font-family: var(--font-mono);
+      letter-spacing: 0.05em;
+      opacity: 0;
+      transform: translateX(20px);
+      pointer-events: none;
+    }
+
+    .detail-content.visible .esc-hint {
+      animation: escHintCycle 3s ease-out forwards;
+      animation-delay: 0.5s;
+    }
+
+    @keyframes escHintCycle {
+      0% {
+        opacity: 0;
+        transform: translateX(20px);
+      }
+      15% {
+        opacity: 1;
+        transform: translateX(0);
+      }
+      70% {
+        opacity: 1;
+        transform: translateX(0);
+      }
+      100% {
+        opacity: 0;
+        transform: translateX(-10px);
+      }
+    }
+
     /* Black hole close animation - fast */
     .detail-content.closing {
       animation: blackHoleClose 0.25s cubic-bezier(0.55, 0, 1, 0.45) forwards;
@@ -945,6 +983,10 @@
         right: 24px;
         width: 44px;
         height: 44px;
+      }
+
+      .esc-hint {
+        display: none;
       }
 
       .gallery-main {
@@ -1194,6 +1236,7 @@
   <!-- Detail View -->
   <div class="detail-content" id="detailContent">
     <button class="detail-close" id="detailClose"></button>
+    <span class="esc-hint">or press esc</span>
     
     <div class="detail-nav prev">
       <button class="nav-btn" id="prevProject">
