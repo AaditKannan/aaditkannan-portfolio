@@ -1698,7 +1698,7 @@
         document.querySelectorAll('.filter-btn[data-filter]').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
         activeFilter = btn.dataset.filter;
-        renderGrid();
+        smoothFilterTransition();
       });
     });
 
@@ -1708,9 +1708,22 @@
         document.querySelectorAll('.year-filter[data-year]').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
         activeYear = btn.dataset.year;
-        renderGrid();
+        smoothFilterTransition();
       });
     });
+
+    // Smooth filter transition (same as view toggle)
+    function smoothFilterTransition() {
+      const grid = document.getElementById('projectsGrid');
+      grid.classList.add('view-transitioning');
+      
+      setTimeout(() => {
+        renderGrid();
+        setTimeout(() => {
+          grid.classList.remove('view-transitioning');
+        }, 50);
+      }, 250);
+    }
 
     // View toggle handlers
     document.querySelectorAll('.view-btn[data-view]').forEach(btn => {
