@@ -104,8 +104,80 @@
     }
 
     .page-header {
-      margin-bottom: 48px;
+      margin-bottom: 32px;
       position: relative;
+    }
+
+    /* Filter Bar */
+    .filter-bar {
+      display: flex;
+      gap: 24px;
+      margin-bottom: 40px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .filter-group {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .filter-label {
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      font-family: 'Courier Prime', monospace;
+      margin-right: 8px;
+    }
+
+    .filter-btn {
+      padding: 8px 16px;
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text-dim);
+      font-size: 11px;
+      font-family: 'Courier Prime', monospace;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .filter-btn:hover {
+      border-color: var(--border-light);
+      color: #fff;
+    }
+
+    .filter-btn.active {
+      background: rgba(255,255,255,0.1);
+      border-color: rgba(255,255,255,0.3);
+      color: #fff;
+    }
+
+    .filter-divider {
+      width: 1px;
+      height: 24px;
+      background: var(--border);
+      margin: 0 8px;
+    }
+
+    @media (max-width: 768px) {
+      .filter-bar {
+        gap: 16px;
+      }
+      .filter-group {
+        width: 100%;
+        flex-wrap: wrap;
+      }
+      .filter-divider {
+        display: none;
+      }
+      .filter-btn {
+        padding: 6px 12px;
+        font-size: 10px;
+      }
     }
 
     .page-title {
@@ -897,6 +969,26 @@
       <h1 class="page-title" id="pageTitle">PROJECTS</h1>
     </header>
 
+    <div class="filter-bar">
+      <div class="filter-group">
+        <span class="filter-label">Category</span>
+        <button class="filter-btn active" data-filter="all">All</button>
+        <button class="filter-btn" data-filter="hardware">Hardware</button>
+        <button class="filter-btn" data-filter="software">Software</button>
+        <button class="filter-btn" data-filter="research">Research</button>
+      </div>
+      <div class="filter-divider"></div>
+      <div class="filter-group">
+        <span class="filter-label">Year</span>
+        <button class="filter-btn active" data-year="all">All</button>
+        <button class="filter-btn" data-year="2025">2025</button>
+        <button class="filter-btn" data-year="2024">2024</button>
+        <button class="filter-btn" data-year="2023">2023</button>
+        <button class="filter-btn" data-year="2022">2022</button>
+        <button class="filter-btn" data-year="2021">2021</button>
+      </div>
+    </div>
+
     <div class="projects-grid" id="projectsGrid"></div>
 
     <section class="footage-teaser">
@@ -964,6 +1056,8 @@
         id: 'formula-electric',
         title: 'Formula Electric',
         category: 'Hardware',
+        filterCategory: 'hardware',
+        years: [2025],
         date: 'Jan 2025 — Present',
         active: true,
         featured: false,
@@ -981,6 +1075,8 @@
         id: 'dejavu-2024-25',
         title: 'Deja Vu — INTO THE DEEP',
         category: 'Robotics',
+        filterCategory: 'hardware',
+        years: [2024, 2025],
         date: '2024 — 2025',
         active: true,
         featured: false,
@@ -994,6 +1090,8 @@
         id: 'dejavu-2023-24',
         title: 'Deja Vu — CENTERSTAGE',
         category: 'Robotics',
+        filterCategory: 'hardware',
+        years: [2023, 2024],
         date: '2023 — 2024',
         active: false,
         featured: false,
@@ -1007,6 +1105,8 @@
         id: 'zenith-2022-23',
         title: 'Zenith — POWERPLAY',
         category: 'Robotics',
+        filterCategory: 'hardware',
+        years: [2022, 2023],
         date: '2022 — 2023',
         active: false,
         featured: false,
@@ -1020,6 +1120,8 @@
         id: 'zenith-2021-22',
         title: 'Zenith — FREIGHT FRENZY',
         category: 'Robotics',
+        filterCategory: 'hardware',
+        years: [2021, 2022],
         date: '2021 — 2022',
         active: false,
         featured: false,
@@ -1033,6 +1135,8 @@
         id: 'serenity-2021-22',
         title: 'Serenity — FREIGHT FRENZY',
         category: 'Robotics',
+        filterCategory: 'hardware',
+        years: [2021, 2022],
         date: '2021 — 2022',
         active: false,
         featured: false,
@@ -1046,6 +1150,8 @@
         id: 'inventry',
         title: 'Inventry',
         category: 'Software',
+        filterCategory: 'software',
+        years: [2025],
         date: 'Jan 2025 — Present',
         active: true,
         featured: false,
@@ -1059,6 +1165,8 @@
         id: 'pear-volunteering',
         title: 'Pear Volunteering',
         category: 'Software',
+        filterCategory: 'software',
+        years: [2023, 2024, 2025],
         date: 'Aug 2023 — May 2025',
         active: false,
         featured: false,
@@ -1072,6 +1180,8 @@
         id: 'atlas-smr',
         title: 'Atlas SMR',
         category: 'Research',
+        filterCategory: 'research',
+        years: [2024],
         date: 'Mar — Jun 2024',
         active: false,
         featured: false,
@@ -1085,6 +1195,8 @@
         id: 'construction-acclimation',
         title: 'Construction Acclimation',
         category: 'Research',
+        filterCategory: 'research',
+        years: [2022, 2023],
         date: 'Oct 2022 — Apr 2023',
         active: false,
         featured: false,
@@ -1098,6 +1210,8 @@
         id: 'beachsweep',
         title: 'Beachsweep',
         category: 'Hackathon',
+        filterCategory: 'software',
+        years: [2023],
         date: 'Nov 2023',
         active: false,
         featured: false,
@@ -1111,6 +1225,8 @@
         id: 'friendly-fires',
         title: 'Friendly Fires',
         category: 'Social Impact',
+        filterCategory: 'research',
+        years: [2021, 2022],
         date: 'Sep 2021 — Mar 2022',
         active: false,
         featured: false,
@@ -1124,6 +1240,8 @@
         id: 'prototype-flood',
         title: 'Prototype Ø Flood',
         category: 'Social Impact',
+        filterCategory: 'research',
+        years: [2020, 2021],
         date: 'Nov 2020 — May 2021',
         active: false,
         featured: false,
@@ -1134,6 +1252,10 @@
         images: []
       }
     ];
+
+    // Filter state
+    let activeFilter = 'all';
+    let activeYear = 'all';
 
     // State
     let currentProjectIndex = -1;
@@ -1181,9 +1303,25 @@
       requestAnimationFrame(animate);
     }
 
+    // Filter projects
+    function getFilteredProjects() {
+      return projects.filter(p => {
+        const categoryMatch = activeFilter === 'all' || p.filterCategory === activeFilter;
+        const yearMatch = activeYear === 'all' || p.years.includes(parseInt(activeYear));
+        return categoryMatch && yearMatch;
+      });
+    }
+
     // Render grid
     function renderGrid() {
-      grid.innerHTML = projects.map(p => `
+      const filtered = getFilteredProjects();
+      
+      if (filtered.length === 0) {
+        grid.innerHTML = '<p style="color: var(--text-dim); grid-column: span 12; text-align: center; padding: 60px 0;">No projects match the selected filters.</p>';
+        return;
+      }
+
+      grid.innerHTML = filtered.map(p => `
         <div class="project-card${p.featured ? ' featured' : ''}" data-id="${p.id}">
           <div class="project-image">
             ${p.images && p.images.length > 0 
@@ -1201,6 +1339,25 @@
         </div>
       `).join('');
     }
+
+    // Filter button handlers
+    document.querySelectorAll('.filter-btn[data-filter]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.filter-btn[data-filter]').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        activeFilter = btn.dataset.filter;
+        renderGrid();
+      });
+    });
+
+    document.querySelectorAll('.filter-btn[data-year]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.filter-btn[data-year]').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        activeYear = btn.dataset.year;
+        renderGrid();
+      });
+    });
 
     // Update detail view
     function updateDetailView(project) {
