@@ -270,29 +270,10 @@
       padding: 16px;
     }
 
-    /* Smooth filtering transitions */
-    .project-card {
-      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    .project-card.filtering-out {
+    /* Smooth view transitions */
+    .projects-grid.view-transitioning .project-card {
       opacity: 0;
-      transform: scale(0.9);
-    }
-
-    .project-card.filtering-in {
-      animation: filterIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-    }
-
-    @keyframes filterIn {
-      from {
-        opacity: 0;
-        transform: scale(0.95) translateY(10px);
-      }
-      to {
-        opacity: 1;
-        transform: scale(1) translateY(0);
-      }
+      transform: scale(0.95);
     }
 
     /* First 4 cards: 6 columns each (50% - 2 per row) */
@@ -1717,7 +1698,7 @@
         document.querySelectorAll('.filter-btn[data-filter]').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
         activeFilter = btn.dataset.filter;
-        smoothFilterTransition();
+        renderGrid();
       });
     });
 
@@ -1727,7 +1708,7 @@
         document.querySelectorAll('.year-filter[data-year]').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
         activeYear = btn.dataset.year;
-        smoothFilterTransition();
+        renderGrid();
       });
     });
 
@@ -1739,35 +1720,23 @@
         const view = btn.dataset.view;
         const grid = document.getElementById('projectsGrid');
         
-        if (view === 'compact') {
-          grid.classList.add('compact-view');
-        } else {
-          grid.classList.remove('compact-view');
-        }
-      });
-    });
-
-    // Smooth filter transition
-    function smoothFilterTransition() {
-      const cards = document.querySelectorAll('.project-card');
-      cards.forEach(card => card.classList.add('filtering-out'));
-      
-      setTimeout(() => {
-        renderGrid();
-        const newCards = document.querySelectorAll('.project-card');
-        newCards.forEach((card, i) => {
-          card.style.animationDelay = `${i * 0.05}s`;
-          card.classList.add('filtering-in');
-        });
+        // Add transitioning class for fade out
+        grid.classList.add('view-transitioning');
         
         setTimeout(() => {
-          newCards.forEach(card => {
-            card.classList.remove('filtering-in');
-            card.style.animationDelay = '';
-          });
-        }, 500);
-      }, 200);
-    }
+          if (view === 'compact') {
+            grid.classList.add('compact-view');
+          } else {
+            grid.classList.remove('compact-view');
+          }
+          
+          // Remove transitioning class for fade in
+          setTimeout(() => {
+            grid.classList.remove('view-transitioning');
+          }, 50);
+        }, 250);
+      });
+    });
 
     // Update detail view
     function updateDetailView(project) {
