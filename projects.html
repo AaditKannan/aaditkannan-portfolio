@@ -1488,7 +1488,6 @@
 
     // Filter state
     let activeFilter = 'all';
-    let activeYear = 'all';
 
     // State
     let currentProjectIndex = -1;
@@ -1539,9 +1538,7 @@
     // Filter projects
     function getFilteredProjects() {
       return projects.filter(p => {
-        const categoryMatch = activeFilter === 'all' || p.filterCategory === activeFilter;
-        const yearMatch = activeYear === 'all' || p.years.includes(parseInt(activeYear));
-        return categoryMatch && yearMatch;
+        return activeFilter === 'all' || p.filterCategory === activeFilter;
       });
     }
 
@@ -1583,15 +1580,33 @@
       });
     });
 
-    // Timeline year click handlers
+    // Timeline year click handlers - scroll to projects of that year
     document.querySelectorAll('.year-btn[data-year]').forEach(btn => {
       btn.addEventListener('click', () => {
         document.querySelectorAll('.year-btn[data-year]').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
-        activeYear = btn.dataset.year;
-        renderGrid();
-        // Smooth scroll to top of grid
-        grid.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        
+        const year = btn.dataset.year;
+        
+        if (year === 'all') {
+          // Scroll to top of grid
+          grid.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        } else {
+          // Find first project card that includes this year and scroll to it
+          const targetYear = parseInt(year);
+          const filtered = getFilteredProjects();
+          const projectWithYear = filtered.find(p => p.years.includes(targetYear));
+          
+          if (projectWithYear) {
+            const card = document.querySelector(`.project-card[data-id="${projectWithYear.id}"]`);
+            if (card) {
+              card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+              // Brief highlight effect
+              card.style.boxShadow = '0 0 30px rgba(255,255,255,0.3)';
+              setTimeout(() => { card.style.boxShadow = ''; }, 1000);
+            }
+          }
+        }
       });
     });
 
