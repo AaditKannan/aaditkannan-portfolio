@@ -230,6 +230,16 @@
       transform: rotate(15deg) scale(1.35) translateY(-5%);
     }
 
+    /* CENTERSTAGE robot - zoom in to fill frame */
+    .project-card[data-id="dejavu-2023-24"] .project-image img {
+      transform: scale(1.8);
+      object-fit: cover;
+    }
+
+    .project-card[data-id="dejavu-2023-24"]:hover .project-image img {
+      transform: scale(1.85);
+    }
+
     .project-card {
       background: rgba(255,255,255,0.02);
       border: 1px solid var(--border);
@@ -1157,7 +1167,7 @@
         description: 'Hardware Lead for FTC Team Deja Vu #13216 during the CENTERSTAGE season. Designed scoring mechanisms for pixel manipulation and backdrop placement. Led team to competition success through innovative mechanical solutions.',
         tags: ['CAD', 'FEA', 'Manufacturing', 'Leadership'],
         links: [],
-        images: []
+        images: ['/assets/Deja_Vu_Bot_Assemble_Version_1_v4_v111.png']
       },
       {
         id: 'zenith-2022-23',
