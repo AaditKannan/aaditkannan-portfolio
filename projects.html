@@ -1200,7 +1200,7 @@
 
       <div class="detail-body">
         <div class="detail-main">
-          <p class="detail-description" id="detailDescription"></p>
+          <div class="detail-description" id="detailDescription"></div>
           <div class="detail-tags" id="detailTags"></div>
         </div>
         <aside class="detail-sidebar" id="detailSidebar"></aside>
@@ -1301,8 +1301,8 @@
         active: false,
         featured: false,
         excerpt: 'Interactive tool for evaluating nuclear reactor site feasibility.',
-        description: 'Developed an interactive web tool to evaluate Small Modular Reactor (SMR) feasibility in rural areas, integrating geospatial data and weighted scoring to compare site viability. Added hybrid SMR–solar modeling to visualize energy demand, environmental constraints, and overall system potential.',
-        tags: ['Web Dev', 'GIS', 'Energy', 'Data Viz'],
+        description: `<strong>Motivation & Background</strong><br><br>The United States currently operates 93 commercial nuclear reactors across 54 plants, generating approximately 20% of the nation's electricity. However, with aging infrastructure and increasing energy demands—particularly in rural and underserved regions—there's renewed interest in Small Modular Reactors (SMRs) as a flexible, lower-capital alternative to traditional gigawatt-scale plants. The challenge lies in identifying optimal deployment sites that balance technical feasibility, safety constraints, and grid integration requirements.<br><br>Atlas SMR was developed to address this gap: a geospatial decision-support tool that synthesizes multiple data layers to evaluate and rank potential SMR deployment sites across the continental United States.<br><br><strong>Technical Implementation</strong><br><br>The platform integrates data from the Nuclear Regulatory Commission (NRC), Energy Information Administration (EIA), and USGS seismic databases. The interactive map displays 89 currently operating reactors, 13 shutdown/retired facilities, and 119 candidate sites identified through our scoring algorithm. Users can scrub through a timeline from 2010 to 2050 to visualize how reactor status changes over time based on license expiration and projected decommissioning schedules.<br><br><strong>Site Scoring Methodology</strong><br><br>Each candidate site receives a composite viability score S calculated as a weighted sum of constraint factors:<br><br><em>S = w₁·(1 - P/P_max) + w₂·(1 - D_s/D_max) + w₃·(W/W_max) + w₄·(G/G_max)</em><br><br>Where:<br>• P = population within 10-mile radius (NRC emergency planning zone)<br>• D_s = distance to nearest seismic fault line (USGS data)<br>• W = proximity to cooling water source (rivers, lakes, or ocean)<br>• G = grid interconnection capacity at nearest substation<br><br>Default weights are w₁ = 0.30, w₂ = 0.25, w₃ = 0.25, w₄ = 0.20, calibrated against historical NRC site approval patterns. Users can adjust these weights through the interface to explore different prioritization scenarios.<br><br><strong>SMR Parameter Configuration</strong><br><br>The Scenario Builder allows users to configure deployment parameters including module capacity (50-300 MWe per unit), modules per site (1-12), and target deployment year. The tool then calculates total site capacity as:<br><br><em>C_total = N_modules × P_module × CF</em><br><br>Where CF is the capacity factor (typically 0.90-0.93 for modern SMR designs like NuScale's VOYGR or GE-Hitachi's BWRX-300).<br><br><strong>Hybrid SMR-Solar Modeling</strong><br><br>Recognizing that SMRs will likely be deployed alongside renewable sources, the platform includes a hybrid modeling feature. Users can overlay solar irradiance data to evaluate combined generation potential. The complementary capacity is calculated considering that SMRs provide baseload (24/7) while solar follows diurnal patterns:<br><br><em>E_annual = C_smr × 8760 × CF_smr + C_solar × 8760 × CF_solar × (1 - curtailment)</em><br><br>This helps planners understand how SMRs can stabilize grids with high renewable penetration.<br><br><strong>Data Sources & Limitations</strong><br><br>All reactor data is sourced from publicly available NRC and EIA datasets. Population data uses 2020 Census Bureau estimates. Seismic data references USGS fault line databases and historical earthquake magnitudes. The tool explicitly notes that it is a prototype visualization and should not be used for actual policy decisions—final site selection requires comprehensive Environmental Impact Statements and NRC licensing procedures that go far beyond this scope.`,
+        tags: ['Web Dev', 'GIS', 'Energy', 'Data Viz', 'Nuclear', 'Geospatial'],
         links: [
           { label: 'Live Site', url: 'https://atlas-smr.vercel.app/' }
         ],
@@ -1594,7 +1594,7 @@
       }
 
       // Description & tags
-      document.getElementById('detailDescription').textContent = project.description;
+      document.getElementById('detailDescription').innerHTML = project.description;
       document.getElementById('detailTags').innerHTML = project.tags.map(t => 
         `<span class="detail-tag">${t}</span>`
       ).join('');
