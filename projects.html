@@ -1353,7 +1353,7 @@
         links: [
           { label: 'Live Site', url: 'https://beachsweep.github.io/' }
         ],
-        images: ['/assets/beas1.png', '/assets/beas2.png', '/assets/beas3.png', '/assets/beas4.png', '/assets/beas5.png']
+        images: ['/assets/beas1.png', '/assets/beas2.png', '/assets/beas3.png', '/assets/beas4.png', '/assets/beas5.png', '/assets/beas5.mp4']
       },
       {
         id: 'zenith-2021-22',
@@ -1536,6 +1536,30 @@
       
       if (project.images && project.images.length > 0) {
         const hasMultiple = project.images.length > 1;
+        const isVideo = (src) => src.endsWith('.mp4') || src.endsWith('.webm');
+        const firstMedia = project.images[0];
+        
+        const renderMedia = (src, id) => {
+          if (isVideo(src)) {
+            return `<video src="${src}" id="${id}" autoplay loop muted playsinline style="width:100%;height:100%;object-fit:contain;"></video>`;
+          }
+          return `<img src="${src}" alt="${project.title}" id="${id}">`;
+        };
+        
+        const renderThumb = (src, i) => {
+          if (isVideo(src)) {
+            return `<div class="gallery-thumb${i === 0 ? ' active' : ''}" data-index="${i}" style="position:relative;">
+              <video src="${src}" muted style="width:100%;height:100%;object-fit:cover;"></video>
+              <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.3);">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg>
+              </div>
+            </div>`;
+          }
+          return `<div class="gallery-thumb${i === 0 ? ' active' : ''}" data-index="${i}">
+            <img src="${src}" alt="Thumbnail ${i + 1}">
+          </div>`;
+        };
+        
         galleryEl.innerHTML = `
           <div class="gallery-main">
             ${hasMultiple ? `
@@ -1543,7 +1567,7 @@
                 <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
               </button>
             ` : ''}
-            <img src="${project.images[0]}" alt="${project.title}" id="galleryMainImg">
+            <div id="galleryMediaContainer">${renderMedia(firstMedia, 'galleryMainMedia')}</div>
             ${hasMultiple ? `
               <button class="gallery-nav gallery-nav-next" id="galleryNext">
                 <svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
@@ -1552,18 +1576,15 @@
           </div>
           ${hasMultiple ? `
             <div class="gallery-thumbs">
-              ${project.images.map((img, i) => `
-                <div class="gallery-thumb${i === 0 ? ' active' : ''}" data-index="${i}">
-                  <img src="${img}" alt="Thumbnail ${i + 1}">
-                </div>
-              `).join('')}
+              ${project.images.map((img, i) => renderThumb(img, i)).join('')}
             </div>
           ` : ''}
         `;
 
         const updateGalleryImage = (idx) => {
           currentGalleryIndex = idx;
-          document.getElementById('galleryMainImg').src = project.images[idx];
+          const container = document.getElementById('galleryMediaContainer');
+          container.innerHTML = renderMedia(project.images[idx], 'galleryMainMedia');
           galleryEl.querySelectorAll('.gallery-thumb').forEach((t, i) => {
             t.classList.toggle('active', i === idx);
           });
