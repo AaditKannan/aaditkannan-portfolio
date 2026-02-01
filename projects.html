@@ -57,7 +57,7 @@
     }
     body::-webkit-scrollbar { display: none; }
 
-    /* Nav - matching other pages */
+    /* Nav */
     .nav-bar {
       position: fixed;
       top: 0;
@@ -96,36 +96,41 @@
       max-width: 1100px;
       margin: 0 auto;
       padding: 140px 40px 100px;
+      position: relative;
     }
 
     .page-header {
       margin-bottom: 48px;
+      position: relative;
     }
 
     .page-title {
       font-family: 'Courier Prime', 'JetBrains Mono', 'Courier New', monospace;
-      font-size: clamp(48px, 8vw, 64px);
+      font-size: clamp(42px, 7vw, 56px);
       font-weight: 700;
       color: #FFFFFF;
       letter-spacing: 0.02em;
       line-height: 1.1;
-      opacity: 0;
       margin: 0;
+      transition: opacity 0.3s;
     }
 
     /* Project grid */
     .projects-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      grid-template-columns: repeat(2, 1fr);
       gap: 24px;
+      transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     .project-card {
       background: rgba(255,255,255,0.02);
       border: 1px solid var(--border);
-      transition: all 0.3s ease;
       cursor: pointer;
       overflow: hidden;
+      transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+      opacity: 1;
+      transform: scale(1);
     }
 
     .project-card:hover {
@@ -148,6 +153,11 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+
+    .project-card:hover .project-image img {
+      transform: scale(1.02);
     }
 
     .project-image-placeholder {
@@ -200,19 +210,20 @@
       overflow: hidden;
     }
 
+    /* Featured card - full width */
     .project-card.featured {
       grid-column: span 2;
     }
 
     .project-card.featured .project-image {
-      aspect-ratio: 2/1;
+      aspect-ratio: 2.5/1;
     }
 
     .project-card.featured .project-title {
       font-size: 24px;
     }
 
-    /* Active indicator */
+    /* Status dot */
     .status-dot {
       display: inline-block;
       width: 6px;
@@ -228,116 +239,134 @@
       50% { opacity: 0.4; }
     }
 
-    /* Sub-project count badge */
-    .subproject-count {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      padding: 3px 8px;
-      background: rgba(255,255,255,0.06);
-      border-radius: 3px;
-      font-size: 10px;
-      color: var(--text-dim);
-      font-family: 'Courier Prime', monospace;
-      margin-left: 8px;
-    }
-
-    /* Modal */
-    .modal-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.85);
-      z-index: 200;
-      opacity: 0;
-      visibility: hidden;
-      transition: all 0.3s;
-    }
-
-    .modal-overlay.visible {
-      opacity: 1;
-      visibility: visible;
-    }
-
-    .modal {
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%) scale(0.95);
-      width: 90%;
-      max-width: 800px;
-      max-height: 90vh;
-      background: #0a0a0a;
-      border: 1px solid var(--border);
-      z-index: 201;
-      opacity: 0;
-      visibility: hidden;
-      transition: all 0.3s;
+    /* ========== DETAIL VIEW ========== */
+    
+    /* When detail view is active */
+    body.detail-active {
       overflow: hidden;
-      display: flex;
-      flex-direction: column;
     }
 
-    .modal.visible {
-      opacity: 1;
-      visibility: visible;
-      transform: translate(-50%, -50%) scale(1);
+    body.detail-active .projects-grid {
+      pointer-events: none;
     }
 
-    .modal-close {
-      position: absolute;
-      top: 16px;
-      right: 16px;
-      width: 40px;
-      height: 40px;
-      background: rgba(0,0,0,0.5);
-      border: 1px solid var(--border);
-      cursor: pointer;
-      z-index: 10;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: all 0.2s ease;
+    /* Hide other cards when detail view is active */
+    body.detail-active .project-card:not(.active-card) {
+      opacity: 0;
+      transform: scale(0.95);
+      pointer-events: none;
     }
 
-    .modal-close:hover {
-      background: rgba(255,255,255,0.1);
+    /* The active card transforms */
+    .project-card.active-card {
+      position: relative;
+      z-index: 100;
+      grid-column: span 2 !important;
       border-color: var(--border-light);
     }
 
-    .modal-close::before,
-    .modal-close::after {
-      content: '';
-      position: absolute;
-      width: 16px;
-      height: 2px;
-      background: #fff;
-      transition: all 0.2s ease;
+    .project-card.active-card .project-image {
+      aspect-ratio: 2/1;
     }
-    .modal-close::before { transform: rotate(45deg); }
-    .modal-close::after { transform: rotate(-45deg); }
-    
-    .modal-close:hover::before,
-    .modal-close:hover::after {
-      background: #fff;
-      width: 18px;
+
+    .project-card.active-card .project-content {
+      display: none;
+    }
+
+    /* Detail content that appears */
+    .detail-content {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: var(--bg);
+      z-index: 150;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+      overflow-y: auto;
+      padding: 140px 40px 100px;
+    }
+
+    .detail-content.visible {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .detail-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .detail-header {
+      margin-bottom: 32px;
+    }
+
+    .detail-category {
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      font-family: 'Courier Prime', monospace;
+      margin-bottom: 16px;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.5s ease 0.2s;
+    }
+
+    .detail-content.visible .detail-category {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .detail-title {
+      font-family: 'Courier Prime', 'JetBrains Mono', 'Courier New', monospace;
+      font-size: clamp(36px, 6vw, 52px);
+      font-weight: 700;
+      color: #FFFFFF;
+      letter-spacing: 0.02em;
+      line-height: 1.1;
+      margin-bottom: 12px;
+    }
+
+    .detail-date {
+      font-size: 14px;
+      color: var(--text-dim);
+      font-family: 'Courier Prime', monospace;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.5s ease 0.3s;
+    }
+
+    .detail-content.visible .detail-date {
+      opacity: 1;
+      transform: translateY(0);
     }
 
     /* Gallery */
-    .modal-gallery {
-      width: 100%;
-      position: relative;
-      flex-shrink: 0;
-      border-bottom: 1px solid var(--border);
+    .detail-gallery {
+      margin-bottom: 48px;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.1s;
+    }
+
+    .detail-content.visible .detail-gallery {
+      opacity: 1;
+      transform: translateY(0);
     }
 
     .gallery-main {
       width: 100%;
-      aspect-ratio: 2/1;
+      aspect-ratio: 16/9;
       background: rgba(255,255,255,0.02);
+      border: 1px solid var(--border);
       display: flex;
       align-items: center;
       justify-content: center;
       overflow: hidden;
+      margin-bottom: 12px;
     }
 
     .gallery-main img {
@@ -345,7 +374,6 @@
       height: 100%;
       object-fit: contain;
       background: #000;
-      cursor: zoom-in;
     }
 
     .gallery-main-placeholder {
@@ -358,10 +386,9 @@
 
     .gallery-thumbs {
       display: flex;
-      gap: 2px;
-      padding: 2px;
-      background: rgba(0,0,0,0.5);
+      gap: 8px;
       overflow-x: auto;
+      padding: 4px 0;
     }
 
     .gallery-thumb {
@@ -376,14 +403,8 @@
       opacity: 0.5;
     }
 
-    .gallery-thumb:hover {
-      opacity: 0.8;
-    }
-
-    .gallery-thumb.active {
-      border-color: #fff;
-      opacity: 1;
-    }
+    .gallery-thumb:hover { opacity: 0.8; }
+    .gallery-thumb.active { border-color: #fff; opacity: 1; }
 
     .gallery-thumb img {
       width: 100%;
@@ -391,245 +412,245 @@
       object-fit: cover;
     }
 
-    .gallery-nav {
-      position: absolute;
+    /* Detail body */
+    .detail-body {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 60px;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.2s;
+    }
+
+    .detail-content.visible .detail-body {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .detail-description {
+      font-size: 17px;
+      line-height: 1.9;
+      color: rgba(255,255,255,0.8);
+      margin-bottom: 32px;
+    }
+
+    .detail-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .detail-tag {
+      padding: 8px 16px;
+      border: 1px solid var(--border);
+      font-size: 12px;
+      color: var(--text-dim);
+      font-family: 'Courier Prime', monospace;
+      transition: all 0.2s;
+    }
+
+    .detail-tag:hover {
+      border-color: var(--border-light);
+      color: #fff;
+    }
+
+    .detail-sidebar h3 {
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      font-family: 'Courier Prime', monospace;
+      margin-bottom: 16px;
+    }
+
+    .detail-links {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 40px;
+    }
+
+    .detail-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 20px;
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text-dim);
+      text-decoration: none;
+      font-size: 13px;
+      font-family: 'Courier Prime', monospace;
+      transition: all 0.2s;
+    }
+
+    .detail-link:hover {
+      border-color: var(--border-light);
+      color: #fff;
+      background: rgba(255,255,255,0.02);
+    }
+
+    .detail-link svg {
+      width: 16px;
+      height: 16px;
+      fill: currentColor;
+    }
+
+    /* Navigation */
+    .detail-nav {
+      position: fixed;
       top: 50%;
       transform: translateY(-50%);
-      width: 40px;
-      height: 40px;
-      background: rgba(0,0,0,0.6);
+      z-index: 200;
+      opacity: 0;
+      transition: all 0.4s ease 0.3s;
+    }
+
+    .detail-content.visible .detail-nav {
+      opacity: 1;
+    }
+
+    .detail-nav.prev { left: 20px; }
+    .detail-nav.next { right: 20px; }
+
+    .nav-btn {
+      width: 50px;
+      height: 50px;
+      background: rgba(0,0,0,0.8);
       border: 1px solid var(--border);
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
       transition: all 0.2s;
-      z-index: 5;
     }
 
-    .gallery-nav:hover {
-      background: rgba(0,0,0,0.8);
+    .nav-btn:hover {
+      background: rgba(255,255,255,0.1);
       border-color: var(--border-light);
     }
 
-    .gallery-nav.prev { left: 12px; }
-    .gallery-nav.next { right: 12px; }
-
-    .gallery-nav svg {
-      width: 16px;
-      height: 16px;
+    .nav-btn svg {
+      width: 20px;
+      height: 20px;
       fill: #fff;
     }
 
-    .gallery-counter {
-      position: absolute;
-      bottom: 60px;
-      right: 12px;
-      padding: 4px 10px;
-      background: rgba(0,0,0,0.7);
-      font-size: 11px;
-      font-family: 'Courier Prime', monospace;
-      color: var(--text-dim);
-    }
-
-    .modal-body {
-      padding: 32px;
-      overflow-y: auto;
-      flex: 1;
-    }
-
-    .modal-header {
-      margin-bottom: 20px;
-    }
-
-    .modal-category {
-      font-size: 10px;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--text-dim);
-      font-family: 'Courier Prime', monospace;
-      margin-bottom: 8px;
-    }
-
-    .modal-title {
-      font-size: 28px;
-      font-weight: 600;
-      letter-spacing: -0.02em;
-      margin-bottom: 8px;
-    }
-
-    .modal-date {
-      font-size: 13px;
-      color: var(--text-dim);
-      font-family: 'Courier Prime', monospace;
-    }
-
-    .modal-description {
-      font-size: 15px;
-      line-height: 1.8;
-      color: rgba(255,255,255,0.75);
-      margin-bottom: 24px;
-    }
-
-    .modal-links {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-      margin-bottom: 24px;
-    }
-
-    .modal-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 10px 18px;
-      background: transparent;
+    /* Close button */
+    .detail-close {
+      position: fixed;
+      top: 100px;
+      right: 40px;
+      width: 50px;
+      height: 50px;
+      background: rgba(0,0,0,0.8);
       border: 1px solid var(--border);
-      color: var(--text-dim);
-      text-decoration: none;
-      font-size: 12px;
-      font-family: 'Courier Prime', monospace;
-      transition: all 0.2s;
-    }
-
-    .modal-link:hover {
-      border-color: var(--border-light);
-      color: #fff;
-    }
-
-    .modal-link svg {
-      width: 14px;
-      height: 14px;
-      fill: currentColor;
-    }
-
-    .modal-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-bottom: 32px;
-    }
-
-    .modal-tag {
-      padding: 6px 12px;
-      border: 1px solid var(--border);
-      font-size: 11px;
-      color: var(--text-muted);
-      font-family: 'Courier Prime', monospace;
-    }
-
-    /* Sub-projects section */
-    .subprojects-section {
-      border-top: 1px solid var(--border);
-      padding-top: 28px;
-    }
-
-    .subprojects-title {
-      font-size: 11px;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--text-dim);
-      font-family: 'Courier Prime', monospace;
-      margin-bottom: 20px;
-    }
-
-    .subproject-list {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
-
-    .subproject-item {
-      display: flex;
-      gap: 16px;
-      padding: 16px;
-      background: rgba(255,255,255,0.02);
-      border: 1px solid var(--border);
-      transition: all 0.2s;
-    }
-
-    .subproject-item:hover {
-      border-color: var(--border-light);
-    }
-
-    .subproject-image {
-      width: 120px;
-      height: 80px;
-      flex-shrink: 0;
-      background: rgba(255,255,255,0.03);
+      cursor: pointer;
+      z-index: 200;
       display: flex;
       align-items: center;
       justify-content: center;
-      overflow: hidden;
+      transition: all 0.3s ease;
+      opacity: 0;
+      transform: scale(0.8);
     }
 
-    .subproject-image img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
+    .detail-content.visible .detail-close {
+      opacity: 1;
+      transform: scale(1);
     }
 
-    .subproject-image-placeholder {
-      font-size: 9px;
-      color: var(--text-muted);
-      font-family: 'Courier Prime', monospace;
-      letter-spacing: 0.1em;
+    .detail-close:hover {
+      background: rgba(255,255,255,0.1);
+      border-color: var(--border-light);
+      transform: scale(1.05);
     }
 
-    .subproject-content {
-      flex: 1;
-      min-width: 0;
+    .detail-close::before,
+    .detail-close::after {
+      content: '';
+      position: absolute;
+      width: 20px;
+      height: 2px;
+      background: #fff;
+      transition: all 0.2s;
+    }
+    .detail-close::before { transform: rotate(45deg); }
+    .detail-close::after { transform: rotate(-45deg); }
+
+    /* Black hole close animation */
+    .detail-content.closing {
+      animation: blackHoleClose 0.5s cubic-bezier(0.55, 0, 1, 0.45) forwards;
     }
 
-    .subproject-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      margin-bottom: 6px;
-      gap: 12px;
+    @keyframes blackHoleClose {
+      0% {
+        opacity: 1;
+        transform: scale(1);
+        filter: blur(0);
+      }
+      100% {
+        opacity: 0;
+        transform: scale(0.8);
+        filter: blur(10px);
+      }
     }
 
-    .subproject-name {
-      font-size: 15px;
-      font-weight: 600;
-      letter-spacing: -0.01em;
+    /* Responsive */
+    @media (max-width: 900px) {
+      .projects-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .project-card.featured {
+        grid-column: span 1;
+      }
+
+      .project-card.active-card {
+        grid-column: span 1 !important;
+      }
+
+      .detail-body {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+
+      .detail-nav {
+        display: none;
+      }
     }
 
-    .subproject-date {
-      font-size: 11px;
-      color: var(--text-muted);
-      font-family: 'Courier Prime', monospace;
-      white-space: nowrap;
+    @media (max-width: 768px) {
+      .nav-bar {
+        padding: 20px 24px;
+        gap: 20px;
+      }
+      .nav-link { font-size: 11px; }
+      
+      main { padding: 120px 24px 80px; }
+      .detail-content { padding: 120px 24px 80px; }
+
+      .page-title {
+        font-size: clamp(32px, 8vw, 42px);
+      }
+
+      .detail-title {
+        font-size: clamp(28px, 7vw, 36px);
+      }
+
+      .detail-close {
+        top: 90px;
+        right: 24px;
+        width: 44px;
+        height: 44px;
+      }
+
+      .gallery-main {
+        aspect-ratio: 4/3;
+      }
     }
 
-    .subproject-desc {
-      font-size: 13px;
-      color: var(--text-dim);
-      line-height: 1.5;
-    }
-
-    .subproject-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      margin-top: 8px;
-      font-size: 11px;
-      color: var(--text-dim);
-      text-decoration: none;
-      font-family: 'Courier Prime', monospace;
-    }
-
-    .subproject-link:hover {
-      color: #fff;
-    }
-
-    .subproject-link svg {
-      width: 12px;
-      height: 12px;
-      fill: currentColor;
-    }
-
-    /* Footage Teaser Section */
+    /* Footage teaser */
     .footage-teaser {
       margin-top: 80px;
       padding-top: 60px;
@@ -725,7 +746,6 @@
       flex-shrink: 0;
       opacity: 0.4;
       transition: all 0.3s ease;
-      transform: translateX(0);
     }
 
     .footage-arrow svg {
@@ -739,149 +759,8 @@
       transform: translateX(8px);
     }
 
-    .footage-glow {
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.03), transparent);
-      transition: left 0.6s ease;
-      z-index: 1;
-    }
-
-    .footage-link:hover .footage-glow {
-      left: 100%;
-    }
-
-    /* Lightbox */
-    .lightbox {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.95);
-      z-index: 300;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      opacity: 0;
-      visibility: hidden;
-      transition: all 0.3s;
-    }
-
-    .lightbox.visible {
-      opacity: 1;
-      visibility: visible;
-    }
-
-    .lightbox img {
-      max-width: 95%;
-      max-height: 95%;
-      object-fit: contain;
-    }
-
-    .lightbox-close {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      width: 40px;
-      height: 40px;
-      background: transparent;
-      border: 1px solid var(--border);
-      cursor: pointer;
-    }
-
-    .lightbox-close::before,
-    .lightbox-close::after {
-      content: '';
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 18px;
-      height: 1px;
-      background: #fff;
-    }
-    .lightbox-close::before { transform: translate(-50%, -50%) rotate(45deg); }
-    .lightbox-close::after { transform: translate(-50%, -50%) rotate(-45deg); }
-
-    /* Responsive */
-    @media (max-width: 768px) {
-      .nav-bar {
-        padding: 20px 24px;
-        gap: 20px;
-      }
-      .nav-link { font-size: 11px; }
-      
-      main { padding: 120px 24px 80px; }
-      
-      .projects-grid {
-        grid-template-columns: 1fr;
-        gap: 16px;
-      }
-      
-      .project-card.featured {
-        grid-column: span 1;
-      }
-      
-      .project-card.featured .project-image {
-        aspect-ratio: 16/10;
-      }
-      
-      .modal {
-        width: 95%;
-        max-height: 90vh;
-      }
-      
-      .modal-body { padding: 24px; }
-      .modal-title { font-size: 22px; }
-
-      .subproject-item {
-        flex-direction: column;
-      }
-
-      .subproject-image {
-        width: 100%;
-        height: 120px;
-      }
-
-      .gallery-nav { display: none; }
-      .gallery-thumb { width: 60px; height: 40px; }
-
-      .footage-teaser {
-        margin-top: 48px;
-        padding-top: 40px;
-      }
-
-      .footage-link {
-        padding: 24px;
-      }
-
-      .footage-content {
-        gap: 16px;
-      }
-
-      .footage-icon {
-        width: 48px;
-        height: 48px;
-      }
-
-      .footage-icon svg {
-        width: 24px;
-        height: 24px;
-      }
-
-      .footage-title {
-        font-size: 15px;
-      }
-
-      .footage-arrow {
-        width: 32px;
-        height: 32px;
-      }
-
-      .footage-arrow svg {
-        width: 16px;
-        height: 16px;
-      }
+    body.detail-active .footage-teaser {
+      display: none;
     }
   </style>
 </head>
@@ -895,12 +774,11 @@
 
   <main>
     <header class="page-header">
-      <h1 class="page-title" id="projectsHeading">PROJECTS</h1>
+      <h1 class="page-title" id="pageTitle">PROJECTS</h1>
     </header>
 
     <div class="projects-grid" id="projectsGrid"></div>
 
-    <!-- Footage Link Section -->
     <section class="footage-teaser">
       <a href="/footage" class="footage-link">
         <div class="footage-content">
@@ -920,68 +798,47 @@
             </svg>
           </div>
         </div>
-        <div class="footage-glow"></div>
       </a>
     </section>
   </main>
 
-  <div class="modal-overlay" id="modalOverlay"></div>
-  <div class="modal" id="modal">
-    <button class="modal-close" id="modalClose"></button>
-    <div class="modal-gallery" id="modalGallery"></div>
-    <div class="modal-body" id="modalBody"></div>
-  </div>
+  <!-- Detail View -->
+  <div class="detail-content" id="detailContent">
+    <button class="detail-close" id="detailClose"></button>
+    
+    <div class="detail-nav prev">
+      <button class="nav-btn" id="prevProject">
+        <svg viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+      </button>
+    </div>
+    
+    <div class="detail-nav next">
+      <button class="nav-btn" id="nextProject">
+        <svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+      </button>
+    </div>
 
-  <div class="lightbox" id="lightbox">
-    <button class="lightbox-close" id="lightboxClose"></button>
-    <img id="lightboxImg" src="" alt="">
+    <div class="detail-inner">
+      <header class="detail-header">
+        <p class="detail-category" id="detailCategory"></p>
+        <h1 class="detail-title" id="detailTitle"></h1>
+        <p class="detail-date" id="detailDate"></p>
+      </header>
+
+      <div class="detail-gallery" id="detailGallery"></div>
+
+      <div class="detail-body">
+        <div class="detail-main">
+          <p class="detail-description" id="detailDescription"></p>
+          <div class="detail-tags" id="detailTags"></div>
+        </div>
+        <aside class="detail-sidebar" id="detailSidebar"></aside>
+      </div>
+    </div>
   </div>
 
   <script>
-    // Scramble animation for heading
-    function scrambleReveal(element, finalText, options = {}) {
-      const duration = options.duration || 600;
-      const delay = options.delay || 0;
-      const scrambleChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()';
-      
-      setTimeout(() => {
-        const startTime = Date.now();
-        const chars = finalText.split('');
-        const scrambleCharsArray = scrambleChars.split('');
-        
-        function animate() {
-          const elapsed = Date.now() - startTime;
-          const progress = Math.min(elapsed / duration, 1);
-          const eased = 1 - Math.pow(1 - progress, 3);
-
-          const scrambled = chars.map((char, index) => {
-            if (char === ' ' || char === '\n' || !/[a-zA-Z0-9]/.test(char)) return char;
-            const revealIndex = Math.floor(eased * chars.length);
-            if (index < revealIndex) return char;
-            else if (index === revealIndex && progress > 0.9) return char;
-            else return scrambleCharsArray[Math.floor(Math.random() * scrambleCharsArray.length)];
-          }).join('');
-          
-          element.textContent = scrambled;
-          element.style.opacity = '1';
-          
-          if (progress < 1) requestAnimationFrame(animate);
-          else { element.textContent = finalText; element.style.opacity = '1'; }
-        }
-        
-        requestAnimationFrame(animate);
-      }, delay);
-    }
-
-    // Run scramble on page load
-    document.addEventListener('DOMContentLoaded', () => {
-      const heading = document.getElementById('projectsHeading');
-      if (heading) {
-        const originalText = heading.textContent.trim();
-        scrambleReveal(heading, originalText, { duration: 600 });
-      }
-    });
-
+    // Projects data
     const projects = [
       {
         id: 'formula-electric',
@@ -998,8 +855,7 @@
           '/assets/img1.png',
           '/assets/img2.png',
           '/assets/img3.png'
-        ],
-        subprojects: []
+        ]
       },
       {
         id: 'dejavu-2024-25',
@@ -1012,8 +868,7 @@
         description: 'Led hardware development for FTC Team Deja Vu #13216 during the INTO THE DEEP season. Designed and manufactured a competition robot featuring custom-engineered mechanisms including a high-performance intake system. Managed CAD design with 500+ unique parts and led manufacturing efforts.',
         tags: ['CAD', 'FEA', 'Manufacturing', 'Leadership'],
         links: [],
-        images: ['/assets/dejavubot-removebg-preview.png', '/assets/intake.png'],
-        subprojects: []
+        images: ['/assets/dejavubot-removebg-preview.png', '/assets/intake.png']
       },
       {
         id: 'dejavu-2023-24',
@@ -1026,8 +881,7 @@
         description: 'Hardware Lead for FTC Team Deja Vu #13216 during the CENTERSTAGE season. Designed scoring mechanisms for pixel manipulation and backdrop placement. Led team to competition success through innovative mechanical solutions.',
         tags: ['CAD', 'FEA', 'Manufacturing', 'Leadership'],
         links: [],
-        images: [],
-        subprojects: []
+        images: []
       },
       {
         id: 'zenith-2022-23',
@@ -1040,8 +894,7 @@
         description: 'Team Lead for FTC Team Zenith #20424 during the POWERPLAY season. Designed and built a competition robot featuring a high-speed linear lift for cone stacking. Led team strategy and mentored newer members.',
         tags: ['CAD', 'Java', 'Leadership', 'Mentoring'],
         links: [],
-        images: [],
-        subprojects: []
+        images: []
       },
       {
         id: 'zenith-2021-22',
@@ -1054,8 +907,7 @@
         description: 'First year on FTC Team Zenith #20424 during the FREIGHT FRENZY season. Learned mechanical design fundamentals, CAD modeling, and manufacturing processes while contributing to robot construction.',
         tags: ['CAD', 'Manufacturing', 'Learning'],
         links: [],
-        images: [],
-        subprojects: []
+        images: []
       },
       {
         id: 'serenity-2021-22',
@@ -1068,8 +920,7 @@
         description: 'Team Lead for FTC Team Serenity #13215 during the FREIGHT FRENZY season. Managed the team\'s design process and manufacturing efforts, building a competitive robot for freight manipulation.',
         tags: ['CAD', 'Leadership', 'Manufacturing'],
         links: [],
-        images: [],
-        subprojects: []
+        images: []
       },
       {
         id: 'inventry',
@@ -1077,12 +928,12 @@
         category: 'Software',
         date: 'Jan 2025 — Present',
         active: true,
+        featured: false,
         excerpt: 'AI-powered robotics parts inventory and marketplace.',
         description: 'Developed a website for robotics part inventory tracking, utilizing AI invoice indexing and dynamic webscraping for 1000+ part catalogs. Integrated part-lending service with incentives and extensive privacy measures. Currently developing a parts marketplace.',
         tags: ['Web Dev', 'AI', 'Webscraping', 'Database'],
         links: [],
-        images: [],
-        subprojects: []
+        images: []
       },
       {
         id: 'pear-volunteering',
@@ -1090,12 +941,12 @@
         category: 'Software',
         date: 'Aug 2023 — May 2025',
         active: false,
+        featured: false,
         excerpt: 'Platform connecting 2000+ students with volunteer opportunities.',
         description: 'Developed an app and website to connect 2000+ students, 20+ event organizers, and school admin for volunteer opportunities. Implemented secure webhook/CMS-integrated system for scalable, high-volume data handling and encrypted user communication.',
         tags: ['App Dev', 'Web Dev', 'CMS', 'Security'],
         links: [],
-        images: [],
-        subprojects: []
+        images: []
       },
       {
         id: 'atlas-smr',
@@ -1103,12 +954,12 @@
         category: 'Research',
         date: 'Mar — Jun 2024',
         active: false,
+        featured: false,
         excerpt: 'Interactive tool for evaluating nuclear reactor site feasibility.',
         description: 'Developed an interactive web tool to evaluate Small Modular Reactor (SMR) feasibility in rural areas, integrating geospatial data and weighted scoring to compare site viability. Added hybrid SMR–solar modeling to visualize energy demand, environmental constraints, and overall system potential.',
         tags: ['Web Dev', 'GIS', 'Energy', 'Data Viz'],
         links: [],
-        images: [],
-        subprojects: []
+        images: []
       },
       {
         id: 'construction-acclimation',
@@ -1116,12 +967,12 @@
         category: 'Research',
         date: 'Oct 2022 — Apr 2023',
         active: false,
+        featured: false,
         excerpt: 'Low-cost probe alternative to save $118M in city spending.',
         description: 'Gathered construction site data to develop alternative devices to costly acclimation probes, aiming to cut $118M from Palo Alto\'s spending. Built a website and functioning probe prototype that earned praise from city construction officials.',
         tags: ['Hardware', 'Data Collection', 'Web Dev'],
         links: [],
-        images: [],
-        subprojects: []
+        images: []
       },
       {
         id: 'beachsweep',
@@ -1129,12 +980,12 @@
         category: 'Hackathon',
         date: 'Nov 2023',
         active: false,
+        featured: false,
         excerpt: 'Drone-based beach cleanup coordination system.',
         description: 'Hackathon project designing a website for organizing drone beach cleanups. Utilized solar-powered drone docks that work to maintain beach cleanliness and collaborate with human initiatives. Designed a computer vision drone trash detection system.',
         tags: ['Drones', 'Computer Vision', 'Solar'],
         links: [],
-        images: [],
-        subprojects: []
+        images: []
       },
       {
         id: 'friendly-fires',
@@ -1142,12 +993,12 @@
         category: 'Social Impact',
         date: 'Sep 2021 — Mar 2022',
         active: false,
+        featured: false,
         excerpt: 'Coal-seam fire detection system for mining safety.',
         description: 'Created a mining tool attachment consisting of a compact sensor array capable of consistently detecting coal-seam fires, aiming to save lives in dangerous and often neglected mining conditions.',
         tags: ['Sensors', 'Safety', 'Hardware'],
         links: [],
-        images: [],
-        subprojects: []
+        images: []
       },
       {
         id: 'prototype-flood',
@@ -1155,201 +1006,246 @@
         category: 'Social Impact',
         date: 'Nov 2020 — May 2021',
         active: false,
+        featured: false,
         excerpt: 'Low-cost flood detection for Jakarta, Indonesia.',
         description: 'Designed a low-cost flood detection system intended for addressing the lack of alert technology in Jakarta, Indonesia. Won certificate of achievement from the American Society of Civil Engineers.',
         tags: ['Sensors', 'IoT', 'International'],
         links: [],
-        images: [],
-        subprojects: []
+        images: []
       }
     ];
 
-    const icons = {
-      link: '<svg viewBox="0 0 24 24"><path d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg>',
-      prev: '<svg viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>',
-      next: '<svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>'
-    };
+    // State
+    let currentProjectIndex = -1;
+    let isDetailOpen = false;
 
-    // Render grid
+    // DOM elements
     const grid = document.getElementById('projectsGrid');
-    grid.innerHTML = projects.map(p => `
-      <div class="project-card${p.featured ? ' featured' : ''}" data-id="${p.id}">
-        <div class="project-image">
-          ${p.images && p.images.length > 0 
-            ? `<img src="${p.images[0]}" alt="${p.title}" style="object-position: center 30%;">` 
-            : '<span class="project-image-placeholder">Photo</span>'}
-        </div>
-        <div class="project-content">
-          <div class="project-meta">
-            <span class="project-category">${p.category}</span>
-            <span class="project-date">${p.active ? '<span class="status-dot"></span>' : ''}${p.date}</span>
-          </div>
-          <h3 class="project-title">
-            ${p.title}
-            ${p.subprojects && p.subprojects.length > 0 ? `<span class="subproject-count">${p.subprojects.length} items</span>` : ''}
-          </h3>
-          <p class="project-excerpt">${p.excerpt}</p>
-        </div>
-      </div>
-    `).join('');
+    const pageTitle = document.getElementById('pageTitle');
+    const detailContent = document.getElementById('detailContent');
+    const detailClose = document.getElementById('detailClose');
+    const prevBtn = document.getElementById('prevProject');
+    const nextBtn = document.getElementById('nextProject');
 
-    // Modal & Gallery state
-    const modal = document.getElementById('modal');
-    const overlay = document.getElementById('modalOverlay');
-    const closeBtn = document.getElementById('modalClose');
-    const modalBody = document.getElementById('modalBody');
-    const modalGallery = document.getElementById('modalGallery');
-    const lightbox = document.getElementById('lightbox');
-    const lightboxImg = document.getElementById('lightboxImg');
-    const lightboxClose = document.getElementById('lightboxClose');
-
-    let currentImages = [];
-    let currentIndex = 0;
-
-    function updateGallery() {
-      if (currentImages.length === 0) {
-        modalGallery.innerHTML = `
-          <div class="gallery-main">
-            <span class="gallery-main-placeholder">Project Photos</span>
-          </div>
-        `;
-        return;
+    // Scramble animation
+    function scrambleText(element, targetText, duration = 500) {
+      const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%&*';
+      const startTime = Date.now();
+      const originalText = element.textContent;
+      
+      function animate() {
+        const elapsed = Date.now() - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        
+        let result = '';
+        for (let i = 0; i < targetText.length; i++) {
+          if (targetText[i] === ' ' || targetText[i] === '—') {
+            result += targetText[i];
+          } else if (i < targetText.length * eased) {
+            result += targetText[i];
+          } else {
+            result += chars[Math.floor(Math.random() * chars.length)];
+          }
+        }
+        
+        element.textContent = result;
+        
+        if (progress < 1) {
+          requestAnimationFrame(animate);
+        } else {
+          element.textContent = targetText;
+        }
       }
-
-      const thumbsHTML = currentImages.length > 1 
-        ? `<div class="gallery-thumbs">
-            ${currentImages.map((img, i) => `
-              <div class="gallery-thumb${i === currentIndex ? ' active' : ''}" data-index="${i}">
-                <img src="${img}" alt="Thumbnail ${i+1}">
-              </div>
-            `).join('')}
-          </div>`
-        : '';
-
-      const navHTML = currentImages.length > 1
-        ? `<button class="gallery-nav prev">${icons.prev}</button>
-           <button class="gallery-nav next">${icons.next}</button>
-           <div class="gallery-counter">${currentIndex + 1} / ${currentImages.length}</div>`
-        : '';
-
-      modalGallery.innerHTML = `
-        <div class="gallery-main">
-          <img src="${currentImages[currentIndex]}" alt="Project image" id="galleryMainImg">
-        </div>
-        ${thumbsHTML}
-        ${navHTML}
-      `;
-
-      // Bind gallery events
-      const mainImg = document.getElementById('galleryMainImg');
-      if (mainImg) {
-        mainImg.onclick = () => {
-          lightboxImg.src = currentImages[currentIndex];
-          lightbox.classList.add('visible');
-        };
-      }
-
-      modalGallery.querySelectorAll('.gallery-thumb').forEach(thumb => {
-        thumb.onclick = () => {
-          currentIndex = parseInt(thumb.dataset.index);
-          updateGallery();
-        };
-      });
-
-      const prevBtn = modalGallery.querySelector('.gallery-nav.prev');
-      const nextBtn = modalGallery.querySelector('.gallery-nav.next');
-      if (prevBtn) prevBtn.onclick = () => { currentIndex = (currentIndex - 1 + currentImages.length) % currentImages.length; updateGallery(); };
-      if (nextBtn) nextBtn.onclick = () => { currentIndex = (currentIndex + 1) % currentImages.length; updateGallery(); };
+      
+      requestAnimationFrame(animate);
     }
 
-    function openModal(id) {
-      const p = projects.find(x => x.id === id);
-      if (!p) return;
+    // Render grid
+    function renderGrid() {
+      grid.innerHTML = projects.map(p => `
+        <div class="project-card${p.featured ? ' featured' : ''}" data-id="${p.id}">
+          <div class="project-image">
+            ${p.images && p.images.length > 0 
+              ? `<img src="${p.images[0]}" alt="${p.title}">` 
+              : '<span class="project-image-placeholder">Photo</span>'}
+          </div>
+          <div class="project-content">
+            <div class="project-meta">
+              <span class="project-category">${p.category}</span>
+              <span class="project-date">${p.active ? '<span class="status-dot"></span>' : ''}${p.date}</span>
+            </div>
+            <h3 class="project-title">${p.title}</h3>
+            <p class="project-excerpt">${p.excerpt}</p>
+          </div>
+        </div>
+      `).join('');
+    }
 
-      currentImages = p.images || [];
-      currentIndex = 0;
-      updateGallery();
+    // Update detail view
+    function updateDetailView(project) {
+      document.getElementById('detailCategory').textContent = project.category.toUpperCase();
+      document.getElementById('detailTitle').textContent = project.title;
+      document.getElementById('detailDate').textContent = (project.active ? '● ' : '') + project.date;
 
-      let linksHTML = '';
-      if (p.links.length > 0) {
-        linksHTML = `<div class="modal-links">${p.links.map(l => 
-          `<a href="${l.url}" target="_blank" rel="noopener" class="modal-link">${icons.link}${l.label}</a>`
-        ).join('')}</div>`;
-      }
-
-      let subprojectsHTML = '';
-      if (p.subprojects && p.subprojects.length > 0) {
-        subprojectsHTML = `
-          <div class="subprojects-section">
-            <h4 class="subprojects-title">Timeline — ${p.subprojects.length} Items</h4>
-            <div class="subproject-list">
-              ${p.subprojects.map(s => `
-                <div class="subproject-item">
-                  <div class="subproject-image">
-                    ${s.image ? `<img src="${s.image}" alt="${s.name}">` : '<span class="subproject-image-placeholder">Photo</span>'}
-                  </div>
-                  <div class="subproject-content">
-                    <div class="subproject-header">
-                      <span class="subproject-name">${s.name}</span>
-                      <span class="subproject-date">${s.date}</span>
-                    </div>
-                    <p class="subproject-desc">${s.desc}</p>
-                    ${s.link ? `<a href="${s.link.url}" target="_blank" rel="noopener" class="subproject-link">${icons.link}${s.link.label}</a>` : ''}
-                  </div>
+      // Gallery
+      const galleryEl = document.getElementById('detailGallery');
+      if (project.images && project.images.length > 0) {
+        galleryEl.innerHTML = `
+          <div class="gallery-main">
+            <img src="${project.images[0]}" alt="${project.title}" id="galleryMainImg">
+          </div>
+          ${project.images.length > 1 ? `
+            <div class="gallery-thumbs">
+              ${project.images.map((img, i) => `
+                <div class="gallery-thumb${i === 0 ? ' active' : ''}" data-index="${i}">
+                  <img src="${img}" alt="Thumbnail ${i + 1}">
                 </div>
               `).join('')}
             </div>
+          ` : ''}
+        `;
+
+        // Thumbnail click handlers
+        galleryEl.querySelectorAll('.gallery-thumb').forEach(thumb => {
+          thumb.onclick = () => {
+            const idx = parseInt(thumb.dataset.index);
+            document.getElementById('galleryMainImg').src = project.images[idx];
+            galleryEl.querySelectorAll('.gallery-thumb').forEach(t => t.classList.remove('active'));
+            thumb.classList.add('active');
+          };
+        });
+      } else {
+        galleryEl.innerHTML = `
+          <div class="gallery-main">
+            <span class="gallery-main-placeholder">Project Photos Coming Soon</span>
           </div>
         `;
       }
 
-      modalBody.innerHTML = `
-        <div class="modal-header">
-          <p class="modal-category">${p.category}</p>
-          <h2 class="modal-title">${p.active ? '<span class="status-dot"></span>' : ''}${p.title}</h2>
-          <p class="modal-date">${p.date}</p>
-        </div>
-        <p class="modal-description">${p.description}</p>
-        ${linksHTML}
-        <div class="modal-tags">${p.tags.map(t => `<span class="modal-tag">${t}</span>`).join('')}</div>
-        ${subprojectsHTML}
+      // Description & tags
+      document.getElementById('detailDescription').textContent = project.description;
+      document.getElementById('detailTags').innerHTML = project.tags.map(t => 
+        `<span class="detail-tag">${t}</span>`
+      ).join('');
+
+      // Sidebar
+      const sidebar = document.getElementById('detailSidebar');
+      let sidebarHTML = '';
+      
+      if (project.links && project.links.length > 0) {
+        sidebarHTML += `
+          <h3>Links</h3>
+          <div class="detail-links">
+            ${project.links.map(l => `
+              <a href="${l.url}" target="_blank" rel="noopener" class="detail-link">
+                <svg viewBox="0 0 24 24"><path d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg>
+                ${l.label}
+              </a>
+            `).join('')}
+          </div>
+        `;
+      }
+
+      sidebarHTML += `
+        <h3>Project Info</h3>
+        <p style="color: var(--text-dim); font-size: 14px; line-height: 1.7;">
+          <strong style="color: var(--text);">Category:</strong> ${project.category}<br>
+          <strong style="color: var(--text);">Timeline:</strong> ${project.date}<br>
+          <strong style="color: var(--text);">Status:</strong> ${project.active ? 'Active' : 'Completed'}
+        </p>
       `;
 
-      overlay.classList.add('visible');
-      modal.classList.add('visible');
-      document.body.style.overflow = 'hidden';
+      sidebar.innerHTML = sidebarHTML;
     }
 
-    function closeModal() {
-      overlay.classList.remove('visible');
-      modal.classList.remove('visible');
-      document.body.style.overflow = '';
+    // Open detail view
+    function openDetail(projectId) {
+      const index = projects.findIndex(p => p.id === projectId);
+      if (index === -1) return;
+
+      currentProjectIndex = index;
+      const project = projects[index];
+
+      // Scramble title
+      scrambleText(pageTitle, project.title, 400);
+
+      // Update detail content
+      updateDetailView(project);
+
+      // Show detail view
+      document.body.classList.add('detail-active');
+      detailContent.classList.remove('closing');
+      detailContent.classList.add('visible');
+      isDetailOpen = true;
+
+      // Scroll to top
+      detailContent.scrollTop = 0;
+      window.scrollTo(0, 0);
     }
 
-    function closeLightbox() {
-      lightbox.classList.remove('visible');
+    // Close detail view
+    function closeDetail() {
+      if (!isDetailOpen) return;
+
+      // Scramble title back
+      scrambleText(pageTitle, 'PROJECTS', 400);
+
+      // Black hole close animation
+      detailContent.classList.add('closing');
+      
+      setTimeout(() => {
+        detailContent.classList.remove('visible', 'closing');
+        document.body.classList.remove('detail-active');
+        isDetailOpen = false;
+        currentProjectIndex = -1;
+      }, 500);
     }
 
+    // Navigate projects
+    function navigateProject(direction) {
+      if (!isDetailOpen) return;
+
+      let newIndex = currentProjectIndex + direction;
+      if (newIndex < 0) newIndex = projects.length - 1;
+      if (newIndex >= projects.length) newIndex = 0;
+
+      currentProjectIndex = newIndex;
+      const project = projects[newIndex];
+
+      // Scramble to new title
+      scrambleText(document.getElementById('detailTitle'), project.title, 300);
+
+      // Update content with slight delay for effect
+      setTimeout(() => {
+        updateDetailView(project);
+      }, 150);
+    }
+
+    // Event listeners
     grid.addEventListener('click', e => {
       const card = e.target.closest('.project-card');
-      if (card) openModal(card.dataset.id);
+      if (card) openDetail(card.dataset.id);
     });
 
-    closeBtn.addEventListener('click', closeModal);
-    overlay.addEventListener('click', closeModal);
-    lightboxClose.addEventListener('click', closeLightbox);
-    lightbox.addEventListener('click', e => { if (e.target === lightbox) closeLightbox(); });
+    detailClose.addEventListener('click', closeDetail);
+    prevBtn.addEventListener('click', () => navigateProject(-1));
+    nextBtn.addEventListener('click', () => navigateProject(1));
 
+    // Keyboard navigation
     document.addEventListener('keydown', e => {
-      if (e.key === 'Escape') {
-        if (lightbox.classList.contains('visible')) closeLightbox();
-        else closeModal();
-      }
-      if (modal.classList.contains('visible') && currentImages.length > 1) {
-        if (e.key === 'ArrowLeft') { currentIndex = (currentIndex - 1 + currentImages.length) % currentImages.length; updateGallery(); }
-        if (e.key === 'ArrowRight') { currentIndex = (currentIndex + 1) % currentImages.length; updateGallery(); }
-      }
+      if (!isDetailOpen) return;
+      
+      if (e.key === 'Escape') closeDetail();
+      if (e.key === 'ArrowLeft') navigateProject(-1);
+      if (e.key === 'ArrowRight') navigateProject(1);
     });
+
+    // Initialize
+    renderGrid();
+    
+    // Initial title scramble
+    scrambleText(pageTitle, 'PROJECTS', 600);
   </script>
 </body>
 </html>
