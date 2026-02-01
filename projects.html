@@ -88,7 +88,11 @@
       line-height: 1;
     }
 
-    .nav-link:hover { color: #FFFFFF; border-bottom-color: rgba(255, 255, 255, 0.5); }
+    .nav-link:hover { 
+      color: #FFFFFF; 
+      border-bottom-color: rgba(255, 255, 255, 0.5);
+      text-shadow: 0 0 10px rgba(255,255,255,0.5), 0 0 20px rgba(255,255,255,0.3);
+    }
     .nav-link.active { color: #FFFFFF; border-bottom-color: #FFFFFF; }
 
     /* Main content */
@@ -159,8 +163,28 @@
     }
 
     .project-card:hover {
-      border-color: var(--border-light);
+      border-color: rgba(255,255,255,0.3);
       background: rgba(255,255,255,0.03);
+      box-shadow: 
+        0 0 20px rgba(255,255,255,0.1),
+        0 0 40px rgba(255,255,255,0.05),
+        inset 0 0 30px rgba(255,255,255,0.02);
+      animation: cardGlow 2s ease-in-out infinite;
+    }
+
+    @keyframes cardGlow {
+      0%, 100% {
+        box-shadow: 
+          0 0 20px rgba(255,255,255,0.1),
+          0 0 40px rgba(255,255,255,0.05),
+          inset 0 0 30px rgba(255,255,255,0.02);
+      }
+      50% {
+        box-shadow: 
+          0 0 30px rgba(255,255,255,0.15),
+          0 0 60px rgba(255,255,255,0.08),
+          inset 0 0 40px rgba(255,255,255,0.03);
+      }
     }
 
     .project-image {
@@ -426,7 +450,10 @@
       opacity: 0.5;
     }
 
-    .gallery-thumb:hover { opacity: 0.8; }
+    .gallery-thumb:hover { 
+      opacity: 0.8;
+      box-shadow: 0 0 15px rgba(255,255,255,0.3);
+    }
     .gallery-thumb.active { border-color: #fff; opacity: 1; }
 
     .gallery-thumb img {
@@ -551,6 +578,7 @@
     .nav-btn:hover {
       background: rgba(255,255,255,0.1);
       border-color: var(--border-light);
+      box-shadow: 0 0 20px rgba(255,255,255,0.2), 0 0 40px rgba(255,255,255,0.1);
     }
 
     .nav-btn svg {
@@ -587,6 +615,7 @@
       background: rgba(255,255,255,0.1);
       border-color: var(--border-light);
       transform: scale(1.05);
+      box-shadow: 0 0 20px rgba(255,255,255,0.2), 0 0 40px rgba(255,255,255,0.1);
     }
 
     .detail-close::before,
@@ -821,26 +850,8 @@
         inset 0 0 10px rgba(255,255,255,0.05);
     }
 
-    .cursor.hovering {
-      transform: translate(-50%, -50%) scale(0.6);
-      box-shadow: 
-        0 0 15px rgba(255,255,255,1),
-        0 0 30px rgba(255,255,255,0.8),
-        0 0 50px rgba(255,255,255,0.5),
-        0 0 80px rgba(255,255,255,0.3);
-    }
-
-    .cursor-trail.hovering {
-      width: 50px;
-      height: 50px;
-      border-color: rgba(255,255,255,0.6);
-      box-shadow: 
-        0 0 20px rgba(255,255,255,0.2),
-        inset 0 0 15px rgba(255,255,255,0.1);
-    }
-
     .cursor.clicking {
-      transform: translate(-50%, -50%) scale(0.5);
+      transform: translate(-50%, -50%) scale(0.7);
       box-shadow: 
         0 0 20px rgba(255,255,255,1),
         0 0 40px rgba(255,255,255,0.9),
@@ -1381,20 +1392,6 @@
     }
     animateTrail();
 
-    // Hover effect on clickable elements
-    const addHoverListeners = () => {
-      document.querySelectorAll('a, button, .project-card, .gallery-thumb, .nav-btn, .detail-close').forEach(el => {
-        el.addEventListener('mouseenter', () => {
-          cursor.classList.add('hovering');
-          cursorTrail.classList.add('hovering');
-        });
-        el.addEventListener('mouseleave', () => {
-          cursor.classList.remove('hovering');
-          cursorTrail.classList.remove('hovering');
-        });
-      });
-    };
-    addHoverListeners();
 
     // Click effect
     document.addEventListener('mousedown', () => {
