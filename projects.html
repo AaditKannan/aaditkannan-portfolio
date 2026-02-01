@@ -118,9 +118,23 @@
     /* Project grid */
     .projects-grid {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: repeat(12, 1fr);
       gap: 24px;
       transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* Default: cards take 6 columns (half width) */
+    .project-card {
+      grid-column: span 6;
+    }
+
+    /* First row special layout */
+    .project-card[data-id="formula-electric"] {
+      grid-column: span 7;
+    }
+
+    .project-card[data-id="dejavu-2024-25"] {
+      grid-column: span 5;
     }
 
     .project-card {
@@ -131,6 +145,7 @@
       transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
       opacity: 1;
       transform: scale(1);
+      grid-column: span 6;
     }
 
     .project-card:hover {
@@ -210,17 +225,9 @@
       overflow: hidden;
     }
 
-    /* Featured card - full width */
-    .project-card.featured {
-      grid-column: span 2;
-    }
-
-    .project-card.featured .project-image {
-      aspect-ratio: 2.5/1;
-    }
-
+    /* Featured styling (but not full width anymore) */
     .project-card.featured .project-title {
-      font-size: 24px;
+      font-size: 20px;
     }
 
     /* Status dot */
@@ -321,20 +328,7 @@
     }
 
     .detail-category {
-      font-size: 11px;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--text-dim);
-      font-family: 'Courier Prime', monospace;
-      margin-bottom: 12px;
-      opacity: 0;
-      transform: translateY(10px);
-      transition: all 0.3s ease 0.1s;
-    }
-
-    .detail-content.visible .detail-category {
-      opacity: 1;
-      transform: translateY(0);
+      display: none;
     }
 
     /* Title matches page-title exactly */
@@ -620,7 +614,9 @@
         grid-template-columns: 1fr;
       }
       
-      .project-card.featured {
+      .project-card,
+      .project-card[data-id="formula-electric"],
+      .project-card[data-id="dejavu-2024-25"] {
         grid-column: span 1;
       }
 
@@ -881,7 +877,7 @@
         category: 'Robotics',
         date: '2024 — 2025',
         active: true,
-        featured: true,
+        featured: false,
         excerpt: 'Hardware Lead for FTC #13216. Designed robot with 500+ custom parts.',
         description: 'Led hardware development for FTC Team Deja Vu #13216 during the INTO THE DEEP season. Designed and manufactured a competition robot featuring custom-engineered mechanisms including a high-performance intake system. Managed CAD design with 500+ unique parts and led manufacturing efforts.',
         tags: ['CAD', 'FEA', 'Manufacturing', 'Leadership'],
