@@ -487,6 +487,55 @@
       justify-content: center;
       overflow: hidden;
       margin-bottom: 12px;
+      position: relative;
+    }
+
+    .gallery-nav {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 50px;
+      height: 50px;
+      background: rgba(0,0,0,0.6);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      z-index: 10;
+      opacity: 0;
+    }
+
+    .gallery-main:hover .gallery-nav {
+      opacity: 1;
+    }
+
+    .gallery-nav:hover {
+      background: rgba(255,255,255,0.15);
+      border-color: rgba(255,255,255,0.5);
+      box-shadow: 0 0 20px rgba(255,255,255,0.2);
+    }
+
+    .gallery-nav-prev {
+      left: 20px;
+    }
+
+    .gallery-nav-next {
+      right: 20px;
+    }
+
+    .gallery-nav svg {
+      width: 20px;
+      height: 20px;
+      stroke: rgba(255,255,255,0.8);
+      stroke-width: 2;
+      fill: none;
+    }
+
+    .gallery-nav:hover svg {
+      stroke: #fff;
     }
 
     .gallery-main img {
@@ -1370,12 +1419,25 @@
 
       // Gallery
       const galleryEl = document.getElementById('detailGallery');
+      let currentGalleryIndex = 0;
+      
       if (project.images && project.images.length > 0) {
+        const hasMultiple = project.images.length > 1;
         galleryEl.innerHTML = `
           <div class="gallery-main">
+            ${hasMultiple ? `
+              <button class="gallery-nav gallery-nav-prev" id="galleryPrev">
+                <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
+              </button>
+            ` : ''}
             <img src="${project.images[0]}" alt="${project.title}" id="galleryMainImg">
+            ${hasMultiple ? `
+              <button class="gallery-nav gallery-nav-next" id="galleryNext">
+                <svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
+              </button>
+            ` : ''}
           </div>
-          ${project.images.length > 1 ? `
+          ${hasMultiple ? `
             <div class="gallery-thumbs">
               ${project.images.map((img, i) => `
                 <div class="gallery-thumb${i === 0 ? ' active' : ''}" data-index="${i}">
@@ -1386,15 +1448,30 @@
           ` : ''}
         `;
 
+        const updateGalleryImage = (idx) => {
+          currentGalleryIndex = idx;
+          document.getElementById('galleryMainImg').src = project.images[idx];
+          galleryEl.querySelectorAll('.gallery-thumb').forEach((t, i) => {
+            t.classList.toggle('active', i === idx);
+          });
+        };
+
         // Thumbnail click handlers
         galleryEl.querySelectorAll('.gallery-thumb').forEach(thumb => {
-          thumb.onclick = () => {
-            const idx = parseInt(thumb.dataset.index);
-            document.getElementById('galleryMainImg').src = project.images[idx];
-            galleryEl.querySelectorAll('.gallery-thumb').forEach(t => t.classList.remove('active'));
-            thumb.classList.add('active');
-          };
+          thumb.onclick = () => updateGalleryImage(parseInt(thumb.dataset.index));
         });
+
+        // Arrow navigation
+        if (hasMultiple) {
+          document.getElementById('galleryPrev').onclick = () => {
+            const newIdx = (currentGalleryIndex - 1 + project.images.length) % project.images.length;
+            updateGalleryImage(newIdx);
+          };
+          document.getElementById('galleryNext').onclick = () => {
+            const newIdx = (currentGalleryIndex + 1) % project.images.length;
+            updateGalleryImage(newIdx);
+          };
+        }
       } else {
         galleryEl.innerHTML = `
           <div class="gallery-main">
