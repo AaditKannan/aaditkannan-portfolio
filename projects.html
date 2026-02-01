@@ -788,44 +788,26 @@
       display: none;
     }
 
-    /* Custom Cursor */
+    /* Custom Cursor - single dot */
     .cursor {
       position: fixed;
-      width: 8px;
-      height: 8px;
+      width: 10px;
+      height: 10px;
       background: #fff;
       border-radius: 50%;
       pointer-events: none;
       z-index: 9999;
-      transition: transform 0.15s ease, opacity 0.15s ease;
       transform: translate(-50%, -50%);
       mix-blend-mode: difference;
+      transition: transform 0.1s ease;
     }
 
-    .cursor-ring {
-      position: fixed;
-      width: 32px;
-      height: 32px;
-      border: 1px solid rgba(255,255,255,0.5);
-      border-radius: 50%;
-      pointer-events: none;
-      z-index: 9998;
-      transition: transform 0.08s ease-out, width 0.2s ease, height 0.2s ease, border-color 0.2s ease;
-      transform: translate(-50%, -50%);
-    }
-
-    .cursor-ring.hovering {
-      width: 48px;
-      height: 48px;
-      border-color: rgba(255,255,255,0.8);
+    .cursor.hovering {
+      transform: translate(-50%, -50%) scale(1.5);
     }
 
     .cursor.clicking {
       transform: translate(-50%, -50%) scale(0.8);
-    }
-
-    .cursor-ring.clicking {
-      transform: translate(-50%, -50%) scale(0.9);
     }
 
     /* Hide default cursor */
@@ -835,7 +817,7 @@
 
     /* Show default cursor on mobile/touch */
     @media (hover: none) and (pointer: coarse) {
-      .cursor, .cursor-ring {
+      .cursor {
         display: none !important;
       }
       *, *::before, *::after {
@@ -847,7 +829,6 @@
 <body>
   <!-- Custom Cursor -->
   <div class="cursor" id="cursor"></div>
-  <div class="cursor-ring" id="cursorRing"></div>
 
   <nav class="nav-bar">
     <a href="/" class="nav-link">HOME</a>
@@ -1331,44 +1312,23 @@
     // Initial title scramble
     scrambleText(pageTitle, 'PROJECTS', 600);
 
-    // Custom Cursor
+    // Custom Cursor - single dot
     const cursor = document.getElementById('cursor');
-    const cursorRing = document.getElementById('cursorRing');
-    let mouseX = 0, mouseY = 0;
-    let ringX = 0, ringY = 0;
 
     document.addEventListener('mousemove', e => {
-      mouseX = e.clientX;
-      mouseY = e.clientY;
-      cursor.style.left = mouseX + 'px';
-      cursor.style.top = mouseY + 'px';
+      cursor.style.left = e.clientX + 'px';
+      cursor.style.top = e.clientY + 'px';
     });
-
-    // Smooth ring follow
-    function animateRing() {
-      ringX += (mouseX - ringX) * 0.15;
-      ringY += (mouseY - ringY) * 0.15;
-      cursorRing.style.left = ringX + 'px';
-      cursorRing.style.top = ringY + 'px';
-      requestAnimationFrame(animateRing);
-    }
-    animateRing();
 
     // Hover effect on clickable elements
     document.querySelectorAll('a, button, .project-card, .gallery-thumb, .nav-btn, .detail-close').forEach(el => {
-      el.addEventListener('mouseenter', () => cursorRing.classList.add('hovering'));
-      el.addEventListener('mouseleave', () => cursorRing.classList.remove('hovering'));
+      el.addEventListener('mouseenter', () => cursor.classList.add('hovering'));
+      el.addEventListener('mouseleave', () => cursor.classList.remove('hovering'));
     });
 
     // Click effect
-    document.addEventListener('mousedown', () => {
-      cursor.classList.add('clicking');
-      cursorRing.classList.add('clicking');
-    });
-    document.addEventListener('mouseup', () => {
-      cursor.classList.remove('clicking');
-      cursorRing.classList.remove('clicking');
-    });
+    document.addEventListener('mousedown', () => cursor.classList.add('clicking'));
+    document.addEventListener('mouseup', () => cursor.classList.remove('clicking'));
   </script>
 </body>
 </html>
