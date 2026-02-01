@@ -194,6 +194,92 @@
       position: relative;
     }
 
+    /* Main Content Layout with Timeline */
+    .projects-layout {
+      display: flex;
+      gap: 40px;
+      position: relative;
+    }
+
+    /* Year Timeline - Left Side */
+    .year-timeline {
+      position: sticky;
+      top: 120px;
+      height: fit-content;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px 0;
+      min-width: 60px;
+    }
+
+    .timeline-line {
+      position: absolute;
+      left: 50%;
+      top: 60px;
+      bottom: 60px;
+      width: 1px;
+      background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.2) 10%, rgba(255,255,255,0.2) 90%, transparent);
+      transform: translateX(-50%);
+    }
+
+    .year-btn {
+      position: relative;
+      z-index: 1;
+      background: transparent;
+      border: none;
+      color: rgba(255,255,255,0.4);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      letter-spacing: 0.1em;
+      padding: 12px 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      writing-mode: horizontal-tb;
+    }
+
+    .year-btn::before {
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.2);
+      transition: all 0.3s ease;
+    }
+
+    .year-btn:hover {
+      color: rgba(255,255,255,0.8);
+    }
+
+    .year-btn:hover::before {
+      background: rgba(255,255,255,0.5);
+      box-shadow: 0 0 10px rgba(255,255,255,0.3);
+    }
+
+    .year-btn.active {
+      color: #fff;
+    }
+
+    .year-btn.active::before {
+      background: #fff;
+      box-shadow: 0 0 15px rgba(255,255,255,0.6);
+    }
+
+    .year-btn span {
+      display: block;
+      padding-left: 20px;
+    }
+
+    /* Projects Content Area */
+    .projects-content {
+      flex: 1;
+      min-width: 0;
+    }
+
     /* Filter Bar */
     .filter-bar {
       display: flex;
@@ -247,6 +333,40 @@
       height: 24px;
       background: var(--border);
       margin: 0 8px;
+    }
+
+    @media (max-width: 900px) {
+      .projects-layout {
+        flex-direction: column;
+        gap: 20px;
+      }
+
+      .year-timeline {
+        position: relative;
+        top: 0;
+        flex-direction: row;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 8px;
+        min-width: 100%;
+        padding: 10px 0;
+      }
+
+      .timeline-line {
+        display: none;
+      }
+
+      .year-btn {
+        padding: 8px 12px;
+      }
+
+      .year-btn span {
+        padding-left: 0;
+      }
+
+      .year-btn::before {
+        display: none;
+      }
     }
 
     @media (max-width: 768px) {
@@ -1086,7 +1206,23 @@
       </div>
     </div>
 
-    <div class="projects-grid" id="projectsGrid"></div>
+    <div class="projects-layout">
+      <!-- Year Timeline on Left -->
+      <nav class="year-timeline" id="yearTimeline">
+        <div class="timeline-line"></div>
+        <button class="year-btn active" data-year="all"><span>ALL</span></button>
+        <button class="year-btn" data-year="2025"><span>2025</span></button>
+        <button class="year-btn" data-year="2024"><span>2024</span></button>
+        <button class="year-btn" data-year="2023"><span>2023</span></button>
+        <button class="year-btn" data-year="2022"><span>2022</span></button>
+        <button class="year-btn" data-year="2021"><span>2021</span></button>
+      </nav>
+
+      <!-- Projects Content -->
+      <div class="projects-content">
+        <div class="projects-grid" id="projectsGrid"></div>
+      </div>
+    </div>
 
     <section class="footage-teaser">
       <a href="/footage" class="footage-link">
@@ -1448,9 +1584,9 @@
     });
 
     // Timeline year click handlers
-    document.querySelectorAll('.timeline-year').forEach(btn => {
+    document.querySelectorAll('.year-btn[data-year]').forEach(btn => {
       btn.addEventListener('click', () => {
-        document.querySelectorAll('.timeline-year').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.year-btn[data-year]').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
         activeYear = btn.dataset.year;
         renderGrid();
