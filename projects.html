@@ -281,19 +281,29 @@
       transform: scale(1.03);
     }
 
-    /* Zenith FREIGHT FRENZY - rotate to show left side, match grey background */
+    /* Zenith FREIGHT FRENZY - show whole bot, match grey background */
     .project-card[data-id="zenith-2021-22"] .project-image {
       background: #c4c4c4;
     }
 
     .project-card[data-id="zenith-2021-22"] .project-image img {
       object-fit: contain;
-      transform: scale(1.1) rotate(-5deg);
+      transform: scale(0.9) rotate(-5deg);
       background: #c4c4c4;
     }
 
     .project-card[data-id="zenith-2021-22"]:hover .project-image img {
-      transform: scale(1.13) rotate(-5deg);
+      transform: scale(0.93) rotate(-5deg);
+    }
+
+    /* Deja Vu CENTERSTAGE - zoom in and center */
+    .project-card[data-id="dejavu-2023-24"] .project-image img {
+      object-fit: contain;
+      transform: scale(1.3);
+    }
+
+    .project-card[data-id="dejavu-2023-24"]:hover .project-image img {
+      transform: scale(1.33);
     }
 
     .project-image-placeholder {
