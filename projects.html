@@ -281,14 +281,19 @@
       transform: scale(1.03);
     }
 
-    /* Zenith FREIGHT FRENZY - zoom in to fill and center */
+    /* Zenith FREIGHT FRENZY - rotate to show left side, match grey background */
+    .project-card[data-id="zenith-2021-22"] .project-image {
+      background: #c4c4c4;
+    }
+
     .project-card[data-id="zenith-2021-22"] .project-image img {
-      object-fit: cover;
-      transform: scale(1.15);
+      object-fit: contain;
+      transform: scale(1.1) rotate(-5deg);
+      background: #c4c4c4;
     }
 
     .project-card[data-id="zenith-2021-22"]:hover .project-image img {
-      transform: scale(1.18);
+      transform: scale(1.13) rotate(-5deg);
     }
 
     .project-image-placeholder {
