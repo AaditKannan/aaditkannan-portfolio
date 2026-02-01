@@ -788,26 +788,69 @@
       display: none;
     }
 
-    /* Custom Cursor - single dot */
+    /* Custom Cursor - glowing with trail */
     .cursor {
       position: fixed;
-      width: 10px;
-      height: 10px;
+      width: 12px;
+      height: 12px;
       background: #fff;
       border-radius: 50%;
       pointer-events: none;
       z-index: 9999;
       transform: translate(-50%, -50%);
-      mix-blend-mode: difference;
-      transition: transform 0.1s ease;
+      box-shadow: 
+        0 0 10px rgba(255,255,255,0.8),
+        0 0 20px rgba(255,255,255,0.6),
+        0 0 40px rgba(255,255,255,0.4),
+        0 0 60px rgba(255,255,255,0.2);
+      transition: transform 0.1s ease, box-shadow 0.2s ease;
+    }
+
+    .cursor-trail {
+      position: fixed;
+      width: 24px;
+      height: 24px;
+      border: 1px solid rgba(255,255,255,0.4);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9998;
+      transform: translate(-50%, -50%);
+      transition: width 0.3s ease, height 0.3s ease, border-color 0.3s ease, opacity 0.3s ease;
+      box-shadow: 
+        0 0 15px rgba(255,255,255,0.1),
+        inset 0 0 10px rgba(255,255,255,0.05);
     }
 
     .cursor.hovering {
-      transform: translate(-50%, -50%) scale(1.5);
+      transform: translate(-50%, -50%) scale(0.6);
+      box-shadow: 
+        0 0 15px rgba(255,255,255,1),
+        0 0 30px rgba(255,255,255,0.8),
+        0 0 50px rgba(255,255,255,0.5),
+        0 0 80px rgba(255,255,255,0.3);
+    }
+
+    .cursor-trail.hovering {
+      width: 50px;
+      height: 50px;
+      border-color: rgba(255,255,255,0.6);
+      box-shadow: 
+        0 0 20px rgba(255,255,255,0.2),
+        inset 0 0 15px rgba(255,255,255,0.1);
     }
 
     .cursor.clicking {
-      transform: translate(-50%, -50%) scale(0.8);
+      transform: translate(-50%, -50%) scale(0.5);
+      box-shadow: 
+        0 0 20px rgba(255,255,255,1),
+        0 0 40px rgba(255,255,255,0.9),
+        0 0 60px rgba(255,255,255,0.6);
+    }
+
+    .cursor-trail.clicking {
+      width: 16px;
+      height: 16px;
+      opacity: 0.8;
     }
 
     /* Hide default cursor */
@@ -817,7 +860,7 @@
 
     /* Show default cursor on mobile/touch */
     @media (hover: none) and (pointer: coarse) {
-      .cursor {
+      .cursor, .cursor-trail {
         display: none !important;
       }
       *, *::before, *::after {
@@ -829,6 +872,7 @@
 <body>
   <!-- Custom Cursor -->
   <div class="cursor" id="cursor"></div>
+  <div class="cursor-trail" id="cursorTrail"></div>
 
   <nav class="nav-bar">
     <a href="/" class="nav-link">HOME</a>
@@ -1312,23 +1356,55 @@
     // Initial title scramble
     scrambleText(pageTitle, 'PROJECTS', 600);
 
-    // Custom Cursor - single dot
+    // Custom Cursor - glowing with smooth trail
     const cursor = document.getElementById('cursor');
+    const cursorTrail = document.getElementById('cursorTrail');
+    let mouseX = 0, mouseY = 0;
+    let trailX = 0, trailY = 0;
 
     document.addEventListener('mousemove', e => {
-      cursor.style.left = e.clientX + 'px';
-      cursor.style.top = e.clientY + 'px';
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+      cursor.style.left = mouseX + 'px';
+      cursor.style.top = mouseY + 'px';
     });
+
+    // Smooth trailing effect
+    function animateTrail() {
+      const dx = mouseX - trailX;
+      const dy = mouseY - trailY;
+      trailX += dx * 0.12;
+      trailY += dy * 0.12;
+      cursorTrail.style.left = trailX + 'px';
+      cursorTrail.style.top = trailY + 'px';
+      requestAnimationFrame(animateTrail);
+    }
+    animateTrail();
 
     // Hover effect on clickable elements
-    document.querySelectorAll('a, button, .project-card, .gallery-thumb, .nav-btn, .detail-close').forEach(el => {
-      el.addEventListener('mouseenter', () => cursor.classList.add('hovering'));
-      el.addEventListener('mouseleave', () => cursor.classList.remove('hovering'));
-    });
+    const addHoverListeners = () => {
+      document.querySelectorAll('a, button, .project-card, .gallery-thumb, .nav-btn, .detail-close').forEach(el => {
+        el.addEventListener('mouseenter', () => {
+          cursor.classList.add('hovering');
+          cursorTrail.classList.add('hovering');
+        });
+        el.addEventListener('mouseleave', () => {
+          cursor.classList.remove('hovering');
+          cursorTrail.classList.remove('hovering');
+        });
+      });
+    };
+    addHoverListeners();
 
     // Click effect
-    document.addEventListener('mousedown', () => cursor.classList.add('clicking'));
-    document.addEventListener('mouseup', () => cursor.classList.remove('clicking'));
+    document.addEventListener('mousedown', () => {
+      cursor.classList.add('clicking');
+      cursorTrail.classList.add('clicking');
+    });
+    document.addEventListener('mouseup', () => {
+      cursor.classList.remove('clicking');
+      cursorTrail.classList.remove('clicking');
+    });
   </script>
 </body>
 </html>
