@@ -111,9 +111,15 @@
     /* Filter Bar */
     .filter-bar {
       display: flex;
-      justify-content: space-between;
-      gap: 24px;
+      flex-direction: column;
+      gap: 16px;
       margin-bottom: 40px;
+    }
+
+    .filter-row {
+      display: flex;
+      justify-content: flex-start;
+      gap: 32px;
       flex-wrap: wrap;
       align-items: center;
     }
@@ -122,6 +128,33 @@
       display: flex;
       gap: 8px;
       align-items: center;
+    }
+
+    .view-group {
+      margin-left: auto;
+    }
+
+    .view-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 8px;
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .view-btn:hover {
+      border-color: var(--border-light);
+      color: var(--text-dim);
+    }
+
+    .view-btn.active {
+      border-color: #fff;
+      color: #fff;
+      background: rgba(255,255,255,0.05);
     }
 
     .filter-label {
@@ -168,9 +201,14 @@
       .filter-bar {
         gap: 16px;
       }
+      .filter-row {
+        gap: 16px;
+      }
       .filter-group {
-        width: 100%;
         flex-wrap: wrap;
+      }
+      .view-group {
+        margin-left: 0;
       }
       .filter-divider {
         display: none;
@@ -198,6 +236,63 @@
       grid-template-columns: repeat(12, 1fr);
       gap: 24px;
       transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* Compact view - 3 columns */
+    .projects-grid.compact-view {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .projects-grid.compact-view .project-card,
+    .projects-grid.compact-view .project-card:nth-child(1),
+    .projects-grid.compact-view .project-card:nth-child(2),
+    .projects-grid.compact-view .project-card:nth-child(3),
+    .projects-grid.compact-view .project-card:nth-child(4),
+    .projects-grid.compact-view .project-card:nth-child(n+5),
+    .projects-grid.compact-view .project-card[data-id="dejavu-2024-25"] {
+      grid-column: span 1 !important;
+    }
+
+    .projects-grid.compact-view .project-card .project-image {
+      aspect-ratio: 16/10;
+    }
+
+    .projects-grid.compact-view .project-card .project-title {
+      font-size: 14px;
+    }
+
+    .projects-grid.compact-view .project-card .project-excerpt {
+      font-size: 12px;
+      -webkit-line-clamp: 2;
+    }
+
+    .projects-grid.compact-view .project-card .project-content {
+      padding: 16px;
+    }
+
+    /* Smooth filtering transitions */
+    .project-card {
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .project-card.filtering-out {
+      opacity: 0;
+      transform: scale(0.9);
+    }
+
+    .project-card.filtering-in {
+      animation: filterIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    @keyframes filterIn {
+      from {
+        opacity: 0;
+        transform: scale(0.95) translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+      }
     }
 
     /* First 4 cards: 6 columns each (50% - 2 per row) */
@@ -1227,21 +1322,32 @@
     </header>
 
     <div class="filter-bar">
-      <div class="filter-group">
-        <span class="filter-label">Category</span>
-        <button class="filter-btn active" data-filter="all">All</button>
-        <button class="filter-btn" data-filter="hardware">Hardware</button>
-        <button class="filter-btn" data-filter="software">Software</button>
-        <button class="filter-btn" data-filter="research">Research</button>
-      </div>
-      <div class="filter-group">
-        <span class="filter-label">Year</span>
-        <button class="filter-btn year-filter active" data-year="all">All</button>
-        <button class="filter-btn year-filter" data-year="2025">2025</button>
-        <button class="filter-btn year-filter" data-year="2024">2024</button>
-        <button class="filter-btn year-filter" data-year="2023">2023</button>
-        <button class="filter-btn year-filter" data-year="2022">2022</button>
-        <button class="filter-btn year-filter" data-year="2021">2021</button>
+      <div class="filter-row">
+        <div class="filter-group">
+          <span class="filter-label">Category</span>
+          <button class="filter-btn active" data-filter="all">All</button>
+          <button class="filter-btn" data-filter="hardware">Hardware</button>
+          <button class="filter-btn" data-filter="software">Software</button>
+          <button class="filter-btn" data-filter="research">Research</button>
+        </div>
+        <div class="filter-group">
+          <span class="filter-label">Year</span>
+          <button class="filter-btn year-filter active" data-year="all">All</button>
+          <button class="filter-btn year-filter" data-year="2025">2025</button>
+          <button class="filter-btn year-filter" data-year="2024">2024</button>
+          <button class="filter-btn year-filter" data-year="2023">2023</button>
+          <button class="filter-btn year-filter" data-year="2022">2022</button>
+          <button class="filter-btn year-filter" data-year="2021">2021</button>
+        </div>
+        <div class="filter-group view-group">
+          <span class="filter-label">View</span>
+          <button class="view-btn active" data-view="default" title="Default View">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><rect x="3" y="3" width="8" height="8"/><rect x="13" y="3" width="8" height="8"/><rect x="3" y="13" width="8" height="8"/><rect x="13" y="13" width="8" height="8"/></svg>
+          </button>
+          <button class="view-btn" data-view="compact" title="Compact View">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><rect x="2" y="3" width="6" height="6"/><rect x="9" y="3" width="6" height="6"/><rect x="16" y="3" width="6" height="6"/><rect x="2" y="10" width="6" height="6"/><rect x="9" y="10" width="6" height="6"/><rect x="16" y="10" width="6" height="6"/><rect x="2" y="17" width="6" height="6"/><rect x="9" y="17" width="6" height="6"/><rect x="16" y="17" width="6" height="6"/></svg>
+          </button>
+        </div>
       </div>
     </div>
 
@@ -1611,7 +1717,7 @@
         document.querySelectorAll('.filter-btn[data-filter]').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
         activeFilter = btn.dataset.filter;
-        renderGrid();
+        smoothFilterTransition();
       });
     });
 
@@ -1621,9 +1727,47 @@
         document.querySelectorAll('.year-filter[data-year]').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
         activeYear = btn.dataset.year;
-        renderGrid();
+        smoothFilterTransition();
       });
     });
+
+    // View toggle handlers
+    document.querySelectorAll('.view-btn[data-view]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const view = btn.dataset.view;
+        const grid = document.getElementById('projectsGrid');
+        
+        if (view === 'compact') {
+          grid.classList.add('compact-view');
+        } else {
+          grid.classList.remove('compact-view');
+        }
+      });
+    });
+
+    // Smooth filter transition
+    function smoothFilterTransition() {
+      const cards = document.querySelectorAll('.project-card');
+      cards.forEach(card => card.classList.add('filtering-out'));
+      
+      setTimeout(() => {
+        renderGrid();
+        const newCards = document.querySelectorAll('.project-card');
+        newCards.forEach((card, i) => {
+          card.style.animationDelay = `${i * 0.05}s`;
+          card.classList.add('filtering-in');
+        });
+        
+        setTimeout(() => {
+          newCards.forEach(card => {
+            card.classList.remove('filtering-in');
+            card.style.animationDelay = '';
+          });
+        }, 500);
+      }, 200);
+    }
 
     // Update detail view
     function updateDetailView(project) {
