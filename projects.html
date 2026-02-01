@@ -103,92 +103,6 @@
       position: relative;
     }
 
-    /* Vertical Timeline */
-    .timeline {
-      position: fixed;
-      left: 40px;
-      top: 50%;
-      transform: translateY(-50%);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0;
-      z-index: 100;
-    }
-
-    .timeline-line {
-      position: absolute;
-      left: 50%;
-      top: 0;
-      bottom: 0;
-      width: 1px;
-      background: linear-gradient(to bottom, transparent, var(--border) 10%, var(--border) 90%, transparent);
-      transform: translateX(-50%);
-      z-index: -1;
-    }
-
-    .timeline-year {
-      padding: 12px 0;
-      font-family: 'Courier Prime', monospace;
-      font-size: 12px;
-      color: var(--text-muted);
-      cursor: pointer;
-      transition: all 0.3s ease;
-      position: relative;
-      letter-spacing: 0.05em;
-    }
-
-    .timeline-year::before {
-      content: '';
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      transform: translate(-50%, -50%);
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: var(--bg);
-      border: 1px solid var(--border);
-      transition: all 0.3s ease;
-      z-index: -1;
-    }
-
-    .timeline-year:hover {
-      color: #fff;
-    }
-
-    .timeline-year:hover::before {
-      border-color: rgba(255,255,255,0.5);
-      box-shadow: 0 0 10px rgba(255,255,255,0.2);
-    }
-
-    .timeline-year.active {
-      color: #fff;
-    }
-
-    .timeline-year.active::before {
-      background: #fff;
-      border-color: #fff;
-      box-shadow: 0 0 15px rgba(255,255,255,0.4);
-    }
-
-    .timeline-dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: var(--border);
-      margin: 8px 0;
-    }
-
-    @media (max-width: 1100px) {
-      .timeline {
-        display: none;
-      }
-      main {
-        padding-left: 40px;
-      }
-    }
-
     .page-header {
       margin-bottom: 32px;
       position: relative;
@@ -975,10 +889,6 @@
       display: none;
     }
 
-    body.detail-active .timeline {
-      opacity: 0;
-      pointer-events: none;
-    }
 
     /* Custom Cursor - glowing with trail */
     .cursor {
@@ -1049,21 +959,6 @@
   <div class="cursor-trail" id="cursorTrail"></div>
 
   <!-- Vertical Timeline -->
-  <div class="timeline" id="timeline">
-    <div class="timeline-line"></div>
-    <div class="timeline-year active" data-year="all">ALL</div>
-    <div class="timeline-dot"></div>
-    <div class="timeline-year" data-year="2025">2025</div>
-    <div class="timeline-dot"></div>
-    <div class="timeline-year" data-year="2024">2024</div>
-    <div class="timeline-dot"></div>
-    <div class="timeline-year" data-year="2023">2023</div>
-    <div class="timeline-dot"></div>
-    <div class="timeline-year" data-year="2022">2022</div>
-    <div class="timeline-dot"></div>
-    <div class="timeline-year" data-year="2021">2021</div>
-  </div>
-
   <nav class="nav-bar">
     <a href="/" class="nav-link">HOME</a>
     <a href="/resume" class="nav-link">RESUME</a>
