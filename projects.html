@@ -1537,12 +1537,12 @@
       cursor.style.top = mouseY + 'px';
     });
 
-    // Smooth trailing effect - faster follow
+    // Smooth trailing effect - balanced drag
     function animateTrail() {
       const dx = mouseX - trailX;
       const dy = mouseY - trailY;
-      trailX += dx * 0.25;
-      trailY += dy * 0.25;
+      trailX += dx * 0.18;
+      trailY += dy * 0.18;
       cursorTrail.style.left = trailX + 'px';
       cursorTrail.style.top = trailY + 'px';
       requestAnimationFrame(animateTrail);
