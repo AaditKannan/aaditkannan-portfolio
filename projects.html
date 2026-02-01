@@ -246,6 +246,16 @@
       overflow: hidden;
     }
 
+    body.detail-active,
+    body.detail-active html {
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+    body.detail-active::-webkit-scrollbar,
+    body.detail-active html::-webkit-scrollbar {
+      display: none;
+    }
+
     body.detail-active .projects-grid {
       pointer-events: none;
     }
@@ -273,7 +283,7 @@
       display: none;
     }
 
-    /* Detail content that appears */
+    /* Detail content - same layout as main page */
     .detail-content {
       position: fixed;
       top: 0;
@@ -284,9 +294,15 @@
       z-index: 150;
       opacity: 0;
       visibility: hidden;
-      transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: opacity 0.3s ease;
       overflow-y: auto;
-      padding: 140px 40px 100px;
+      overflow-x: hidden;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+
+    .detail-content::-webkit-scrollbar {
+      display: none;
     }
 
     .detail-content.visible {
@@ -297,10 +313,11 @@
     .detail-inner {
       max-width: 1100px;
       margin: 0 auto;
+      padding: 140px 40px 100px;
     }
 
     .detail-header {
-      margin-bottom: 32px;
+      margin-bottom: 48px;
     }
 
     .detail-category {
@@ -309,10 +326,10 @@
       text-transform: uppercase;
       color: var(--text-dim);
       font-family: 'Courier Prime', monospace;
-      margin-bottom: 16px;
+      margin-bottom: 12px;
       opacity: 0;
-      transform: translateY(20px);
-      transition: all 0.5s ease 0.2s;
+      transform: translateY(10px);
+      transition: all 0.3s ease 0.1s;
     }
 
     .detail-content.visible .detail-category {
@@ -320,14 +337,15 @@
       transform: translateY(0);
     }
 
+    /* Title matches page-title exactly */
     .detail-title {
       font-family: 'Courier Prime', 'JetBrains Mono', 'Courier New', monospace;
-      font-size: clamp(36px, 6vw, 52px);
+      font-size: clamp(42px, 7vw, 56px);
       font-weight: 700;
       color: #FFFFFF;
       letter-spacing: 0.02em;
       line-height: 1.1;
-      margin-bottom: 12px;
+      margin: 0 0 12px 0;
     }
 
     .detail-date {
@@ -335,8 +353,8 @@
       color: var(--text-dim);
       font-family: 'Courier Prime', monospace;
       opacity: 0;
-      transform: translateY(20px);
-      transition: all 0.5s ease 0.3s;
+      transform: translateY(10px);
+      transition: all 0.3s ease 0.15s;
     }
 
     .detail-content.visible .detail-date {
@@ -578,9 +596,9 @@
     .detail-close::before { transform: rotate(45deg); }
     .detail-close::after { transform: rotate(-45deg); }
 
-    /* Black hole close animation */
+    /* Black hole close animation - fast */
     .detail-content.closing {
-      animation: blackHoleClose 0.5s cubic-bezier(0.55, 0, 1, 0.45) forwards;
+      animation: blackHoleClose 0.25s cubic-bezier(0.55, 0, 1, 0.45) forwards;
     }
 
     @keyframes blackHoleClose {
@@ -591,8 +609,8 @@
       }
       100% {
         opacity: 0;
-        transform: scale(0.8);
-        filter: blur(10px);
+        transform: scale(0.95);
+        filter: blur(6px);
       }
     }
 
@@ -628,14 +646,14 @@
       .nav-link { font-size: 11px; }
       
       main { padding: 120px 24px 80px; }
-      .detail-content { padding: 120px 24px 80px; }
+      .detail-inner { padding: 120px 24px 80px; }
 
       .page-title {
         font-size: clamp(32px, 8vw, 42px);
       }
 
       .detail-title {
-        font-size: clamp(28px, 7vw, 36px);
+        font-size: clamp(32px, 8vw, 42px);
       }
 
       .detail-close {
@@ -846,7 +864,7 @@
         category: 'Hardware',
         date: 'Jan 2025 — Present',
         active: true,
-        featured: true,
+        featured: false,
         excerpt: 'High-voltage battery system for Berkeley\'s Formula Electric racing team.',
         description: 'Designed and manufactured the attic casing for the high-voltage accumulator (battery) for Berkeley\'s Formula Electric racing team. Implemented waterproofing and high-dielectric-strength insulation to safely manage the 588V battery pack.',
         tags: ['Solidworks', 'Solidworks PDM', 'CAD/CAM/CAE'],
@@ -863,7 +881,7 @@
         category: 'Robotics',
         date: '2024 — 2025',
         active: true,
-        featured: false,
+        featured: true,
         excerpt: 'Hardware Lead for FTC #13216. Designed robot with 500+ custom parts.',
         description: 'Led hardware development for FTC Team Deja Vu #13216 during the INTO THE DEEP season. Designed and manufactured a competition robot featuring custom-engineered mechanisms including a high-performance intake system. Managed CAD design with 500+ unique parts and led manufacturing efforts.',
         tags: ['CAD', 'FEA', 'Manufacturing', 'Leadership'],
@@ -1191,7 +1209,7 @@
       // Scramble title back
       scrambleText(pageTitle, 'PROJECTS', 400);
 
-      // Black hole close animation
+      // Black hole close animation - fast
       detailContent.classList.add('closing');
       
       setTimeout(() => {
@@ -1199,7 +1217,7 @@
         document.body.classList.remove('detail-active');
         isDetailOpen = false;
         currentProjectIndex = -1;
-      }, 500);
+      }, 250);
     }
 
     // Navigate projects
