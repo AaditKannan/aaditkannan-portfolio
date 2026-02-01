@@ -200,14 +200,16 @@
       transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    /* First 2 cards: 6 columns each (50% - side by side) */
+    /* First 4 cards: 6 columns each (50% - 2 per row) */
     .project-card:nth-child(1),
-    .project-card:nth-child(2) {
+    .project-card:nth-child(2),
+    .project-card:nth-child(3),
+    .project-card:nth-child(4) {
       grid-column: span 6;
     }
 
-    /* 3rd card onwards: 4 columns each (33% - 3 per row) */
-    .project-card:nth-child(n+3) {
+    /* 5th card onwards: 4 columns each (33% - 3 per row) */
+    .project-card:nth-child(n+5) {
       grid-column: span 4;
     }
 
@@ -776,7 +778,9 @@
       .project-card,
       .project-card:nth-child(1),
       .project-card:nth-child(2),
-      .project-card:nth-child(n+3) {
+      .project-card:nth-child(3),
+      .project-card:nth-child(4),
+      .project-card:nth-child(n+5) {
         grid-column: span 1;
       }
 
