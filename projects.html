@@ -376,6 +376,17 @@
       transform: scale(1.18);
     }
 
+    /* Formula Electric - zoom in to remove black bars on CAD render */
+    .project-card[data-id="formula-electric"] .project-image img {
+      object-fit: cover;
+      object-position: center center;
+      transform: scale(1.35);
+    }
+
+    .project-card[data-id="formula-electric"]:hover .project-image img {
+      transform: scale(1.38);
+    }
+
     /* Pear Volunteering - zoom in from center */
     .project-card[data-id="pear-volunteering"] .project-image img {
       object-fit: cover;
@@ -391,11 +402,11 @@
     .project-card[data-id="inventry"] .project-image img {
       object-fit: cover;
       object-position: center center;
-      transform: scale(1.35);
+      transform: scale(1.2);
     }
 
     .project-card[data-id="inventry"]:hover .project-image img {
-      transform: scale(1.38);
+      transform: scale(1.23);
     }
 
     .project-image-placeholder {
@@ -1335,21 +1346,6 @@
         images: ['/assets/Deja_Vu_Bot_Assemble_Version_1_v4_v1112.png', '/assets/IMG_2714.png', '/assets/dejapp.png']
       },
       {
-        id: 'zenith-2022-23',
-        title: 'Zenith — POWERPLAY',
-        category: 'Hardware/Software',
-        filterCategory: ['hardware', 'software'],
-        years: [2022, 2023],
-        date: '2022 — 2023',
-        active: false,
-        featured: false,
-        excerpt: 'Team Lead for FTC #20424. Built cone-stacking robot with custom lift.',
-        description: `<strong>1. The Season: POWERPLAY</strong><br><br>POWERPLAY was the 2022-2023 FTC game where robots collected cones and stacked them on junctions of varying heights. Points were earned based on junction height and "circuit" ownership at the end of the match. It was a game that rewarded both speed and strategic decision-making.<br><br>This was my second year in FTC, and I stepped up as Team Lead for Zenith #20424.<br><br><strong>2. Growing Into Leadership</strong><br><br>Going from a first-year learner in FREIGHT FRENZY to Team Lead in POWERPLAY was a big jump. I was now responsible for:<br><br>• Overall robot design direction<br>• Team meeting coordination<br>• Mentoring newer members<br>• Competition strategy<br>• Engineering notebook management<br><br>It was the first time I had to balance technical work with people management.<br><br><strong>3. The Lift Mechanism</strong><br><br>The core of our robot was a linear lift designed for high-speed cone stacking. Key specifications:<br><br>• <strong>Travel:</strong> 30+ inches to reach the high junction<br>• <strong>Speed:</strong> Full extension in under 1.5 seconds<br>• <strong>Load capacity:</strong> Cone + claw mechanism (~200g)<br><br>We used a continuous rigging system with dyneema string and a high-RPM motor. The rigging math was straightforward:<br><br><code>Extension speed = (Motor RPM × Spool diameter × π) / Gear ratio</code><br><br>Getting the gear ratio right was critical. Too fast and the motor would stall under load. Too slow and we would lose cycle time.<br><br><strong>4. Cone Manipulation</strong><br><br>Cones needed to be grabbed from the floor, from the human player station, and from stacks on junctions. Our claw design evolved through three versions before we got it right. The first version was a simple pinch grip, but it kept dropping cones during fast lift movements because the acceleration would pull them loose. For V2, we added passive compliance with spring-loaded fingers, which was better but still inconsistent depending on how the cone was oriented. The breakthrough came with V3, where we added internal centering guides that would funnel the cone into the correct position before gripping. This worked because we realized the claw needed to actively center the cone, not just grip it. Cones placed by human players were never perfectly aligned, so the mechanism had to accommodate that variability.<br><br><strong>5. Software: TeleOp and Autonomous</strong><br><br>Beyond hardware, I wrote the robot code in Java using the FTC SDK. This included both driver-controlled (TeleOp) and autonomous routines.<br><br><strong>TeleOp code I wrote:</strong><br>• Gamepad input mapping for drivetrain control (mecanum drive kinematics)<br>• Lift position control with encoder feedback and PID tuning<br>• Claw actuation with driver override safeguards<br>• Speed scaling modes for precision vs. speed<br><br><strong>Autonomous code I wrote:</strong><br>• Signal sleeve detection using OpenCV color thresholding<br>• Odometry-based position tracking using dead wheel encoders<br>• Path following to score preloaded cone on junction<br>• Conditional parking based on detected signal<br><br>Getting autonomous reliable took weeks of testing and iteration. Small encoder drift compounded over the 30-second period, so I implemented heading correction using the IMU.<br><br><strong>6. ZenLender: A Side Project</strong><br><br>During POWERPLAY, I noticed teams constantly scrambling for parts before competitions. Shipping from GoBilda or REV took days, and overnight shipping was $50+. I built ZenLender, a simple spreadsheet-based system where Zenith members could lend parts to other teams.<br><br>It was primitive, just a shared spreadsheet really, but it worked. A few teams used it over the course of the season, and the concept stuck with me long after POWERPLAY ended. That seed of an idea eventually evolved into Inventry, the full-featured platform I would build years later.<br><br><strong>7. Competition Experience</strong><br><br>We competed in several league meets and a qualifier event. The robot performed well in early matches, but we hit mechanical issues in later rounds that cost us critical points. During one particularly painful match, the lift string snapped mid-cycle because we had not inspected it for wear. That failure taught me a lesson I have never forgotten: preventive maintenance matters just as much as good design. We did not advance to the regional championship that year, but I still consider the season a success because of how much the team developed and how much we all learned.<br><br><strong>8. Team Building</strong><br><br>My favorite part of the season was seeing newer members grow. Several students who joined knowing nothing about CAD or manufacturing were designing and building components by the end of the season. That kind of growth is why I love FTC.<br><br><strong>9. Documentation</strong><br><br>We put significant effort into our engineering notebook this season. I pushed for detailed documentation of our design process, including failed ideas and the reasoning behind decisions. The judges appreciated seeing our thought process, not just our final robot.<br><br><strong>10. What Came Next</strong><br><br>Zenith dissolved about a year after its founder graduated. Without his leadership, the team struggled to maintain momentum. I moved to Deja Vu for the following season. Zenith had given me an incredible foundation, and the lessons I learned as Team Lead shaped how I approach every project since.<br><br><em style="opacity: 0.7; font-size: 0.9em;">Note: Team Zenith #20424 has since dissolved.</em>`,
-        tags: ['CAD', 'Java', 'Leadership', 'Mentoring', 'FTC', 'Rigging', 'OpenCV'],
-        links: [{ label: 'Team Website', url: 'https://zenithftc.wixsite.com/zenithftc' }],
-        images: ['/assets/zenithnot-removebg-preview.png', '/assets/zenithbottt.png', '/assets/IMG_0537.png', '/assets/IMG_0691-ezgif.com-video-to-gif-converter.gif']
-      },
-      {
         id: 'atlas-smr',
         title: 'Atlas SMR',
         category: 'Research',
@@ -1366,6 +1362,21 @@
           { label: 'Research Paper', url: '/assets/AtlasSMR_Research_Paper.pdf' }
         ],
         images: ['/assets/atmaslet.png', '/assets/atmas.png', '/assets/smrbuilder.png']
+      },
+      {
+        id: 'zenith-2022-23',
+        title: 'Zenith — POWERPLAY',
+        category: 'Hardware/Software',
+        filterCategory: ['hardware', 'software'],
+        years: [2022, 2023],
+        date: '2022 — 2023',
+        active: false,
+        featured: false,
+        excerpt: 'Team Lead for FTC #20424. Built cone-stacking robot with custom lift.',
+        description: `<strong>1. The Season: POWERPLAY</strong><br><br>POWERPLAY was the 2022-2023 FTC game where robots collected cones and stacked them on junctions of varying heights. Points were earned based on junction height and "circuit" ownership at the end of the match. It was a game that rewarded both speed and strategic decision-making.<br><br>This was my second year in FTC, and I stepped up as Team Lead for Zenith #20424.<br><br><strong>2. Growing Into Leadership</strong><br><br>Going from a first-year learner in FREIGHT FRENZY to Team Lead in POWERPLAY was a big jump. I was now responsible for:<br><br>• Overall robot design direction<br>• Team meeting coordination<br>• Mentoring newer members<br>• Competition strategy<br>• Engineering notebook management<br><br>It was the first time I had to balance technical work with people management.<br><br><strong>3. The Lift Mechanism</strong><br><br>The core of our robot was a linear lift designed for high-speed cone stacking. Key specifications:<br><br>• <strong>Travel:</strong> 30+ inches to reach the high junction<br>• <strong>Speed:</strong> Full extension in under 1.5 seconds<br>• <strong>Load capacity:</strong> Cone + claw mechanism (~200g)<br><br>We used a continuous rigging system with dyneema string and a high-RPM motor. The rigging math was straightforward:<br><br><code>Extension speed = (Motor RPM × Spool diameter × π) / Gear ratio</code><br><br>Getting the gear ratio right was critical. Too fast and the motor would stall under load. Too slow and we would lose cycle time.<br><br><strong>4. Cone Manipulation</strong><br><br>Cones needed to be grabbed from the floor, from the human player station, and from stacks on junctions. Our claw design evolved through three versions before we got it right. The first version was a simple pinch grip, but it kept dropping cones during fast lift movements because the acceleration would pull them loose. For V2, we added passive compliance with spring-loaded fingers, which was better but still inconsistent depending on how the cone was oriented. The breakthrough came with V3, where we added internal centering guides that would funnel the cone into the correct position before gripping. This worked because we realized the claw needed to actively center the cone, not just grip it. Cones placed by human players were never perfectly aligned, so the mechanism had to accommodate that variability.<br><br><strong>5. Software: TeleOp and Autonomous</strong><br><br>Beyond hardware, I wrote the robot code in Java using the FTC SDK. This included both driver-controlled (TeleOp) and autonomous routines.<br><br><strong>TeleOp code I wrote:</strong><br>• Gamepad input mapping for drivetrain control (mecanum drive kinematics)<br>• Lift position control with encoder feedback and PID tuning<br>• Claw actuation with driver override safeguards<br>• Speed scaling modes for precision vs. speed<br><br><strong>Autonomous code I wrote:</strong><br>• Signal sleeve detection using OpenCV color thresholding<br>• Odometry-based position tracking using dead wheel encoders<br>• Path following to score preloaded cone on junction<br>• Conditional parking based on detected signal<br><br>Getting autonomous reliable took weeks of testing and iteration. Small encoder drift compounded over the 30-second period, so I implemented heading correction using the IMU.<br><br><strong>6. ZenLender: A Side Project</strong><br><br>During POWERPLAY, I noticed teams constantly scrambling for parts before competitions. Shipping from GoBilda or REV took days, and overnight shipping was $50+. I built ZenLender, a simple spreadsheet-based system where Zenith members could lend parts to other teams.<br><br>It was primitive, just a shared spreadsheet really, but it worked. A few teams used it over the course of the season, and the concept stuck with me long after POWERPLAY ended. That seed of an idea eventually evolved into Inventry, the full-featured platform I would build years later.<br><br><strong>7. Competition Experience</strong><br><br>We competed in several league meets and a qualifier event. The robot performed well in early matches, but we hit mechanical issues in later rounds that cost us critical points. During one particularly painful match, the lift string snapped mid-cycle because we had not inspected it for wear. That failure taught me a lesson I have never forgotten: preventive maintenance matters just as much as good design. We did not advance to the regional championship that year, but I still consider the season a success because of how much the team developed and how much we all learned.<br><br><strong>8. Team Building</strong><br><br>My favorite part of the season was seeing newer members grow. Several students who joined knowing nothing about CAD or manufacturing were designing and building components by the end of the season. That kind of growth is why I love FTC.<br><br><strong>9. Documentation</strong><br><br>We put significant effort into our engineering notebook this season. I pushed for detailed documentation of our design process, including failed ideas and the reasoning behind decisions. The judges appreciated seeing our thought process, not just our final robot.<br><br><strong>10. What Came Next</strong><br><br>Zenith dissolved about a year after its founder graduated. Without his leadership, the team struggled to maintain momentum. I moved to Deja Vu for the following season. Zenith had given me an incredible foundation, and the lessons I learned as Team Lead shaped how I approach every project since.<br><br><em style="opacity: 0.7; font-size: 0.9em;">Note: Team Zenith #20424 has since dissolved.</em>`,
+        tags: ['CAD', 'Java', 'Leadership', 'Mentoring', 'FTC', 'Rigging', 'OpenCV'],
+        links: [{ label: 'Team Website', url: 'https://zenithftc.wixsite.com/zenithftc' }],
+        images: ['/assets/zenithnot-removebg-preview.png', '/assets/zenithbottt.png', '/assets/IMG_0537.png', '/assets/IMG_0691-ezgif.com-video-to-gif-converter.gif']
       },
       {
         id: 'inventry',
