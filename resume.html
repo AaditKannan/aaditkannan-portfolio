@@ -518,6 +518,37 @@
         max-width: 280px;
       }
     }
+
+    /* Technical Experience Section - Scoped Styling */
+    #secLeadershipExperience #hLeadershipExperience {
+      font-size: 56px; /* Reduced by ~12.5% from 64px */
+    }
+
+    #secLeadershipExperience .entry-title {
+      color: #ffffff; /* Pure white for organization names */
+    }
+
+    #secLeadershipExperience .entry-role {
+      font-size: 18px; /* Slightly smaller than org name (20px) */
+      color: #cccccc; /* Soft gray */
+    }
+
+    #secLeadershipExperience .entry-date {
+      font-size: 15px; /* Slightly smaller than role (18px) */
+      color: #b3b3b3; /* Reduced prominence */
+    }
+
+    #secLeadershipExperience .entry-list li {
+      line-height: 1.95; /* Increased by ~3px from default (was ~1.8, now ~31px for 16px font) */
+      margin-bottom: 10px; /* Increased spacing between bullets */
+      color: #ffffff; /* White bullet text */
+    }
+
+    #secLeadershipExperience .entry-list li::before {
+      content: '•';
+      color: #d9d9d9; /* Slightly dimmer marker */
+      font-size: 14px; /* Smaller marker size */
+    }
   </style>
 </head>
 <body>
