@@ -276,12 +276,61 @@
       transform: translateX(4px);
     }
 
+    /* Calendar Availability Section */
+    .calendar-section {
+      width: 100%;
+      max-width: 1000px;
+      margin-top: 80px;
+      opacity: 0;
+      animation: fadeInUp 0.8s ease 0.6s forwards;
+    }
+
+    .calendar-header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .calendar-title {
+      font-family: 'Courier Prime', 'JetBrains Mono', 'Courier New', monospace;
+      font-size: clamp(32px, 6vw, 48px);
+      font-weight: 400;
+      color: #FFFFFF;
+      letter-spacing: 0.02em;
+      margin-bottom: 12px;
+    }
+
+    .calendar-subtitle {
+      font-family: 'Inter', sans-serif;
+      font-size: clamp(14px, 2vw, 16px);
+      color: rgba(255, 255, 255, 0.6);
+      letter-spacing: 0.01em;
+    }
+
+    .calendar-wrapper {
+      position: relative;
+      width: 100%;
+      border-radius: 16px;
+      overflow: hidden;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+      padding: 2px;
+    }
+
+    .calendar-iframe {
+      width: 100%;
+      height: 600px;
+      border: 0;
+      display: block;
+      background: transparent;
+    }
+
     /* Footer Note */
     .connect-footer {
       margin-top: 60px;
       text-align: center;
       opacity: 0;
-      animation: fadeInUp 0.8s ease 0.5s forwards;
+      animation: fadeInUp 0.8s ease 0.8s forwards;
     }
 
     .footer-text {
@@ -339,6 +388,18 @@
         gap: 16px;
       }
 
+      .calendar-section {
+        margin-top: 60px;
+      }
+
+      .calendar-wrapper {
+        border-radius: 12px;
+      }
+
+      .calendar-iframe {
+        height: 500px;
+      }
+
       .connect-footer {
         margin-top: 40px;
       }
@@ -364,6 +425,14 @@
 
       .card-value {
         font-size: 15px;
+      }
+
+      .calendar-section {
+        margin-top: 50px;
+      }
+
+      .calendar-iframe {
+        height: 450px;
       }
     }
 
@@ -468,6 +537,23 @@
           <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         </span>
       </a>
+    </div>
+
+    <!-- Calendar Availability Section -->
+    <div class="calendar-section">
+      <div class="calendar-header">
+        <h2 class="calendar-title">Availability</h2>
+        <p class="calendar-subtitle">Check my calendar to find a time that works</p>
+      </div>
+      <div class="calendar-wrapper">
+        <iframe 
+          src="https://calendar.google.com/calendar/embed?src=aaditkannan%40berkeley.edu&ctz=America%2FLos_Angeles" 
+          class="calendar-iframe"
+          frameborder="0" 
+          scrolling="no"
+          title="Aadit Kannan's Calendar Availability"
+        ></iframe>
+      </div>
     </div>
 
     <div class="connect-footer">
