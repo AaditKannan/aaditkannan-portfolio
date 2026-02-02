@@ -9,10 +9,10 @@
 // Configuration
 const CONFIG = {
   scrambleChars: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()',
-  scrambleDuration: 500, // ms - faster animation
+  scrambleDuration: 350, // ms - snappier animation
   fadeInDelay: 0, // ms after scramble starts - start immediately
-  fadeInDuration: 600, // ms - smoother, longer fade
-  intersectionThreshold: 0.15, // Trigger even earlier for smoother experience on mobile
+  fadeInDuration: 400, // ms - faster fade for quick scrolling
+  intersectionThreshold: 0.1, // Trigger very early
   scrollThrottle: 16, // ~60fps
   isMobile: window.innerWidth < 768
 };
@@ -547,8 +547,8 @@ function initScrollAnimations() {
     });
   }, {
     root: null,
-    rootMargin: CONFIG.isMobile ? '0px 0px -20% 0px' : '0px 0px -50% 0px', // Trigger earlier on mobile (80% visible)
-    threshold: CONFIG.isMobile ? 0.15 : 0.3 // Single threshold to prevent multiple triggers
+    rootMargin: CONFIG.isMobile ? '0px 0px 0% 0px' : '0px 0px -20% 0px', // Trigger as soon as section enters viewport
+    threshold: CONFIG.isMobile ? 0.05 : 0.1 // Lower threshold for faster triggering
   });
   
   // Observe all sections
@@ -809,8 +809,8 @@ function fadeInContent(element, delay = 0) {
   // Force reflow
   element.offsetHeight;
   
-  // Use longer, smoother fade on mobile
-  const duration = CONFIG.isMobile ? 800 : CONFIG.fadeInDuration;
+  // Use snappier fade for faster scrolling responsiveness
+  const duration = CONFIG.isMobile ? 500 : CONFIG.fadeInDuration;
   const easing = CONFIG.isMobile ? 'cubic-bezier(0.25, 0.46, 0.45, 0.94)' : 'cubic-bezier(0.4, 0, 0.2, 1)';
   
   setTimeout(() => {
