@@ -1384,12 +1384,6 @@
         <button class="filter-btn" data-filter="software">Software</button>
         <button class="filter-btn" data-filter="research">Research</button>
       </div>
-      <div class="filter-group">
-        <span class="filter-label">Period</span>
-        <button class="filter-btn period-filter active" data-period="all">All</button>
-        <button class="filter-btn period-filter" data-period="college">College</button>
-        <button class="filter-btn period-filter" data-period="highschool">High School</button>
-        </div>
         <div class="filter-group view-group">
           <span class="filter-label">View</span>
           <button class="view-btn active" data-view="default" title="Default View">
@@ -1717,7 +1711,6 @@
 
     // Filter state
     let activeFilter = 'all';
-    let activePeriod = 'all';
 
     // State
     let currentProjectIndex = -1;
@@ -1770,8 +1763,7 @@
       return projects.filter(p => {
         const categories = Array.isArray(p.filterCategory) ? p.filterCategory : [p.filterCategory];
         const categoryMatch = activeFilter === 'all' || categories.includes(activeFilter);
-        const periodMatch = activePeriod === 'all' || p.period === activePeriod;
-        return categoryMatch && periodMatch;
+        return categoryMatch;
       });
     }
 
@@ -1813,15 +1805,6 @@
       });
     });
 
-    // Period filter button handlers
-    document.querySelectorAll('.period-filter[data-period]').forEach(btn => {
-      btn.addEventListener('click', () => {
-        document.querySelectorAll('.period-filter[data-period]').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        activePeriod = btn.dataset.period;
-        smoothFilterTransition();
-      });
-    });
 
     // Smooth filter transition (same as view toggle)
     function smoothFilterTransition() {
