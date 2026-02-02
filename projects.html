@@ -1385,13 +1385,10 @@
         <button class="filter-btn" data-filter="research">Research</button>
       </div>
       <div class="filter-group">
-        <span class="filter-label">Year</span>
-        <button class="filter-btn year-filter active" data-year="all">All</button>
-        <button class="filter-btn year-filter" data-year="2025">2025</button>
-        <button class="filter-btn year-filter" data-year="2024">2024</button>
-        <button class="filter-btn year-filter" data-year="2023">2023</button>
-        <button class="filter-btn year-filter" data-year="2022">2022</button>
-        <button class="filter-btn year-filter" data-year="2021">2021</button>
+        <span class="filter-label">Period</span>
+        <button class="filter-btn period-filter active" data-period="all">All</button>
+        <button class="filter-btn period-filter" data-period="college">College</button>
+        <button class="filter-btn period-filter" data-period="highschool">High School</button>
         </div>
         <div class="filter-group view-group">
           <span class="filter-label">View</span>
@@ -1487,6 +1484,7 @@
         category: 'Hardware',
         filterCategory: 'hardware',
         years: [2025],
+        period: 'college',
         date: 'Jan 2025 — Present',
         active: true,
         featured: false,
@@ -1508,6 +1506,7 @@
         category: 'Hardware/Software',
         filterCategory: ['hardware', 'software'],
         years: [2024, 2025],
+        period: 'highschool',
         date: '2024 — 2025',
         active: false,
         featured: false,
@@ -1523,6 +1522,7 @@
         category: 'Hardware/Software',
         filterCategory: ['hardware', 'software'],
         years: [2023, 2024],
+        period: 'highschool',
         date: '2023 — 2024',
         active: false,
         featured: false,
@@ -1538,6 +1538,7 @@
         category: 'Research/Software',
         filterCategory: ['research', 'software'],
         years: [2025, 2026],
+        period: 'highschool',
         date: 'Oct 2025 — Present',
         active: true,
         featured: false,
@@ -1556,6 +1557,7 @@
         category: 'Hardware/Software',
         filterCategory: ['hardware', 'software'],
         years: [2022, 2023],
+        period: 'highschool',
         date: '2022 — 2023',
         active: false,
         featured: false,
@@ -1571,6 +1573,7 @@
         category: 'Research',
         filterCategory: 'research',
         years: [2026],
+        period: 'college',
         date: 'Jan 2026 — Present',
         active: true,
         featured: false,
@@ -1586,6 +1589,7 @@
         category: 'Software',
         filterCategory: 'software',
         years: [2025],
+        period: 'college',
         date: 'Jun 2025 — Present',
         active: true,
         featured: false,
@@ -1601,6 +1605,7 @@
         category: 'Software',
         filterCategory: 'software',
         years: [2023, 2024, 2025],
+        period: 'highschool',
         date: 'Aug 2023 — May 2025',
         active: false,
         featured: false,
@@ -1616,6 +1621,7 @@
         category: 'Hardware/Software',
         filterCategory: ['hardware', 'software'],
         years: [2022, 2023],
+        period: 'highschool',
         date: 'Oct 2022 — Apr 2023',
         active: false,
         featured: false,
@@ -1631,6 +1637,7 @@
         category: 'Software',
         filterCategory: 'software',
         years: [2023],
+        period: 'highschool',
         date: 'Mar 2023',
         active: false,
         featured: false,
@@ -1648,6 +1655,7 @@
         category: 'Hardware/Software',
         filterCategory: ['hardware', 'software'],
         years: [2021, 2022],
+        period: 'highschool',
         date: '2021 — 2022',
         active: false,
         featured: false,
@@ -1663,6 +1671,7 @@
         category: 'Hardware/Software',
         filterCategory: ['hardware', 'software'],
         years: [2021, 2022],
+        period: 'highschool',
         date: '2021 — 2022',
         active: false,
         featured: false,
@@ -1678,6 +1687,7 @@
         category: 'Hardware/Software',
         filterCategory: ['hardware', 'software'],
         years: [2021, 2022],
+        period: 'highschool',
         date: 'Sep 2021 — Mar 2022',
         active: false,
         featured: false,
@@ -1693,6 +1703,7 @@
         category: 'Hardware/Software',
         filterCategory: ['hardware', 'software'],
         years: [2020, 2021],
+        period: 'highschool',
         date: 'Nov 2020 — May 2021',
         active: false,
         featured: false,
@@ -1706,7 +1717,7 @@
 
     // Filter state
     let activeFilter = 'all';
-    let activeYear = 'all';
+    let activePeriod = 'all';
 
     // State
     let currentProjectIndex = -1;
@@ -1759,8 +1770,8 @@
       return projects.filter(p => {
         const categories = Array.isArray(p.filterCategory) ? p.filterCategory : [p.filterCategory];
         const categoryMatch = activeFilter === 'all' || categories.includes(activeFilter);
-        const yearMatch = activeYear === 'all' || p.years.includes(parseInt(activeYear));
-        return categoryMatch && yearMatch;
+        const periodMatch = activePeriod === 'all' || p.period === activePeriod;
+        return categoryMatch && periodMatch;
       });
     }
 
@@ -1802,12 +1813,12 @@
       });
     });
 
-    // Year filter button handlers
-    document.querySelectorAll('.year-filter[data-year]').forEach(btn => {
+    // Period filter button handlers
+    document.querySelectorAll('.period-filter[data-period]').forEach(btn => {
       btn.addEventListener('click', () => {
-        document.querySelectorAll('.year-filter[data-year]').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.period-filter[data-period]').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
-        activeYear = btn.dataset.year;
+        activePeriod = btn.dataset.period;
         smoothFilterTransition();
       });
     });
