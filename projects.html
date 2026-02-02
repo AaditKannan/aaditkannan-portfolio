@@ -83,6 +83,7 @@
       font-size: 13px;
       font-weight: 500;
       letter-spacing: 0.15em;
+      text-transform: uppercase;
       font-family: 'Courier Prime', 'JetBrains Mono', 'Courier New', monospace;
       border-bottom: 1px solid transparent;
       padding: 8px 0;
@@ -1371,7 +1372,7 @@
 
   <main>
     <header class="page-header">
-      <h1 class="page-title" id="pageTitle">PROJECTS</h1>
+      <h1 class="page-title" id="pageTitle">Projects</h1>
     </header>
 
     <div class="filter-bar">
@@ -2005,7 +2006,7 @@
       if (!isDetailOpen) return;
 
       // Scramble title back
-      scrambleText(pageTitle, 'PROJECTS', 400);
+      scrambleText(pageTitle, 'Projects', 400);
 
       // Black hole close animation - fast
       detailContent.classList.add('closing');
@@ -2083,7 +2084,7 @@
     renderGrid();
     
     // Initial title scramble
-    scrambleText(pageTitle, 'PROJECTS', 600);
+    scrambleText(pageTitle, 'Projects', 600);
 
     // Custom Cursor - glowing with smooth trail
     const cursor = document.getElementById('cursor');
