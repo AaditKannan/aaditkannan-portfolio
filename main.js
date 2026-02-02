@@ -866,19 +866,39 @@ function getCurrentSection() {
 }
 
 /**
- * Get next section
+ * Get next section (skips sections without valid elements)
  */
 function getNextSection(currentSection) {
   const currentIndex = SECTIONS.findIndex(s => s.id === currentSection.id);
-  return currentIndex < SECTIONS.length - 1 ? SECTIONS[currentIndex + 1] : null;
+  // Find next section with a valid, visible element
+  for (let i = currentIndex + 1; i < SECTIONS.length; i++) {
+    const section = SECTIONS[i];
+    if (section.element) {
+      const style = window.getComputedStyle(section.element);
+      if (style.display !== 'none' && style.visibility !== 'hidden') {
+        return section;
+      }
+    }
+  }
+  return null;
 }
 
 /**
- * Get previous section
+ * Get previous section (skips sections without valid elements)
  */
 function getPreviousSection(currentSection) {
   const currentIndex = SECTIONS.findIndex(s => s.id === currentSection.id);
-  return currentIndex > 0 ? SECTIONS[currentIndex - 1] : null;
+  // Find previous section with a valid, visible element
+  for (let i = currentIndex - 1; i >= 0; i--) {
+    const section = SECTIONS[i];
+    if (section.element) {
+      const style = window.getComputedStyle(section.element);
+      if (style.display !== 'none' && style.visibility !== 'hidden') {
+        return section;
+      }
+    }
+  }
+  return null;
 }
 
 /**
