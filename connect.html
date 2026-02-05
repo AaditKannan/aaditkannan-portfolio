@@ -147,8 +147,8 @@
     .contact-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 16px;
-      max-width: 700px;
+      gap: 12px;
+      max-width: 600px;
       width: 100%;
       opacity: 0;
       transform: translateY(30px);
@@ -168,14 +168,14 @@
       background: rgba(255, 255, 255, 0.03);
       border: 1px solid rgba(255, 255, 255, 0.1);
       border-radius: 12px;
-      padding: 24px 20px;
+      padding: 20px 16px;
       text-decoration: none;
       color: #FFFFFF;
       display: flex;
       flex-direction: column;
       align-items: center;
       text-align: center;
-      gap: 12px;
+      gap: 10px;
       transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
       overflow: hidden;
     }
@@ -354,6 +354,9 @@
         padding: 20px 24px;
         gap: 24px;
         height: 70px;
+        background: rgba(10, 10, 10, 0.95);
+        backdrop-filter: blur(10px);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
       }
       
       .nav-link {
@@ -370,7 +373,9 @@
       }
 
       .contact-grid {
-        gap: 12px;
+        gap: 8px;
+        grid-template-columns: 1fr;
+        max-width: 100%;
       }
 
       .calendar-section {
@@ -405,11 +410,26 @@
       }
 
       .contact-card {
-        padding: 28px 24px;
+        padding: 16px 12px;
+        gap: 8px;
       }
 
       .card-value {
-        font-size: 15px;
+        font-size: 12px;
+      }
+
+      .card-label {
+        font-size: 9px;
+      }
+
+      .card-icon {
+        width: 28px;
+        height: 28px;
+      }
+
+      .card-icon svg {
+        width: 16px;
+        height: 16px;
       }
 
       .calendar-section {

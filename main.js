@@ -211,38 +211,41 @@ function initMobileScrollHelper() {
   // Update on scroll
   window.addEventListener('scroll', updateHelper, { passive: true });
   
-  // Scroll function to avoid duplication
+  // Scroll function - scroll within current section first, then to next
   function scrollToNextSection() {
+    const currentSection = getCurrentSection();
     const nextSection = getNextSection();
     
+    if (currentSection && currentSection.element) {
+      const currentRect = currentSection.element.getBoundingClientRect();
+      const viewportBottom = window.innerHeight;
+      const sectionBottom = currentRect.bottom;
+      
+      // If current section has more content below viewport, scroll down within it first
+      if (sectionBottom > viewportBottom + 50) {
+        // Scroll down by viewport height minus some padding
+        window.scrollBy({
+          top: window.innerHeight * 0.8,
+          behavior: 'smooth'
+        });
+        return;
+      }
+    }
+    
+    // If current section is fully visible or no more content, go to next section
     if (nextSection) {
-      // Get the section's heading element to scroll to
       const sectionId = nextSection.id.replace('sec', '');
       const section = SECTIONS.find(s => s.id === sectionId);
       const targetElement = section && section.heading ? section.heading : nextSection;
       
-      // Calculate scroll position accounting for nav bar (about 104px on mobile)
       const navBarHeight = 104;
       const elementTop = targetElement.getBoundingClientRect().top + window.pageYOffset;
-      const scrollPosition = elementTop - navBarHeight - 20; // 20px padding
+      const scrollPosition = elementTop - navBarHeight - 20;
       
-      // Check if section is already visible - if so, scroll just a bit more
-      const rect = nextSection.getBoundingClientRect();
-      const isPartiallyVisible = rect.top < window.innerHeight && rect.bottom > 0;
-      
-      if (isPartiallyVisible && rect.top > navBarHeight) {
-        // Section is already visible, just scroll to show heading at top
-        window.scrollTo({
-          top: scrollPosition,
-          behavior: 'smooth'
-        });
-      } else {
-        // Section not visible, scroll to start with nav bar offset
-        window.scrollTo({
-          top: Math.max(0, scrollPosition),
-          behavior: 'smooth'
-        });
-      }
+      window.scrollTo({
+        top: Math.max(0, scrollPosition),
+        behavior: 'smooth'
+      });
     }
   }
 

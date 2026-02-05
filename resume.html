@@ -231,13 +231,18 @@
     @media (max-width: 768px) {
       .contact-links {
         justify-content: center !important;
-        flex-wrap: wrap !important;
-        gap: 10px !important;
+        flex-wrap: nowrap !important;
+        gap: 8px !important;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        padding-bottom: 4px;
       }
       
       .contact-link {
-        font-size: 10px !important;
-        padding: 6px 12px !important;
+        font-size: 9px !important;
+        padding: 6px 10px !important;
+        white-space: nowrap;
+        flex-shrink: 0;
       }
     }
 
@@ -336,10 +341,14 @@
       }
 
       .back-to-top {
-        bottom: 20px;
-        right: 20px;
-        width: 45px;
-        height: 45px;
+        bottom: 16px;
+        right: 16px;
+        width: 40px;
+        height: 40px;
+        z-index: 1000; /* Above scroll helpers */
+        background: rgba(0, 0, 0, 0.6);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
       }
 
       .back-to-top-arrow {
@@ -503,7 +512,9 @@
     @media (max-width: 768px) {
       .projects-cta {
         flex-direction: column;
-        gap: 20px;
+        gap: 16px;
+        margin-top: 32px;
+        padding: 20px 0;
       }
 
       .projects-cta::before {
@@ -513,15 +524,38 @@
       }
 
       .cta-option {
-        padding: 25px 35px;
+        padding: 20px 28px;
         width: 100%;
         max-width: 280px;
+      }
+
+      /* Hide "Continue Scrolling" button on mobile */
+      .cta-option:has(.cta-arrow:not(.cta-arrow-right)) {
+        display: none;
+      }
+
+      .cta-or {
+        display: none;
       }
     }
 
     /* Technical Experience Section - Scoped Styling */
     #secLeadershipExperience #hLeadershipExperience {
       font-size: 56px; /* Reduced by ~12.5% from 64px */
+    }
+
+    @media (max-width: 768px) {
+      #secEducation #hEducation,
+      #secWorkExperience #hWorkExperience,
+      #secLeadershipExperience #hLeadershipExperience,
+      #secProjects1 #hProjects1,
+      #secVolunteering1 #hVolunteering1,
+      #secSkills #hSkills {
+        font-size: 28px !important;
+        line-height: 1.2 !important;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+      }
     }
 
     #secLeadershipExperience .entry-title {
@@ -1120,12 +1154,26 @@
       function checkScroll() {
         const skillsRect = skillsSection.getBoundingClientRect();
         const windowHeight = window.innerHeight;
+        const isMobile = window.innerWidth < 768;
         
-        // Show when Skills section is in view or user has scrolled past it
-        if (skillsRect.top < windowHeight * 0.8) {
-          backToTop.classList.add('visible');
+        if (isMobile) {
+          // On mobile, only show when at the very bottom
+          const scrollBottom = window.innerHeight + window.scrollY;
+          const documentHeight = document.documentElement.scrollHeight;
+          const threshold = 100; // Show when within 100px of bottom
+          
+          if (documentHeight - scrollBottom < threshold) {
+            backToTop.classList.add('visible');
+          } else {
+            backToTop.classList.remove('visible');
+          }
         } else {
-          backToTop.classList.remove('visible');
+          // Desktop: show when Skills section is in view
+          if (skillsRect.top < windowHeight * 0.8) {
+            backToTop.classList.add('visible');
+          } else {
+            backToTop.classList.remove('visible');
+          }
         }
       }
 

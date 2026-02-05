@@ -517,10 +517,11 @@ body::-webkit-scrollbar {
   }
   
   .section {
-    padding: 30px 24px 20px; /* Even more reduced padding for less black space */
+    padding: 24px 20px 32px; /* Reduced padding, more bottom padding for content */
     min-height: auto; /* Allow sections to be shorter on mobile */
     align-items: flex-start;
     margin-bottom: 0; /* Remove extra margin */
+    scroll-margin-top: 100px; /* Add scroll margin to prevent content cutoff */
   }
   
   .section:first-child {
@@ -545,20 +546,20 @@ body::-webkit-scrollbar {
   /* Mobile scroll helper - floating scroll indicator */
   .mobile-scroll-helper {
     position: fixed;
-    bottom: 30px;
-    right: 20px;
-    width: 50px;
-    height: 50px;
-    background: rgba(255, 255, 255, 0.1);
+    bottom: 80px;
+    right: 16px;
+    width: 40px;
+    height: 40px;
+    background: rgba(0, 0, 0, 0.6);
     backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 999;
-    opacity: 1; /* Start visible */
-    visibility: visible; /* Start visible */
+    z-index: 998;
+    opacity: 1;
+    visibility: visible;
     transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
     cursor: pointer;
   }
@@ -573,49 +574,31 @@ body::-webkit-scrollbar {
   }
   
   .mobile-scroll-helper-arrow {
-    width: 20px;
-    height: 20px;
+    width: 16px;
+    height: 16px;
     border-right: 2px solid rgba(255, 255, 255, 0.9);
     border-bottom: 2px solid rgba(255, 255, 255, 0.9);
     transform: rotate(45deg);
-    animation: bounceDown 2s infinite;
-    margin-top: -2px; /* Adjust position to center better in box */
-    pointer-events: none; /* Allow clicks to pass through to parent */
+    margin-top: -2px;
+    pointer-events: none;
   }
   
   .mobile-scroll-helper-up {
-    bottom: 100px; /* Position above down arrow */
+    bottom: 130px;
+  }
+
+  /* Hide scroll helpers when back to top is visible */
+  .back-to-top.visible ~ .mobile-scroll-helper,
+  .back-to-top.visible ~ .mobile-scroll-helper-up {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
   }
   
   .mobile-scroll-helper-arrow-up {
-    transform: rotate(-135deg); /* Point up */
-    animation: bounceUp 2s infinite;
-    margin-top: 2px; /* Adjust position to center better in box */
-    pointer-events: none; /* Allow clicks to pass through to parent */
-  }
-  
-  @keyframes bounceDown {
-    0%, 20%, 50%, 80%, 100% {
-      transform: translateY(0) rotate(45deg);
-    }
-    40% {
-      transform: translateY(5px) rotate(45deg);
-    }
-    60% {
-      transform: translateY(3px) rotate(45deg);
-    }
-  }
-  
-  @keyframes bounceUp {
-    0%, 20%, 50%, 80%, 100% {
-      transform: translateY(0) rotate(-135deg);
-    }
-    40% {
-      transform: translateY(-5px) rotate(-135deg);
-    }
-    60% {
-      transform: translateY(-3px) rotate(-135deg);
-    }
+    transform: rotate(-135deg);
+    margin-top: 2px;
+    pointer-events: none;
   }
   
   /* Mobile section navigation arrow */
@@ -675,6 +658,9 @@ body::-webkit-scrollbar {
     justify-content: center;
     height: auto;
     min-height: 90px;
+    background: rgba(10, 10, 10, 0.95);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   }
   
   .nav-link {
@@ -685,9 +671,11 @@ body::-webkit-scrollbar {
   }
 
   .heading {
-    font-size: 32px;
-    line-height: 1.1;
+    font-size: 28px;
+    line-height: 1.2;
     margin-bottom: 12px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
   }
 
   .subheading {
@@ -699,6 +687,7 @@ body::-webkit-scrollbar {
   .body-content {
     font-size: 14px;
     line-height: 1.7;
+    padding-bottom: 20px; /* Extra padding to prevent cutoff */
   }
 
   .section-index {
