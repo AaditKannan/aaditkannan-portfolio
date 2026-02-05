@@ -515,6 +515,9 @@
         gap: 16px;
         margin-top: 32px;
         padding: 20px 0;
+        opacity: 1 !important;
+        transform: none !important;
+        visibility: visible !important;
       }
 
       .projects-cta::before {
@@ -527,11 +530,13 @@
         padding: 20px 28px;
         width: 100%;
         max-width: 280px;
+        opacity: 1 !important;
+        transform: none !important;
       }
 
       /* Hide "Continue Scrolling" button on mobile */
-      .cta-option:has(.cta-arrow:not(.cta-arrow-right)) {
-        display: none;
+      .cta-continue {
+        display: none !important;
       }
 
       .cta-or {
