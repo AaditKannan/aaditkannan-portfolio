@@ -752,40 +752,19 @@ body::-webkit-scrollbar {
   }
 
   .overview-photo {
-    display: none !important; /* Hide desktop photo on mobile */
+    display: none !important; /* Hide desktop photo on mobile - using hero-actions instead */
   }
   
-  .overview-photo-mobile {
-    display: flex !important; /* Show mobile photo */
-    justify-content: center;
-    align-items: center;
-    width: 220px;
-    height: 220px;
-    margin: 20px auto;
-    border-radius: 8px;
-    overflow: hidden;
-    background-color: #1a1a1a;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
-  }
-  
-  .overview-photo-mobile .profile-photo {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
+  /* Hero actions layout handled in resume.html inline styles */
   
   /* On mobile, photo appears right after subheading */
   .subheading {
-    margin-top: 16px; /* Spacing above subheading */
-    margin-bottom: 20px; /* Spacing below subheading before body text */
+    margin-top: 16px;
+    margin-bottom: 20px;
   }
   
   .about-text {
-    margin-top: 24px; /* Keep bio text visible with spacing */
-  }
-  
-  .contact-links {
-    margin-top: 24px !important;
+    margin-top: 24px;
   }
 
   .profile-photo {

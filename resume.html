@@ -228,6 +228,16 @@
       transform: none !important;
     }
 
+    /* ============================================
+       HERO ACTIONS - Photo + Buttons Layout
+       Stable grid layout, no overlap or shifting
+       ============================================ */
+    
+    /* Desktop/tablet: side-by-side */
+    .hero-actions {
+      display: none; /* Hidden on desktop, show overview-photo instead */
+    }
+
     @media (max-width: 768px) {
       /* Mobile Overview Layout Redesign */
       .overview-layout {
@@ -263,56 +273,58 @@
         text-align: center !important;
       }
 
-      /* Photo + buttons container on mobile */
-      .overview-photo-mobile {
-        order: 3;
-        display: flex !important;
-        flex-direction: row !important;
-        align-items: flex-start !important;
-        justify-content: center !important;
-        gap: 20px !important;
-        width: 100% !important;
-        height: auto !important;
-        margin: 0 !important;
-        background: none !important;
-        box-shadow: none !important;
-        border-radius: 0 !important;
-        overflow: visible !important;
+      /* Hero Actions - stable grid layout */
+      .hero-actions {
+        display: grid !important;
+        grid-template-columns: auto 1fr;
+        gap: 24px;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        max-width: 340px;
+        margin: 0 auto;
       }
 
-      .overview-photo-mobile .profile-photo {
-        width: 120px !important;
-        height: 120px !important;
-        border-radius: 8px !important;
-        flex-shrink: 0 !important;
-        object-fit: cover !important;
+      .hero-photo {
+        flex: 0 0 auto;
       }
 
-      /* Contact links beside photo */
-      .contact-links {
-        display: flex !important;
-        flex-direction: column !important;
-        justify-content: center !important;
-        align-items: flex-start !important;
-        gap: 10px !important;
-        margin-top: 0 !important;
-        overflow: visible !important;
+      .hero-photo .profile-photo {
+        width: clamp(100px, 28vw, 140px);
+        aspect-ratio: 1 / 1;
+        object-fit: cover;
+        border-radius: 12px;
+        display: block;
       }
 
-      .contact-link {
+      .hero-buttons {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        align-items: flex-start;
+      }
+
+      .hero-buttons .contact-link {
         font-size: 13px !important;
-        padding: 10px 16px !important;
+        padding: 10px 18px !important;
         white-space: nowrap;
-        flex-shrink: 0;
+        box-sizing: border-box;
         border-radius: 6px !important;
-        width: auto !important;
-        height: auto !important;
-        min-width: 0 !important;
-        min-height: 0 !important;
+        border: 1px solid rgba(255, 255, 255, 0.4) !important;
+        background: transparent !important;
+        color: rgba(255, 255, 255, 0.9) !important;
+        text-decoration: none !important;
+        display: inline-block;
+        transition: all 0.2s ease;
       }
 
-      /* Show text on mobile contact links */
-      .contact-link::before {
+      .hero-buttons .contact-link:hover {
+        background: rgba(255, 255, 255, 0.1) !important;
+        border-color: rgba(255, 255, 255, 0.7) !important;
+      }
+
+      /* Hide the old desktop photo on mobile */
+      .overview-photo {
         display: none !important;
       }
 
@@ -328,13 +340,34 @@
         font-size: 14px !important;
       }
 
-      /* Show mobile contact links, hide desktop */
-      .contact-links-mobile {
-        display: flex !important;
-      }
-
+      /* Hide desktop contact links on mobile */
       .contact-links-desktop {
         display: none !important;
+      }
+    }
+
+    /* Mobile stacked layout for very small screens */
+    @media (max-width: 420px) {
+      .hero-actions {
+        grid-template-columns: 1fr !important;
+        justify-items: center;
+        gap: 20px;
+        max-width: 280px;
+      }
+
+      .hero-photo .profile-photo {
+        width: 140px;
+      }
+
+      .hero-buttons {
+        width: 100%;
+        max-width: 200px;
+        align-items: stretch;
+      }
+
+      .hero-buttons .contact-link {
+        width: 100%;
+        text-align: center;
       }
     }
 
@@ -931,10 +964,12 @@
       <div class="overview-text">
         <h1 class="heading" id="hOverview">Aadit Kannan</h1>
         <p class="subheading" id="subOverview">Mechanical Engineer</p>
-        <div class="overview-photo-mobile">
-          <img src="./assets/photo.jpg" alt="Aadit Kannan" class="profile-photo" onerror="this.style.opacity='0.3'; this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22300%22 height=%22300%22%3E%3Crect fill=%22%231a1a1a%22 width=%22300%22 height=%22300%22/%3E%3C/svg%3E';">
-          <!-- Contact links beside photo on mobile -->
-          <div class="contact-links contact-links-mobile">
+        <!-- Hero actions: photo + buttons wrapper for stable layout -->
+        <div class="hero-actions">
+          <div class="hero-photo">
+            <img src="./assets/photo.jpg" alt="Aadit Kannan" class="profile-photo" onerror="this.style.opacity='0.3'; this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22300%22 height=%22300%22%3E%3Crect fill=%22%231a1a1a%22 width=%22300%22 height=%22300%22/%3E%3C/svg%3E';">
+          </div>
+          <div class="hero-buttons">
             <a href="mailto:aaditkannan@berkeley.edu" class="contact-link">Email</a>
             <a href="https://www.linkedin.com/in/aaditkannan" target="_blank" rel="noopener noreferrer" class="contact-link">LinkedIn</a>
             <a href="/assets/NewResume.pdf" target="_blank" rel="noopener noreferrer" class="contact-link">Resume</a>
