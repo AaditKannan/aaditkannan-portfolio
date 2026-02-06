@@ -17,79 +17,30 @@
 
 /* ============================================
    GLOBAL DESKTOP TYPOGRAPHY OVERRIDE
-   Replaces typewriter fonts with DM Serif Display + Inter
+   Clean monospace with IBM Plex Mono
    Desktop only (>= 769px) - mobile/tablet unchanged
    ============================================ */
 
 @media (min-width: 769px) {
-  /* Default site font on desktop: Inter for all text */
+  :root {
+    --desktop-mono: "IBM Plex Mono", "JetBrains Mono", "Roboto Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  }
+
   html, body {
-    font-family: "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif !important;
+    font-family: var(--desktop-mono) !important;
   }
 
-  /* Force Inter on all elements (overrides typewriter selectors) */
+  /* Ensure any more-specific old font selectors don't win */
   body * {
-    font-family: "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif !important;
+    font-family: var(--desktop-mono) !important;
   }
 
-  /* Headlines use DM Serif Display */
-  h1, h2, h3, h4,
-  .heading, .subheading,
-  .home-name, .home-subtitle,
-  .connect-heading, .connect-subheading,
-  .page-title, .detail-title,
-  .footage-heading, .footage-subheading,
-  .project-title,
-  .entry-title,
-  .title, .section-title,
-  [data-heading="true"] {
-    font-family: "DM Serif Display", serif !important;
-    letter-spacing: 0.02em;
+  /* Tiny polish: reduce "typewriter clunk" */
+  body {
+    letter-spacing: 0.01em;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
   }
-
-  /* Navigation stays Inter uppercase */
-  nav, nav *,
-  .nav-bar, .nav-bar *,
-  .nav-link {
-    font-family: "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif !important;
-  }
-
-  /* Buttons stay Inter */
-  button, .btn, .view-resume-btn, .contact-link, .cta-btn {
-    font-family: "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif !important;
-  }
-}
-
-/* Legacy scoped utility classes (kept for backward compatibility) */
-.font-hero-dmserif {
-  font-family: "DM Serif Display", serif !important;
-  font-weight: 400;
-  letter-spacing: 0.03em;
-}
-
-.font-ui-inter {
-  font-family: "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif !important;
-}
-
-.nav-inter-uppercase {
-  font-family: "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif !important;
-  font-weight: 400;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-}
-
-.subtitle-inter {
-  font-family: "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif !important;
-  font-weight: 500;
-  letter-spacing: 0.06em;
-}
-
-.button-inter {
-  font-family: "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif !important;
-  font-weight: 500;
-  font-size: 13px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
 }
 
 html {
