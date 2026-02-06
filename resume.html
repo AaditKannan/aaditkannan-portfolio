@@ -233,22 +233,34 @@
       .overview-layout {
         display: flex !important;
         flex-direction: column !important;
-        gap: 16px !important;
+        gap: 20px !important;
+        align-items: center !important;
+        text-align: center !important;
       }
 
       .overview-text {
         display: flex !important;
         flex-direction: column !important;
+        align-items: center !important;
+        width: 100% !important;
       }
 
-      .overview-text .heading {
+      /* Override the small heading size for the name */
+      .overview-text .heading,
+      #hOverview {
         order: 1;
-        margin-bottom: 4px !important;
+        margin-bottom: 8px !important;
+        font-size: 32px !important;
+        font-weight: 700 !important;
+        text-align: center !important;
       }
 
-      .overview-text .subheading {
+      .overview-text .subheading,
+      #subOverview {
         order: 2;
-        margin-bottom: 16px !important;
+        margin-bottom: 20px !important;
+        font-size: 16px !important;
+        text-align: center !important;
       }
 
       /* Photo + buttons container on mobile */
@@ -257,7 +269,8 @@
         display: flex !important;
         flex-direction: row !important;
         align-items: flex-start !important;
-        gap: 16px !important;
+        justify-content: center !important;
+        gap: 20px !important;
         width: 100% !important;
         height: auto !important;
         margin: 0 !important;
@@ -268,8 +281,8 @@
       }
 
       .overview-photo-mobile .profile-photo {
-        width: 90px !important;
-        height: 90px !important;
+        width: 120px !important;
+        height: 120px !important;
         border-radius: 8px !important;
         flex-shrink: 0 !important;
         object-fit: cover !important;
@@ -279,17 +292,16 @@
       .contact-links {
         display: flex !important;
         flex-direction: column !important;
-        justify-content: flex-start !important;
+        justify-content: center !important;
         align-items: flex-start !important;
-        gap: 8px !important;
+        gap: 10px !important;
         margin-top: 0 !important;
-        flex: 1 !important;
         overflow: visible !important;
       }
 
       .contact-link {
-        font-size: 11px !important;
-        padding: 8px 14px !important;
+        font-size: 13px !important;
+        padding: 10px 16px !important;
         white-space: nowrap;
         flex-shrink: 0;
         border-radius: 6px !important;
@@ -310,8 +322,10 @@
       }
 
       .about-text {
-        margin-top: 16px !important;
+        margin-top: 20px !important;
         margin-bottom: 0 !important;
+        text-align: left !important;
+        font-size: 14px !important;
       }
 
       /* Show mobile contact links, hide desktop */

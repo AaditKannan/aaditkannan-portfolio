@@ -916,15 +916,31 @@ body::-webkit-scrollbar {
   }
 
   /* 8. Text Size Adjustments - Smaller text for mobile */
+  /* Section headings (Education, Work Experience, etc.) */
   .heading {
-    font-size: 20px !important;
+    font-size: 22px !important;
     font-weight: 600 !important;
     letter-spacing: 0 !important;
+  }
+
+  /* BUT keep the name/overview heading larger */
+  #hOverview,
+  #secOverview .heading {
+    font-size: 32px !important;
+    font-weight: 700 !important;
+    text-align: center !important;
   }
 
   .subheading {
     font-size: 14px !important;
     font-weight: 400 !important;
+  }
+
+  /* Keep subheading larger for overview */
+  #subOverview,
+  #secOverview .subheading {
+    font-size: 16px !important;
+    text-align: center !important;
   }
 
   .body-content, .entry-list, .about-text {
