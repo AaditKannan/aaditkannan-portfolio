@@ -572,7 +572,7 @@
       border-right: 2px solid rgba(255,255,255,0.5);
       border-top: 2px solid rgba(255,255,255,0.5);
       transform: rotate(45deg);
-      animation: ctaSlide 1.5s infinite;
+      /* Animation removed for cleaner look */
     }
 
     .cta-option:hover .cta-arrow-right {
@@ -601,26 +601,49 @@
     @media (max-width: 768px) {
       .projects-cta {
         flex-direction: column;
-        gap: 16px;
-        margin-top: 32px;
-        padding: 20px 0;
+        gap: 12px;
+        margin-top: 24px;
+        padding: 16px 0;
         opacity: 1 !important;
         transform: none !important;
         visibility: visible !important;
       }
 
       .projects-cta::before {
-        width: 60px;
-        height: 1px;
-        top: 50%;
+        display: none;
       }
 
       .cta-option {
-        padding: 20px 28px;
-        width: 100%;
-        max-width: 280px;
+        padding: 12px 20px;
+        width: auto;
+        max-width: none;
         opacity: 1 !important;
         transform: none !important;
+        flex-direction: row;
+        gap: 10px;
+        border-radius: 8px;
+        border: 1px solid rgba(255,255,255,0.3);
+        background: transparent;
+      }
+
+      .cta-option::before {
+        display: none;
+      }
+
+      .cta-option:hover {
+        transform: none !important;
+        box-shadow: none;
+      }
+
+      .cta-arrow,
+      .cta-arrow-right {
+        width: 10px;
+        height: 10px;
+        animation: none !important;
+      }
+
+      .cta-text {
+        font-size: 12px;
       }
 
       /* Hide "Continue Scrolling" button on mobile */
