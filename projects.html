@@ -2131,6 +2131,15 @@
     // Initialize
     renderGrid();
     
+    // Check for URL hash to open specific project
+    if (window.location.hash) {
+      const projectId = window.location.hash.substring(1);
+      const projectExists = projects.some(p => p.id === projectId);
+      if (projectExists) {
+        setTimeout(() => openDetail(projectId), 100);
+      }
+    }
+    
     // Initial title scramble
     scrambleText(pageTitle, 'Projects', 600);
 
