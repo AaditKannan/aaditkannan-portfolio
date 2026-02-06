@@ -16,17 +16,55 @@
 }
 
 /* ============================================
-   SCOPED TYPOGRAPHY UTILITIES
-   Only for Home hero + Resume About/Education
+   GLOBAL DESKTOP TYPOGRAPHY OVERRIDE
+   Replaces typewriter fonts with DM Serif Display + Inter
+   Desktop only (>= 769px) - mobile/tablet unchanged
    ============================================ */
 
-/* Desktop only: DM Serif Display for headings */
 @media (min-width: 769px) {
-  .font-hero-dmserif {
-    font-family: "DM Serif Display", serif !important;
-    font-weight: 400;
-    letter-spacing: 0.03em;
+  /* Default site font on desktop: Inter for all text */
+  html, body {
+    font-family: "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif !important;
   }
+
+  /* Force Inter on all elements (overrides typewriter selectors) */
+  body * {
+    font-family: "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif !important;
+  }
+
+  /* Headlines use DM Serif Display */
+  h1, h2, h3, h4,
+  .heading, .subheading,
+  .home-name, .home-subtitle,
+  .connect-heading, .connect-subheading,
+  .page-title, .detail-title,
+  .footage-heading, .footage-subheading,
+  .project-title,
+  .entry-title,
+  .title, .section-title,
+  [data-heading="true"] {
+    font-family: "DM Serif Display", serif !important;
+    letter-spacing: 0.02em;
+  }
+
+  /* Navigation stays Inter uppercase */
+  nav, nav *,
+  .nav-bar, .nav-bar *,
+  .nav-link {
+    font-family: "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif !important;
+  }
+
+  /* Buttons stay Inter */
+  button, .btn, .view-resume-btn, .contact-link, .cta-btn {
+    font-family: "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif !important;
+  }
+}
+
+/* Legacy scoped utility classes (kept for backward compatibility) */
+.font-hero-dmserif {
+  font-family: "DM Serif Display", serif !important;
+  font-weight: 400;
+  letter-spacing: 0.03em;
 }
 
 .font-ui-inter {
