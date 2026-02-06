@@ -326,6 +326,11 @@
     }
 
     @media (max-width: 768px) {
+      /* Mobile font: Inter instead of monospace */
+      body, .nav-link, .view-resume-btn, .footer-text {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+      }
+
       /* Prevent scrolling on home page */
       body.home-page {
         overflow: hidden !important;

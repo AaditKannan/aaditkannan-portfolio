@@ -870,15 +870,36 @@ body::-webkit-scrollbar {
     border-bottom: none !important;
   }
 
-  /* 3. Sticky Section Headings */
+  /* 3. Sticky Section Headings - stick to top while scrolling through section */
+  .section-content {
+    position: relative;
+  }
+  
   .section .heading {
     position: sticky;
     top: 0;
     z-index: 100;
     background: rgba(10, 10, 10, 0.98);
-    padding: 16px 20px;
-    margin: 0 -20px 16px -20px;
+    padding: 12px 20px;
+    margin: 0 -20px 12px -20px;
     backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+
+  /* Entry header - keep date on same line */
+  .entry-header {
+    flex-wrap: nowrap !important;
+    gap: 8px !important;
+  }
+
+  .entry-header .entry-title {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .entry-header .entry-date {
+    flex-shrink: 0;
+    white-space: nowrap;
   }
 
   /* 5. Remove Mobile Scroll Buttons */
@@ -954,19 +975,20 @@ body::-webkit-scrollbar {
 
   .skill-tag {
     padding: 3px 10px;
-    border: 1px solid rgba(255, 255, 255, 0.25);
+    border: 1px solid rgba(255, 255, 255, 0.3);
     border-radius: 12px;
     font-size: 10px !important;
     font-weight: 500;
-    color: rgba(255, 255, 255, 0.75);
+    color: rgba(255, 255, 255, 0.8);
     background: rgba(255, 255, 255, 0.05);
     white-space: nowrap;
   }
 
+  /* All skill tags same color - no highlight differentiation */
   .skill-tag.highlight {
-    border-color: rgba(255, 255, 255, 0.5);
-    color: rgba(255, 255, 255, 0.95);
-    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.3);
+    color: rgba(255, 255, 255, 0.8);
+    background: rgba(255, 255, 255, 0.05);
   }
 
   /* Section spacing adjustments */
@@ -975,8 +997,14 @@ body::-webkit-scrollbar {
     min-height: auto !important;
   }
 
-  .section:first-child {
+  /* Overview section should fill viewport so Education isn't visible on load */
+  .section:first-child,
+  #secOverview {
+    min-height: 100vh !important;
     padding-top: 80px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: flex-start !important;
   }
 
   .entry {

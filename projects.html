@@ -201,6 +201,12 @@
     }
 
     @media (max-width: 768px) {
+      /* Mobile font: Inter instead of monospace */
+      body, .nav-link, .filter-btn, .project-title, .project-subtitle,
+      .project-description, .project-meta, .detail-title, .detail-body {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+      }
+
       .filter-bar {
         display: none;
       }
