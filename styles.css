@@ -15,8 +15,59 @@
   --dot-inactive: rgba(255, 255, 255, 0.3);
 }
 
-/* Desktop uses original Courier Prime / JetBrains Mono typewriter fonts
-   defined in body selector below - no override needed */
+/* ============================================
+   DESKTOP TYPOGRAPHY
+   Inter for body text, typewriter for accents only
+   Desktop only (>= 769px)
+   ============================================ */
+
+@media (min-width: 769px) {
+  :root {
+    --font-body: "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    --font-mono: 'Courier Prime', 'JetBrains Mono', 'Courier New', monospace;
+  }
+
+  /* Body text uses Inter */
+  p, li, ul, ol,
+  .about-text,
+  .body-content,
+  .entry-list,
+  .entry-list li,
+  .entry-role,
+  .entry-date,
+  .subheading,
+  .home-subtitle,
+  .skills-list,
+  .skills-category,
+  .skill-tag {
+    font-family: var(--font-body) !important;
+  }
+
+  /* Buttons use Inter */
+  button, .btn,
+  .view-resume-btn,
+  .contact-link,
+  .cta-btn {
+    font-family: var(--font-body) !important;
+  }
+
+  /* Show skill tags on desktop */
+  .entry-skills {
+    display: flex !important;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 12px;
+  }
+
+  .skill-tag {
+    padding: 4px 12px;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 14px;
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.75);
+    background: rgba(255, 255, 255, 0.03);
+  }
+}
 
 html {
   scroll-behavior: smooth;
@@ -290,9 +341,12 @@ body::-webkit-scrollbar {
   font-weight: bold;
 }
 
-/* Skill tags - hidden on desktop, shown on mobile */
+/* Skill tags - shown on both desktop and mobile */
 .entry-skills {
-  display: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
 }
 
 /* Skills Grid */
