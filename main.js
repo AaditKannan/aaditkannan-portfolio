@@ -20,12 +20,11 @@ const CONFIG = {
 // Section configuration
 const SECTIONS = [
   { id: 'Overview', element: null, heading: null, subheading: null, body: null, animated: false },
-  { id: 'Education', element: null, heading: null, subheading: null, body: null, animated: false },
-  { id: 'WorkExperience', element: null, heading: null, subheading: null, body: null, animated: false },
   { id: 'LeadershipExperience', element: null, heading: null, subheading: null, body: null, animated: false },
   { id: 'LeadershipExperience2', element: null, heading: null, subheading: null, body: null, animated: false },
+  { id: 'WorkExperience', element: null, heading: null, subheading: null, body: null, animated: false },
+  { id: 'Education', element: null, heading: null, subheading: null, body: null, animated: false },
   { id: 'Projects1', element: null, heading: null, subheading: null, body: null, animated: false },
-  { id: 'Projects2', element: null, heading: null, subheading: null, body: null, animated: false },
   { id: 'Volunteering1', element: null, heading: null, subheading: null, body: null, animated: false },
   { id: 'Volunteering2', element: null, heading: null, subheading: null, body: null, animated: false },
   { id: 'Skills', element: null, heading: null, subheading: null, body: null, animated: false }
@@ -436,12 +435,11 @@ function initializeSections() {
  */
 const SECTION_NAMES = {
   'Overview': 'OVERVIEW',
-  'Education': 'EDUCATION',
-  'WorkExperience': 'WORK EXPERIENCE',
   'LeadershipExperience': 'TECHNICAL EXPERIENCE',
   'LeadershipExperience2': '',
+  'WorkExperience': 'WORK EXPERIENCE',
+  'Education': 'EDUCATION',
   'Projects1': 'PROJECTS',
-  'Projects2': '',
   'Volunteering1': 'VOLUNTEERING',
   'Volunteering2': '',
   'Skills': 'SKILLS'
