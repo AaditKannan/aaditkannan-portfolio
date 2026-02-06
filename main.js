@@ -98,13 +98,12 @@ function mergeSplitSectionsOnMobile() {
 
 /**
  * Mobile scroll helper
+ * DISABLED: Scroll buttons removed per mobile redesign - manual scroll only
  */
 function initMobileScrollHelper() {
-  if (window.innerWidth >= 768) return; // Only on mobile
-  
-  const helper = document.getElementById('mobileScrollHelper');
-  const upHelper = document.getElementById('mobileScrollHelperUp');
-  if (!helper) return;
+  // Skip initialization - scroll helpers are hidden via CSS
+  // Users will use natural finger scrolling instead
+  return;
   
   function getCurrentSectionIndex() {
     const scrollY = window.scrollY || window.pageYOffset;
@@ -502,6 +501,27 @@ function initializeSectionIndex() {
  */
 function setInitialStyles() {
   SECTIONS.forEach(section => {
+    // MOBILE: Show everything immediately - no animations
+    if (CONFIG.isMobile) {
+      if (section.body) {
+        section.body.style.opacity = '1';
+        section.body.style.transform = 'translateY(0)';
+        section.body.classList.add('visible');
+      }
+      if (section.heading && section.headingText) {
+        section.heading.textContent = section.headingText;
+        section.heading.style.opacity = '1';
+        section.heading.classList.add('animated');
+      }
+      if (section.subheading && section.subheadingText) {
+        section.subheading.textContent = section.subheadingText;
+        section.subheading.style.opacity = '1';
+        section.subheading.classList.add('visible');
+      }
+      return;
+    }
+    
+    // DESKTOP: Set up for animations
     if (section.body) {
       // Initially hide body content
       section.body.style.opacity = '0';
@@ -573,31 +593,34 @@ function initScrollAnimations() {
     }
   }, { passive: true });
 
-  // Add wheel event for smooth section snapping (optional enhancement)
-  let isScrolling = false;
-  window.addEventListener('wheel', (e) => {
-    if (isScrolling) return;
-    
-    // Only enhance scroll snapping, don't hijack
-    const delta = e.deltaY;
-    if (Math.abs(delta) > 50) { // Significant scroll
-      const currentSection = getCurrentSection();
-      if (currentSection) {
-        const nextSection = delta > 0 
-          ? getNextSection(currentSection)
-          : getPreviousSection(currentSection);
-        
-        if (nextSection && nextSection.element) {
-          isScrolling = true;
-          nextSection.element.scrollIntoView({ 
-            behavior: 'smooth', 
-            block: 'start' 
-          });
-          setTimeout(() => { isScrolling = false; }, 800);
+  // Add wheel event for smooth section snapping (desktop only)
+  // Skip on mobile - use natural finger scrolling
+  if (!CONFIG.isMobile) {
+    let isScrolling = false;
+    window.addEventListener('wheel', (e) => {
+      if (isScrolling) return;
+      
+      // Only enhance scroll snapping, don't hijack
+      const delta = e.deltaY;
+      if (Math.abs(delta) > 50) { // Significant scroll
+        const currentSection = getCurrentSection();
+        if (currentSection) {
+          const nextSection = delta > 0 
+            ? getNextSection(currentSection)
+            : getPreviousSection(currentSection);
+          
+          if (nextSection && nextSection.element) {
+            isScrolling = true;
+            nextSection.element.scrollIntoView({ 
+              behavior: 'smooth', 
+              block: 'start' 
+            });
+            setTimeout(() => { isScrolling = false; }, 800);
+          }
         }
       }
-    }
-  }, { passive: true });
+    }, { passive: true });
+  }
 }
 
 /**
@@ -638,7 +661,30 @@ function animateSection(section) {
   // Mark as animated immediately to prevent duplicate calls
   section.animated = true;
   
-  // Animate heading with scramble reveal
+  // MOBILE: Skip scramble animations - just show content directly
+  if (CONFIG.isMobile) {
+    // Simply show heading text without animation
+    if (section.heading && section.headingText) {
+      section.heading.textContent = section.headingText;
+      section.heading.style.opacity = '1';
+      section.heading.classList.add('animated');
+    }
+    // Show subheading without animation
+    if (section.subheading && section.subheadingText) {
+      section.subheading.textContent = section.subheadingText;
+      section.subheading.style.opacity = '1';
+      section.subheading.classList.add('visible');
+    }
+    // Show body content without animation
+    if (section.body) {
+      section.body.style.opacity = '1';
+      section.body.style.transform = 'translateY(0)';
+      section.body.classList.add('visible');
+    }
+    return; // Skip desktop animations
+  }
+  
+  // DESKTOP: Animate heading with scramble reveal
   if (section.heading && section.headingText) {
     // Mark heading as animating
     section.heading.classList.add('animating');
@@ -647,7 +693,7 @@ function animateSection(section) {
     const bodyDelay = CONFIG.scrambleDuration * 0.4; // Start at 40% of scramble duration
     
     scrambleReveal(section.heading, section.headingText, {
-      duration: CONFIG.isMobile ? CONFIG.scrambleDuration * 0.7 : CONFIG.scrambleDuration,
+      duration: CONFIG.scrambleDuration,
       onComplete: () => {
         section.heading.classList.remove('animating');
         section.heading.classList.add('animated');
@@ -664,7 +710,7 @@ function animateSection(section) {
       if (section.subheading.dataset.animating !== 'true') {
         section.subheading.dataset.animating = 'true';
         scrambleReveal(section.subheading, section.subheadingText, {
-          duration: CONFIG.isMobile ? CONFIG.scrambleDuration * 0.6 : CONFIG.scrambleDuration * 0.8,
+          duration: CONFIG.scrambleDuration * 0.8,
           delay: bodyDelay,
           onComplete: () => {
             section.subheading.dataset.animating = 'false';
@@ -680,7 +726,7 @@ function animateSection(section) {
       if (section.subheading.dataset.animating !== 'true') {
         section.subheading.dataset.animating = 'true';
         scrambleReveal(section.subheading, section.subheadingText, {
-          duration: CONFIG.isMobile ? CONFIG.scrambleDuration * 0.6 : CONFIG.scrambleDuration * 0.8,
+          duration: CONFIG.scrambleDuration * 0.8,
           onComplete: () => {
             section.subheading.dataset.animating = 'false';
             section.subheading.classList.add('visible');

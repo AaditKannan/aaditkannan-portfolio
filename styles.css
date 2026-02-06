@@ -287,6 +287,11 @@ body::-webkit-scrollbar {
   font-weight: bold;
 }
 
+/* Skill tags - hidden on desktop, shown on mobile */
+.entry-skills {
+  display: none;
+}
+
 /* Skills Grid */
 .skills-grid {
   display: grid;
@@ -843,6 +848,145 @@ body::-webkit-scrollbar {
     width: 36px;
     height: 36px;
     margin-left: 8px;
+  }
+
+  /* ========================================
+     MOBILE RESUME REDESIGN
+     All styles below are mobile-only
+     ======================================== */
+
+  /* 1. Font Swap: Typewriter to Inter */
+  body, .heading, .subheading, .entry-title, .entry-role, .entry-date, 
+  .entry-list, .entry-list li, .skills-category, .skills-list, .nav-link,
+  .about-text, .body-content, .contact-link {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+  }
+
+  /* 2. Menu: Fixed at Top, Not Sticky During Scroll */
+  .nav-bar {
+    position: absolute !important;
+    background: transparent !important;
+    backdrop-filter: none !important;
+    border-bottom: none !important;
+  }
+
+  /* 3. Sticky Section Headings */
+  .section .heading {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(10, 10, 10, 0.98);
+    padding: 16px 20px;
+    margin: 0 -20px 16px -20px;
+    backdrop-filter: blur(10px);
+  }
+
+  /* 5. Remove Mobile Scroll Buttons */
+  .mobile-scroll-helper,
+  .mobile-scroll-helper-up,
+  .mobile-section-nav,
+  #mobileScrollHelper,
+  #mobileScrollHelperUp,
+  #mobileSectionNav {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+  }
+
+  /* 8. Text Size Adjustments - Smaller text for mobile */
+  .heading {
+    font-size: 20px !important;
+    font-weight: 600 !important;
+    letter-spacing: 0 !important;
+  }
+
+  .subheading {
+    font-size: 14px !important;
+    font-weight: 400 !important;
+  }
+
+  .body-content, .entry-list, .about-text {
+    font-size: 13px !important;
+    line-height: 1.6 !important;
+  }
+
+  .entry-title {
+    font-size: 15px !important;
+    font-weight: 600 !important;
+  }
+
+  .entry-role {
+    font-size: 12px !important;
+    font-weight: 500 !important;
+    color: rgba(255, 255, 255, 0.7) !important;
+  }
+
+  .entry-date {
+    font-size: 11px !important;
+    font-weight: 400 !important;
+    color: rgba(255, 255, 255, 0.5) !important;
+  }
+
+  .entry-list li {
+    font-size: 13px !important;
+    line-height: 1.5 !important;
+    margin-bottom: 6px !important;
+  }
+
+  /* Skills section adjustments */
+  .skills-category {
+    font-size: 14px !important;
+    font-weight: 600 !important;
+  }
+
+  .skills-list li {
+    font-size: 12px !important;
+  }
+
+  /* 7. Skill Tags Styling */
+  .entry-skills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 10px;
+  }
+
+  .skill-tag {
+    padding: 3px 10px;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 12px;
+    font-size: 10px !important;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.75);
+    background: rgba(255, 255, 255, 0.05);
+    white-space: nowrap;
+  }
+
+  .skill-tag.highlight {
+    border-color: rgba(255, 255, 255, 0.5);
+    color: rgba(255, 255, 255, 0.95);
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  /* Section spacing adjustments */
+  .section {
+    padding: 20px 20px 40px 20px !important;
+    min-height: auto !important;
+  }
+
+  .section:first-child {
+    padding-top: 80px !important;
+  }
+
+  .entry {
+    margin-bottom: 24px !important;
+  }
+
+  /* Remove animations - make content visible by default */
+  .body-content {
+    opacity: 1 !important;
+    transform: none !important;
   }
 }
 

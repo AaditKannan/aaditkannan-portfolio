@@ -229,20 +229,109 @@
     }
 
     @media (max-width: 768px) {
-      .contact-links {
-        justify-content: center !important;
-        flex-wrap: nowrap !important;
-        gap: 8px !important;
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
-        padding-bottom: 4px;
+      /* Mobile Overview Layout Redesign */
+      .overview-layout {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 16px !important;
       }
-      
+
+      .overview-text {
+        display: flex !important;
+        flex-direction: column !important;
+      }
+
+      .overview-text .heading {
+        order: 1;
+        margin-bottom: 4px !important;
+      }
+
+      .overview-text .subheading {
+        order: 2;
+        margin-bottom: 16px !important;
+      }
+
+      /* Photo + buttons container on mobile */
+      .overview-photo-mobile {
+        order: 3;
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: flex-start !important;
+        gap: 16px !important;
+        width: 100% !important;
+        height: auto !important;
+        margin: 0 !important;
+        background: none !important;
+        box-shadow: none !important;
+        border-radius: 0 !important;
+        overflow: visible !important;
+      }
+
+      .overview-photo-mobile .profile-photo {
+        width: 90px !important;
+        height: 90px !important;
+        border-radius: 8px !important;
+        flex-shrink: 0 !important;
+        object-fit: cover !important;
+      }
+
+      /* Contact links beside photo */
+      .contact-links {
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: flex-start !important;
+        align-items: flex-start !important;
+        gap: 8px !important;
+        margin-top: 0 !important;
+        flex: 1 !important;
+        overflow: visible !important;
+      }
+
       .contact-link {
-        font-size: 9px !important;
-        padding: 6px 10px !important;
+        font-size: 11px !important;
+        padding: 8px 14px !important;
         white-space: nowrap;
         flex-shrink: 0;
+        border-radius: 6px !important;
+        width: auto !important;
+        height: auto !important;
+        min-width: 0 !important;
+        min-height: 0 !important;
+      }
+
+      /* Show text on mobile contact links */
+      .contact-link::before {
+        display: none !important;
+      }
+
+      /* About text below photo+buttons */
+      .body-content {
+        order: 4;
+      }
+
+      .about-text {
+        margin-top: 16px !important;
+        margin-bottom: 0 !important;
+      }
+
+      /* Show mobile contact links, hide desktop */
+      .contact-links-mobile {
+        display: flex !important;
+      }
+
+      .contact-links-desktop {
+        display: none !important;
+      }
+    }
+
+    /* Desktop: Show desktop contact links, hide mobile */
+    @media (min-width: 769px) {
+      .contact-links-mobile {
+        display: none !important;
+      }
+
+      .contact-links-desktop {
+        display: flex !important;
       }
     }
 
@@ -807,12 +896,19 @@
         <p class="subheading" id="subOverview">Mechanical Engineer</p>
         <div class="overview-photo-mobile">
           <img src="./assets/photo.jpg" alt="Aadit Kannan" class="profile-photo" onerror="this.style.opacity='0.3'; this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22300%22 height=%22300%22%3E%3Crect fill=%22%231a1a1a%22 width=%22300%22 height=%22300%22/%3E%3C/svg%3E';">
+          <!-- Contact links beside photo on mobile -->
+          <div class="contact-links contact-links-mobile">
+            <a href="mailto:aaditkannan@berkeley.edu" class="contact-link">Email</a>
+            <a href="https://www.linkedin.com/in/aaditkannan" target="_blank" rel="noopener noreferrer" class="contact-link">LinkedIn</a>
+            <a href="/assets/NewResume.pdf" target="_blank" rel="noopener noreferrer" class="contact-link">Resume</a>
+          </div>
         </div>
         <div class="body-content" id="bodyOverview">
           <p class="about-text">
             Mechanical engineering student at UC Berkeley interested in robotics, materials research, and space. Currently working on the high-voltage accumulator as part of Berkeley Formula Electric, while beginning research on thin-film oxide heterostructures for next-gen low-power memory in Ramesh Lab. Also developing Atlas, an SMR and hybrid-energy analysis tool, building off my prior research.
           </p>
-          <div class="contact-links">
+          <!-- Contact links for desktop -->
+          <div class="contact-links contact-links-desktop">
             <a href="mailto:aaditkannan@berkeley.edu" class="contact-link">Email: aaditkannan@berkeley.edu</a>
             <a href="https://www.linkedin.com/in/aaditkannan" target="_blank" rel="noopener noreferrer" class="contact-link">LinkedIn</a>
             <a href="/assets/NewResume.pdf" target="_blank" rel="noopener noreferrer" class="contact-link">Resume PDF</a>
@@ -872,6 +968,11 @@
           <ul class="entry-list">
             <li>Repaired 20+ customer cooking robots by troubleshooting electrical and mechanical systems, and debugging</li>
           </ul>
+          <div class="entry-skills">
+            <span class="skill-tag highlight">Robotics</span>
+            <span class="skill-tag highlight">Troubleshooting</span>
+            <span class="skill-tag">Electrical Systems</span>
+          </div>
         </div>
         <div class="entry">
           <div class="entry-header">
@@ -901,6 +1002,12 @@
           <ul class="entry-list">
             <li>Designed and manufactured the attic casing for the high-voltage accumulator (battery), implementing waterproofing, high-dielectric-strength insulation to manage the 588V pack</li>
           </ul>
+          <div class="entry-skills">
+            <span class="skill-tag highlight">SolidWorks</span>
+            <span class="skill-tag highlight">CAD/CAM</span>
+            <span class="skill-tag">High-Voltage Systems</span>
+            <span class="skill-tag">Manufacturing</span>
+          </div>
         </div>
         <div class="entry">
           <div class="entry-header">
@@ -913,6 +1020,12 @@
             <li>Designed robot in CAD with 500+ parts and custom components, performing FEA to optimize for stress, winning robot design award (x3)</li>
             <li>For outreach, raised over $5000 across teams, launched an innovative parts exchange program, developed both team websites</li>
           </ul>
+          <div class="entry-skills">
+            <span class="skill-tag highlight">Java</span>
+            <span class="skill-tag highlight">CAD</span>
+            <span class="skill-tag highlight">FEA</span>
+            <span class="skill-tag">Leadership</span>
+          </div>
         </div>
       </div>
     </div>
@@ -934,6 +1047,12 @@
             <li>As part of a 6 year selective program, established career interests through 1800+ hours of STEM sessions and advanced coursework</li>
             <li>Gained experience with CO2 laser cutter, CNC mill, 3D printer (FDM + SLA), CNC, and woodshop tools</li>
           </ul>
+          <div class="entry-skills">
+            <span class="skill-tag highlight">Arduino</span>
+            <span class="skill-tag highlight">3D Printing</span>
+            <span class="skill-tag">Laser Cutting</span>
+            <span class="skill-tag">CNC</span>
+          </div>
         </div>
         <div class="entry">
           <div class="entry-header">
@@ -945,6 +1064,11 @@
             <li>Developed an app/website to connect 2000+ students, 20+ event organizers, and school admin, facilitating volunteer opportunities</li>
             <li>Implemented secure webhook/CMS-integrated system for scalable, high-volume data handling and encrypted user communication</li>
           </ul>
+          <div class="entry-skills">
+            <span class="skill-tag highlight">Web Dev</span>
+            <span class="skill-tag highlight">App Dev</span>
+            <span class="skill-tag">API Integration</span>
+          </div>
         </div>
       </div>
     </div>
@@ -964,6 +1088,11 @@
             <li>Developed website for robotics part inventory tracking, utilizing AI invoice indexing and dynamic webscraping for 1000+ part catalogs</li>
             <li>Integrated part-lending service with incentives, imposed extensive privacy measures for user interaction, now developing a part market</li>
           </ul>
+          <div class="entry-skills">
+            <span class="skill-tag highlight">Python</span>
+            <span class="skill-tag highlight">AI/ML</span>
+            <span class="skill-tag">Web Scraping</span>
+          </div>
         </div>
         <div class="entry">
           <div class="entry-header">
@@ -974,6 +1103,11 @@
             <li>Developed an interactive web tool to evaluate SMR feasibility in rural areas, integrating geospatial data and weighted scoring to compare site viability</li>
             <li>Added hybrid SMR–solar modeling to visualize energy demand, environmental constraints, and overall system potential</li>
           </ul>
+          <div class="entry-skills">
+            <span class="skill-tag highlight">GIS</span>
+            <span class="skill-tag highlight">Data Analysis</span>
+            <span class="skill-tag">Web Dev</span>
+          </div>
         </div>
         <!-- Projects CTA -->
         <div class="projects-cta">
