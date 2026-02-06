@@ -20,10 +20,13 @@
    Only for Home hero + Resume About/Education
    ============================================ */
 
-.font-hero-dmserif {
-  font-family: "DM Serif Display", serif !important;
-  font-weight: 400;
-  letter-spacing: 0.03em;
+/* Desktop only: DM Serif Display for headings */
+@media (min-width: 769px) {
+  .font-hero-dmserif {
+    font-family: "DM Serif Display", serif !important;
+    font-weight: 400;
+    letter-spacing: 0.03em;
+  }
 }
 
 .font-ui-inter {
