@@ -242,33 +242,61 @@
     }
 
     @media (max-width: 768px) {
-      .nav-bar {
-        height: 70px;
-        box-sizing: border-box;
+      /* Inter font for all mobile text */
+      body, .nav-link, .footage-heading, .footage-subheading,
+      .footage-description, .video-title {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
       }
-      
+
+      /* Standardized mobile nav */
+      .nav-bar {
+        position: absolute !important;
+        padding: 16px 16px !important;
+        gap: 24px !important;
+        justify-content: center !important;
+        height: auto !important;
+        background: transparent !important;
+        backdrop-filter: none !important;
+        border-bottom: none !important;
+      }
+
+      .nav-link {
+        font-size: 11px !important;
+        padding: 6px 0 !important;
+        letter-spacing: 0.1em !important;
+      }
+
       .footage-container {
-        padding: 100px 20px 60px;
+        padding: 110px 24px 60px;
+        max-width: 100%;
+        overflow-x: hidden;
       }
 
       .footage-heading {
-        font-size: 36px;
-        line-height: 1.1;
+        font-size: 32px;
+        line-height: 1.2;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
       }
 
       .footage-subheading {
-        font-size: 16px;
+        font-size: 15px;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
       }
 
       .footage-description {
         font-size: 14px;
-        padding: 0 10px;
+        padding: 0;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        text-align: left;
       }
 
       .videos-grid {
         grid-template-columns: 1fr;
-        gap: 30px;
-        margin-top: 30px;
+        gap: 32px;
+        margin-top: 32px;
       }
 
       .video-item {
@@ -278,24 +306,13 @@
 
       .video-wrapper {
         width: 100%;
+        padding-bottom: 56.25%;
+        border-radius: 8px;
       }
 
       .video-title {
-        font-size: 16px;
-      }
-
-      .nav-bar {
-        padding: 20px 24px;
-        gap: 24px;
-        justify-content: center;
-        height: 70px;
-        box-sizing: border-box;
-      }
-
-      .nav-link {
-        font-size: 11px;
-        padding: 6px 0;
-        letter-spacing: 0.1em;
+        font-size: 13px;
+        text-align: left;
       }
     }
 
@@ -305,11 +322,11 @@
       }
 
       .footage-heading {
-        font-size: 28px;
+        font-size: 26px;
       }
 
       .footage-subheading {
-        font-size: 14px;
+        font-size: 13px;
       }
 
       .footage-description {
@@ -321,9 +338,9 @@
       }
 
       .nav-link {
-        font-size: 10px;
-        padding: 4px 0;
-        letter-spacing: 0.08em;
+        font-size: 11px !important;
+        padding: 6px 0 !important;
+        letter-spacing: 0.1em !important;
       }
     }
 
