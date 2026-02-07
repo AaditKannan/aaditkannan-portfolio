@@ -1391,8 +1391,8 @@
     (function() {
       if (window.innerWidth >= 768) return;
 
-      var ENTRY_BUFFER = 0; // Start fixing heading when it reaches the top
-      var EXIT_BUFFER = 60; // Release previous heading this many px before section ends
+      var ENTRY_BUFFER = 10; // Start fixing heading slightly before it reaches the top
+      var EXIT_BUFFER = 110; // Release previous heading early to create buffer space
 
       var items = [];
       var sections = document.querySelectorAll('.section:not(#secOverview)');
@@ -1418,7 +1418,7 @@
 
       if (!items.length) return;
 
-      var baseStyles = 'z-index:100;background:#0a0a0a;padding:14px 20px;margin:0;border-bottom:1px solid rgba(255,255,255,0.06);';
+      var baseStyles = 'z-index:100;background:rgba(10,10,10,0.95);padding:14px 20px;margin:0;backdrop-filter:blur(8px);';
 
       function onScroll() {
         var viewportTop = 0;
