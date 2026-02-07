@@ -285,8 +285,8 @@
       }
 
       .hero-photo .profile-photo {
-        width: 340px;
-        height: 420px;
+        width: 400px;
+        height: 490px;
         border-radius: 6px !important;
         object-fit: cover;
         object-position: center 15%;
@@ -302,15 +302,15 @@
         align-items: stretch;
         justify-content: center;
         flex: 1;
-        min-height: 420px;
+        min-height: 490px;
       }
 
       .hero-buttons .contact-link {
-        font-size: 8px !important;
-        padding: 5px 6px !important;
+        font-size: 7px !important;
+        padding: 4px 5px !important;
         white-space: nowrap;
         box-sizing: border-box;
-        border-radius: 4px !important;
+        border-radius: 3px !important;
         border: 1px solid rgba(255, 255, 255, 0.2) !important;
         background: transparent !important;
         color: rgba(255, 255, 255, 0.7) !important;
@@ -1384,108 +1384,6 @@
       });
     })();
 
-  </script>
-  <script>
-    // JS-based Sticky Section Headings (mobile only)
-    // Smooth transitions with buffer zones to prevent jumps
-    (function() {
-      if (window.innerWidth >= 768) return;
-
-      var ENTRY_BUFFER = 10; // Start fixing heading slightly before it reaches the top
-      var EXIT_BUFFER = 110; // Release previous heading early to create buffer space
-
-      var items = [];
-      var sections = document.querySelectorAll('.section:not(#secOverview)');
-
-      sections.forEach(function(sec) {
-        var h = sec.querySelector('.heading');
-        if (!h) return;
-
-        // Create a spacer to hold heading's space when it becomes fixed
-        var spacer = document.createElement('div');
-        spacer.style.cssText = 'height:0;visibility:hidden;';
-        h.parentNode.insertBefore(spacer, h);
-
-        sec.style.position = 'relative';
-
-        items.push({
-          heading: h,
-          section: sec,
-          spacer: spacer,
-          state: 'normal' // 'normal' | 'fixed' | 'exiting'
-        });
-      });
-
-      if (!items.length) return;
-
-      var baseStyles = 'z-index:100;background:rgba(10,10,10,0.95);padding:14px 20px;margin:0;backdrop-filter:blur(8px);';
-
-      function onScroll() {
-        var viewportTop = 0;
-
-        for (var i = 0; i < items.length; i++) {
-          var it = items[i];
-          var h = it.heading;
-          var sec = it.section;
-          var spacer = it.spacer;
-
-          var secRect = sec.getBoundingClientRect();
-          var hH = h.offsetHeight || 50;
-          var spacerRect = spacer.getBoundingClientRect();
-
-          // Where heading naturally sits
-          var headingNaturalTop = spacerRect.top;
-          // Section bottom
-          var secBottom = secRect.bottom;
-
-          // Determine state
-          var newState = it.state;
-
-          if (headingNaturalTop > ENTRY_BUFFER) {
-            // Not yet in trigger zone - keep normal
-            newState = 'normal';
-          } else if (secBottom <= EXIT_BUFFER) {
-            // Section ending - start exit (pin to section bottom)
-            newState = 'exiting';
-          } else {
-            // In trigger zone and section has content - fix it
-            newState = 'fixed';
-          }
-
-          // Apply state changes only when state actually changes
-          if (newState !== it.state) {
-            if (newState === 'normal') {
-              h.style.cssText = '';
-              spacer.style.height = '0';
-              it.state = 'normal';
-            } else if (newState === 'fixed') {
-              spacer.style.height = hH + 'px';
-              h.style.cssText = 'position:fixed;top:0;left:0;right:0;' + baseStyles;
-              it.state = 'fixed';
-            } else if (newState === 'exiting') {
-              spacer.style.height = hH + 'px';
-              h.style.cssText = 'position:absolute;bottom:0;left:0;right:0;' + baseStyles;
-              it.state = 'exiting';
-            }
-          }
-        }
-      }
-
-      // Throttle with requestAnimationFrame
-      var ticking = false;
-      function requestTick() {
-        if (!ticking) {
-          window.requestAnimationFrame(function() {
-            onScroll();
-            ticking = false;
-          });
-          ticking = true;
-        }
-      }
-
-      window.addEventListener('scroll', requestTick, { passive: true });
-      onScroll();
-    })();
   </script>
   <script>
     // Custom Cursor
