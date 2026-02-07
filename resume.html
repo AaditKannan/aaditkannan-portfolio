@@ -285,8 +285,8 @@
       }
 
       .hero-photo .profile-photo {
-        width: 140px;
-        height: 170px;
+        width: 180px;
+        height: 220px;
         border-radius: 6px !important;
         object-fit: cover;
         object-position: center 15%;
@@ -298,16 +298,16 @@
         order: 4;
         display: flex;
         flex-direction: column;
-        gap: 10px;
+        gap: 8px;
         align-items: stretch;
         justify-content: center;
         flex: 1;
-        min-height: 170px;
+        min-height: 220px;
       }
 
       .hero-buttons .contact-link {
-        font-size: 13px !important;
-        padding: 10px 16px !important;
+        font-size: 12px !important;
+        padding: 8px 12px !important;
         white-space: nowrap;
         box-sizing: border-box;
         border-radius: 4px !important;
@@ -365,12 +365,17 @@
       }
 
       .hero-photo .profile-photo {
-        width: 120px !important;
-        height: 150px !important;
+        width: 150px !important;
+        height: 190px !important;
       }
 
       .hero-buttons {
-        min-height: 150px;
+        min-height: 190px;
+      }
+
+      .hero-buttons .contact-link {
+        font-size: 11px !important;
+        padding: 7px 10px !important;
       }
     }
 
@@ -1382,15 +1387,9 @@
   </script>
   <script>
     // JS-based Sticky Section Headings (mobile only)
-    // Directly manipulates actual heading elements for seamless sticky behavior.
-    // CSS position:sticky is broken by html/body overflow-y:scroll setup.
+    // Uses transform instead of position switching to avoid layout jumps.
     (function() {
       if (window.innerWidth >= 768) return;
-
-      // Buffer: fix heading this many px BEFORE its top reaches viewport top.
-      // This prevents the "jump" — the heading starts fixing slightly early
-      // so by the time you'd notice, it's already locked in place.
-      var TRIGGER_BUFFER = 30;
 
       var items = [];
       var sections = document.querySelectorAll('.section:not(#secOverview)');
@@ -1399,72 +1398,83 @@
         var h = sec.querySelector('.heading');
         if (!h) return;
 
-        // Insert a placeholder div right before the heading to hold its space
-        var placeholder = document.createElement('div');
-        placeholder.style.cssText = 'height:0;margin:0;padding:0;border:0;visibility:hidden;';
-        h.parentNode.insertBefore(placeholder, h);
+        // Store original styles
+        var originalMargin = h.style.marginBottom || '';
 
         // Ensure section is a positioning context
         sec.style.position = 'relative';
 
         items.push({
           heading: h,
-          placeholder: placeholder,
           section: sec,
-          state: 'normal' // 'normal' | 'fixed' | 'bottom'
+          originalMargin: originalMargin,
+          isStuck: false
         });
       });
 
       if (!items.length) return;
 
-      var fixedStyle =
-        'position:fixed !important;top:0;left:0;right:0;' +
-        'z-index:100;background:#0a0a0a;' +
-        'padding:14px 20px;margin:0;' +
-        'border-bottom:1px solid rgba(255,255,255,0.06);';
-
       function onScroll() {
         for (var i = 0; i < items.length; i++) {
           var it = items[i];
-          var secRect = it.section.getBoundingClientRect();
-          var hH = it.heading.offsetHeight || 50;
-          var phRect = it.placeholder.getBoundingClientRect();
+          var h = it.heading;
+          var sec = it.section;
 
-          // Where the heading would naturally sit (placeholder position)
-          var naturalTop = phRect.top;
-          // Section bottom minus the heading height — when the last content
-          // scrolls behind where the fixed banner sits, release the heading
-          var sectionBottom = secRect.bottom;
+          var hRect = h.getBoundingClientRect();
+          var secRect = sec.getBoundingClientRect();
+          var hH = h.offsetHeight || 50;
 
-          if (naturalTop >= TRIGGER_BUFFER) {
-            // Heading hasn't reached the trigger zone yet — normal flow
-            if (it.state !== 'normal') {
-              it.heading.style.cssText = '';
-              it.placeholder.style.height = '0px';
-              it.state = 'normal';
-            }
-          } else if (sectionBottom <= hH + 10) {
-            // Section's last content is scrolling behind the banner zone.
-            // Pin heading to section bottom so it scrolls away with content.
-            it.placeholder.style.height = hH + 'px';
-            it.heading.style.cssText =
-              'position:absolute !important;bottom:0;left:0;right:0;' +
-              'z-index:100;background:#0a0a0a;' +
-              'padding:14px 20px;margin:0;' +
-              'border-bottom:1px solid rgba(255,255,255,0.06);';
-            it.state = 'bottom';
-          } else {
-            // Heading is in trigger zone and section still has content — fix it
-            if (it.state !== 'fixed') {
-              it.placeholder.style.height = hH + 'px';
-              it.heading.style.cssText = fixedStyle;
-              it.state = 'fixed';
-            }
+          // Determine if heading should stick
+          var shouldStick = secRect.top < 0 && secRect.bottom > hH + 10;
+
+          if (shouldStick && !it.isStuck) {
+            // Stick it: use fixed positioning with transform
+            h.style.position = 'fixed';
+            h.style.top = '0';
+            h.style.left = '0';
+            h.style.right = '0';
+            h.style.zIndex = '100';
+            h.style.background = '#0a0a0a';
+            h.style.padding = '14px 20px';
+            h.style.margin = '0';
+            h.style.borderBottom = '1px solid rgba(255,255,255,0.06)';
+            it.isStuck = true;
+          } else if (!shouldStick && it.isStuck) {
+            // Unstick it: return to normal flow
+            h.style.position = '';
+            h.style.top = '';
+            h.style.left = '';
+            h.style.right = '';
+            h.style.zIndex = '';
+            h.style.background = '';
+            h.style.padding = '';
+            h.style.margin = it.originalMargin;
+            h.style.borderBottom = '';
+            it.isStuck = false;
+          }
+
+          // Handle section end: pin to bottom so it scrolls away
+          if (it.isStuck && secRect.bottom <= hH + 10) {
+            h.style.position = 'absolute';
+            h.style.top = '';
+            h.style.bottom = '0';
           }
         }
       }
 
       window.addEventListener('scroll', onScroll, { passive: true });
+      // Use requestAnimationFrame for smoother updates
+      var ticking = false;
+      window.addEventListener('scroll', function() {
+        if (!ticking) {
+          window.requestAnimationFrame(function() {
+            onScroll();
+            ticking = false;
+          });
+          ticking = true;
+        }
+      }, { passive: true });
+
       onScroll();
     })();
   </script>
