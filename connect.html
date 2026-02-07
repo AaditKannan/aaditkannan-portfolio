@@ -166,8 +166,10 @@
     .contact-pill {
       display: inline-flex;
       align-items: center;
+      justify-content: center;
       gap: 10px;
-      padding: 10px 22px;
+      padding: 10px 26px;
+      min-width: 140px;
       border: 1px solid rgba(255, 255, 255, 0.15);
       border-radius: 100px;
       text-decoration: none;
@@ -287,8 +289,8 @@
       }
 
       .contact-row {
-        flex-direction: column;
-        gap: 10px;
+        flex-direction: row;
+        gap: 12px;
         margin-bottom: 40px;
       }
 
@@ -297,9 +299,9 @@
       }
 
       .contact-pill {
-        width: 100%;
-        max-width: 280px;
-        justify-content: center;
+        min-width: 0;
+        padding: 9px 18px;
+        font-size: 13px;
       }
 
       .calendar-iframe {
@@ -390,7 +392,7 @@
           <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
           <polyline points="22,6 12,13 2,6"/>
         </svg>
-        Email
+        Email me
       </a>
       <div class="pill-divider"></div>
       <a href="https://www.linkedin.com/in/aaditkannan" target="_blank" rel="noopener noreferrer" class="contact-pill">

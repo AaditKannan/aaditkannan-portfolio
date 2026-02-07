@@ -244,9 +244,33 @@
         width: 100% !important;
       }
 
-      /* Photo first - hero element */
-      .hero-actions {
+      /* Name first - above photo */
+      .overview-text .heading,
+      #hOverview {
         order: 1;
+        margin-bottom: 6px !important;
+        font-size: 30px !important;
+        font-weight: 700 !important;
+        text-align: center !important;
+        letter-spacing: 0.02em;
+      }
+
+      /* Subtitle */
+      .overview-text .subheading,
+      #subOverview {
+        order: 2;
+        margin-bottom: 24px !important;
+        font-size: 13px !important;
+        text-align: center !important;
+        color: rgba(255, 255, 255, 0.45) !important;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        font-weight: 400;
+      }
+
+      /* Photo below name/subtitle */
+      .hero-actions {
+        order: 3;
         display: flex !important;
         flex-direction: column !important;
         align-items: center !important;
@@ -262,36 +286,12 @@
       }
 
       .hero-photo .profile-photo {
-        width: 140px;
-        height: 140px;
+        width: 180px;
+        height: 180px;
         border-radius: 50%;
         object-fit: cover;
         object-position: center 15%;
         border: 2px solid rgba(255, 255, 255, 0.1);
-      }
-
-      /* Name below photo */
-      .overview-text .heading,
-      #hOverview {
-        order: 2;
-        margin-bottom: 6px !important;
-        font-size: 30px !important;
-        font-weight: 700 !important;
-        text-align: center !important;
-        letter-spacing: 0.02em;
-      }
-
-      /* Subtitle */
-      .overview-text .subheading,
-      #subOverview {
-        order: 3;
-        margin-bottom: 24px !important;
-        font-size: 13px !important;
-        text-align: center !important;
-        color: rgba(255, 255, 255, 0.45) !important;
-        letter-spacing: 0.08em;
-        text-transform: uppercase;
-        font-weight: 400;
       }
 
       /* Pill-style buttons */
@@ -366,8 +366,8 @@
       }
 
       .hero-photo .profile-photo {
-        width: 120px !important;
-        height: 120px !important;
+        width: 150px !important;
+        height: 150px !important;
       }
     }
 
@@ -1376,6 +1376,53 @@
       });
     })();
 
+  </script>
+  <script>
+    // JS-based Sticky Section Headings (mobile only)
+    // CSS position:sticky is broken by html/body overflow-y:scroll setup
+    (function() {
+      if (window.innerWidth >= 768) return;
+
+      var clone = null;
+      var sections = document.querySelectorAll('.section:not(#secOverview)');
+      var headings = [];
+
+      sections.forEach(function(sec) {
+        var h = sec.querySelector('.heading');
+        if (h) headings.push({ el: h, section: sec });
+      });
+
+      if (!headings.length) return;
+
+      function onScroll() {
+        var active = null;
+        for (var i = 0; i < headings.length; i++) {
+          var rect = headings[i].section.getBoundingClientRect();
+          var hRect = headings[i].el.getBoundingClientRect();
+          // Section is in view and heading has scrolled past top
+          if (rect.top < 40 && rect.bottom > 60) {
+            if (hRect.top < 0) {
+              active = headings[i];
+            }
+          }
+        }
+
+        if (active) {
+          if (!clone) {
+            clone = document.createElement('div');
+            clone.className = 'sticky-heading-clone';
+            document.body.appendChild(clone);
+          }
+          clone.textContent = active.el.textContent;
+          clone.style.display = 'block';
+        } else {
+          if (clone) clone.style.display = 'none';
+        }
+      }
+
+      window.addEventListener('scroll', onScroll, { passive: true });
+      onScroll();
+    })();
   </script>
   <script>
     // Custom Cursor

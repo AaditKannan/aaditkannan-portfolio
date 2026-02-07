@@ -950,29 +950,25 @@ body::-webkit-scrollbar {
     border-bottom: none !important;
   }
 
-  /* 3. Sticky Section Headings - stick to top while scrolling through section */
-  .section-content {
-    position: relative;
-  }
-
-  .section .heading {
-    position: -webkit-sticky !important;
-    position: sticky !important;
+  /* 3. Sticky Section Headings - handled by JS (CSS sticky broken by scroll containers) */
+  /* JS creates a fixed clone of the heading when scrolling through each section */
+  .sticky-heading-clone {
+    position: fixed !important;
     top: 0 !important;
-    z-index: 100;
+    left: 0 !important;
+    right: 0 !important;
+    z-index: 100 !important;
     background: #0a0a0a !important;
     padding: 14px 20px !important;
-    margin: 0 -20px 12px -20px !important;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-  }
-
-  /* Don't sticky the overview/hero heading */
-  #secOverview .heading {
-    position: relative !important;
-    background: transparent !important;
-    border-bottom: none !important;
-    padding: 0 !important;
-    margin: 0 0 8px 0 !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06) !important;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+    font-size: 22px !important;
+    font-weight: 600 !important;
+    color: #FFFFFF !important;
+    letter-spacing: 0 !important;
+    margin: 0 !important;
+    opacity: 1 !important;
+    pointer-events: none;
   }
 
   /* Entry header - keep date on same line */
@@ -1102,10 +1098,10 @@ body::-webkit-scrollbar {
     min-height: auto !important;
   }
 
-  /* Overview section should fill viewport so Education isn't visible on load */
+  /* Overview section - no forced full viewport height, let content flow naturally */
   .section:first-child,
   #secOverview {
-    min-height: 100vh !important;
+    min-height: auto !important;
     padding-top: 80px !important;
     display: flex !important;
     flex-direction: column !important;
