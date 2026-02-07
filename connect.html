@@ -110,25 +110,24 @@
       min-height: 100vh;
       display: flex;
       flex-direction: column;
-      align-items: flex-start;
-      justify-content: flex-start;
-      padding: 120px 120px 60px;
-      max-width: 1200px;
+      align-items: center;
+      justify-content: center;
+      padding: 120px 40px 60px;
+      max-width: 800px;
       margin: 0 auto;
       width: 100%;
     }
 
     /* Header */
     .connect-header {
-      text-align: left;
-      margin-bottom: 32px;
+      text-align: center;
+      margin-bottom: 48px;
       width: 100%;
-      max-width: 1200px;
     }
 
     .connect-heading {
       font-family: 'Courier Prime', 'JetBrains Mono', 'Courier New', monospace;
-      font-size: clamp(42px, 8vw, 64px);
+      font-size: clamp(48px, 8vw, 72px);
       font-weight: 400;
       color: #FFFFFF;
       letter-spacing: 0.02em;
@@ -136,23 +135,13 @@
       opacity: 0;
     }
 
-    .connect-subheading {
-      font-family: 'Courier Prime', monospace;
-      font-size: clamp(14px, 2vw, 18px);
-      color: rgba(255, 255, 255, 0.5);
-      letter-spacing: 0.05em;
-    }
-
-    /* Contact Cards Grid */
-    .contact-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-      max-width: 600px;
-      width: 100%;
-      opacity: 0;
-      transform: translateY(30px);
-      animation: fadeInUp 0.8s ease 0.3s forwards;
+    .connect-subtitle {
+      font-family: 'Inter', sans-serif;
+      font-size: 15px;
+      font-weight: 300;
+      color: rgba(255, 255, 255, 0.4);
+      letter-spacing: 0.03em;
+      line-height: 1.6;
     }
 
     @keyframes fadeInUp {
@@ -162,148 +151,87 @@
       }
     }
 
-    /* Contact Card */
-    .contact-card {
-      position: relative;
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 12px;
-      padding: 20px 16px;
-      text-decoration: none;
-      color: #FFFFFF;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-      gap: 10px;
-      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-      overflow: hidden;
-    }
-
-    .contact-card::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.08), transparent 60%);
-      opacity: 0;
-      transition: opacity 0.4s ease;
-    }
-
-    .contact-card:hover {
-      border-color: rgba(255, 255, 255, 0.3);
-      transform: translateY(-8px);
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
-    }
-
-    .contact-card:hover::before {
-      opacity: 1;
-    }
-
-    .card-icon {
-      width: 32px;
-      height: 32px;
+    /* Contact Links Row */
+    .contact-row {
       display: flex;
       align-items: center;
       justify-content: center;
-      border-radius: 8px;
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      transition: all 0.3s ease;
+      gap: 16px;
+      margin-bottom: 56px;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeInUp 0.6s ease 0.3s forwards;
     }
 
-    .contact-card:hover .card-icon {
-      background: rgba(255, 255, 255, 0.1);
-      border-color: rgba(255, 255, 255, 0.2);
-      transform: scale(1.1);
-    }
-
-    .card-icon svg {
-      width: 18px;
-      height: 18px;
-      stroke: rgba(255, 255, 255, 0.8);
-      fill: none;
-      stroke-width: 1.5;
-      transition: stroke 0.3s ease;
-    }
-
-    .contact-card:hover .card-icon svg {
-      stroke: #FFFFFF;
-    }
-
-    .card-label {
-      font-family: 'Courier Prime', monospace;
-      font-size: 11px;
-      font-weight: 400;
-      color: rgba(255, 255, 255, 0.4);
-      text-transform: uppercase;
-      letter-spacing: 0.15em;
-    }
-
-    .card-value {
+    .contact-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 22px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 100px;
+      text-decoration: none;
+      color: rgba(255, 255, 255, 0.7);
       font-family: 'Inter', sans-serif;
       font-size: 14px;
       font-weight: 400;
-      color: #FFFFFF;
-      word-break: break-word;
-      transition: color 0.3s ease;
-    }
-
-    .contact-card:hover .card-value {
-      color: #FFFFFF;
-    }
-
-    .card-action {
-      font-family: 'Courier Prime', monospace;
-      font-size: 12px;
-      color: rgba(255, 255, 255, 0.5);
-      letter-spacing: 0.05em;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin-top: 8px;
       transition: all 0.3s ease;
+      background: transparent;
     }
 
-    .card-action svg {
-      width: 14px;
-      height: 14px;
+    .contact-pill:hover {
+      color: #FFFFFF;
+      border-color: rgba(255, 255, 255, 0.5);
+      background: rgba(255, 255, 255, 0.05);
+      transform: translateY(-2px);
+    }
+
+    .contact-pill svg {
+      width: 16px;
+      height: 16px;
       stroke: currentColor;
       fill: none;
-      stroke-width: 2;
-      transition: transform 0.3s ease;
+      stroke-width: 1.5;
+      flex-shrink: 0;
     }
 
-    .contact-card:hover .card-action {
-      color: rgba(255, 255, 255, 0.8);
+    .pill-divider {
+      width: 1px;
+      height: 20px;
+      background: rgba(255, 255, 255, 0.12);
     }
 
-    .contact-card:hover .card-action svg {
-      transform: translateX(4px);
-    }
-
-    /* Calendar Availability Section */
+    /* Calendar Section */
     .calendar-section {
       width: 100%;
-      max-width: 1000px;
-      margin-top: 40px;
       opacity: 0;
-      animation: fadeInUp 0.8s ease 0.6s forwards;
+      transform: translateY(20px);
+      animation: fadeInUp 0.6s ease 0.5s forwards;
+    }
+
+    .calendar-label {
+      font-family: 'Courier Prime', monospace;
+      font-size: 11px;
+      font-weight: 400;
+      color: rgba(255, 255, 255, 0.3);
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      margin-bottom: 16px;
+      text-align: center;
     }
 
     .calendar-wrapper {
       position: relative;
       width: 100%;
-      border-radius: 16px;
+      border-radius: 12px;
       overflow: hidden;
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
-      padding: 2px;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.08);
     }
 
     .calendar-iframe {
       width: 100%;
-      height: 600px;
+      height: 420px;
       border: 0;
       display: block;
       background: transparent;
@@ -312,51 +240,26 @@
 
     /* Footer Note */
     .connect-footer {
-      margin-top: 60px;
+      margin-top: 48px;
       text-align: center;
       opacity: 0;
-      animation: fadeInUp 0.8s ease 0.8s forwards;
+      animation: fadeInUp 0.6s ease 0.7s forwards;
     }
 
     .footer-text {
-      font-family: 'Courier Prime', monospace;
-      font-size: 14px;
-      color: rgba(255, 255, 255, 0.4);
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      font-weight: 300;
+      color: rgba(255, 255, 255, 0.3);
       line-height: 1.8;
     }
 
-    .footer-text a {
-      color: rgba(255, 255, 255, 0.7);
-      text-decoration: none;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.3);
-      transition: all 0.3s ease;
-    }
-
-    .footer-text a:hover {
-      color: #FFFFFF;
-      border-bottom-color: #FFFFFF;
-    }
-
     /* Responsive */
-    @media (max-width: 900px) {
-      .contact-grid {
-        grid-template-columns: 1fr;
-        max-width: 400px;
-      }
-
-      .contact-card {
-        padding: 32px 28px;
-      }
-    }
-
     @media (max-width: 768px) {
-      /* Mobile font: Inter instead of monospace */
-      body, .nav-link, .connect-title, .connect-subtitle, .connect-card,
-      .contact-label, .contact-value, .copy-btn {
+      body, .nav-link {
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
       }
 
-      /* Match resume page menu style */
       .nav-bar {
         position: absolute !important;
         padding: 15px 12px;
@@ -369,45 +272,44 @@
         backdrop-filter: none !important;
         border-bottom: none !important;
       }
-      
+
       .nav-link {
         font-size: 10px;
         padding: 8px 14px;
         letter-spacing: 0.1em;
       }
-      
+
       .connect-container {
-        padding: 120px 40px 60px;
+        padding: 110px 24px 50px;
+        justify-content: flex-start;
       }
 
       .connect-header {
-        margin-bottom: 24px;
+        margin-bottom: 36px;
       }
 
-      .contact-grid {
-        gap: 8px;
-        grid-template-columns: 1fr;
-        max-width: 100%;
+      .contact-row {
+        flex-direction: column;
+        gap: 10px;
+        margin-bottom: 40px;
       }
 
-      .calendar-section {
-        margin-top: 32px;
+      .pill-divider {
+        display: none;
       }
 
-      .calendar-wrapper {
-        border-radius: 12px;
+      .contact-pill {
+        width: 100%;
+        max-width: 280px;
+        justify-content: center;
       }
 
       .calendar-iframe {
-        height: 500px;
+        height: 380px;
       }
 
       .connect-footer {
-        margin-top: 40px;
-      }
-
-      .footer-text {
-        font-size: 13px;
+        margin-top: 32px;
       }
     }
 
@@ -418,38 +320,16 @@
       }
 
       .connect-container {
-        padding: 90px 16px 50px;
+        padding: 90px 16px 40px;
       }
 
-      .contact-card {
-        padding: 16px 12px;
-        gap: 8px;
-      }
-
-      .card-value {
-        font-size: 12px;
-      }
-
-      .card-label {
-        font-size: 9px;
-      }
-
-      .card-icon {
-        width: 28px;
-        height: 28px;
-      }
-
-      .card-icon svg {
-        width: 16px;
-        height: 16px;
-      }
-
-      .calendar-section {
-        margin-top: 50px;
+      .contact-pill {
+        font-size: 13px;
+        padding: 9px 18px;
       }
 
       .calendar-iframe {
-        height: 450px;
+        height: 340px;
       }
     }
 
@@ -503,50 +383,35 @@
   <div class="connect-container">
     <div class="connect-header">
       <h1 class="connect-heading" id="connectHeading">Connect</h1>
+      <p class="connect-subtitle">Based in Berkeley, CA — open to opportunities and collaborations.</p>
     </div>
 
-    <div class="contact-grid">
-      <!-- Email Card -->
-      <a href="mailto:aaditkannan@berkeley.edu" class="contact-card">
-        <div class="card-icon">
-          <svg viewBox="0 0 24 24">
-            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
-            <polyline points="22,6 12,13 2,6"/>
-          </svg>
-        </div>
-        <span class="card-label">Email</span>
-        <span class="card-value">aaditkannan@berkeley.edu</span>
-        <span class="card-action">
-          Send email
-          <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        </span>
+    <div class="contact-row">
+      <a href="mailto:aaditkannan@berkeley.edu" class="contact-pill">
+        <svg viewBox="0 0 24 24">
+          <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+          <polyline points="22,6 12,13 2,6"/>
+        </svg>
+        aaditkannan@berkeley.edu
       </a>
-
-      <!-- LinkedIn Card -->
-      <a href="https://www.linkedin.com/in/aaditkannan" target="_blank" rel="noopener noreferrer" class="contact-card">
-        <div class="card-icon">
-          <svg viewBox="0 0 24 24">
-            <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
-            <rect x="2" y="9" width="4" height="12"/>
-            <circle cx="4" cy="4" r="2"/>
-          </svg>
-        </div>
-        <span class="card-label">LinkedIn</span>
-        <span class="card-value">linkedin.com/in/aaditkannan</span>
-        <span class="card-action">
-          View profile
-          <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        </span>
+      <div class="pill-divider"></div>
+      <a href="https://www.linkedin.com/in/aaditkannan" target="_blank" rel="noopener noreferrer" class="contact-pill">
+        <svg viewBox="0 0 24 24">
+          <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
+          <rect x="2" y="9" width="4" height="12"/>
+          <circle cx="4" cy="4" r="2"/>
+        </svg>
+        LinkedIn
       </a>
     </div>
 
-    <!-- Calendar Availability Section -->
     <div class="calendar-section">
+      <p class="calendar-label">My Availability</p>
       <div class="calendar-wrapper">
-        <iframe 
-          src="https://calendar.google.com/calendar/embed?src=aaditkannan%40berkeley.edu&ctz=America%2FLos_Angeles" 
+        <iframe
+          src="https://calendar.google.com/calendar/embed?src=aaditkannan%40berkeley.edu&ctz=America%2FLos_Angeles"
           class="calendar-iframe"
-          frameborder="0" 
+          frameborder="0"
           scrolling="no"
           title="Aadit Kannan's Calendar Availability"
         ></iframe>
@@ -555,8 +420,7 @@
 
     <div class="connect-footer">
       <p class="footer-text">
-        Based in Berkeley, CA<br>
-        Open to opportunities and collaborations
+        Prefer email for the fastest response.
       </p>
     </div>
   </div>
