@@ -1391,8 +1391,8 @@
     (function() {
       if (window.innerWidth >= 768) return;
 
-      var ENTRY_BUFFER = 80; // Start fixing heading when this many px before section top
-      var EXIT_BUFFER = 150; // Release previous heading this many px before section ends
+      var ENTRY_BUFFER = 0; // Start fixing heading when it reaches the top
+      var EXIT_BUFFER = 60; // Release previous heading this many px before section ends
 
       var items = [];
       var sections = document.querySelectorAll('.section:not(#secOverview)');
