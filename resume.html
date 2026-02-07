@@ -228,96 +228,95 @@
     }
 
     @media (max-width: 768px) {
-      /* Mobile Overview Layout - Clean centered hero */
+      /* Mobile Overview Layout - Left-aligned with photo+buttons row */
       .overview-layout {
         display: flex !important;
         flex-direction: column !important;
         gap: 0 !important;
-        align-items: center !important;
-        text-align: center !important;
+        align-items: flex-start !important;
+        text-align: left !important;
       }
 
       .overview-text {
         display: flex !important;
         flex-direction: column !important;
-        align-items: center !important;
+        align-items: flex-start !important;
         width: 100% !important;
       }
 
-      /* Name first - above photo */
+      /* Name on top - left aligned */
       .overview-text .heading,
       #hOverview {
         order: 1;
         margin-bottom: 6px !important;
         font-size: 30px !important;
         font-weight: 700 !important;
-        text-align: center !important;
+        text-align: left !important;
         letter-spacing: 0.02em;
       }
 
-      /* Subtitle */
+      /* Subtitle below name */
       .overview-text .subheading,
       #subOverview {
         order: 2;
-        margin-bottom: 24px !important;
+        margin-bottom: 20px !important;
         font-size: 13px !important;
-        text-align: center !important;
+        text-align: left !important;
         color: rgba(255, 255, 255, 0.45) !important;
         letter-spacing: 0.08em;
         text-transform: uppercase;
         font-weight: 400;
       }
 
-      /* Photo below name/subtitle */
+      /* Photo + Buttons row: photo left, buttons stacked right */
       .hero-actions {
         order: 3;
         display: flex !important;
-        flex-direction: column !important;
-        align-items: center !important;
-        gap: 0;
+        flex-direction: row !important;
+        align-items: flex-start !important;
+        gap: 20px;
         width: 100%;
+        margin-bottom: 28px;
       }
 
       .hero-photo {
         display: flex !important;
-        justify-content: center;
-        width: 100%;
-        margin-bottom: 24px;
+        flex-shrink: 0;
       }
 
       .hero-photo .profile-photo {
-        width: 180px;
-        height: 180px;
-        border-radius: 50%;
+        width: 140px;
+        height: 170px;
+        border-radius: 6px !important;
         object-fit: cover;
         object-position: center 15%;
-        border: 2px solid rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.1);
       }
 
-      /* Pill-style buttons */
+      /* Buttons stacked vertically next to photo */
       .hero-buttons {
         order: 4;
         display: flex;
-        flex-direction: row;
+        flex-direction: column;
         gap: 10px;
-        align-items: center;
+        align-items: stretch;
         justify-content: center;
-        flex-wrap: wrap;
-        width: 100%;
-        margin-bottom: 32px;
+        flex: 1;
+        min-height: 170px;
       }
 
       .hero-buttons .contact-link {
         font-size: 13px !important;
-        padding: 9px 20px !important;
+        padding: 10px 16px !important;
         white-space: nowrap;
         box-sizing: border-box;
-        border-radius: 100px !important;
+        border-radius: 4px !important;
         border: 1px solid rgba(255, 255, 255, 0.2) !important;
         background: transparent !important;
         color: rgba(255, 255, 255, 0.7) !important;
         text-decoration: none !important;
-        display: inline-block;
+        display: block;
+        text-align: center;
         transition: all 0.3s ease;
         letter-spacing: 0.02em;
       }
@@ -333,7 +332,7 @@
         display: none !important;
       }
 
-      /* About text - clean block */
+      /* About text - left aligned */
       .body-content {
         order: 5;
       }
@@ -341,7 +340,7 @@
       .about-text {
         margin-top: 0 !important;
         margin-bottom: 0 !important;
-        text-align: center !important;
+        text-align: left !important;
         font-size: 14px !important;
         color: rgba(255, 255, 255, 0.6) !important;
         line-height: 1.7 !important;
@@ -357,7 +356,7 @@
     @media (max-width: 420px) {
       .hero-buttons .contact-link {
         font-size: 12px !important;
-        padding: 8px 16px !important;
+        padding: 9px 14px !important;
       }
 
       .overview-text .heading,
@@ -366,8 +365,12 @@
       }
 
       .hero-photo .profile-photo {
-        width: 150px !important;
+        width: 120px !important;
         height: 150px !important;
+      }
+
+      .hero-buttons {
+        min-height: 150px;
       }
     }
 
@@ -1384,6 +1387,11 @@
     (function() {
       if (window.innerWidth >= 768) return;
 
+      // Buffer: fix heading this many px BEFORE its top reaches viewport top.
+      // This prevents the "jump" — the heading starts fixing slightly early
+      // so by the time you'd notice, it's already locked in place.
+      var TRIGGER_BUFFER = 30;
+
       var items = [];
       var sections = document.querySelectorAll('.section:not(#secOverview)');
 
@@ -1409,45 +1417,47 @@
 
       if (!items.length) return;
 
+      var fixedStyle =
+        'position:fixed !important;top:0;left:0;right:0;' +
+        'z-index:100;background:#0a0a0a;' +
+        'padding:14px 20px;margin:0;' +
+        'border-bottom:1px solid rgba(255,255,255,0.06);';
+
       function onScroll() {
         for (var i = 0; i < items.length; i++) {
           var it = items[i];
           var secRect = it.section.getBoundingClientRect();
-          var hH = it.heading.offsetHeight;
+          var hH = it.heading.offsetHeight || 50;
           var phRect = it.placeholder.getBoundingClientRect();
 
-          // Section bottom relative to viewport top
-          var sectionBottom = secRect.bottom;
           // Where the heading would naturally sit (placeholder position)
           var naturalTop = phRect.top;
+          // Section bottom minus the heading height — when the last content
+          // scrolls behind where the fixed banner sits, release the heading
+          var sectionBottom = secRect.bottom;
 
-          if (naturalTop >= 0) {
-            // Heading is still below or at the top — normal flow
+          if (naturalTop >= TRIGGER_BUFFER) {
+            // Heading hasn't reached the trigger zone yet — normal flow
             if (it.state !== 'normal') {
               it.heading.style.cssText = '';
               it.placeholder.style.height = '0px';
               it.state = 'normal';
             }
-          } else if (sectionBottom <= hH) {
-            // Section bottom is near — pin heading to section bottom so it scrolls away
-            if (it.state !== 'bottom') {
-              it.placeholder.style.height = hH + 'px';
-              it.heading.style.cssText =
-                'position:absolute !important;bottom:0;left:0;right:0;' +
-                'z-index:100;background:#0a0a0a;' +
-                'padding:14px 20px;margin:0;' +
-                'border-bottom:1px solid rgba(255,255,255,0.06);';
-              it.state = 'bottom';
-            }
+          } else if (sectionBottom <= hH + 10) {
+            // Section's last content is scrolling behind the banner zone.
+            // Pin heading to section bottom so it scrolls away with content.
+            it.placeholder.style.height = hH + 'px';
+            it.heading.style.cssText =
+              'position:absolute !important;bottom:0;left:0;right:0;' +
+              'z-index:100;background:#0a0a0a;' +
+              'padding:14px 20px;margin:0;' +
+              'border-bottom:1px solid rgba(255,255,255,0.06);';
+            it.state = 'bottom';
           } else {
-            // Heading has scrolled past top, section still visible — fix it
+            // Heading is in trigger zone and section still has content — fix it
             if (it.state !== 'fixed') {
               it.placeholder.style.height = hH + 'px';
-              it.heading.style.cssText =
-                'position:fixed !important;top:0;left:0;right:0;' +
-                'z-index:100;background:#0a0a0a;' +
-                'padding:14px 20px;margin:0;' +
-                'border-bottom:1px solid rgba(255,255,255,0.06);';
+              it.heading.style.cssText = fixedStyle;
               it.state = 'fixed';
             }
           }
