@@ -228,40 +228,40 @@
     }
 
     @media (max-width: 768px) {
-      /* Mobile Overview Layout - Left-aligned with photo+buttons row */
+      /* Mobile Overview Layout - Centered name/title with photo+buttons row */
       .overview-layout {
         display: flex !important;
         flex-direction: column !important;
         gap: 0 !important;
-        align-items: flex-start !important;
-        text-align: left !important;
+        align-items: center !important;
+        text-align: center !important;
       }
 
       .overview-text {
         display: flex !important;
         flex-direction: column !important;
-        align-items: flex-start !important;
+        align-items: center !important;
         width: 100% !important;
       }
 
-      /* Name on top - left aligned */
+      /* Name on top - centered */
       .overview-text .heading,
       #hOverview {
         order: 1;
         margin-bottom: 6px !important;
         font-size: 30px !important;
         font-weight: 700 !important;
-        text-align: left !important;
+        text-align: center !important;
         letter-spacing: 0.02em;
       }
 
-      /* Subtitle below name */
+      /* Subtitle below name - centered */
       .overview-text .subheading,
       #subOverview {
         order: 2;
         margin-bottom: 20px !important;
         font-size: 13px !important;
-        text-align: left !important;
+        text-align: center !important;
         color: rgba(255, 255, 255, 0.45) !important;
         letter-spacing: 0.08em;
         text-transform: uppercase;
@@ -285,8 +285,8 @@
       }
 
       .hero-photo .profile-photo {
-        width: 220px;
-        height: 270px;
+        width: 260px;
+        height: 320px;
         border-radius: 6px !important;
         object-fit: cover;
         object-position: center 15%;
@@ -298,16 +298,16 @@
         order: 4;
         display: flex;
         flex-direction: column;
-        gap: 10px;
+        gap: 8px;
         align-items: stretch;
         justify-content: center;
         flex: 1;
-        min-height: 270px;
+        min-height: 320px;
       }
 
       .hero-buttons .contact-link {
-        font-size: 11px !important;
-        padding: 9px 10px !important;
+        font-size: 10px !important;
+        padding: 7px 8px !important;
         white-space: nowrap;
         box-sizing: border-box;
         border-radius: 4px !important;
