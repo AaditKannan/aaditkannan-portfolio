@@ -951,25 +951,7 @@ body::-webkit-scrollbar {
   }
 
   /* 3. Sticky Section Headings - handled by JS (CSS sticky broken by scroll containers) */
-  /* JS creates a fixed clone of the heading when scrolling through each section */
-  .sticky-heading-clone {
-    position: fixed !important;
-    top: 0 !important;
-    left: 0 !important;
-    right: 0 !important;
-    z-index: 100 !important;
-    background: #0a0a0a !important;
-    padding: 14px 20px !important;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.06) !important;
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
-    font-size: 22px !important;
-    font-weight: 600 !important;
-    color: #FFFFFF !important;
-    letter-spacing: 0 !important;
-    margin: 0 !important;
-    opacity: 1 !important;
-    pointer-events: none;
-  }
+  /* JS directly manipulates actual heading elements between normal/fixed/bottom states */
 
   /* Entry header - keep date on same line */
   .entry-header {

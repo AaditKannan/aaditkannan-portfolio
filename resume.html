@@ -1379,44 +1379,78 @@
   </script>
   <script>
     // JS-based Sticky Section Headings (mobile only)
-    // CSS position:sticky is broken by html/body overflow-y:scroll setup
+    // Directly manipulates actual heading elements for seamless sticky behavior.
+    // CSS position:sticky is broken by html/body overflow-y:scroll setup.
     (function() {
       if (window.innerWidth >= 768) return;
 
-      var clone = null;
+      var items = [];
       var sections = document.querySelectorAll('.section:not(#secOverview)');
-      var headings = [];
 
       sections.forEach(function(sec) {
         var h = sec.querySelector('.heading');
-        if (h) headings.push({ el: h, section: sec });
+        if (!h) return;
+
+        // Insert a placeholder div right before the heading to hold its space
+        var placeholder = document.createElement('div');
+        placeholder.style.cssText = 'height:0;margin:0;padding:0;border:0;visibility:hidden;';
+        h.parentNode.insertBefore(placeholder, h);
+
+        // Ensure section is a positioning context
+        sec.style.position = 'relative';
+
+        items.push({
+          heading: h,
+          placeholder: placeholder,
+          section: sec,
+          state: 'normal' // 'normal' | 'fixed' | 'bottom'
+        });
       });
 
-      if (!headings.length) return;
+      if (!items.length) return;
 
       function onScroll() {
-        var active = null;
-        for (var i = 0; i < headings.length; i++) {
-          var rect = headings[i].section.getBoundingClientRect();
-          var hRect = headings[i].el.getBoundingClientRect();
-          // Section is in view and heading has scrolled past top
-          if (rect.top < 40 && rect.bottom > 60) {
-            if (hRect.top < 0) {
-              active = headings[i];
+        for (var i = 0; i < items.length; i++) {
+          var it = items[i];
+          var secRect = it.section.getBoundingClientRect();
+          var hH = it.heading.offsetHeight;
+          var phRect = it.placeholder.getBoundingClientRect();
+
+          // Section bottom relative to viewport top
+          var sectionBottom = secRect.bottom;
+          // Where the heading would naturally sit (placeholder position)
+          var naturalTop = phRect.top;
+
+          if (naturalTop >= 0) {
+            // Heading is still below or at the top — normal flow
+            if (it.state !== 'normal') {
+              it.heading.style.cssText = '';
+              it.placeholder.style.height = '0px';
+              it.state = 'normal';
+            }
+          } else if (sectionBottom <= hH) {
+            // Section bottom is near — pin heading to section bottom so it scrolls away
+            if (it.state !== 'bottom') {
+              it.placeholder.style.height = hH + 'px';
+              it.heading.style.cssText =
+                'position:absolute !important;bottom:0;left:0;right:0;' +
+                'z-index:100;background:#0a0a0a;' +
+                'padding:14px 20px;margin:0;' +
+                'border-bottom:1px solid rgba(255,255,255,0.06);';
+              it.state = 'bottom';
+            }
+          } else {
+            // Heading has scrolled past top, section still visible — fix it
+            if (it.state !== 'fixed') {
+              it.placeholder.style.height = hH + 'px';
+              it.heading.style.cssText =
+                'position:fixed !important;top:0;left:0;right:0;' +
+                'z-index:100;background:#0a0a0a;' +
+                'padding:14px 20px;margin:0;' +
+                'border-bottom:1px solid rgba(255,255,255,0.06);';
+              it.state = 'fixed';
             }
           }
-        }
-
-        if (active) {
-          if (!clone) {
-            clone = document.createElement('div');
-            clone.className = 'sticky-heading-clone';
-            document.body.appendChild(clone);
-          }
-          clone.textContent = active.el.textContent;
-          clone.style.display = 'block';
-        } else {
-          if (clone) clone.style.display = 'none';
         }
       }
 
