@@ -1387,9 +1387,12 @@
   </script>
   <script>
     // JS-based Sticky Section Headings (mobile only)
-    // Uses transform instead of position switching to avoid layout jumps.
+    // Smooth transitions with buffer zones to prevent jumps
     (function() {
       if (window.innerWidth >= 768) return;
+
+      var ENTRY_BUFFER = 80; // Start fixing heading when this many px before section top
+      var EXIT_BUFFER = 150; // Release previous heading this many px before section ends
 
       var items = [];
       var sections = document.querySelectorAll('.section:not(#secOverview)');
@@ -1398,74 +1401,79 @@
         var h = sec.querySelector('.heading');
         if (!h) return;
 
-        // Store original styles
-        var originalMargin = h.style.marginBottom || '';
+        // Create a spacer to hold heading's space when it becomes fixed
+        var spacer = document.createElement('div');
+        spacer.style.cssText = 'height:0;visibility:hidden;';
+        h.parentNode.insertBefore(spacer, h);
 
-        // Ensure section is a positioning context
         sec.style.position = 'relative';
 
         items.push({
           heading: h,
           section: sec,
-          originalMargin: originalMargin,
-          isStuck: false
+          spacer: spacer,
+          state: 'normal' // 'normal' | 'fixed' | 'exiting'
         });
       });
 
       if (!items.length) return;
 
+      var baseStyles = 'z-index:100;background:#0a0a0a;padding:14px 20px;margin:0;border-bottom:1px solid rgba(255,255,255,0.06);';
+
       function onScroll() {
+        var viewportTop = 0;
+
         for (var i = 0; i < items.length; i++) {
           var it = items[i];
           var h = it.heading;
           var sec = it.section;
+          var spacer = it.spacer;
 
-          var hRect = h.getBoundingClientRect();
           var secRect = sec.getBoundingClientRect();
           var hH = h.offsetHeight || 50;
+          var spacerRect = spacer.getBoundingClientRect();
 
-          // Determine if heading should stick
-          var shouldStick = secRect.top < 0 && secRect.bottom > hH + 10;
+          // Where heading naturally sits
+          var headingNaturalTop = spacerRect.top;
+          // Section bottom
+          var secBottom = secRect.bottom;
 
-          if (shouldStick && !it.isStuck) {
-            // Stick it: use fixed positioning with transform
-            h.style.position = 'fixed';
-            h.style.top = '0';
-            h.style.left = '0';
-            h.style.right = '0';
-            h.style.zIndex = '100';
-            h.style.background = '#0a0a0a';
-            h.style.padding = '14px 20px';
-            h.style.margin = '0';
-            h.style.borderBottom = '1px solid rgba(255,255,255,0.06)';
-            it.isStuck = true;
-          } else if (!shouldStick && it.isStuck) {
-            // Unstick it: return to normal flow
-            h.style.position = '';
-            h.style.top = '';
-            h.style.left = '';
-            h.style.right = '';
-            h.style.zIndex = '';
-            h.style.background = '';
-            h.style.padding = '';
-            h.style.margin = it.originalMargin;
-            h.style.borderBottom = '';
-            it.isStuck = false;
+          // Determine state
+          var newState = it.state;
+
+          if (headingNaturalTop > ENTRY_BUFFER) {
+            // Not yet in trigger zone - keep normal
+            newState = 'normal';
+          } else if (secBottom <= EXIT_BUFFER) {
+            // Section ending - start exit (pin to section bottom)
+            newState = 'exiting';
+          } else {
+            // In trigger zone and section has content - fix it
+            newState = 'fixed';
           }
 
-          // Handle section end: pin to bottom so it scrolls away
-          if (it.isStuck && secRect.bottom <= hH + 10) {
-            h.style.position = 'absolute';
-            h.style.top = '';
-            h.style.bottom = '0';
+          // Apply state changes only when state actually changes
+          if (newState !== it.state) {
+            if (newState === 'normal') {
+              h.style.cssText = '';
+              spacer.style.height = '0';
+              it.state = 'normal';
+            } else if (newState === 'fixed') {
+              spacer.style.height = hH + 'px';
+              h.style.cssText = 'position:fixed;top:0;left:0;right:0;' + baseStyles;
+              it.state = 'fixed';
+            } else if (newState === 'exiting') {
+              spacer.style.height = hH + 'px';
+              h.style.cssText = 'position:absolute;bottom:0;left:0;right:0;' + baseStyles;
+              it.state = 'exiting';
+            }
           }
         }
       }
 
-      window.addEventListener('scroll', onScroll, { passive: true });
-      // Use requestAnimationFrame for smoother updates
+      // Throttle with requestAnimationFrame
       var ticking = false;
-      window.addEventListener('scroll', function() {
+      function requestTick() {
         if (!ticking) {
           window.requestAnimationFrame(function() {
             onScroll();
@@ -1473,8 +1481,9 @@
           });
           ticking = true;
         }
-      }, { passive: true });
+      }
 
+      window.addEventListener('scroll', requestTick, { passive: true });
       onScroll();
     })();
   </script>
