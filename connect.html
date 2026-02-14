@@ -143,7 +143,7 @@
     }
 
     .connect-heading {
-      font-family: 'Courier Prime', 'JetBrains Mono', 'Courier New', monospace;
+      font-family: 'Brandon Grotesque', 'brandon-grotesque', 'Inter', system-ui, sans-serif;
       font-size: clamp(48px, 8vw, 72px);
       font-weight: 400;
       color: #FFFFFF;
@@ -229,7 +229,7 @@
     }
 
     .calendar-label {
-      font-family: 'Courier Prime', monospace;
+      font-family: 'Brandon Grotesque', 'brandon-grotesque', 'Inter', system-ui, sans-serif;
       font-size: 11px;
       font-weight: 400;
       color: rgba(255, 255, 255, 0.3);
@@ -351,44 +351,9 @@
       }
     }
 
-    /* Custom Cursor */
-    .cursor {
-      position: fixed;
-      width: 12px;
-      height: 12px;
-      background: #fff;
-      border-radius: 50%;
-      pointer-events: none;
-      z-index: 9999;
-      transform: translate(-50%, -50%);
-      box-shadow: 0 0 10px rgba(255,255,255,0.8), 0 0 20px rgba(255,255,255,0.6), 0 0 40px rgba(255,255,255,0.4);
-      transition: transform 0.1s ease;
-    }
-    .cursor-trail {
-      position: fixed;
-      width: 24px;
-      height: 24px;
-      border: 1px solid rgba(255,255,255,0.4);
-      border-radius: 50%;
-      pointer-events: none;
-      z-index: 9998;
-      transform: translate(-50%, -50%);
-      box-shadow: 0 0 15px rgba(255,255,255,0.1);
-    }
-    .cursor.clicking { transform: translate(-50%, -50%) scale(0.7); }
-    .cursor-trail.clicking { width: 16px; height: 16px; }
-    *, *::before, *::after { cursor: none !important; }
-    @media (hover: none) and (pointer: coarse) {
-      .cursor, .cursor-trail { display: none !important; }
-      *, *::before, *::after { cursor: auto !important; }
-    }
   </style>
 </head>
 <body>
-  <!-- Custom Cursor -->
-  <div class="cursor" id="cursor"></div>
-  <div class="cursor-trail" id="cursorTrail"></div>
-
   <!-- Navigation Bar -->
   <nav class="nav-bar">
     <a href="/" class="nav-link">HOME</a>
@@ -444,23 +409,5 @@
   </div>
 
   <script type="module" src="/connect-scramble.js"></script>
-  <script>
-    // Custom Cursor
-    const cursor = document.getElementById('cursor');
-    const cursorTrail = document.getElementById('cursorTrail');
-    let mouseX = 0, mouseY = 0, trailX = 0, trailY = 0;
-    document.addEventListener('mousemove', e => {
-      mouseX = e.clientX; mouseY = e.clientY;
-      cursor.style.left = mouseX + 'px'; cursor.style.top = mouseY + 'px';
-    });
-    function animateTrail() {
-      trailX += (mouseX - trailX) * 0.18; trailY += (mouseY - trailY) * 0.18;
-      cursorTrail.style.left = trailX + 'px'; cursorTrail.style.top = trailY + 'px';
-      requestAnimationFrame(animateTrail);
-    }
-    animateTrail();
-    document.addEventListener('mousedown', () => { cursor.classList.add('clicking'); cursorTrail.classList.add('clicking'); });
-    document.addEventListener('mouseup', () => { cursor.classList.remove('clicking'); cursorTrail.classList.remove('clicking'); });
-  </script>
 </body>
 </html>

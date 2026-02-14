@@ -182,7 +182,7 @@
       letter-spacing: 0.15em;
       text-transform: uppercase;
       color: var(--text-muted);
-      font-family: 'Courier Prime', monospace;
+      font-family: 'Brandon Grotesque', 'brandon-grotesque', 'Inter', system-ui, sans-serif;
       margin-right: 8px;
     }
 
@@ -192,7 +192,7 @@
       border: 1px solid var(--border);
       color: var(--text-dim);
       font-size: 11px;
-      font-family: 'Courier Prime', monospace;
+      font-family: 'Brandon Grotesque', 'brandon-grotesque', 'Inter', system-ui, sans-serif;
       letter-spacing: 0.1em;
       text-transform: uppercase;
       cursor: pointer;
@@ -237,7 +237,7 @@
     }
 
     .page-title {
-      font-family: 'Courier Prime', 'JetBrains Mono', 'Courier New', monospace;
+      font-family: 'Brandon Grotesque', 'brandon-grotesque', 'Inter', system-ui, sans-serif;
       font-size: clamp(42px, 7vw, 56px);
       font-weight: 400;
       color: #FFFFFF;
@@ -522,7 +522,7 @@
       font-size: 10px;
       letter-spacing: 0.15em;
       text-transform: uppercase;
-      font-family: 'Courier Prime', monospace;
+      font-family: 'Brandon Grotesque', 'brandon-grotesque', 'Inter', system-ui, sans-serif;
     }
 
     .project-content {
@@ -541,13 +541,13 @@
       letter-spacing: 0.15em;
       text-transform: uppercase;
       color: var(--text-dim);
-      font-family: 'Courier Prime', monospace;
+      font-family: 'Brandon Grotesque', 'brandon-grotesque', 'Inter', system-ui, sans-serif;
     }
 
     .project-date {
       font-size: 12px;
       color: var(--text-muted);
-      font-family: 'Courier Prime', monospace;
+      font-family: 'Brandon Grotesque', 'brandon-grotesque', 'Inter', system-ui, sans-serif;
     }
 
     .project-title {
@@ -675,7 +675,7 @@
 
     /* Title matches page-title exactly */
     .detail-title {
-      font-family: 'Courier Prime', 'JetBrains Mono', 'Courier New', monospace;
+      font-family: 'Brandon Grotesque', 'brandon-grotesque', 'Inter', system-ui, sans-serif;
       font-size: clamp(42px, 7vw, 56px);
       font-weight: 400;
       color: #FFFFFF;
@@ -687,7 +687,7 @@
     .detail-date {
       font-size: 14px;
       color: var(--text-dim);
-      font-family: 'Courier Prime', monospace;
+      font-family: 'Brandon Grotesque', 'brandon-grotesque', 'Inter', system-ui, sans-serif;
       opacity: 0;
       transform: translateY(10px);
       transition: all 0.3s ease 0.15s;
@@ -785,7 +785,7 @@
       font-size: 11px;
       letter-spacing: 0.1em;
       text-transform: uppercase;
-      font-family: 'Courier Prime', monospace;
+      font-family: 'Brandon Grotesque', 'brandon-grotesque', 'Inter', system-ui, sans-serif;
     }
 
     .gallery-thumbs {
@@ -870,7 +870,7 @@
       border: 1px solid var(--border);
       font-size: 12px;
       color: var(--text-dim);
-      font-family: 'Courier Prime', monospace;
+      font-family: 'Brandon Grotesque', 'brandon-grotesque', 'Inter', system-ui, sans-serif;
       transition: all 0.2s;
     }
 
@@ -884,7 +884,7 @@
       letter-spacing: 0.15em;
       text-transform: uppercase;
       color: var(--text-dim);
-      font-family: 'Courier Prime', monospace;
+      font-family: 'Brandon Grotesque', 'brandon-grotesque', 'Inter', system-ui, sans-serif;
       margin-bottom: 16px;
     }
 
@@ -905,7 +905,7 @@
       color: var(--text-dim);
       text-decoration: none;
       font-size: 13px;
-      font-family: 'Courier Prime', monospace;
+      font-family: 'Brandon Grotesque', 'brandon-grotesque', 'Inter', system-ui, sans-serif;
       transition: all 0.2s;
     }
 
@@ -1301,7 +1301,7 @@
       letter-spacing: 0.2em;
       text-transform: uppercase;
       color: var(--text-muted);
-      font-family: 'Courier Prime', monospace;
+      font-family: 'Brandon Grotesque', 'brandon-grotesque', 'Inter', system-ui, sans-serif;
     }
 
     .footage-title {
@@ -1343,74 +1343,9 @@
     }
 
 
-    /* Custom Cursor - glowing with trail */
-    .cursor {
-      position: fixed;
-      width: 12px;
-      height: 12px;
-      background: #fff;
-      border-radius: 50%;
-      pointer-events: none;
-      z-index: 9999;
-      transform: translate(-50%, -50%);
-      box-shadow: 
-        0 0 10px rgba(255,255,255,0.8),
-        0 0 20px rgba(255,255,255,0.6),
-        0 0 40px rgba(255,255,255,0.4),
-        0 0 60px rgba(255,255,255,0.2);
-      transition: transform 0.1s ease, box-shadow 0.2s ease;
-    }
-
-    .cursor-trail {
-      position: fixed;
-      width: 24px;
-      height: 24px;
-      border: 1px solid rgba(255,255,255,0.4);
-      border-radius: 50%;
-      pointer-events: none;
-      z-index: 9998;
-      transform: translate(-50%, -50%);
-      transition: width 0.3s ease, height 0.3s ease, border-color 0.3s ease, opacity 0.3s ease;
-      box-shadow: 
-        0 0 15px rgba(255,255,255,0.1),
-        inset 0 0 10px rgba(255,255,255,0.05);
-    }
-
-    .cursor.clicking {
-      transform: translate(-50%, -50%) scale(0.7);
-      box-shadow: 
-        0 0 20px rgba(255,255,255,1),
-        0 0 40px rgba(255,255,255,0.9),
-        0 0 60px rgba(255,255,255,0.6);
-    }
-
-    .cursor-trail.clicking {
-      width: 16px;
-      height: 16px;
-      opacity: 0.8;
-    }
-
-    /* Hide default cursor */
-    *, *::before, *::after {
-      cursor: none !important;
-    }
-
-    /* Show default cursor on mobile/touch */
-    @media (hover: none) and (pointer: coarse) {
-      .cursor, .cursor-trail {
-        display: none !important;
-      }
-      *, *::before, *::after {
-        cursor: auto !important;
-      }
-    }
   </style>
 </head>
 <body>
-  <!-- Custom Cursor -->
-  <div class="cursor" id="cursor"></div>
-  <div class="cursor-trail" id="cursorTrail"></div>
-
   <!-- Vertical Timeline -->
   <nav class="nav-bar">
     <a href="/" class="nav-link">HOME</a>
@@ -2160,41 +2095,6 @@
     // Initial title scramble
     scrambleText(pageTitle, 'Projects', 600);
 
-    // Custom Cursor - glowing with smooth trail
-    const cursor = document.getElementById('cursor');
-    const cursorTrail = document.getElementById('cursorTrail');
-    let mouseX = 0, mouseY = 0;
-    let trailX = 0, trailY = 0;
-
-    document.addEventListener('mousemove', e => {
-      mouseX = e.clientX;
-      mouseY = e.clientY;
-      cursor.style.left = mouseX + 'px';
-      cursor.style.top = mouseY + 'px';
-    });
-
-    // Smooth trailing effect - balanced drag
-    function animateTrail() {
-      const dx = mouseX - trailX;
-      const dy = mouseY - trailY;
-      trailX += dx * 0.18;
-      trailY += dy * 0.18;
-      cursorTrail.style.left = trailX + 'px';
-      cursorTrail.style.top = trailY + 'px';
-      requestAnimationFrame(animateTrail);
-    }
-    animateTrail();
-
-
-    // Click effect
-    document.addEventListener('mousedown', () => {
-      cursor.classList.add('clicking');
-      cursorTrail.classList.add('clicking');
-    });
-    document.addEventListener('mouseup', () => {
-      cursor.classList.remove('clicking');
-      cursorTrail.classList.remove('clicking');
-    });
 
     // Unavailable link scramble effect
     const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*';
