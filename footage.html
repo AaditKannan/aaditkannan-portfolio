@@ -36,6 +36,23 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600;700&family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
   <style>
+    @font-face {
+      font-family: 'Brandon Grotesque';
+      src: url('/assets/fonts/HvDTrial_Brandon_Grotesque_regular-BF64a625c9311e1.otf') format('opentype');
+      font-weight: 400; font-style: normal; font-display: swap;
+    }
+    @font-face {
+      font-family: 'Brandon Grotesque';
+      src: url('/assets/fonts/HvDTrial_Brandon_Grotesque_medium-BF64a625c84a521.otf') format('opentype');
+      font-weight: 500; font-style: normal; font-display: swap;
+    }
+    @font-face {
+      font-family: 'Brandon Grotesque';
+      src: url('/assets/fonts/HvDTrial_Brandon_Grotesque_bold-BF64a625c9151d5.otf') format('opentype');
+      font-weight: 700; font-style: normal; font-display: swap;
+    }
+  </style>
+  <style>
     html {
       overflow-y: scroll;
       /* Hide scrollbar but keep functionality */
@@ -95,7 +112,7 @@
       border: none;
       border-bottom: 1px solid transparent;
       background: transparent;
-      font-family: 'Courier Prime', 'JetBrains Mono', 'Courier New', monospace;
+      font-family: 'Brandon Grotesque', 'brandon-grotesque', 'Inter', system-ui, sans-serif;
       line-height: 1;
     }
 
@@ -136,7 +153,7 @@
     }
 
     .footage-heading {
-      font-family: 'Courier Prime', 'JetBrains Mono', 'Courier New', monospace;
+      font-family: 'Brandon Grotesque', 'brandon-grotesque', 'Inter', system-ui, sans-serif;
       font-size: 64px;
       font-weight: 400;
       color: #FFFFFF;
@@ -147,7 +164,7 @@
     }
 
     .footage-subheading {
-      font-family: 'Courier Prime', 'JetBrains Mono', 'Courier New', monospace;
+      font-family: 'Brandon Grotesque', 'brandon-grotesque', 'Inter', system-ui, sans-serif;
       font-size: 20px;
       font-weight: 400;
       color: #CCCCCC;
@@ -157,7 +174,7 @@
     }
 
     .footage-description {
-      font-family: 'Courier Prime', 'JetBrains Mono', 'Courier New', monospace;
+      font-family: 'Brandon Grotesque', 'brandon-grotesque', 'Inter', system-ui, sans-serif;
       font-size: 16px;
       font-weight: 400;
       color: #CCCCCC;
@@ -223,7 +240,7 @@
     }
 
     .video-title {
-      font-family: 'Courier Prime', 'JetBrains Mono', 'Courier New', monospace;
+      font-family: 'Brandon Grotesque', 'brandon-grotesque', 'Inter', system-ui, sans-serif;
       font-size: 14px;
       font-weight: 400;
       color: #888888;
@@ -350,44 +367,9 @@
       }
     }
 
-    /* Custom Cursor */
-    .cursor {
-      position: fixed;
-      width: 12px;
-      height: 12px;
-      background: #fff;
-      border-radius: 50%;
-      pointer-events: none;
-      z-index: 9999;
-      transform: translate(-50%, -50%);
-      box-shadow: 0 0 10px rgba(255,255,255,0.8), 0 0 20px rgba(255,255,255,0.6), 0 0 40px rgba(255,255,255,0.4);
-      transition: transform 0.1s ease;
-    }
-    .cursor-trail {
-      position: fixed;
-      width: 24px;
-      height: 24px;
-      border: 1px solid rgba(255,255,255,0.4);
-      border-radius: 50%;
-      pointer-events: none;
-      z-index: 9998;
-      transform: translate(-50%, -50%);
-      box-shadow: 0 0 15px rgba(255,255,255,0.1);
-    }
-    .cursor.clicking { transform: translate(-50%, -50%) scale(0.7); }
-    .cursor-trail.clicking { width: 16px; height: 16px; }
-    *, *::before, *::after { cursor: none !important; }
-    @media (hover: none) and (pointer: coarse) {
-      .cursor, .cursor-trail { display: none !important; }
-      *, *::before, *::after { cursor: auto !important; }
-    }
   </style>
 </head>
 <body>
-  <!-- Custom Cursor -->
-  <div class="cursor" id="cursor"></div>
-  <div class="cursor-trail" id="cursorTrail"></div>
-
   <!-- Navigation Bar -->
   <nav class="nav-bar">
     <a href="/" class="nav-link">HOME</a>
@@ -436,24 +418,6 @@
   </div>
 
           <script type="module" src="/footage-scramble.js"></script>
-  <script>
-    // Custom Cursor
-    const cursor = document.getElementById('cursor');
-    const cursorTrail = document.getElementById('cursorTrail');
-    let mouseX = 0, mouseY = 0, trailX = 0, trailY = 0;
-    document.addEventListener('mousemove', e => {
-      mouseX = e.clientX; mouseY = e.clientY;
-      cursor.style.left = mouseX + 'px'; cursor.style.top = mouseY + 'px';
-    });
-    function animateTrail() {
-      trailX += (mouseX - trailX) * 0.18; trailY += (mouseY - trailY) * 0.18;
-      cursorTrail.style.left = trailX + 'px'; cursorTrail.style.top = trailY + 'px';
-      requestAnimationFrame(animateTrail);
-    }
-    animateTrail();
-    document.addEventListener('mousedown', () => { cursor.classList.add('clicking'); cursorTrail.classList.add('clicking'); });
-    document.addEventListener('mouseup', () => { cursor.classList.remove('clicking'); cursorTrail.classList.remove('clicking'); });
-  </script>
 </body>
 </html>
 

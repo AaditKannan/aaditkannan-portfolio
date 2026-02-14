@@ -9,13 +9,13 @@
   <!-- Primary Meta Tags -->
   <title>Aadit Kannan | Resume - UC Berkeley Mechanical Engineering</title>
   <meta name="title" content="Aadit Kannan | Resume - UC Berkeley Mechanical Engineering">
-  <meta name="description" content="View Aadit Kannan's resume - UC Berkeley Mechanical Engineering student. Experience with Formula Electric battery systems, robotics, CAD/CAM, Python, and leadership roles. Full portfolio and project details.">
-  <meta name="keywords" content="Aadit Kannan resume, UC Berkeley mechanical engineering, Formula Electric, engineering resume, robotics, CAD, Python, engineering projects, Berkeley engineering portfolio">
+  <meta name="description" content="View Aadit Kannan's resume - UC Berkeley Mechanical Engineering student. Experience with Formula Electric battery systems, robotics, CAD/CAM, Python, and leadership roles.">
+  <meta name="keywords" content="Aadit Kannan resume, UC Berkeley mechanical engineering, Formula Electric, engineering resume, robotics, CAD, Python">
   <meta name="author" content="Aadit Kannan">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://aaditkannan.com/resume">
 
-  <!-- Open Graph / Facebook -->
+  <!-- Open Graph -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://aaditkannan.com/resume">
   <meta property="og:title" content="Aadit Kannan | Resume - UC Berkeley Mechanical Engineering">
@@ -40,38 +40,28 @@
     @font-face {
       font-family: 'Brandon Grotesque';
       src: url('/assets/fonts/HvDTrial_Brandon_Grotesque_regular-BF64a625c9311e1.otf') format('opentype');
-      font-weight: 400;
-      font-style: normal;
-      font-display: swap;
+      font-weight: 400; font-style: normal; font-display: swap;
     }
     @font-face {
       font-family: 'Brandon Grotesque';
       src: url('/assets/fonts/HvDTrial_Brandon_Grotesque_medium-BF64a625c84a521.otf') format('opentype');
-      font-weight: 500;
-      font-style: normal;
-      font-display: swap;
+      font-weight: 500; font-style: normal; font-display: swap;
     }
     @font-face {
       font-family: 'Brandon Grotesque';
       src: url('/assets/fonts/HvDTrial_Brandon_Grotesque_bold-BF64a625c9151d5.otf') format('opentype');
-      font-weight: 700;
-      font-style: normal;
-      font-display: swap;
+      font-weight: 700; font-style: normal; font-display: swap;
     }
 
-    /* ============================================
-       RESUME PAGE — Two-column layout
-       ============================================ */
-
     :root {
-      --font-main: 'Brandon Grotesque', 'brandon-grotesque', 'Inter', system-ui, -apple-system, sans-serif;
+      --font-heading: 'Brandon Grotesque', 'brandon-grotesque', 'Inter', system-ui, sans-serif;
+      --font-body: 'Inter', system-ui, -apple-system, sans-serif;
       --bg: #0a0a0a;
       --text-primary: #e2e8f0;
       --text-secondary: #94a3b8;
       --text-heading: #ccd6f6;
       --text-white: #ffffff;
       --text-muted: #64748b;
-      --accent: #5B8DEF;
       --card-hover: rgba(255, 255, 255, 0.03);
       --card-border: rgba(255, 255, 255, 0.05);
     }
@@ -86,7 +76,7 @@
     html::-webkit-scrollbar { display: none; }
 
     body {
-      font-family: var(--font-main);
+      font-family: var(--font-body);
       background: var(--bg);
       color: var(--text-primary);
       line-height: 1.6;
@@ -96,9 +86,9 @@
 
     a { color: inherit; text-decoration: none; }
 
-    /* ---- Fixed Top Nav ---- */
+    /* ---- Top Nav (scrolls with page, NOT fixed) ---- */
     .nav-bar {
-      position: fixed;
+      position: absolute;
       top: 0;
       left: 0;
       right: 0;
@@ -119,7 +109,7 @@
       font-weight: 500;
       letter-spacing: 0.15em;
       text-transform: uppercase;
-      font-family: var(--font-main);
+      font-family: var(--font-heading);
       border-bottom: 1px solid transparent;
       padding: 8px 0;
       transition: all 0.3s ease;
@@ -144,7 +134,7 @@
       border-radius: 50%;
       pointer-events: none;
       z-index: 1;
-      background: radial-gradient(circle, rgba(91, 141, 239, 0.06) 0%, transparent 70%);
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.04) 0%, transparent 70%);
       transform: translate(-50%, -50%);
       transition: opacity 0.3s ease;
       opacity: 0;
@@ -158,15 +148,15 @@
       display: flex;
       min-height: 100vh;
       padding: 0 48px;
-      padding-top: 80px; /* Space for fixed nav */
+      padding-top: 80px;
     }
 
     /* ---- Left Sidebar (Sticky) ---- */
     .sidebar {
       position: sticky;
-      top: 80px;
+      top: 24px;
       width: 48%;
-      max-height: calc(100vh - 80px);
+      max-height: calc(100vh - 48px);
       padding: 48px 48px 48px 0;
       display: flex;
       flex-direction: column;
@@ -175,7 +165,7 @@
     }
 
     .sidebar h1 {
-      font-family: var(--font-main);
+      font-family: var(--font-heading);
       font-size: 48px;
       font-weight: 700;
       color: var(--text-white);
@@ -184,6 +174,7 @@
     }
 
     .sidebar .subtitle {
+      font-family: var(--font-heading);
       font-size: 18px;
       font-weight: 500;
       color: var(--text-heading);
@@ -193,12 +184,12 @@
 
     /* ---- Sidebar Photo ---- */
     .sidebar-photo {
-      width: 120px;
-      height: 120px;
+      width: 200px;
+      height: 200px;
       border-radius: 8px;
       object-fit: cover;
       object-position: center 15%;
-      margin-top: 24px;
+      margin-top: 28px;
       border: 1px solid rgba(255, 255, 255, 0.08);
     }
 
@@ -219,6 +210,7 @@
       font-weight: 600;
       letter-spacing: 0.15em;
       text-transform: uppercase;
+      font-family: var(--font-heading);
       color: var(--text-muted);
       transition: all 0.25s ease;
     }
@@ -239,61 +231,6 @@
     .sidebar-nav a.active .nav-line {
       width: 64px;
       background: var(--text-white);
-    }
-
-    /* ---- Resume PDF Button ---- */
-    .resume-cta {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-top: 32px;
-      padding: 14px 20px;
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      border-radius: 8px;
-      background: rgba(255, 255, 255, 0.02);
-      transition: all 0.25s ease;
-      max-width: 280px;
-    }
-
-    .resume-cta:hover {
-      border-color: rgba(255, 255, 255, 0.35);
-      background: rgba(255, 255, 255, 0.05);
-      transform: translateY(-1px);
-    }
-
-    .resume-cta svg {
-      width: 20px;
-      height: 20px;
-      fill: var(--text-muted);
-      flex-shrink: 0;
-      transition: fill 0.25s ease;
-    }
-
-    .resume-cta:hover svg {
-      fill: var(--text-white);
-    }
-
-    .resume-cta-text {
-      display: flex;
-      flex-direction: column;
-      gap: 1px;
-    }
-
-    .resume-cta-label {
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--text-heading);
-      transition: color 0.25s ease;
-    }
-
-    .resume-cta:hover .resume-cta-label {
-      color: var(--text-white);
-    }
-
-    .resume-cta-sub {
-      font-size: 11px;
-      color: var(--text-muted);
-      letter-spacing: 0.02em;
     }
 
     /* ---- Social Icons ---- */
@@ -319,29 +256,30 @@
       fill: currentColor;
     }
 
-    /* ---- Right Content (Scrollable) ---- */
+    /* ---- Right Content ---- */
     .content {
       width: 52%;
       padding: 48px 0 96px 0;
     }
 
     .content section {
-      margin-bottom: 96px;
-      scroll-margin-top: 120px;
+      margin-bottom: 80px;
+      scroll-margin-top: 80px;
     }
 
     .content section:last-child {
       margin-bottom: 48px;
     }
 
+    /* ---- Section Headings (subtle, always visible) ---- */
     .section-label {
-      font-size: 12px;
+      font-family: var(--font-heading);
+      font-size: 11px;
       font-weight: 600;
-      letter-spacing: 0.15em;
+      letter-spacing: 0.2em;
       text-transform: uppercase;
-      color: var(--text-white);
-      margin-bottom: 40px;
-      display: none;
+      color: var(--text-muted);
+      margin-bottom: 32px;
     }
 
     /* ---- About Section ---- */
@@ -381,7 +319,8 @@
     }
 
     .entry-body h3 {
-      font-size: 16px;
+      font-family: var(--font-body);
+      font-size: 15px;
       font-weight: 600;
       color: var(--text-heading);
       line-height: 1.3;
@@ -389,29 +328,32 @@
     }
 
     .entry-body h3 a {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
+      display: inline;
       transition: color 0.2s ease;
     }
 
-    .entry-card:hover .entry-body h3 a,
-    .entry-body h3 a:hover {
-      color: var(--accent);
+    .entry-body h3 .link-group {
+      display: inline;
+      transition: transform 0.2s ease, color 0.2s ease;
+    }
+
+    .entry-body h3 .link-group:hover {
+      color: var(--text-white);
     }
 
     .entry-body h3 .arrow {
       display: inline-block;
-      font-size: 14px;
+      font-size: 13px;
       transition: transform 0.2s ease;
+      margin-left: 3px;
     }
 
-    .entry-card:hover .entry-body h3 .arrow {
+    .entry-body h3 .link-group:hover .arrow {
       transform: translate(2px, -2px);
     }
 
     .entry-role {
-      font-size: 14px;
+      font-size: 13px;
       color: var(--text-secondary);
       margin-bottom: 8px;
     }
@@ -440,7 +382,7 @@
       color: var(--text-muted);
     }
 
-    /* ---- Skill Pills (white, not green) ---- */
+    /* ---- Skill Pills ---- */
     .skill-pills {
       display: flex;
       flex-wrap: wrap;
@@ -467,7 +409,8 @@
     }
 
     .skills-grid h4 {
-      font-size: 14px;
+      font-family: var(--font-heading);
+      font-size: 13px;
       font-weight: 600;
       color: var(--text-heading);
       margin-bottom: 12px;
@@ -488,85 +431,44 @@
     @media (max-width: 768px) {
       .cursor-glow { display: none; }
 
-      .nav-bar {
-        padding: 16px 16px;
-        gap: 24px;
-        height: auto;
-      }
+      .nav-bar { padding: 16px 16px; gap: 24px; height: auto; }
+      .nav-link { font-size: 11px; letter-spacing: 0.1em; }
 
-      .nav-link {
-        font-size: 11px;
-        letter-spacing: 0.1em;
-      }
-
-      .layout {
-        flex-direction: column;
-        padding: 0 24px;
-        padding-top: 60px;
-      }
+      .layout { flex-direction: column; padding: 0 24px; padding-top: 60px; }
 
       .sidebar {
-        position: relative;
-        top: 0;
-        width: 100%;
-        max-height: none;
-        padding: 24px 0 32px 0;
+        position: relative; top: 0; width: 100%;
+        max-height: none; padding: 24px 0 32px 0;
       }
 
       .sidebar h1 { font-size: 32px; text-align: center; }
       .sidebar .subtitle { font-size: 16px; text-align: center; }
 
       .sidebar-photo {
-        width: 100px;
-        height: 100px;
-        margin: 16px auto 0;
-        display: block;
+        width: 120px; height: 120px;
+        margin: 16px auto 0; display: block;
       }
 
       .sidebar-nav { display: none; }
 
-      .resume-cta {
-        margin: 20px auto 0;
-      }
+      .social-icons { justify-content: center; margin-top: 24px; }
 
-      .social-icons {
-        justify-content: center;
-        margin-top: 24px;
-      }
-
-      .content {
-        width: 100%;
-        padding: 32px 0 64px 0;
-      }
-
+      .content { width: 100%; padding: 32px 0 64px 0; }
       .content section { margin-bottom: 48px; }
 
       .section-label {
-        display: block;
-        position: sticky;
-        top: 0;
-        background: var(--bg);
-        padding: 12px 0;
-        z-index: 10;
+        position: sticky; top: 0;
+        background: var(--bg); padding: 12px 0; z-index: 10;
       }
 
       .entry-card {
-        grid-template-columns: 1fr;
-        gap: 4px;
-        padding: 16px 12px;
-        margin: 0 -12px;
+        grid-template-columns: 1fr; gap: 4px;
+        padding: 16px 12px; margin: 0 -12px;
       }
 
-      .entry-date {
-        font-size: 11px;
-        text-align: left;
-        order: -1;
-      }
+      .entry-date { font-size: 11px; text-align: left; order: -1; }
 
-      .skills-grid {
-        grid-template-columns: 1fr;
-        gap: 24px;
-      }
+      .skills-grid { grid-template-columns: 1fr; gap: 24px; }
     }
   </style>
 </head>
@@ -574,7 +476,7 @@
   <!-- Cursor Glow -->
   <div class="cursor-glow" id="cursorGlow"></div>
 
-  <!-- Fixed Top Nav -->
+  <!-- Top Nav (scrolls with page) -->
   <nav class="nav-bar">
     <a href="/" class="nav-link">HOME</a>
     <a href="/resume" class="nav-link active">RESUME</a>
@@ -597,14 +499,8 @@
           <a href="#experience" data-section="experience">
             <span class="nav-line"></span><span>Experience</span>
           </a>
-          <a href="#work" data-section="work">
-            <span class="nav-line"></span><span>Work</span>
-          </a>
           <a href="#education" data-section="education">
             <span class="nav-line"></span><span>Education</span>
-          </a>
-          <a href="#projects" data-section="projects">
-            <span class="nav-line"></span><span>Projects</span>
           </a>
           <a href="#volunteering" data-section="volunteering">
             <span class="nav-line"></span><span>Volunteering</span>
@@ -613,33 +509,24 @@
             <span class="nav-line"></span><span>Skills</span>
           </a>
         </nav>
-
-        <!-- Resume PDF CTA -->
-        <a href="/assets/NewResume.pdf" target="_blank" rel="noopener noreferrer" class="resume-cta">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
-          <div class="resume-cta-text">
-            <span class="resume-cta-label">Download Resume</span>
-            <span class="resume-cta-sub">PDF &middot; One page</span>
-          </div>
-        </a>
       </div>
 
       <div class="social-icons">
-        <!-- GitHub -->
         <a href="https://github.com/aaditkannan" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.385-1.335-1.755-1.335-1.755-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.605-.015 2.896-.015 3.286 0 .315.21.694.825.576C20.565 21.795 24 17.295 24 12c0-6.63-5.37-12-12-12z"/></svg>
         </a>
-        <!-- LinkedIn -->
         <a href="https://www.linkedin.com/in/aaditkannan" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
         </a>
-        <!-- X / Twitter -->
         <a href="https://x.com/aaditkannan" target="_blank" rel="noopener noreferrer" aria-label="X">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
         </a>
-        <!-- Instagram -->
         <a href="https://instagram.com/aaditkannan" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+        </a>
+        <!-- Resume PDF -->
+        <a href="/assets/NewResume.pdf" target="_blank" rel="noopener noreferrer" aria-label="Resume PDF">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm-1 2l5 5h-5V4zM6 20V4h5v7h7v9H6zm2-4h8v1.5H8V16zm0-3h8v1.5H8V13z"/></svg>
         </a>
       </div>
     </header>
@@ -656,13 +543,13 @@
         </div>
       </section>
 
-      <!-- Technical Experience -->
+      <!-- Experience (Technical + Work combined) -->
       <section id="experience">
         <h2 class="section-label">Experience</h2>
 
         <div class="entry-card">
           <div class="entry-body">
-            <h3><a href="/projects#formula-electric">Accumulator Mechanical · Formula Electric <span class="arrow">&#8599;</span></a></h3>
+            <h3><a href="/projects#formula-electric" class="link-group">Accumulator Mechanical · Formula Electric <span class="arrow">&#8599;</span></a></h3>
             <div class="entry-desc">
               <ul>
                 <li>Designed and manufactured the attic casing for the high-voltage accumulator (battery), implementing waterproofing, high-dielectric-strength insulation to manage the 588V pack</li>
@@ -680,13 +567,13 @@
 
         <div class="entry-card">
           <div class="entry-body">
-            <h3><a href="/projects#dejavu-2024-25">Captain & Hardware Lead · Robotics (FIRST) <span class="arrow">&#8599;</span></a></h3>
+            <h3><a href="/projects#dejavu-2024-25" class="link-group">Captain & Hardware Lead · Robotics (FIRST) <span class="arrow">&#8599;</span></a></h3>
             <p class="entry-role">Zenith #20424 · Deja Vu #13216</p>
             <div class="entry-desc">
               <ul>
-                <li>Mentored 30+ members in Java and CAD, improving team functionality and leading teams to regional competitions</li>
-                <li>Designed robot in CAD with 500+ parts and custom components, performing FEA to optimize for stress, winning robot design award (x3)</li>
-                <li>Raised over $5000 across teams, launched parts exchange program, developed both team websites</li>
+                <li>Mentored 30+ members in Java and CAD, leading teams to regional competitions</li>
+                <li>Designed robot in CAD with 500+ parts, performing FEA to optimize for stress — robot design award (x3)</li>
+                <li>Raised over $5000, launched parts exchange program, developed both team websites</li>
               </ul>
             </div>
             <div class="skill-pills">
@@ -707,7 +594,6 @@
                 <li>Trained 120 middle school STEM students on Arduino for science fair projects (SLC)</li>
                 <li>Designed mock competition and mentored 5 FIRST Lego League teams (SLC)</li>
                 <li>6-year selective program: 1800+ hours of STEM sessions and advanced coursework</li>
-                <li>CO2 laser cutter, CNC mill, 3D printer (FDM + SLA), CNC, and woodshop tools</li>
               </ul>
             </div>
             <div class="skill-pills">
@@ -722,11 +608,11 @@
 
         <div class="entry-card">
           <div class="entry-body">
-            <h3><a href="/projects#pear-volunteering">Founder · Pear Volunteering <span class="arrow">&#8599;</span></a></h3>
+            <h3><a href="/projects#pear-volunteering" class="link-group">Founder · Pear Volunteering <span class="arrow">&#8599;</span></a></h3>
             <div class="entry-desc">
               <ul>
-                <li>Developed app/website connecting 2000+ students, 20+ event organizers, and school admin for volunteer opportunities</li>
-                <li>Implemented secure webhook/CMS-integrated system for scalable, high-volume data handling and encrypted user communication</li>
+                <li>Developed app/website connecting 2000+ students, 20+ event organizers, and school admin</li>
+                <li>Secure webhook/CMS-integrated system for scalable data handling and encrypted communication</li>
               </ul>
             </div>
             <div class="skill-pills">
@@ -737,18 +623,13 @@
           </div>
           <div class="entry-date">Aug 2023 — Aug 2025</div>
         </div>
-      </section>
-
-      <!-- Work Experience -->
-      <section id="work">
-        <h2 class="section-label">Work</h2>
 
         <div class="entry-card">
           <div class="entry-body">
             <h3>Mechanical Engineering Intern · Posha (Formerly Nymble)</h3>
             <div class="entry-desc">
               <ul>
-                <li>Repaired 20+ customer cooking robots by troubleshooting electrical and mechanical systems, and debugging</li>
+                <li>Repaired 20+ customer cooking robots by troubleshooting electrical and mechanical systems</li>
               </ul>
             </div>
             <div class="skill-pills">
@@ -765,7 +646,7 @@
             <h3>Squash Coach · Bay Club</h3>
             <div class="entry-desc">
               <ul>
-                <li>Coached 15+ students age 5-12 in tournament prep, designing drills, workouts, and lessons</li>
+                <li>Coached 15+ students age 5-12 in tournament prep, designing drills and lessons</li>
               </ul>
             </div>
           </div>
@@ -806,53 +687,6 @@
         </div>
       </section>
 
-      <!-- Projects -->
-      <section id="projects">
-        <h2 class="section-label">Projects</h2>
-
-        <div class="entry-card">
-          <div class="entry-body">
-            <h3><a href="/projects#inventry">Inventry <span class="arrow">&#8599;</span></a></h3>
-            <div class="entry-desc">
-              <ul>
-                <li>Robotics part inventory tracking website with AI invoice indexing and dynamic webscraping for 1000+ part catalogs</li>
-                <li>Part-lending service with incentives, extensive privacy measures, developing a part market</li>
-              </ul>
-            </div>
-            <div class="skill-pills">
-              <span class="skill-pill">Python</span>
-              <span class="skill-pill">AI/ML</span>
-              <span class="skill-pill">Web Scraping</span>
-            </div>
-          </div>
-          <div class="entry-date">2025 — Present</div>
-        </div>
-
-        <div class="entry-card">
-          <div class="entry-body">
-            <h3><a href="/projects#atlas-smr">Atlas SMR <span class="arrow">&#8599;</span></a></h3>
-            <div class="entry-desc">
-              <ul>
-                <li>Interactive web tool evaluating SMR feasibility in rural areas, integrating geospatial data and weighted scoring</li>
-                <li>Hybrid SMR-solar modeling to visualize energy demand, environmental constraints, and system potential</li>
-              </ul>
-            </div>
-            <div class="skill-pills">
-              <span class="skill-pill">GIS</span>
-              <span class="skill-pill">Data Analysis</span>
-              <span class="skill-pill">Web Dev</span>
-            </div>
-          </div>
-          <div class="entry-date">2024</div>
-        </div>
-
-        <div style="margin-top: 16px; padding: 20px; margin-left: -20px;">
-          <a href="/projects" style="display: inline-flex; align-items: center; gap: 6px; font-size: 14px; font-weight: 600; color: var(--text-heading); transition: color 0.2s;">
-            View Full Project Archive <span class="arrow" style="font-size: 14px;">&#8599;</span>
-          </a>
-        </div>
-      </section>
-
       <!-- Volunteering -->
       <section id="volunteering">
         <h2 class="section-label">Volunteering</h2>
@@ -862,7 +696,7 @@
             <h3>Mentor & Lab Assistant · 49ers STEM Leadership Institute</h3>
             <div class="entry-desc">
               <ul>
-                <li>Supported students with CO2 laser cutters, 3D printers, vinyl cutters, and CNC machines, plus technical mentorship</li>
+                <li>Supported students with CO2 laser cutters, 3D printers, vinyl cutters, and CNC machines</li>
               </ul>
             </div>
           </div>
@@ -873,9 +707,7 @@
           <div class="entry-body">
             <h3>Dinner Server · Family Supportive Housing</h3>
             <div class="entry-desc">
-              <ul>
-                <li>Volunteered as dinner server for underserved families in San Jose</li>
-              </ul>
+              <ul><li>Dinner server for underserved families in San Jose</li></ul>
             </div>
           </div>
           <div class="entry-date">Aug 2021 — Aug 2023</div>
@@ -898,9 +730,7 @@
           <div class="entry-body">
             <h3>Lunch Server · California Scholarship Federation</h3>
             <div class="entry-desc">
-              <ul>
-                <li>Volunteered in the school cafeteria to serve lunch</li>
-              </ul>
+              <ul><li>Volunteered in the school cafeteria to serve lunch</li></ul>
             </div>
           </div>
           <div class="entry-date">Aug 2023 — Jul 2025</div>
@@ -910,9 +740,7 @@
           <div class="entry-body">
             <h3>Field Technical Advisor · FIRST Tech Challenge</h3>
             <div class="entry-desc">
-              <ul>
-                <li>Technical support to teams and smooth operation of the robotics competition</li>
-              </ul>
+              <ul><li>Technical support to teams and smooth operation of the robotics competition</li></ul>
             </div>
           </div>
           <div class="entry-date">Dec 2023 — Jan 2024</div>
@@ -922,15 +750,13 @@
       <!-- Skills -->
       <section id="skills">
         <h2 class="section-label">Skills</h2>
-
         <div class="skills-grid">
           <div>
             <h4>Mechanical Engineering</h4>
             <ul>
               <li>Fusion360</li>
-              <li>Solidworks</li>
-              <li>Solidworks PDM</li>
-              <li>FEA (SimScale/Fusion Simulation)</li>
+              <li>Solidworks / PDM</li>
+              <li>FEA (SimScale/Fusion)</li>
               <li>CAD/CAM/CAE</li>
               <li>XFLR5</li>
               <li>Machining</li>
@@ -945,7 +771,6 @@
               <li>Git</li>
               <li>OOP</li>
               <li>Android Studio</li>
-              <li>Web Design</li>
             </ul>
           </div>
         </div>
@@ -974,7 +799,7 @@
       animate();
     })();
 
-    // ---- Active Nav Link on Scroll (fixed: use getBoundingClientRect) ----
+    // ---- Active Sidebar Nav on Scroll ----
     (function() {
       const navLinks = document.querySelectorAll('.sidebar-nav a');
       const sections = document.querySelectorAll('.content section[id]');
@@ -983,15 +808,12 @@
       function updateActiveNav() {
         const viewportMiddle = window.innerHeight / 2;
         let current = '';
-
         sections.forEach((section) => {
           const rect = section.getBoundingClientRect();
-          // Section is "active" if its top is above viewport middle
           if (rect.top <= viewportMiddle) {
             current = section.id;
           }
         });
-
         navLinks.forEach((link) => {
           link.classList.remove('active');
           if (link.getAttribute('data-section') === current) {
