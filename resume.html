@@ -35,12 +35,32 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <!-- Brandon Grotesque: Add your font source here (Adobe Fonts, self-hosted, etc.) -->
-  <!-- Fallback: Inter will be used if Brandon Grotesque is not available -->
   <style>
+    /* ---- Brandon Grotesque @font-face ---- */
+    @font-face {
+      font-family: 'Brandon Grotesque';
+      src: url('/assets/fonts/HvDTrial_Brandon_Grotesque_regular-BF64a625c9311e1.otf') format('opentype');
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Brandon Grotesque';
+      src: url('/assets/fonts/HvDTrial_Brandon_Grotesque_medium-BF64a625c84a521.otf') format('opentype');
+      font-weight: 500;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Brandon Grotesque';
+      src: url('/assets/fonts/HvDTrial_Brandon_Grotesque_bold-BF64a625c9151d5.otf') format('opentype');
+      font-weight: 700;
+      font-style: normal;
+      font-display: swap;
+    }
+
     /* ============================================
-       RESUME PAGE — Brittany Chiang-inspired layout
-       Two-column: fixed left sidebar + scrollable right
+       RESUME PAGE — Two-column layout
        ============================================ */
 
     :root {
@@ -51,16 +71,12 @@
       --text-heading: #ccd6f6;
       --text-white: #ffffff;
       --text-muted: #64748b;
-      --accent: #64ffda;
+      --accent: #5B8DEF;
       --card-hover: rgba(255, 255, 255, 0.03);
       --card-border: rgba(255, 255, 255, 0.05);
     }
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
     html {
       scroll-behavior: smooth;
@@ -78,9 +94,46 @@
       -moz-osx-font-smoothing: grayscale;
     }
 
-    a {
-      color: inherit;
+    a { color: inherit; text-decoration: none; }
+
+    /* ---- Fixed Top Nav ---- */
+    .nav-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1001;
+      padding: 24px 40px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 40px;
+      background: transparent;
+      height: 80px;
+    }
+
+    .nav-link {
+      color: rgba(255, 255, 255, 0.7);
       text-decoration: none;
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      font-family: var(--font-main);
+      border-bottom: 1px solid transparent;
+      padding: 8px 0;
+      transition: all 0.3s ease;
+      line-height: 1;
+    }
+
+    .nav-link:hover {
+      color: #FFFFFF;
+      border-bottom-color: rgba(255, 255, 255, 0.5);
+    }
+
+    .nav-link.active {
+      color: #FFFFFF;
+      border-bottom-color: #FFFFFF;
     }
 
     /* ---- Cursor Glow ---- */
@@ -91,14 +144,12 @@
       border-radius: 50%;
       pointer-events: none;
       z-index: 1;
-      background: radial-gradient(circle, rgba(100, 255, 218, 0.06) 0%, transparent 70%);
+      background: radial-gradient(circle, rgba(91, 141, 239, 0.06) 0%, transparent 70%);
       transform: translate(-50%, -50%);
       transition: opacity 0.3s ease;
       opacity: 0;
     }
-    .cursor-glow.visible {
-      opacity: 1;
-    }
+    .cursor-glow.visible { opacity: 1; }
 
     /* ---- Two-Column Layout ---- */
     .layout {
@@ -107,15 +158,16 @@
       display: flex;
       min-height: 100vh;
       padding: 0 48px;
+      padding-top: 80px; /* Space for fixed nav */
     }
 
-    /* ---- Left Sidebar (Fixed) ---- */
+    /* ---- Left Sidebar (Sticky) ---- */
     .sidebar {
       position: sticky;
-      top: 0;
+      top: 80px;
       width: 48%;
-      max-height: 100vh;
-      padding: 96px 48px 96px 0;
+      max-height: calc(100vh - 80px);
+      padding: 48px 48px 48px 0;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
@@ -139,17 +191,20 @@
       letter-spacing: 0.02em;
     }
 
-    .sidebar .tagline {
-      font-size: 15px;
-      color: var(--text-secondary);
-      margin-top: 16px;
-      max-width: 320px;
-      line-height: 1.6;
+    /* ---- Sidebar Photo ---- */
+    .sidebar-photo {
+      width: 120px;
+      height: 120px;
+      border-radius: 8px;
+      object-fit: cover;
+      object-position: center 15%;
+      margin-top: 24px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
     }
 
     /* ---- Sidebar Navigation ---- */
     .sidebar-nav {
-      margin-top: 56px;
+      margin-top: 40px;
       display: flex;
       flex-direction: column;
       gap: 4px;
@@ -186,6 +241,61 @@
       background: var(--text-white);
     }
 
+    /* ---- Resume PDF Button ---- */
+    .resume-cta {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-top: 32px;
+      padding: 14px 20px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.02);
+      transition: all 0.25s ease;
+      max-width: 280px;
+    }
+
+    .resume-cta:hover {
+      border-color: rgba(255, 255, 255, 0.35);
+      background: rgba(255, 255, 255, 0.05);
+      transform: translateY(-1px);
+    }
+
+    .resume-cta svg {
+      width: 20px;
+      height: 20px;
+      fill: var(--text-muted);
+      flex-shrink: 0;
+      transition: fill 0.25s ease;
+    }
+
+    .resume-cta:hover svg {
+      fill: var(--text-white);
+    }
+
+    .resume-cta-text {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+    }
+
+    .resume-cta-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-heading);
+      transition: color 0.25s ease;
+    }
+
+    .resume-cta:hover .resume-cta-label {
+      color: var(--text-white);
+    }
+
+    .resume-cta-sub {
+      font-size: 11px;
+      color: var(--text-muted);
+      letter-spacing: 0.02em;
+    }
+
     /* ---- Social Icons ---- */
     .social-icons {
       display: flex;
@@ -201,9 +311,7 @@
       align-items: center;
     }
 
-    .social-icons a:hover {
-      color: var(--text-white);
-    }
+    .social-icons a:hover { color: var(--text-white); }
 
     .social-icons svg {
       width: 22px;
@@ -214,21 +322,18 @@
     /* ---- Right Content (Scrollable) ---- */
     .content {
       width: 52%;
-      padding: 96px 0 96px 0;
+      padding: 48px 0 96px 0;
     }
 
     .content section {
       margin-bottom: 96px;
-      scroll-margin-top: 96px;
+      scroll-margin-top: 120px;
     }
 
     .content section:last-child {
       margin-bottom: 48px;
     }
 
-    /* ---- Section Headings (visible only on smaller viewports, hidden on desktop Brittany-style) ---- */
-    /* On Brittany's site, section headings are hidden on desktop — nav handles it.
-       But since we have more sections, we'll keep subtle headings. */
     .section-label {
       font-size: 12px;
       font-weight: 600;
@@ -236,7 +341,7 @@
       text-transform: uppercase;
       color: var(--text-white);
       margin-bottom: 40px;
-      display: none; /* Hidden on desktop, shown on mobile */
+      display: none;
     }
 
     /* ---- About Section ---- */
@@ -250,7 +355,7 @@
     /* ---- Entry Cards ---- */
     .entry-card {
       display: grid;
-      grid-template-columns: 140px 1fr;
+      grid-template-columns: 1fr 140px;
       gap: 16px;
       padding: 20px;
       margin: 0 -20px;
@@ -272,6 +377,7 @@
       letter-spacing: 0.04em;
       padding-top: 4px;
       white-space: nowrap;
+      text-align: right;
     }
 
     .entry-body h3 {
@@ -316,10 +422,7 @@
       line-height: 1.6;
     }
 
-    .entry-desc ul {
-      list-style: none;
-      padding: 0;
-    }
+    .entry-desc ul { list-style: none; padding: 0; }
 
     .entry-desc ul li {
       position: relative;
@@ -337,7 +440,7 @@
       color: var(--text-muted);
     }
 
-    /* ---- Skill Pills ---- */
+    /* ---- Skill Pills (white, not green) ---- */
     .skill-pills {
       display: flex;
       flex-wrap: wrap;
@@ -350,8 +453,9 @@
       border-radius: 999px;
       font-size: 11px;
       font-weight: 500;
-      color: var(--accent);
-      background: rgba(100, 255, 218, 0.08);
+      color: rgba(255, 255, 255, 0.8);
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.1);
       letter-spacing: 0.02em;
     }
 
@@ -369,10 +473,7 @@
       margin-bottom: 12px;
     }
 
-    .skills-grid ul {
-      list-style: none;
-      padding: 0;
-    }
+    .skills-grid ul { list-style: none; padding: 0; }
 
     .skills-grid ul li {
       font-size: 13px;
@@ -381,53 +482,51 @@
       line-height: 1.5;
     }
 
-    /* ---- Footer Note ---- */
-    .footer-note {
-      font-size: 13px;
-      color: var(--text-muted);
-      line-height: 1.6;
-      margin-top: 64px;
-      padding-top: 24px;
-    }
-
     /* ============================================
        MOBILE RESPONSIVE (<= 768px)
-       Stack layout, show section labels
        ============================================ */
     @media (max-width: 768px) {
       .cursor-glow { display: none; }
 
+      .nav-bar {
+        padding: 16px 16px;
+        gap: 24px;
+        height: auto;
+      }
+
+      .nav-link {
+        font-size: 11px;
+        letter-spacing: 0.1em;
+      }
+
       .layout {
         flex-direction: column;
         padding: 0 24px;
+        padding-top: 60px;
       }
 
       .sidebar {
         position: relative;
+        top: 0;
         width: 100%;
         max-height: none;
-        padding: 80px 0 32px 0;
+        padding: 24px 0 32px 0;
       }
 
-      .sidebar h1 {
-        font-size: 32px;
-        text-align: center;
+      .sidebar h1 { font-size: 32px; text-align: center; }
+      .sidebar .subtitle { font-size: 16px; text-align: center; }
+
+      .sidebar-photo {
+        width: 100px;
+        height: 100px;
+        margin: 16px auto 0;
+        display: block;
       }
 
-      .sidebar .subtitle {
-        font-size: 16px;
-        text-align: center;
-      }
+      .sidebar-nav { display: none; }
 
-      .sidebar .tagline {
-        font-size: 14px;
-        text-align: center;
-        max-width: none;
-        margin-top: 12px;
-      }
-
-      .sidebar-nav {
-        display: none; /* Nav handled by scrolling on mobile */
+      .resume-cta {
+        margin: 20px auto 0;
       }
 
       .social-icons {
@@ -440,9 +539,7 @@
         padding: 32px 0 64px 0;
       }
 
-      .content section {
-        margin-bottom: 48px;
-      }
+      .content section { margin-bottom: 48px; }
 
       .section-label {
         display: block;
@@ -462,45 +559,13 @@
 
       .entry-date {
         font-size: 11px;
+        text-align: left;
+        order: -1;
       }
 
       .skills-grid {
         grid-template-columns: 1fr;
         gap: 24px;
-      }
-    }
-
-    /* ---- Nav bar (top) for page links ---- */
-    /* Minimal top nav for Home / Projects / Connect */
-    .top-nav {
-      display: none; /* Hidden on desktop — sidebar has nav */
-    }
-
-    @media (max-width: 768px) {
-      .top-nav {
-        display: flex;
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        padding: 16px 24px;
-        justify-content: center;
-        gap: 24px;
-        z-index: 100;
-      }
-
-      .top-nav a {
-        font-size: 11px;
-        font-weight: 500;
-        letter-spacing: 0.1em;
-        text-transform: uppercase;
-        color: rgba(255, 255, 255, 0.6);
-        transition: color 0.2s;
-      }
-
-      .top-nav a:hover,
-      .top-nav a.active {
-        color: #fff;
       }
     }
   </style>
@@ -509,12 +574,12 @@
   <!-- Cursor Glow -->
   <div class="cursor-glow" id="cursorGlow"></div>
 
-  <!-- Mobile Top Nav -->
-  <nav class="top-nav">
-    <a href="/">HOME</a>
-    <a href="/resume" class="active">RESUME</a>
-    <a href="/projects">PROJECTS</a>
-    <a href="/connect">CONNECT</a>
+  <!-- Fixed Top Nav -->
+  <nav class="nav-bar">
+    <a href="/" class="nav-link">HOME</a>
+    <a href="/resume" class="nav-link active">RESUME</a>
+    <a href="/projects" class="nav-link">PROJECTS</a>
+    <a href="/connect" class="nav-link">CONNECT</a>
   </nav>
 
   <div class="layout">
@@ -523,38 +588,40 @@
       <div>
         <h1>Aadit Kannan</h1>
         <p class="subtitle">Mechanical Engineer</p>
-        <p class="tagline">I build high-voltage battery systems, robots, and software tools at UC Berkeley.</p>
+        <img src="./assets/photo.jpg" alt="Aadit Kannan" class="sidebar-photo">
 
         <nav class="sidebar-nav" id="sidebarNav">
           <a href="#about" data-section="about">
-            <span class="nav-line"></span>
-            <span>About</span>
+            <span class="nav-line"></span><span>About</span>
           </a>
           <a href="#experience" data-section="experience">
-            <span class="nav-line"></span>
-            <span>Experience</span>
+            <span class="nav-line"></span><span>Experience</span>
           </a>
           <a href="#work" data-section="work">
-            <span class="nav-line"></span>
-            <span>Work</span>
+            <span class="nav-line"></span><span>Work</span>
           </a>
           <a href="#education" data-section="education">
-            <span class="nav-line"></span>
-            <span>Education</span>
+            <span class="nav-line"></span><span>Education</span>
           </a>
           <a href="#projects" data-section="projects">
-            <span class="nav-line"></span>
-            <span>Projects</span>
+            <span class="nav-line"></span><span>Projects</span>
           </a>
           <a href="#volunteering" data-section="volunteering">
-            <span class="nav-line"></span>
-            <span>Volunteering</span>
+            <span class="nav-line"></span><span>Volunteering</span>
           </a>
           <a href="#skills" data-section="skills">
-            <span class="nav-line"></span>
-            <span>Skills</span>
+            <span class="nav-line"></span><span>Skills</span>
           </a>
         </nav>
+
+        <!-- Resume PDF CTA -->
+        <a href="/assets/NewResume.pdf" target="_blank" rel="noopener noreferrer" class="resume-cta">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+          <div class="resume-cta-text">
+            <span class="resume-cta-label">Download Resume</span>
+            <span class="resume-cta-sub">PDF &middot; One page</span>
+          </div>
+        </a>
       </div>
 
       <div class="social-icons">
@@ -573,10 +640,6 @@
         <!-- Instagram -->
         <a href="https://instagram.com/aaditkannan" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
-        </a>
-        <!-- Resume PDF -->
-        <a href="/assets/NewResume.pdf" target="_blank" rel="noopener noreferrer" aria-label="Resume PDF">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22"><path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm-1 2l5 5h-5V4zM6 20V4h5v7h7v9H6zm2-4h8v1.5H8V16zm0-3h8v1.5H8V13z" fill="currentColor"/></svg>
         </a>
       </div>
     </header>
@@ -598,7 +661,6 @@
         <h2 class="section-label">Experience</h2>
 
         <div class="entry-card">
-          <div class="entry-date">Sep 2025 — Present</div>
           <div class="entry-body">
             <h3><a href="/projects#formula-electric">Accumulator Mechanical · Formula Electric <span class="arrow">&#8599;</span></a></h3>
             <div class="entry-desc">
@@ -613,10 +675,10 @@
               <span class="skill-pill">Manufacturing</span>
             </div>
           </div>
+          <div class="entry-date">Sep 2025 — Present</div>
         </div>
 
         <div class="entry-card">
-          <div class="entry-date">Aug 2021 — Aug 2025</div>
           <div class="entry-body">
             <h3><a href="/projects#dejavu-2024-25">Captain & Hardware Lead · Robotics (FIRST) <span class="arrow">&#8599;</span></a></h3>
             <p class="entry-role">Zenith #20424 · Deja Vu #13216</p>
@@ -634,10 +696,10 @@
               <span class="skill-pill">Leadership</span>
             </div>
           </div>
+          <div class="entry-date">Aug 2021 — Aug 2025</div>
         </div>
 
         <div class="entry-card">
-          <div class="entry-date">Aug 2019 — Aug 2025</div>
           <div class="entry-body">
             <h3>SLC & Program Member · STEM Leadership Institute</h3>
             <div class="entry-desc">
@@ -655,10 +717,10 @@
               <span class="skill-pill">CNC</span>
             </div>
           </div>
+          <div class="entry-date">Aug 2019 — Aug 2025</div>
         </div>
 
         <div class="entry-card">
-          <div class="entry-date">Aug 2023 — Aug 2025</div>
           <div class="entry-body">
             <h3><a href="/projects#pear-volunteering">Founder · Pear Volunteering <span class="arrow">&#8599;</span></a></h3>
             <div class="entry-desc">
@@ -673,6 +735,7 @@
               <span class="skill-pill">APIs</span>
             </div>
           </div>
+          <div class="entry-date">Aug 2023 — Aug 2025</div>
         </div>
       </section>
 
@@ -681,7 +744,6 @@
         <h2 class="section-label">Work</h2>
 
         <div class="entry-card">
-          <div class="entry-date">Jun 2023 — Aug 2023</div>
           <div class="entry-body">
             <h3>Mechanical Engineering Intern · Posha (Formerly Nymble)</h3>
             <div class="entry-desc">
@@ -695,10 +757,10 @@
               <span class="skill-pill">Electrical</span>
             </div>
           </div>
+          <div class="entry-date">Jun 2023 — Aug 2023</div>
         </div>
 
         <div class="entry-card">
-          <div class="entry-date">Aug 2024 — Aug 2025</div>
           <div class="entry-body">
             <h3>Squash Coach · Bay Club</h3>
             <div class="entry-desc">
@@ -707,6 +769,7 @@
               </ul>
             </div>
           </div>
+          <div class="entry-date">Aug 2024 — Aug 2025</div>
         </div>
       </section>
 
@@ -715,7 +778,6 @@
         <h2 class="section-label">Education</h2>
 
         <div class="entry-card">
-          <div class="entry-date">Aug 2025 — Present</div>
           <div class="entry-body">
             <h3>B.S. Mechanical Engineering · UC Berkeley</h3>
             <p class="entry-role">Sophomore Standing</p>
@@ -727,10 +789,10 @@
               </ul>
             </div>
           </div>
+          <div class="entry-date">Aug 2025 — Present</div>
         </div>
 
         <div class="entry-card">
-          <div class="entry-date">Aug 2021 — Jun 2025</div>
           <div class="entry-body">
             <h3>Santa Clara High School</h3>
             <p class="entry-role">4.5 W GPA</p>
@@ -740,6 +802,7 @@
               </ul>
             </div>
           </div>
+          <div class="entry-date">Aug 2021 — Jun 2025</div>
         </div>
       </section>
 
@@ -748,7 +811,6 @@
         <h2 class="section-label">Projects</h2>
 
         <div class="entry-card">
-          <div class="entry-date">2025 — Present</div>
           <div class="entry-body">
             <h3><a href="/projects#inventry">Inventry <span class="arrow">&#8599;</span></a></h3>
             <div class="entry-desc">
@@ -763,10 +825,10 @@
               <span class="skill-pill">Web Scraping</span>
             </div>
           </div>
+          <div class="entry-date">2025 — Present</div>
         </div>
 
         <div class="entry-card">
-          <div class="entry-date">2024</div>
           <div class="entry-body">
             <h3><a href="/projects#atlas-smr">Atlas SMR <span class="arrow">&#8599;</span></a></h3>
             <div class="entry-desc">
@@ -781,6 +843,7 @@
               <span class="skill-pill">Web Dev</span>
             </div>
           </div>
+          <div class="entry-date">2024</div>
         </div>
 
         <div style="margin-top: 16px; padding: 20px; margin-left: -20px;">
@@ -795,7 +858,6 @@
         <h2 class="section-label">Volunteering</h2>
 
         <div class="entry-card">
-          <div class="entry-date">Aug 2021 — Jun 2025</div>
           <div class="entry-body">
             <h3>Mentor & Lab Assistant · 49ers STEM Leadership Institute</h3>
             <div class="entry-desc">
@@ -804,10 +866,10 @@
               </ul>
             </div>
           </div>
+          <div class="entry-date">Aug 2021 — Jun 2025</div>
         </div>
 
         <div class="entry-card">
-          <div class="entry-date">Aug 2021 — Aug 2023</div>
           <div class="entry-body">
             <h3>Dinner Server · Family Supportive Housing</h3>
             <div class="entry-desc">
@@ -816,10 +878,10 @@
               </ul>
             </div>
           </div>
+          <div class="entry-date">Aug 2021 — Aug 2023</div>
         </div>
 
         <div class="entry-card">
-          <div class="entry-date">May 2019 — Jul 2022</div>
           <div class="entry-body">
             <h3>Programming Tutor · Tulip Kids Afterschool</h3>
             <div class="entry-desc">
@@ -829,10 +891,10 @@
               </ul>
             </div>
           </div>
+          <div class="entry-date">May 2019 — Jul 2022</div>
         </div>
 
         <div class="entry-card">
-          <div class="entry-date">Aug 2023 — Jul 2025</div>
           <div class="entry-body">
             <h3>Lunch Server · California Scholarship Federation</h3>
             <div class="entry-desc">
@@ -841,10 +903,10 @@
               </ul>
             </div>
           </div>
+          <div class="entry-date">Aug 2023 — Jul 2025</div>
         </div>
 
         <div class="entry-card">
-          <div class="entry-date">Dec 2023 — Jan 2024</div>
           <div class="entry-body">
             <h3>Field Technical Advisor · FIRST Tech Challenge</h3>
             <div class="entry-desc">
@@ -853,6 +915,7 @@
               </ul>
             </div>
           </div>
+          <div class="entry-date">Dec 2023 — Jan 2024</div>
         </div>
       </section>
 
@@ -896,18 +959,11 @@
     (function() {
       const glow = document.getElementById('cursorGlow');
       if (!glow || window.innerWidth < 769) return;
-
-      let mouseX = 0, mouseY = 0;
-      let glowX = 0, glowY = 0;
-
+      let mouseX = 0, mouseY = 0, glowX = 0, glowY = 0;
       document.addEventListener('mousemove', (e) => {
-        mouseX = e.clientX;
-        mouseY = e.clientY;
-        if (!glow.classList.contains('visible')) {
-          glow.classList.add('visible');
-        }
+        mouseX = e.clientX; mouseY = e.clientY;
+        if (!glow.classList.contains('visible')) glow.classList.add('visible');
       });
-
       function animate() {
         glowX += (mouseX - glowX) * 0.12;
         glowY += (mouseY - glowY) * 0.12;
@@ -918,18 +974,20 @@
       animate();
     })();
 
-    // ---- Active Nav Link on Scroll ----
+    // ---- Active Nav Link on Scroll (fixed: use getBoundingClientRect) ----
     (function() {
       const navLinks = document.querySelectorAll('.sidebar-nav a');
       const sections = document.querySelectorAll('.content section[id]');
       if (!navLinks.length || !sections.length) return;
 
       function updateActiveNav() {
-        const scrollY = window.scrollY + 200;
-
+        const viewportMiddle = window.innerHeight / 2;
         let current = '';
+
         sections.forEach((section) => {
-          if (section.offsetTop <= scrollY) {
+          const rect = section.getBoundingClientRect();
+          // Section is "active" if its top is above viewport middle
+          if (rect.top <= viewportMiddle) {
             current = section.id;
           }
         });
