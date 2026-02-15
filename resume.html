@@ -245,8 +245,8 @@
 
     /* ---- Sidebar Photo ---- */
     .sidebar-photo {
-      width: 200px;
-      height: 200px;
+      width: 215px;
+      height: 215px;
       border-radius: 8px;
       object-fit: cover;
       object-position: center 15%;
@@ -259,41 +259,28 @@
       margin-top: 20px;
       display: flex;
       flex-direction: column;
+      align-items: flex-end;
       gap: 4px;
     }
 
     .sidebar-nav a {
-      display: flex;
+      display: inline-flex;
       align-items: center;
-      gap: 0;
+      gap: 6px;
       padding: 4px 0;
       font-size: 13px;
       font-weight: 400;
       letter-spacing: 0.02em;
-      text-transform: none;
       font-family: var(--font-heading);
       color: var(--text-muted);
       transition: color 0.25s ease;
     }
 
-    .sidebar-nav a .nav-prefix {
-      font-family: var(--font-heading);
-      font-size: 12px;
-      opacity: 0;
+    .sidebar-nav a::after {
+      content: '——';
+      font-size: 11px;
+      opacity: 0.3;
       transition: opacity 0.25s ease;
-      margin-right: 6px;
-    }
-
-    .sidebar-nav a.active .nav-prefix {
-      opacity: 0.7;
-    }
-
-    .sidebar-nav a .nav-cursor {
-      font-weight: 700;
-      opacity: 0;
-      transition: opacity 0.25s ease;
-      margin-left: 3px;
-      font-size: 16px;
     }
 
     .sidebar-nav a:hover {
@@ -304,14 +291,9 @@
       color: var(--text-white);
     }
 
-    .sidebar-nav a.active .nav-cursor {
-      opacity: 1;
-      animation: cursorBounce 1.2s ease-in-out infinite;
-    }
-
-    @keyframes cursorBounce {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.2; }
+    .sidebar-nav a.active::after {
+      content: '————';
+      opacity: 0.7;
     }
 
     /* ---- Resume PDF typing tooltip ---- */
@@ -369,7 +351,7 @@
 
     .content section {
       padding-bottom: 80px;
-      scroll-margin-top: 96px;
+      scroll-margin-top: 80px;
     }
 
     .content section:last-child {
@@ -386,9 +368,9 @@
       color: var(--text-muted);
       margin-bottom: 24px;
       position: sticky;
-      top: 96px;
+      top: 80px;
       background: var(--bg);
-      padding: 4px 0 12px 0;
+      padding: 20px 0 12px 0;
       z-index: 10;
     }
 
@@ -580,19 +562,19 @@
       .sidebar .subtitle {
         font-size: 14px;
         grid-column: 1; grid-row: 2;
-        margin-top: 12px;
+        margin-top: 14px;
         align-self: start;
       }
 
       .sidebar-photo {
         width: 160px; height: 160px;
         grid-column: 1; grid-row: 3;
-        margin: 16px 0 0;
+        margin: 14px 0 0;
       }
 
       .social-icons {
         grid-column: 1; grid-row: 4;
-        margin-top: 12px;
+        margin-top: 14px;
         justify-content: space-between;
         width: 160px;
       }
@@ -656,24 +638,12 @@
         <img src="./assets/photo.jpg" alt="Aadit Kannan" class="sidebar-photo">
 
         <nav class="sidebar-nav" id="sidebarNav">
-          <a href="#about" data-section="about">
-            <span class="nav-prefix">&gt;</span><span>About</span><span class="nav-cursor">_</span>
-          </a>
-          <a href="#technical-experience" data-section="technical-experience">
-            <span class="nav-prefix">&gt;</span><span>Technical</span><span class="nav-cursor">_</span>
-          </a>
-          <a href="#work-experience" data-section="work-experience">
-            <span class="nav-prefix">&gt;</span><span>Work</span><span class="nav-cursor">_</span>
-          </a>
-          <a href="#education" data-section="education">
-            <span class="nav-prefix">&gt;</span><span>Education</span><span class="nav-cursor">_</span>
-          </a>
-          <a href="#volunteering" data-section="volunteering">
-            <span class="nav-prefix">&gt;</span><span>Volunteering</span><span class="nav-cursor">_</span>
-          </a>
-          <a href="#skills" data-section="skills">
-            <span class="nav-prefix">&gt;</span><span>Skills</span><span class="nav-cursor">_</span>
-          </a>
+          <a href="#about" data-section="about">About</a>
+          <a href="#technical-experience" data-section="technical-experience">Technical</a>
+          <a href="#work-experience" data-section="work-experience">Work</a>
+          <a href="#education" data-section="education">Education</a>
+          <a href="#volunteering" data-section="volunteering">Volunteering</a>
+          <a href="#skills" data-section="skills">Skills</a>
         </nav>
       </div>
 
