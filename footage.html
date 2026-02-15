@@ -121,18 +121,26 @@
     [data-theme="light"] .theme-toggle { color: rgba(0, 0, 0, 0.5); }
     [data-theme="light"] .theme-toggle:hover { color: #111; }
 
+    /* Smooth theme transition */
+    html.theme-transition,
+    html.theme-transition *,
+    html.theme-transition *::before,
+    html.theme-transition *::after {
+      transition: background-color 0.35s ease, color 0.35s ease, border-color 0.35s ease, fill 0.35s ease, box-shadow 0.35s ease !important;
+    }
+
     [data-theme="light"] body {
       background: #f5f2ee;
-      color: #111827;
+      color: #0f172a;
     }
 
     [data-theme="light"] .nav-link {
-      color: rgba(0, 0, 0, 0.55);
+      color: rgba(0, 0, 0, 0.65);
     }
 
     [data-theme="light"] .nav-link:hover {
-      color: #111;
-      border-bottom-color: rgba(0, 0, 0, 0.3);
+      color: #0f172a;
+      border-bottom-color: rgba(0, 0, 0, 0.4);
     }
 
     [data-theme="light"] .nav-link.active {
@@ -141,22 +149,22 @@
     }
 
     [data-theme="light"] .footage-heading {
-      color: #111827;
+      color: #0f172a;
     }
 
     [data-theme="light"] .footage-subheading,
     [data-theme="light"] .footage-description {
-      color: #5a6577;
+      color: #4a5568;
     }
 
     [data-theme="light"] .video-wrapper {
       background: rgba(0, 0, 0, 0.03);
-      border-color: rgba(0, 0, 0, 0.1);
+      border-color: rgba(0, 0, 0, 0.12);
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
     }
 
     [data-theme="light"] .video-title {
-      color: #5a6577;
+      color: #4a5568;
     }
 
     /* Navigation Bar */
@@ -506,6 +514,7 @@
       const saved = localStorage.getItem('theme');
       if (saved === 'light') document.documentElement.setAttribute('data-theme', 'light');
       toggle.addEventListener('click', () => {
+        document.documentElement.classList.add('theme-transition');
         const isLight = document.documentElement.getAttribute('data-theme') === 'light';
         if (isLight) {
           document.documentElement.removeAttribute('data-theme');
@@ -514,6 +523,7 @@
           document.documentElement.setAttribute('data-theme', 'light');
           localStorage.setItem('theme', 'light');
         }
+        setTimeout(() => document.documentElement.classList.remove('theme-transition'), 350);
       });
     })();
   </script>

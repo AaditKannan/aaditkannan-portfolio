@@ -126,6 +126,14 @@
     [data-theme="light"] .theme-toggle { color: rgba(0, 0, 0, 0.5); }
     [data-theme="light"] .theme-toggle:hover { color: #111; }
 
+    /* Smooth theme transition */
+    html.theme-transition,
+    html.theme-transition *,
+    html.theme-transition *::before,
+    html.theme-transition *::after {
+      transition: background-color 0.35s ease, color 0.35s ease, border-color 0.35s ease, fill 0.35s ease, box-shadow 0.35s ease !important;
+    }
+
     /* Light mode for home page */
     [data-theme="light"] .video-overlay {
       background: rgba(255, 255, 255, 0.3);
@@ -136,24 +144,24 @@
     }
 
     [data-theme="light"] .home-name {
-      color: #111827;
+      color: #0f172a;
       -webkit-text-stroke: 3px rgba(255, 255, 255, 0.7);
       text-stroke: 3px rgba(255, 255, 255, 0.7);
       text-shadow: 0 6px 24px rgba(255, 255, 255, 0.3);
     }
 
     [data-theme="light"] .home-subtitle {
-      color: rgba(17, 24, 39, 0.85);
+      color: rgba(15, 23, 42, 0.9);
       text-shadow: 0 4px 12px rgba(255, 255, 255, 0.2);
     }
 
     [data-theme="light"] .nav-link {
-      color: rgba(0, 0, 0, 0.55);
+      color: rgba(0, 0, 0, 0.65);
     }
 
     [data-theme="light"] .nav-link:hover {
-      color: #111;
-      border-bottom-color: rgba(0, 0, 0, 0.3);
+      color: #0f172a;
+      border-bottom-color: rgba(0, 0, 0, 0.4);
     }
 
     [data-theme="light"] .nav-link.active {
@@ -162,8 +170,8 @@
     }
 
     [data-theme="light"] .view-resume-btn {
-      border-color: rgba(0, 0, 0, 0.3);
-      color: rgba(0, 0, 0, 0.7);
+      border-color: rgba(0, 0, 0, 0.4);
+      color: rgba(0, 0, 0, 0.8);
     }
 
     [data-theme="light"] .view-resume-btn:hover {
@@ -708,6 +716,7 @@
       const saved = localStorage.getItem('theme');
       if (saved === 'light') document.documentElement.setAttribute('data-theme', 'light');
       toggle.addEventListener('click', () => {
+        document.documentElement.classList.add('theme-transition');
         const isLight = document.documentElement.getAttribute('data-theme') === 'light';
         if (isLight) {
           document.documentElement.removeAttribute('data-theme');
@@ -716,6 +725,7 @@
           document.documentElement.setAttribute('data-theme', 'light');
           localStorage.setItem('theme', 'light');
         }
+        setTimeout(() => document.documentElement.classList.remove('theme-transition'), 350);
       });
     })();
     </script>

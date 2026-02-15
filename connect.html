@@ -76,19 +76,27 @@
 
     [data-theme="light"] {
       --bg: #f5f2ee;
-      --text-primary: #2d3748;
-      --text-secondary: #5a6577;
-      --text-heading: #1a202c;
-      --text-white: #111827;
-      --text-muted: #8896a6;
+      --text-primary: #1a202c;
+      --text-secondary: #4a5568;
+      --text-heading: #111827;
+      --text-white: #0f172a;
+      --text-muted: #64748b;
       --nav-bg: rgba(245, 242, 238, 0.95);
-      --glow-center: rgba(0, 0, 0, 0.025);
-      --glow-mid: rgba(0, 0, 0, 0.01);
-      --nav-link: rgba(0, 0, 0, 0.55);
-      --nav-link-hover: #111827;
-      --nav-border-hover: rgba(0, 0, 0, 0.3);
-      --info-border: rgba(0, 0, 0, 0.1);
-      --info-bg: rgba(0, 0, 0, 0.02);
+      --glow-center: rgba(0, 0, 0, 0.06);
+      --glow-mid: rgba(0, 0, 0, 0.025);
+      --nav-link: rgba(0, 0, 0, 0.65);
+      --nav-link-hover: #0f172a;
+      --nav-border-hover: rgba(0, 0, 0, 0.4);
+      --info-border: rgba(0, 0, 0, 0.12);
+      --info-bg: rgba(0, 0, 0, 0.03);
+    }
+
+    /* Smooth theme transition */
+    html.theme-transition,
+    html.theme-transition *,
+    html.theme-transition *::before,
+    html.theme-transition *::after {
+      transition: background-color 0.35s ease, color 0.35s ease, border-color 0.35s ease, fill 0.35s ease, box-shadow 0.35s ease !important;
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -523,6 +531,7 @@
       const saved = localStorage.getItem('theme');
       if (saved === 'light') document.documentElement.setAttribute('data-theme', 'light');
       toggle.addEventListener('click', () => {
+        document.documentElement.classList.add('theme-transition');
         const isLight = document.documentElement.getAttribute('data-theme') === 'light';
         if (isLight) {
           document.documentElement.removeAttribute('data-theme');
@@ -531,6 +540,7 @@
           document.documentElement.setAttribute('data-theme', 'light');
           localStorage.setItem('theme', 'light');
         }
+        setTimeout(() => document.documentElement.classList.remove('theme-transition'), 350);
       });
     })();
   </script>
