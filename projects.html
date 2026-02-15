@@ -1148,21 +1148,36 @@
 
     @media (max-width: 600px) {
       .projects-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
       }
+
+      .project-image {
+        aspect-ratio: 16/9;
+      }
+
+      .project-content {
+        padding: 12px;
+      }
+
+      .project-meta {
+        margin-bottom: 6px;
+      }
+
+      .project-category { font-size: 9px; }
+      .project-date { font-size: 10px; }
+      .project-title { font-size: 13px; margin-bottom: 4px; }
+      .project-excerpt { display: none; }
     }
 
     @media (max-width: 768px) {
       /* Standardized mobile nav */
       .nav-bar {
-        position: absolute !important;
+        position: absolute;
         padding: 16px 16px;
         gap: 24px;
         justify-content: center;
         height: auto;
-        background: transparent !important;
-        backdrop-filter: none !important;
-        border-bottom: none !important;
       }
       .nav-link {
         font-size: 11px;

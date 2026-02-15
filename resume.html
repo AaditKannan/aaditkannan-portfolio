@@ -418,6 +418,7 @@
     .entry-card {
       display: grid;
       grid-template-columns: 1fr 140px;
+      align-items: baseline;
       gap: 16px;
       padding: 20px;
       margin: 0 -20px;
@@ -437,7 +438,6 @@
       color: var(--text-muted);
       text-transform: uppercase;
       letter-spacing: 0.04em;
-      padding-top: 4px;
       white-space: nowrap;
       text-align: right;
     }
@@ -545,27 +545,55 @@
       .cursor-glow { display: none; }
       .theme-toggle { top: 16px; right: 16px; }
 
-      .nav-bar { padding: 16px 16px; gap: 24px; height: auto; }
+      .nav-bar {
+        position: absolute;
+        padding: 16px 16px;
+        gap: 24px;
+        height: auto;
+      }
       .nav-link { font-size: 11px; letter-spacing: 0.1em; }
 
       .layout { flex-direction: column; padding: 0 24px; padding-top: 60px; }
 
       .sidebar {
         position: relative; top: 0; width: 100%;
-        max-height: none; padding: 24px 0 32px 0;
+        max-height: none; padding: 24px 0 16px 0;
       }
 
-      .sidebar h1 { font-size: 32px; text-align: center; }
-      .sidebar .subtitle { font-size: 16px; text-align: center; }
+      /* Side-by-side: name/title/photo left, nav right */
+      .sidebar > div:first-child {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 0 20px;
+      }
+
+      .sidebar h1 {
+        font-size: 28px;
+        grid-column: 1; grid-row: 1;
+      }
+
+      .sidebar .subtitle {
+        font-size: 14px;
+        grid-column: 1; grid-row: 2;
+      }
 
       .sidebar-photo {
-        width: 120px; height: 120px;
-        margin: 16px auto 0; display: block;
+        width: 140px; height: 140px;
+        grid-column: 1; grid-row: 3;
+        margin: 12px 0 0;
       }
 
-      .sidebar-nav { display: none; }
+      .sidebar-nav {
+        display: flex;
+        grid-column: 2; grid-row: 1 / -1;
+        align-self: center;
+        margin-top: 0;
+        gap: 2px;
+      }
 
-      .social-icons { justify-content: center; margin-top: 24px; }
+      .sidebar-nav a { font-size: 12px; }
+
+      .social-icons { margin-top: 16px; }
 
       .content { width: 100%; padding: 32px 0 64px 0; }
       .content section { margin-bottom: 48px; }
@@ -580,6 +608,7 @@
       .entry-card {
         grid-template-columns: 1fr; gap: 4px;
         padding: 16px 12px; margin: 0 -12px;
+        align-items: start;
       }
 
       .entry-date { font-size: 11px; text-align: left; order: -1; }
@@ -643,9 +672,6 @@
         <a href="https://x.com/aadit_kannan" target="_blank" rel="noopener noreferrer" aria-label="X">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
         </a>
-        <a href="https://instagram.com/aaditkannan" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
-        </a>
         <!-- Resume PDF -->
         <div class="resume-pdf-wrapper">
           <a href="/assets/NewResume.pdf" target="_blank" rel="noopener noreferrer" aria-label="Resume PDF">
@@ -664,7 +690,7 @@
         <h2 class="section-label">About</h2>
         <div class="about-text">
           <p>Mechanical engineering student at UC Berkeley interested in robotics, materials, and space. Currently working on the high-voltage accumulator as a part of <a href="https://ev.berkeley.edu/" target="_blank" rel="noopener noreferrer" class="about-link">Berkeley Formula Electric</a>, while researching thin-film oxide heterostructures for next-gen low-power memory in <a href="https://www.rameshlab.com/" target="_blank" rel="noopener noreferrer" class="about-link">Ramesh Lab</a>.</p>
-          <p>Also developing Atlas SMR, a website to evaluate grid capabilities of small modular nuclear reactors and hybrid SMR/renewable energy systems, to inform cost-effective strategies for clean-energy transitions. <a href="/projects" class="about-link">View all projects &rarr;</a></p>
+          <p>Also developing Atlas SMR, a website to evaluate grid capabilities of small modular nuclear reactors and hybrid SMR/renewable energy systems, to inform cost-effective strategies for clean-energy transitions. <a href="/projects" class="about-link" style="text-decoration: underline; text-underline-offset: 3px;">View all projects &rarr;</a></p>
         </div>
       </section>
 
@@ -771,7 +797,7 @@
 
         <div class="entry-card">
           <div class="entry-body">
-            <h3>B.S. Mechanical Engineering · UC Berkeley</h3>
+            <h3>B.S. Mechanical Engineering, Minor in EECS · UC Berkeley</h3>
             <p class="entry-role">Sophomore Standing</p>
             <div class="entry-desc">
               <p>Current Coursework: Engin 29, Multivariable Calculus, Physics 7B (E&M). Prior Coursework: Engin 7 (Python/Matlab), Chem 1A, Physics 7A. Activities: Formula Electric, Ramesh Lab.</p>
