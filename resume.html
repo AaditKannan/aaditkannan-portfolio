@@ -209,7 +209,7 @@
     .sidebar-nav a {
       display: flex;
       align-items: center;
-      gap: 0;
+      gap: 6px;
       padding: 4px 0;
       font-size: 13px;
       font-weight: 400;
@@ -220,17 +220,26 @@
       transition: color 0.25s ease;
     }
 
-    .sidebar-nav a .nav-line {
-      display: none;
+    .sidebar-nav a .nav-prefix {
+      font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+      font-size: 12px;
+      opacity: 0;
+      transition: opacity 0.25s ease;
+    }
+
+    .sidebar-nav a.active .nav-prefix {
+      opacity: 0.7;
     }
 
     .sidebar-nav a .nav-cursor {
       display: inline-block;
-      width: 8px;
-      height: 16px;
+      width: 10px;
+      height: 2.5px;
       background: transparent;
-      margin-left: 2px;
-      vertical-align: middle;
+      margin-left: 1px;
+      vertical-align: baseline;
+      position: relative;
+      top: 1px;
     }
 
     .sidebar-nav a:hover {
@@ -272,12 +281,7 @@
     }
 
     .pdf-typing-text .typing-cursor {
-      display: inline-block;
-      width: 6px;
-      height: 14px;
-      background: var(--text-muted);
-      margin-left: 1px;
-      animation: cursorBlink 0.8s step-end infinite;
+      display: none;
     }
 
     /* ---- Social Icons ---- */
@@ -318,27 +322,15 @@
       margin-bottom: 48px;
     }
 
-    /* ---- Section Headings (terminal-style) ---- */
+    /* ---- Section Headings ---- */
     .section-label {
-      font-family: var(--font-body);
+      font-family: var(--font-heading);
       font-size: 11px;
-      font-weight: 500;
-      letter-spacing: 0.15em;
+      font-weight: 600;
+      letter-spacing: 0.2em;
       text-transform: uppercase;
       color: var(--text-muted);
       margin-bottom: 32px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .section-label::before {
-      content: '>';
-      font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
-      font-size: 13px;
-      font-weight: 400;
-      color: var(--text-muted);
-      opacity: 0.7;
     }
 
     /* ---- About Section ---- */
@@ -431,27 +423,16 @@
     }
 
     .entry-desc {
-      font-size: 14px;
+      font-size: 13px;
       color: var(--text-secondary);
       line-height: 1.6;
     }
 
-    .entry-desc ul { list-style: none; padding: 0; }
-
-    .entry-desc ul li {
-      position: relative;
-      padding-left: 16px;
-      margin-bottom: 4px;
+    .entry-desc p {
       font-size: 13px;
       color: var(--text-secondary);
-      line-height: 1.55;
-    }
-
-    .entry-desc ul li::before {
-      content: '\2022';
-      position: absolute;
-      left: 0;
-      color: var(--text-muted);
+      line-height: 1.6;
+      margin: 0;
     }
 
     /* ---- Skill Pills ---- */
@@ -533,8 +514,6 @@
         background: var(--bg); padding: 12px 0; z-index: 10;
       }
 
-      .section-label::before { display: none; }
-
       .pdf-typing-text { display: none; }
 
       .entry-card {
@@ -570,19 +549,19 @@
 
         <nav class="sidebar-nav" id="sidebarNav">
           <a href="#about" data-section="about">
-            <span>About</span><span class="nav-cursor"></span>
+            <span class="nav-prefix">&gt;</span><span>About</span><span class="nav-cursor"></span>
           </a>
           <a href="#experience" data-section="experience">
-            <span>Experience</span><span class="nav-cursor"></span>
+            <span class="nav-prefix">&gt;</span><span>Experience</span><span class="nav-cursor"></span>
           </a>
           <a href="#education" data-section="education">
-            <span>Education</span><span class="nav-cursor"></span>
+            <span class="nav-prefix">&gt;</span><span>Education</span><span class="nav-cursor"></span>
           </a>
           <a href="#volunteering" data-section="volunteering">
-            <span>Volunteering</span><span class="nav-cursor"></span>
+            <span class="nav-prefix">&gt;</span><span>Volunteering</span><span class="nav-cursor"></span>
           </a>
           <a href="#skills" data-section="skills">
-            <span>Skills</span><span class="nav-cursor"></span>
+            <span class="nav-prefix">&gt;</span><span>Skills</span><span class="nav-cursor"></span>
           </a>
         </nav>
       </div>
@@ -594,7 +573,7 @@
         <a href="https://www.linkedin.com/in/aaditkannan" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
         </a>
-        <a href="https://x.com/aad1t_" target="_blank" rel="noopener noreferrer" aria-label="X">
+        <a href="https://x.com/aadit_kannan" target="_blank" rel="noopener noreferrer" aria-label="X">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
         </a>
         <a href="https://instagram.com/aaditkannan" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
@@ -630,9 +609,7 @@
           <div class="entry-body">
             <h3><a href="/projects#formula-electric" class="link-group">Accumulator Mechanical · Formula Electric <span class="arrow">&#8599;</span></a></h3>
             <div class="entry-desc">
-              <ul>
-                <li>Designed and manufactured the attic casing for the high-voltage accumulator (battery), implementing waterproofing, high-dielectric-strength insulation to manage the 588V pack</li>
-              </ul>
+              <p>Designed and manufactured the attic casing for the high-voltage accumulator (battery), implementing waterproofing, high-dielectric-strength insulation to manage the 588V pack.</p>
             </div>
             <div class="skill-pills">
               <span class="skill-pill">SolidWorks</span>
@@ -649,11 +626,7 @@
             <h3><a href="/projects#dejavu-2024-25" class="link-group">Captain & Hardware Lead · Robotics (FIRST) <span class="arrow">&#8599;</span></a></h3>
             <p class="entry-role">Zenith #20424 · Deja Vu #13216</p>
             <div class="entry-desc">
-              <ul>
-                <li>Mentored 30+ members in Java and CAD, leading teams to regional competitions</li>
-                <li>Designed robot in CAD with 500+ parts, performing FEA to optimize for stress — robot design award (x3)</li>
-                <li>Raised over $5000, launched parts exchange program, developed both team websites</li>
-              </ul>
+              <p>Mentored 30+ members in Java and CAD, leading teams to regional competitions. Designed robot in CAD with 500+ parts, performing FEA to optimize for stress — robot design award (x3). Raised over $5000, launched parts exchange program, developed both team websites.</p>
             </div>
             <div class="skill-pills">
               <span class="skill-pill">Java</span>
@@ -667,24 +640,9 @@
 
         <div class="entry-card">
           <div class="entry-body">
-            <h3>Squash Coach · Bay Club</h3>
-            <div class="entry-desc">
-              <ul>
-                <li>Coached 15+ students age 5-12 in tournament prep, designing drills and lessons</li>
-              </ul>
-            </div>
-          </div>
-          <div class="entry-date">Aug 2024 — Aug 2025</div>
-        </div>
-
-        <div class="entry-card">
-          <div class="entry-body">
             <h3><a href="/projects#pear-volunteering" class="link-group">Founder · Pear Volunteering <span class="arrow">&#8599;</span></a></h3>
             <div class="entry-desc">
-              <ul>
-                <li>Developed app/website connecting 2000+ students, 20+ event organizers, and school admin</li>
-                <li>Secure webhook/CMS-integrated system for scalable data handling and encrypted communication</li>
-              </ul>
+              <p>Developed app/website connecting 2000+ students, 20+ event organizers, and school admin. Built a secure webhook/CMS-integrated system for scalable data handling and encrypted communication.</p>
             </div>
             <div class="skill-pills">
               <span class="skill-pill">Web Dev</span>
@@ -697,11 +655,22 @@
 
         <div class="entry-card">
           <div class="entry-body">
+            <h3>Squash Coach · Bay Club</h3>
+            <div class="entry-desc">
+              <p>Coached 15+ students age 5-12 in tournament prep, designing drills and lessons.</p>
+            </div>
+            <div class="skill-pills">
+              <span class="skill-pill">Mentorship</span>
+            </div>
+          </div>
+          <div class="entry-date">Aug 2024 — Aug 2025</div>
+        </div>
+
+        <div class="entry-card">
+          <div class="entry-body">
             <h3>Mechanical Engineering Intern · Posha (Formerly Nymble)</h3>
             <div class="entry-desc">
-              <ul>
-                <li>Repaired 20+ customer cooking robots by troubleshooting electrical and mechanical systems</li>
-              </ul>
+              <p>Repaired 20+ customer cooking robots by troubleshooting electrical and mechanical systems.</p>
             </div>
             <div class="skill-pills">
               <span class="skill-pill">Robotics</span>
@@ -716,11 +685,7 @@
           <div class="entry-body">
             <h3>SLC & Program Member · STEM Leadership Institute</h3>
             <div class="entry-desc">
-              <ul>
-                <li>Trained 120 middle school STEM students on Arduino for science fair projects (SLC)</li>
-                <li>Designed mock competition and mentored 5 FIRST Lego League teams (SLC)</li>
-                <li>6-year selective program: 1800+ hours of STEM sessions and advanced coursework</li>
-              </ul>
+              <p>Trained 120 middle school STEM students on Arduino for science fair projects (SLC). Designed mock competition and mentored 5 FIRST Lego League teams (SLC). 6-year selective program: 1800+ hours of STEM sessions and advanced coursework.</p>
             </div>
             <div class="skill-pills">
               <span class="skill-pill">Arduino</span>
@@ -742,11 +707,7 @@
             <h3>B.S. Mechanical Engineering · UC Berkeley</h3>
             <p class="entry-role">Sophomore Standing</p>
             <div class="entry-desc">
-              <ul>
-                <li>Current Coursework: Engin 29, Multivariable Calculus, Physics 7B (E&M)</li>
-                <li>Prior Coursework: Engin 7 (Python/Matlab), Chem 1A, Physics 7A</li>
-                <li>Activities: Formula Electric, Ramesh Lab</li>
-              </ul>
+              <p>Current Coursework: Engin 29, Multivariable Calculus, Physics 7B (E&M). Prior Coursework: Engin 7 (Python/Matlab), Chem 1A, Physics 7A. Activities: Formula Electric, Ramesh Lab.</p>
             </div>
           </div>
           <div class="entry-date">Aug 2025 — Present</div>
@@ -757,9 +718,7 @@
             <h3>Santa Clara High School</h3>
             <p class="entry-role">4.5 W GPA</p>
             <div class="entry-desc">
-              <ul>
-                <li>AP + DE: Calc BC, Linear Algebra, Physics C, Chemistry, CSP, Physics 1, Stats, Research, Macro</li>
-              </ul>
+              <p>AP + DE: Calc BC, Linear Algebra, Physics C, Chemistry, CSP, Physics 1, Stats, Research, Macro.</p>
             </div>
           </div>
           <div class="entry-date">Aug 2021 — Jun 2025</div>
@@ -774,9 +733,7 @@
           <div class="entry-body">
             <h3>Mentor & Lab Assistant · 49ers STEM Leadership Institute</h3>
             <div class="entry-desc">
-              <ul>
-                <li>Supported students with CO2 laser cutters, 3D printers, vinyl cutters, and CNC machines</li>
-              </ul>
+              <p>Supported students with CO2 laser cutters, 3D printers, vinyl cutters, and CNC machines.</p>
             </div>
           </div>
           <div class="entry-date">Aug 2021 — Jun 2025</div>
@@ -786,7 +743,7 @@
           <div class="entry-body">
             <h3>Dinner Server · Family Supportive Housing</h3>
             <div class="entry-desc">
-              <ul><li>Dinner server for underserved families in San Jose</li></ul>
+              <p>Dinner server for underserved families in San Jose.</p>
             </div>
           </div>
           <div class="entry-date">Aug 2021 — Aug 2023</div>
@@ -796,10 +753,7 @@
           <div class="entry-body">
             <h3>Programming Tutor · Tulip Kids Afterschool</h3>
             <div class="entry-desc">
-              <ul>
-                <li>Tutored K-8 students in Python and Scratch</li>
-                <li>Designed hands-on lessons teaching basic circuit workings</li>
-              </ul>
+              <p>Tutored K-8 students in Python and Scratch. Designed hands-on lessons teaching basic circuit workings.</p>
             </div>
           </div>
           <div class="entry-date">May 2019 — Jul 2022</div>
@@ -809,7 +763,7 @@
           <div class="entry-body">
             <h3>Lunch Server · California Scholarship Federation</h3>
             <div class="entry-desc">
-              <ul><li>Volunteered in the school cafeteria to serve lunch</li></ul>
+              <p>Volunteered in the school cafeteria to serve lunch.</p>
             </div>
           </div>
           <div class="entry-date">Aug 2023 — Jul 2025</div>
@@ -819,7 +773,7 @@
           <div class="entry-body">
             <h3>Field Technical Advisor · FIRST Tech Challenge</h3>
             <div class="entry-desc">
-              <ul><li>Technical support to teams and smooth operation of the robotics competition</li></ul>
+              <p>Technical support to teams and smooth operation of the robotics competition.</p>
             </div>
           </div>
           <div class="entry-date">Dec 2023 — Jan 2024</div>
@@ -924,10 +878,9 @@
       if (!el || window.innerWidth < 769) return;
 
       const text = '\u2190 Resume PDF';
-      const cursor = el.querySelector('.typing-cursor');
       let charIndex = 0;
       let textNode = document.createTextNode('');
-      el.insertBefore(textNode, cursor);
+      el.insertBefore(textNode, el.firstChild);
 
       function typeChar() {
         if (charIndex < text.length) {
@@ -935,20 +888,14 @@
           charIndex++;
           setTimeout(typeChar, 60 + Math.random() * 40);
         } else {
-          setTimeout(startDelete, 3000);
+          setTimeout(deleteChar, 3000);
         }
-      }
-
-      function startDelete() {
-        deleteChar();
       }
 
       function deleteChar() {
         if (textNode.textContent.length > 0) {
           textNode.textContent = textNode.textContent.slice(0, -1);
           setTimeout(deleteChar, 30 + Math.random() * 20);
-        } else {
-          cursor.style.display = 'none';
         }
       }
 
