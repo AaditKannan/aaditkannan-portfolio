@@ -175,9 +175,10 @@
 
     /* ---- Theme Toggle ---- */
     .theme-toggle {
-      position: fixed;
-      top: 28px;
+      position: absolute;
       right: 40px;
+      top: 50%;
+      transform: translateY(-50%);
       z-index: 1002;
       background: none;
       border: none;
@@ -258,7 +259,7 @@
       font-size: 18px;
       font-weight: 500;
       color: var(--text-heading);
-      margin-top: 8px;
+      margin-top: 24px;
       letter-spacing: 0.02em;
     }
 
@@ -269,13 +270,13 @@
       border-radius: 8px;
       object-fit: cover;
       object-position: center 15%;
-      margin-top: 28px;
+      margin-top: 24px;
       border: 1px solid var(--photo-border);
     }
 
     /* ---- Sidebar Navigation ---- */
     .sidebar-nav {
-      margin-top: 40px;
+      margin-top: 24px;
       display: flex;
       flex-direction: column;
       gap: 4px;
@@ -362,7 +363,7 @@
       display: flex;
       align-items: center;
       gap: 20px;
-      margin-top: 32px;
+      margin-top: 24px;
     }
 
     .social-icons a {
@@ -405,6 +406,8 @@
       color: var(--text-muted);
       margin-bottom: 32px;
     }
+
+    .section-top-btn { display: none; }
 
     /* ---- About Section ---- */
     .about-text p {
@@ -556,7 +559,7 @@
        ============================================ */
     @media (max-width: 768px) {
       .cursor-glow { display: none; }
-      .theme-toggle { top: 16px; right: 16px; }
+      .theme-toggle { position: static; transform: none; }
 
       .nav-bar {
         position: absolute;
@@ -608,9 +611,11 @@
         gap: 2px;
       }
 
-      .sidebar-nav a { font-size: 12px; }
+      .sidebar-nav a { font-size: 14px; padding: 6px 0; }
+      .sidebar-nav { gap: 4px; }
 
       .social-icons { margin-top: 16px; }
+      .social-icons a[aria-label="X"] { display: none; }
 
       .content { width: 100%; padding: 32px 0 64px 0; }
       .content section { margin-bottom: 48px; }
@@ -618,7 +623,19 @@
       .section-label {
         position: sticky; top: 0;
         background: var(--bg); padding: 12px 0; z-index: 10;
+        display: flex; justify-content: space-between; align-items: center;
       }
+
+      .section-top-btn {
+        display: flex; align-items: center; justify-content: center;
+        width: 28px; height: 28px;
+        color: var(--text-muted);
+        cursor: pointer;
+        transition: color 0.2s ease;
+        border: none; background: none; padding: 0;
+      }
+      .section-top-btn:hover { color: var(--text-white); }
+      .section-top-btn svg { width: 16px; height: 16px; fill: currentColor; }
 
       .pdf-typing-text { display: none; }
 
@@ -638,18 +655,16 @@
   <!-- Cursor Glow -->
   <div class="cursor-glow" id="cursorGlow"></div>
 
-  <!-- Theme Toggle -->
-  <button class="theme-toggle" id="themeToggle" aria-label="Toggle light mode">
-    <svg class="icon-moon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-    <svg class="icon-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
-  </button>
-
   <!-- Top Nav (scrolls with page) -->
   <nav class="nav-bar">
     <a href="/" class="nav-link">HOME</a>
     <a href="/resume" class="nav-link active">RESUME</a>
     <a href="/projects" class="nav-link">PROJECTS</a>
     <a href="/connect" class="nav-link">CONNECT</a>
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle light mode">
+      <svg class="icon-moon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      <svg class="icon-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+    </button>
   </nav>
 
   <div class="layout">
@@ -704,7 +719,7 @@
 
       <!-- About -->
       <section id="about">
-        <h2 class="section-label">About</h2>
+        <h2 class="section-label">About <button class="section-top-btn" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Back to top"><svg viewBox="0 0 24 24"><path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/></svg></button></h2>
         <div class="about-text">
           <p>Mechanical engineering student at UC Berkeley interested in robotics, materials, and space. Currently working on the high-voltage accumulator as a part of <a href="https://ev.berkeley.edu/" target="_blank" rel="noopener noreferrer" class="about-link">Berkeley Formula Electric</a>, while researching thin-film oxide heterostructures for next-gen low-power memory in <a href="https://www.rameshlab.com/" target="_blank" rel="noopener noreferrer" class="about-link">Ramesh Lab</a>.</p>
           <p>Also developing Atlas SMR, a website to evaluate grid capabilities of small modular nuclear reactors and hybrid SMR/renewable energy systems, to inform cost-effective strategies for clean-energy transitions. <a href="/projects" class="about-link" style="text-decoration: underline; text-underline-offset: 3px;">View all projects &rarr;</a></p>
@@ -713,7 +728,7 @@
 
       <!-- Experience (Technical + Work combined) -->
       <section id="experience">
-        <h2 class="section-label">Experience</h2>
+        <h2 class="section-label">Experience <button class="section-top-btn" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Back to top"><svg viewBox="0 0 24 24"><path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/></svg></button></h2>
 
         <div class="entry-card">
           <div class="entry-body">
@@ -810,7 +825,7 @@
 
       <!-- Education -->
       <section id="education">
-        <h2 class="section-label">Education</h2>
+        <h2 class="section-label">Education <button class="section-top-btn" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Back to top"><svg viewBox="0 0 24 24"><path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/></svg></button></h2>
 
         <div class="entry-card">
           <div class="entry-body">
@@ -837,7 +852,7 @@
 
       <!-- Volunteering -->
       <section id="volunteering">
-        <h2 class="section-label">Volunteering</h2>
+        <h2 class="section-label">Volunteering <button class="section-top-btn" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Back to top"><svg viewBox="0 0 24 24"><path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/></svg></button></h2>
 
         <div class="entry-card">
           <div class="entry-body">
@@ -892,7 +907,7 @@
 
       <!-- Skills -->
       <section id="skills">
-        <h2 class="section-label">Skills</h2>
+        <h2 class="section-label">Skills <button class="section-top-btn" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Back to top"><svg viewBox="0 0 24 24"><path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/></svg></button></h2>
         <div class="skills-grid">
           <div>
             <h4>Mechanical Engineering</h4>
