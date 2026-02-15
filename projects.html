@@ -1723,11 +1723,9 @@
         const categoryMatch = activeFilter === 'all' || categories.includes(activeFilter);
         return categoryMatch;
       }).sort((a, b) => {
-        // Active projects first, then by most recent year descending
+        // Active projects first, then preserve array order
         if (a.active !== b.active) return a.active ? -1 : 1;
-        const aMax = Math.max(...a.years);
-        const bMax = Math.max(...b.years);
-        return bMax - aMax;
+        return projects.indexOf(a) - projects.indexOf(b);
       });
     }
 
