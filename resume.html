@@ -297,17 +297,20 @@
     }
 
     .nav-cursor {
-      font-size: 13px;
+      font-size: 14px;
+      font-weight: 700;
       opacity: 0;
+      display: inline-block;
     }
 
     .sidebar-nav a.active .nav-cursor {
-      animation: cursorBlink 2s ease-in-out infinite;
+      opacity: 0.8;
+      animation: cursorBounce 1.2s ease-in-out infinite;
     }
 
-    @keyframes cursorBlink {
-      0%, 100% { opacity: 0.8; }
-      50% { opacity: 0; }
+    @keyframes cursorBounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-3px); }
     }
 
     /* ---- Resume PDF typing tooltip ---- */
@@ -387,7 +390,9 @@
       position: sticky;
       top: 80px;
       background: var(--bg);
-      padding: 16px 0 12px 0;
+      padding: 16px 20px 12px 20px;
+      margin-left: -20px;
+      margin-right: -20px;
       z-index: 10;
     }
 
@@ -647,6 +652,9 @@
       .section-label {
         top: 0;
         margin-bottom: 16px;
+        padding: 12px 12px;
+        margin-left: -12px;
+        margin-right: -12px;
       }
 
       .pdf-typing-text { display: none; }
@@ -688,12 +696,12 @@
         <img src="./assets/photo.jpg" alt="Aadit Kannan" class="sidebar-photo">
 
         <nav class="sidebar-nav" id="sidebarNav">
-          <a href="#about" data-section="about"><span class="nav-prefix">&gt;</span> About <span class="nav-cursor">_</span></a>
-          <a href="#technical-experience" data-section="technical-experience"><span class="nav-prefix">&gt;</span> Technical <span class="nav-cursor">_</span></a>
-          <a href="#work-experience" data-section="work-experience"><span class="nav-prefix">&gt;</span> Work <span class="nav-cursor">_</span></a>
-          <a href="#education" data-section="education"><span class="nav-prefix">&gt;</span> Education <span class="nav-cursor">_</span></a>
-          <a href="#volunteering" data-section="volunteering"><span class="nav-prefix">&gt;</span> <span class="full-text">Volunteering</span><span class="short-text">Volunteer</span> <span class="nav-cursor">_</span></a>
-          <a href="#skills" data-section="skills"><span class="nav-prefix">&gt;</span> Skills <span class="nav-cursor">_</span></a>
+          <a href="#about" data-section="about"><span class="nav-prefix">&gt;</span> About <span class="nav-cursor">|</span></a>
+          <a href="#technical-experience" data-section="technical-experience"><span class="nav-prefix">&gt;</span> Technical <span class="nav-cursor">|</span></a>
+          <a href="#work-experience" data-section="work-experience"><span class="nav-prefix">&gt;</span> Work <span class="nav-cursor">|</span></a>
+          <a href="#education" data-section="education"><span class="nav-prefix">&gt;</span> Education <span class="nav-cursor">|</span></a>
+          <a href="#volunteering" data-section="volunteering"><span class="nav-prefix">&gt;</span> <span class="full-text">Volunteering</span><span class="short-text">Volunteer</span> <span class="nav-cursor">|</span></a>
+          <a href="#skills" data-section="skills"><span class="nav-prefix">&gt;</span> Skills <span class="nav-cursor">|</span></a>
         </nav>
       </div>
 
