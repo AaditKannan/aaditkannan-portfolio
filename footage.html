@@ -56,6 +56,9 @@
     }
   </style>
   <style>
+    ::selection { background: rgba(200, 180, 155, 0.4); color: #fff; }
+    [data-theme="light"] ::selection { background: rgba(170, 150, 120, 0.35); color: #1a202c; }
+
     html {
       overflow-y: scroll;
       /* Hide scrollbar but keep functionality */
@@ -351,20 +354,20 @@
 
       /* Standardized mobile nav */
       .nav-bar {
-        position: absolute !important;
-        padding: 16px 16px !important;
-        gap: 24px !important;
-        justify-content: center !important;
-        height: auto !important;
-        background: transparent !important;
-        backdrop-filter: none !important;
-        border-bottom: none !important;
+        position: absolute;
+        padding: 16px 16px;
+        gap: 24px;
+        justify-content: center;
+        height: auto;
+        background: transparent;
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
       }
 
       .nav-link {
-        font-size: 11px !important;
-        padding: 6px 0 !important;
-        letter-spacing: 0.1em !important;
+        font-size: 11px;
+        padding: 6px 0;
+        letter-spacing: 0.1em;
       }
 
       .footage-container {
@@ -439,9 +442,9 @@
       }
 
       .nav-link {
-        font-size: 11px !important;
-        padding: 6px 0 !important;
-        letter-spacing: 0.1em !important;
+        font-size: 11px;
+        padding: 6px 0;
+        letter-spacing: 0.1em;
       }
     }
 
@@ -464,8 +467,8 @@
   <nav class="nav-bar">
     <a href="/" class="nav-link">HOME</a>
     <a href="/resume" class="nav-link">RESUME</a>
-    <a href="/projects" class="nav-link">Projects</a>
-    <a href="/connect" class="nav-link">Connect</a>
+    <a href="/projects" class="nav-link">PROJECTS</a>
+    <a href="/connect" class="nav-link">CONNECT</a>
   </nav>
 
   <!-- Footage Page Content -->
