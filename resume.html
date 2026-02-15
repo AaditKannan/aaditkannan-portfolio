@@ -299,16 +299,15 @@
     .nav-cursor {
       font-size: 13px;
       opacity: 0;
-      animation: cursorBounce 1s ease-in-out infinite;
     }
 
     .sidebar-nav a.active .nav-cursor {
-      opacity: 1;
+      animation: cursorBlink 1s step-end infinite;
     }
 
-    @keyframes cursorBounce {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-2px); }
+    @keyframes cursorBlink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
     }
 
     /* ---- Resume PDF typing tooltip ---- */
