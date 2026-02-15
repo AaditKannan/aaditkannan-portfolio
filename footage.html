@@ -5,7 +5,7 @@
   <script>!function(key) {if (window.reb2b) return;window.reb2b = {loaded: true};var s = document.createElement("script");s.async = true;s.src = "https://ddwl4m2hdecbv.cloudfront.net/b/" + key + "/" + key + ".js.gz";document.getElementsByTagName("script")[0].parentNode.insertBefore(s, document.getElementsByTagName("script")[0]);}("0OV0VHYEV56Z");</script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
-  
+
   <!-- Primary Meta Tags -->
   <title>Aadit Kannan | Footage - Drone Photography & Travel Videos</title>
   <meta name="title" content="Aadit Kannan | Footage - Drone Photography & Travel Videos">
@@ -14,21 +14,21 @@
   <meta name="author" content="Aadit Kannan">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://aaditkannan.com/footage">
-  
+
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://aaditkannan.com/footage">
   <meta property="og:title" content="Aadit Kannan | Footage - Drone Photography & Travel Videos">
   <meta property="og:description" content="Explore Aadit Kannan's drone photography and travel footage. Aerial landscapes and adventure videos.">
   <meta property="og:image" content="https://aaditkannan.com/assets/photo.jpg">
-  
+
   <!-- Twitter -->
   <meta property="twitter:card" content="summary_large_image">
   <meta property="twitter:url" content="https://aaditkannan.com/footage">
   <meta property="twitter:title" content="Aadit Kannan | Footage - Drone Photography & Travel Videos">
   <meta property="twitter:description" content="Explore Aadit Kannan's drone photography and travel footage. Aerial landscapes and adventure videos.">
   <meta property="twitter:image" content="https://aaditkannan.com/assets/photo.jpg">
-  
+
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="/assets/newstfavicon.png">
   <link rel="apple-touch-icon" sizes="180x180" href="/assets/newstfavicon.png">
@@ -36,40 +36,118 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
+    :root {
+      --font-heading: 'JetBrains Mono', monospace;
+      --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+      --bg: #0a0a0a;
+      --text-primary: #e2e8f0;
+      --text-secondary: #94a3b8;
+      --text-heading: #ccd6f6;
+      --text-white: #ffffff;
+      --text-muted: #64748b;
+      --nav-bg: rgba(10, 10, 10, 0.95);
+      --glow-center: rgba(255, 255, 255, 0.04);
+      --glow-mid: rgba(255, 255, 255, 0.015);
+      --nav-link: rgba(255, 255, 255, 0.7);
+      --nav-link-hover: #FFFFFF;
+      --nav-border-hover: rgba(255, 255, 255, 0.5);
+      --video-bg: rgba(255, 255, 255, 0.02);
+      --video-border: rgba(255, 255, 255, 0.1);
+      --video-shadow: rgba(0, 0, 0, 0.4);
+    }
+
+    [data-theme="light"] {
+      --bg: #f5f2ee;
+      --text-primary: #1a202c;
+      --text-secondary: #4a5568;
+      --text-heading: #111827;
+      --text-white: #0f172a;
+      --text-muted: #64748b;
+      --nav-bg: rgba(245, 242, 238, 0.95);
+      --glow-center: rgba(0, 0, 0, 0.06);
+      --glow-mid: rgba(0, 0, 0, 0.025);
+      --nav-link: rgba(0, 0, 0, 0.65);
+      --nav-link-hover: #0f172a;
+      --nav-border-hover: rgba(0, 0, 0, 0.4);
+      --video-bg: rgba(0, 0, 0, 0.03);
+      --video-border: rgba(0, 0, 0, 0.12);
+      --video-shadow: rgba(0, 0, 0, 0.08);
+    }
+
+    /* Smooth theme transition */
+    html.theme-transition,
+    html.theme-transition *,
+    html.theme-transition *::before,
+    html.theme-transition *::after {
+      transition: background-color 0.35s ease, color 0.35s ease, border-color 0.35s ease, fill 0.35s ease, box-shadow 0.35s ease !important;
+    }
+
     ::selection { background: rgba(200, 180, 155, 0.4); color: #fff; }
     [data-theme="light"] ::selection { background: rgba(170, 150, 120, 0.35); color: #1a202c; }
 
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
     html {
-      overflow-y: scroll;
-      /* Hide scrollbar but keep functionality */
-      scrollbar-width: none; /* Firefox */
-      -ms-overflow-style: none; /* IE and Edge */
+      scroll-behavior: smooth;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
     }
-    html::-webkit-scrollbar {
-      display: none; /* Chrome, Safari, Opera */
-    }
+    html::-webkit-scrollbar { display: none; }
+
     body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      color: #FFFFFF;
-      overflow-x: hidden;
-      position: relative;
-      min-height: 100vh;
-      background: #0a0a0a;
-      font-weight: 400;
+      font-family: var(--font-body);
+      background: var(--bg);
+      color: var(--text-primary);
+      line-height: 1.6;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
-      overflow-y: scroll;
-      margin: 0;
-      padding: 0;
-      /* Hide scrollbar but keep functionality */
-      scrollbar-width: none; /* Firefox */
-      -ms-overflow-style: none; /* IE and Edge */
-    }
-    body::-webkit-scrollbar {
-      display: none; /* Chrome, Safari, Opera */
     }
 
-    /* Theme Toggle */
+    a { color: inherit; text-decoration: none; }
+
+    /* ---- Top Nav ---- */
+    .nav-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1001;
+      padding: 24px 40px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 40px;
+      background: var(--nav-bg);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      height: 80px;
+    }
+
+    .nav-link {
+      color: var(--nav-link);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      font-family: var(--font-heading);
+      border-bottom: 1px solid transparent;
+      padding: 8px 0;
+      transition: all 0.3s ease;
+      line-height: 1;
+    }
+
+    .nav-link:hover {
+      color: var(--nav-link-hover);
+      border-bottom-color: var(--nav-border-hover);
+    }
+
+    .nav-link.active {
+      color: var(--nav-link-hover);
+      border-bottom-color: var(--nav-link-hover);
+    }
+
+    /* ---- Theme Toggle ---- */
     .theme-toggle {
       position: absolute;
       right: 40px;
@@ -79,7 +157,7 @@
       background: none;
       border: none;
       cursor: pointer;
-      color: rgba(255, 255, 255, 0.5);
+      color: var(--text-muted);
       padding: 4px;
       display: flex;
       align-items: center;
@@ -87,7 +165,7 @@
       transition: color 0.25s ease;
     }
 
-    .theme-toggle:hover { color: #FFFFFF; }
+    .theme-toggle:hover { color: var(--text-white); }
 
     .theme-toggle svg {
       width: 18px;
@@ -102,199 +180,101 @@
 
     [data-theme="light"] .theme-toggle .icon-sun { display: block; }
     [data-theme="light"] .theme-toggle .icon-moon { display: none; }
-    [data-theme="light"] .theme-toggle { color: rgba(0, 0, 0, 0.5); }
-    [data-theme="light"] .theme-toggle:hover { color: #111; }
 
-    /* Smooth theme transition */
-    html.theme-transition,
-    html.theme-transition *,
-    html.theme-transition *::before,
-    html.theme-transition *::after {
-      transition: background-color 0.35s ease, color 0.35s ease, border-color 0.35s ease, fill 0.35s ease, box-shadow 0.35s ease !important;
-    }
-
-    [data-theme="light"] body {
-      background: #f5f2ee;
-      color: #0f172a;
-    }
-
-    [data-theme="light"] .nav-link {
-      color: rgba(0, 0, 0, 0.65);
-    }
-
-    [data-theme="light"] .nav-link:hover {
-      color: #0f172a;
-      border-bottom-color: rgba(0, 0, 0, 0.4);
-    }
-
-    [data-theme="light"] .nav-link.active {
-      color: #111;
-      border-bottom-color: #111;
-    }
-
-    [data-theme="light"] .footage-heading {
-      color: #0f172a;
-    }
-
-    [data-theme="light"] .footage-subheading,
-    [data-theme="light"] .footage-description {
-      color: #4a5568;
-    }
-
-    [data-theme="light"] .video-wrapper {
-      background: rgba(0, 0, 0, 0.03);
-      border-color: rgba(0, 0, 0, 0.12);
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-    }
-
-    [data-theme="light"] .video-title {
-      color: #4a5568;
-    }
-
-    /* Navigation Bar */
-    .nav-bar {
+    /* ---- Cursor Glow ---- */
+    .cursor-glow {
       position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      z-index: 1001;
-      padding: 24px 40px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 40px;
-      background: transparent;
-      height: 80px;
-      box-sizing: border-box;
+      width: 400px;
+      height: 400px;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      background: radial-gradient(circle, var(--glow-center) 0%, var(--glow-mid) 40%, transparent 70%);
+      transform: translate(-50%, -50%);
+      transition: opacity 0.3s ease;
+      opacity: 0;
     }
+    .cursor-glow.visible { opacity: 1; }
 
-    .nav-link {
-      color: rgba(255, 255, 255, 0.7);
-      text-decoration: none;
-      font-size: 13px;
-      font-weight: 500;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      transition: all 0.3s ease;
-      padding: 8px 0;
-      border: none;
-      border-bottom: 1px solid transparent;
-      background: transparent;
-      font-family: 'JetBrains Mono', monospace;
-      line-height: 1;
-    }
-
-    .nav-link:hover {
-      color: #FFFFFF;
-      border-bottom-color: rgba(255, 255, 255, 0.5);
-    }
-
-    .nav-link.active {
-      color: #FFFFFF;
-      border-bottom-color: #FFFFFF;
-    }
-
-    /* Footage Page Content */
-    .footage-container {
-      min-height: 100vh;
-      display: flex;
-      align-items: flex-start;
-      justify-content: flex-start;
-      padding: 140px 120px 80px;
-      position: relative;
-      max-width: 1200px;
+    /* ---- Two-Column Layout ---- */
+    .layout {
+      max-width: 1280px;
       margin: 0 auto;
-      width: 100%;
+      display: flex;
+      min-height: 100vh;
+      padding: 0 48px;
+      padding-top: 80px;
     }
 
-    .footage-content {
-      width: 100%;
+    /* ---- Left Sidebar (Sticky) ---- */
+    .sidebar {
+      position: sticky;
+      top: 80px;
+      width: 48%;
+      max-height: calc(100vh - 80px);
+      padding: 48px 48px 24px 0;
       display: flex;
       flex-direction: column;
-      gap: 40px;
+      flex-shrink: 0;
+      overflow: hidden;
     }
 
-    .footage-header {
-      text-align: left;
-      margin-bottom: 20px;
-      width: 100%;
-    }
-
-    .footage-heading {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 64px;
-      font-weight: 400;
-      color: #FFFFFF;
-      margin-bottom: 0;
-      letter-spacing: 0.02em;
+    .sidebar h1 {
+      font-family: var(--font-body);
+      font-size: 48px;
+      font-weight: 700;
+      color: var(--text-white);
       line-height: 1.1;
+      letter-spacing: -0.02em;
       opacity: 0;
     }
 
-    .footage-subheading {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 20px;
-      font-weight: 400;
-      color: #CCCCCC;
-      margin-top: 16px;
-      letter-spacing: 0.01em;
-      opacity: 0;
-    }
-
-    .footage-description {
-      font-family: 'JetBrains Mono', monospace;
+    .sidebar .subtitle {
+      font-family: var(--font-body);
       font-size: 16px;
       font-weight: 400;
-      color: #CCCCCC;
-      letter-spacing: 0.01em;
+      color: var(--text-secondary);
+      margin-top: 12px;
       line-height: 1.6;
-      text-align: center;
-      max-width: 800px;
-      margin: 0 auto;
-      opacity: 0;
-      transform: translateY(20px);
-      transition: opacity 0.6s ease, transform 0.6s ease;
     }
 
-    .footage-description.visible {
-      opacity: 1;
-      transform: translateY(0);
+    /* ---- Right Content ---- */
+    .content {
+      width: 52%;
+      padding: 48px 0 96px 0;
     }
 
-    .videos-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
-      gap: 40px;
-      margin-top: 40px;
+    .section-label {
+      font-family: var(--font-heading);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 32px;
     }
 
+    /* ---- Video Items ---- */
     .video-item {
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      gap: 12px;
+      margin-bottom: 48px;
+    }
+
+    .video-item:last-child {
+      margin-bottom: 0;
     }
 
     .video-wrapper {
       position: relative;
       width: 100%;
-      padding-bottom: 56.25%; /* 16:9 aspect ratio */
-      border-radius: 12px;
+      padding-bottom: 56.25%;
+      border-radius: 8px;
       overflow: hidden;
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
-      background: rgba(255, 255, 255, 0.02);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      opacity: 0;
-      transform: translateY(20px);
-      transition: opacity 0.6s ease, transform 0.6s ease;
-    }
-
-    .video-wrapper.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    .video-wrapper:nth-child(2) {
-      transition-delay: 0.2s;
+      box-shadow: 0 4px 20px var(--video-shadow);
+      background: var(--video-bg);
+      border: 1px solid var(--video-border);
     }
 
     .video-iframe {
@@ -304,36 +284,24 @@
       width: 100%;
       height: 100%;
       border: 0;
-      border-radius: 12px;
+      border-radius: 8px;
     }
 
     .video-title {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 14px;
+      font-family: var(--font-heading);
+      font-size: 12px;
       font-weight: 400;
-      color: #888888;
+      color: var(--text-muted);
       text-transform: uppercase;
       letter-spacing: 0.1em;
-      text-align: center;
     }
 
-    /* Custom cursor removed */
-
-    @media (max-width: 1024px) {
-      .videos-grid {
-        grid-template-columns: 1fr;
-        gap: 60px;
-      }
-    }
-
+    /* ============================================
+       MOBILE RESPONSIVE (<= 768px)
+       ============================================ */
     @media (max-width: 768px) {
-      /* Inter font for all mobile text */
-      body, .nav-link, .footage-heading, .footage-subheading,
-      .footage-description, .video-title {
-        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
-      }
+      .cursor-glow { display: none; }
 
-      /* Standardized mobile nav */
       .nav-bar {
         position: absolute;
         padding: 16px 16px;
@@ -345,102 +313,45 @@
         -webkit-backdrop-filter: none;
       }
 
-      .nav-link {
-        font-size: 11px;
-        padding: 6px 0;
-        letter-spacing: 0.1em;
+      .nav-link { font-size: 11px; letter-spacing: 0.1em; padding: 6px 0; }
+
+      .theme-toggle {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        top: auto;
+        transform: none;
+        z-index: 1002;
+        opacity: 1;
+        transition: opacity 0.3s ease;
+      }
+      .theme-toggle svg { width: 14px; height: 14px; }
+
+      .layout { flex-direction: column; padding: 0 24px; padding-top: 60px; }
+
+      .sidebar {
+        position: relative; top: 0; width: 100%;
+        max-height: none; padding: 24px 0 16px 0;
       }
 
-      .theme-toggle { right: 16px; }
+      .sidebar h1 { font-size: 32px; }
+      .sidebar .subtitle { font-size: 14px; }
 
-      .footage-container {
-        padding: 110px 24px 60px;
-        max-width: 100%;
-        overflow-x: hidden;
-      }
+      .content { width: 100%; padding: 16px 0 64px 0; }
 
-      .footage-heading {
-        font-size: 32px;
-        line-height: 1.2;
-        word-wrap: break-word;
-        overflow-wrap: break-word;
-      }
+      .video-item { margin-bottom: 32px; }
 
-      .footage-subheading {
-        font-size: 15px;
-        word-wrap: break-word;
-        overflow-wrap: break-word;
-      }
+      .video-wrapper { border-radius: 8px; }
 
-      .footage-description {
-        font-size: 14px;
-        padding: 0;
-        word-wrap: break-word;
-        overflow-wrap: break-word;
-        text-align: left;
-      }
-
-      .videos-grid {
-        grid-template-columns: 1fr;
-        gap: 32px;
-        margin-top: 32px;
-      }
-
-      .video-item {
-        width: 100%;
-        max-width: 100%;
-      }
-
-      .video-wrapper {
-        width: 100%;
-        padding-bottom: 56.25%;
-        border-radius: 8px;
-      }
-
-      .video-title {
-        font-size: 13px;
-        text-align: left;
-      }
+      .video-title { font-size: 11px; }
     }
-
-    @media (max-width: 480px) {
-      .footage-container {
-        padding: 90px 16px 50px;
-      }
-
-      .footage-heading {
-        font-size: 26px;
-      }
-
-      .footage-subheading {
-        font-size: 13px;
-      }
-
-      .footage-description {
-        font-size: 13px;
-      }
-
-      .videos-grid {
-        gap: 24px;
-      }
-
-      .nav-link {
-        font-size: 11px;
-        padding: 6px 0;
-        letter-spacing: 0.1em;
-      }
-    }
-
-    @media (min-width: 769px) {
-      .footage-container {
-        padding: 100px 40px 80px;
-      }
-    }
-
   </style>
 </head>
 <body>
-  <!-- Navigation Bar -->
+  <!-- Cursor Glow -->
+  <div class="cursor-glow" id="cursorGlow"></div>
+
+  <!-- Top Nav -->
   <nav class="nav-bar">
     <a href="/" class="nav-link">HOME</a>
     <a href="/resume" class="nav-link">RESUME</a>
@@ -452,47 +363,96 @@
     </button>
   </nav>
 
-  <!-- Footage Page Content -->
-  <div class="footage-container">
-    <div class="footage-content">
-      <div class="footage-header">
-        <h1 class="footage-heading" id="footageHeading">Footage</h1>
-        <p class="footage-subheading" id="footageSubheading">// Background videos and aerial shots</p>
-        <p class="footage-description" id="footageDescription">A collection of aerial footage and background videos captured during my travels and adventures.</p>
+  <div class="layout">
+    <!-- ====== LEFT SIDEBAR ====== -->
+    <header class="sidebar">
+      <h1 id="footageHeading">Footage</h1>
+      <p class="subtitle">Background videos and aerial shots captured during travels and adventures.</p>
+    </header>
+
+    <!-- ====== RIGHT CONTENT ====== -->
+    <main class="content">
+      <h2 class="section-label">Videos</h2>
+
+      <div class="video-item">
+        <div class="video-wrapper">
+          <iframe
+            class="video-iframe"
+            src="https://www.youtube.com/embed/CubFwvNLOlw"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen
+          ></iframe>
+        </div>
+        <p class="video-title">Site Background Footage</p>
       </div>
 
-      <div class="videos-grid">
-        <div class="video-item">
-          <div class="video-wrapper" id="videoWrapper1">
-            <iframe 
-              class="video-iframe"
-              src="https://www.youtube.com/embed/CubFwvNLOlw"
-              frameborder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowfullscreen
-            ></iframe>
-          </div>
-          <p class="video-title">Site Background Footage</p>
+      <div class="video-item">
+        <div class="video-wrapper">
+          <iframe
+            class="video-iframe"
+            src="https://www.youtube.com/embed/HUJx1MnxK0o"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen
+          ></iframe>
         </div>
-
-        <div class="video-item">
-          <div class="video-wrapper" id="videoWrapper2">
-            <iframe 
-              class="video-iframe"
-              src="https://www.youtube.com/embed/HUJx1MnxK0o"
-              frameborder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowfullscreen
-            ></iframe>
-          </div>
-          <p class="video-title">Istanbul, Turkey - Drone Film</p>
-        </div>
+        <p class="video-title">Istanbul, Turkey - Drone Film</p>
       </div>
-    </div>
+    </main>
   </div>
 
-          <script>
-    // Theme toggle
+  <script>
+    // ---- Cursor Glow ----
+    (function() {
+      const glow = document.getElementById('cursorGlow');
+      if (!glow || window.innerWidth < 769) return;
+      let mouseX = 0, mouseY = 0, glowX = 0, glowY = 0;
+      document.addEventListener('mousemove', (e) => {
+        mouseX = e.clientX; mouseY = e.clientY;
+        if (!glow.classList.contains('visible')) glow.classList.add('visible');
+      });
+      function animate() {
+        glowX += (mouseX - glowX) * 0.3;
+        glowY += (mouseY - glowY) * 0.3;
+        glow.style.left = glowX + 'px';
+        glow.style.top = glowY + 'px';
+        requestAnimationFrame(animate);
+      }
+      animate();
+    })();
+
+    // ---- Name Scramble Animation ----
+    (function() {
+      const heading = document.getElementById('footageHeading');
+      if (!heading) return;
+      const finalText = heading.textContent.trim();
+      const scrambleChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+      const duration = 600;
+
+      setTimeout(() => {
+        const startTime = Date.now();
+        const chars = finalText.split('');
+        function animate() {
+          const elapsed = Date.now() - startTime;
+          const progress = Math.min(elapsed / duration, 1);
+          const eased = 1 - Math.pow(1 - progress, 3);
+          const revealIndex = Math.floor(eased * chars.length);
+          const scrambled = chars.map((char, i) => {
+            if (char === ' ') return char;
+            if (i < revealIndex) return char;
+            return scrambleChars[Math.floor(Math.random() * scrambleChars.length)];
+          }).join('');
+          heading.textContent = scrambled;
+          heading.style.opacity = '1';
+          if (progress < 1) requestAnimationFrame(animate);
+          else { heading.textContent = finalText; heading.style.opacity = '1'; }
+        }
+        requestAnimationFrame(animate);
+      }, 100);
+    })();
+
+    // ---- Theme Toggle ----
     (function() {
       const toggle = document.getElementById('themeToggle');
       const saved = localStorage.getItem('theme');
@@ -509,9 +469,17 @@
         }
         setTimeout(() => document.documentElement.classList.remove('theme-transition'), 350);
       });
+
+      // Mobile: fade toggle on scroll
+      if (window.innerWidth <= 768) {
+        let scrollTimer;
+        window.addEventListener('scroll', () => {
+          toggle.style.opacity = '0';
+          clearTimeout(scrollTimer);
+          scrollTimer = setTimeout(() => { toggle.style.opacity = '1'; }, 400);
+        }, { passive: true });
+      }
     })();
   </script>
-          <script type="module" src="/footage-scramble.js"></script>
 </body>
 </html>
-

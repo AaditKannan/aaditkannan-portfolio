@@ -232,6 +232,7 @@
       color: var(--text-white);
       line-height: 1.1;
       letter-spacing: -0.02em;
+      opacity: 0;
     }
 
     .sidebar .subtitle {
@@ -259,7 +260,7 @@
       margin-top: 20px;
       display: flex;
       flex-direction: column;
-      align-items: flex-end;
+      align-items: flex-start;
       gap: 4px;
     }
 
@@ -343,6 +344,12 @@
       fill: currentColor;
     }
 
+    .social-x {
+      margin-left: auto;
+    }
+
+    .short-text { display: none; }
+
     /* ---- Right Content ---- */
     .content {
       width: 52%;
@@ -370,7 +377,9 @@
       position: sticky;
       top: 80px;
       background: var(--bg);
-      padding: 20px 0 12px 0;
+      padding: 20px 20px 12px 20px;
+      margin-left: -20px;
+      margin-right: -20px;
       z-index: 10;
     }
 
@@ -501,6 +510,8 @@
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 40px;
+      padding: 0 20px;
+      margin: 0 -20px;
     }
 
     .skills-grid h4 {
@@ -536,8 +547,18 @@
         backdrop-filter: none;
         -webkit-backdrop-filter: none;
       }
-      .theme-toggle { right: 16px; }
-      .nav-link { font-size: 11px; letter-spacing: 0.1em; padding: 6px 0; font-family: 'Inter', system-ui, -apple-system, sans-serif; }
+      .theme-toggle {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        top: auto;
+        transform: none;
+        z-index: 1002;
+        opacity: 1;
+        transition: opacity 0.3s ease;
+      }
+      .theme-toggle svg { width: 14px; height: 14px; }
+      .nav-link { font-size: 11px; letter-spacing: 0.1em; padding: 6px 0; }
 
       .layout { flex-direction: column; padding: 0 24px; padding-top: 60px; }
 
@@ -589,14 +610,19 @@
         margin-top: 0;
       }
 
-      .sidebar-nav a { font-size: 14px; padding: 2px 0; }
+      .sidebar-nav a { font-size: 13px; padding: 0; }
+      .sidebar-nav a::after { display: none; }
+      .full-text { display: none; }
+      .short-text { display: inline; }
 
       .content { width: 100%; padding: 32px 0 64px 0; }
       .content section { padding-bottom: 48px; }
 
       .section-label {
         top: 0;
-        padding: 12px 0;
+        padding: 12px 12px;
+        margin-left: -12px;
+        margin-right: -12px;
       }
 
       .pdf-typing-text { display: none; }
@@ -633,7 +659,7 @@
     <!-- ====== LEFT SIDEBAR ====== -->
     <header class="sidebar">
       <div>
-        <h1>Aadit Kannan</h1>
+        <h1 id="nameHeading">Aadit Kannan</h1>
         <p class="subtitle">Mechanical Engineer</p>
         <img src="./assets/photo.jpg" alt="Aadit Kannan" class="sidebar-photo">
 
@@ -642,7 +668,7 @@
           <a href="#technical-experience" data-section="technical-experience">Technical</a>
           <a href="#work-experience" data-section="work-experience">Work</a>
           <a href="#education" data-section="education">Education</a>
-          <a href="#volunteering" data-section="volunteering">Volunteering</a>
+          <a href="#volunteering" data-section="volunteering"><span class="full-text">Volunteering</span><span class="short-text">Volunteer</span></a>
           <a href="#skills" data-section="skills">Skills</a>
         </nav>
       </div>
@@ -654,9 +680,6 @@
         <a href="https://www.linkedin.com/in/aaditkannan" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
         </a>
-        <a href="https://x.com/aadit_kannan" target="_blank" rel="noopener noreferrer" aria-label="X">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-        </a>
         <!-- Resume PDF -->
         <div class="resume-pdf-wrapper">
           <a href="/assets/NewResume.pdf" target="_blank" rel="noopener noreferrer" aria-label="Resume PDF">
@@ -664,6 +687,9 @@
           </a>
           <span class="pdf-typing-text" id="pdfTypingText"><span class="typing-cursor"></span></span>
         </div>
+        <a href="https://x.com/aadit_kannan" target="_blank" rel="noopener noreferrer" aria-label="X" class="social-x">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+        </a>
       </div>
     </header>
 
@@ -1002,6 +1028,46 @@
         }
         setTimeout(() => document.documentElement.classList.remove('theme-transition'), 350);
       });
+
+      // Mobile: fade toggle on scroll
+      if (window.innerWidth <= 768) {
+        let scrollTimer;
+        window.addEventListener('scroll', () => {
+          toggle.style.opacity = '0';
+          clearTimeout(scrollTimer);
+          scrollTimer = setTimeout(() => { toggle.style.opacity = '1'; }, 400);
+        }, { passive: true });
+      }
+    })();
+
+    // ---- Name Scramble Animation ----
+    (function() {
+      const heading = document.getElementById('nameHeading');
+      if (!heading) return;
+      const finalText = heading.textContent.trim();
+      const scrambleChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+      const duration = 600;
+
+      setTimeout(() => {
+        const startTime = Date.now();
+        const chars = finalText.split('');
+        function animate() {
+          const elapsed = Date.now() - startTime;
+          const progress = Math.min(elapsed / duration, 1);
+          const eased = 1 - Math.pow(1 - progress, 3);
+          const revealIndex = Math.floor(eased * chars.length);
+          const scrambled = chars.map((char, i) => {
+            if (char === ' ') return char;
+            if (i < revealIndex) return char;
+            return scrambleChars[Math.floor(Math.random() * scrambleChars.length)];
+          }).join('');
+          heading.textContent = scrambled;
+          heading.style.opacity = '1';
+          if (progress < 1) requestAnimationFrame(animate);
+          else { heading.textContent = finalText; heading.style.opacity = '1'; }
+        }
+        requestAnimationFrame(animate);
+      }, 100);
     })();
 
   </script>
