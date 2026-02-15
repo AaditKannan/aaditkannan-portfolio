@@ -5,7 +5,7 @@
   <script>!function(key) {if (window.reb2b) return;window.reb2b = {loaded: true};var s = document.createElement("script");s.async = true;s.src = "https://ddwl4m2hdecbv.cloudfront.net/b/" + key + "/" + key + ".js.gz";document.getElementsByTagName("script")[0].parentNode.insertBefore(s, document.getElementsByTagName("script")[0]);}("0OV0VHYEV56Z");</script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
-  
+
   <!-- Primary Meta Tags -->
   <title>Aadit Kannan | Connect</title>
   <meta name="title" content="Aadit Kannan | Connect">
@@ -14,21 +14,21 @@
   <meta name="author" content="Aadit Kannan">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://aaditkannan.com/connect">
-  
+
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://aaditkannan.com/connect">
   <meta property="og:title" content="Aadit Kannan | Connect">
   <meta property="og:description" content="Connect with Aadit Kannan - UC Berkeley Mechanical Engineering student.">
   <meta property="og:image" content="https://aaditkannan.com/assets/photo.jpg">
-  
+
   <!-- Twitter -->
   <meta property="twitter:card" content="summary_large_image">
   <meta property="twitter:url" content="https://aaditkannan.com/connect">
   <meta property="twitter:title" content="Aadit Kannan | Connect">
   <meta property="twitter:description" content="Connect with Aadit Kannan - UC Berkeley Mechanical Engineering student.">
   <meta property="twitter:image" content="https://aaditkannan.com/assets/photo.jpg">
-  
+
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="/assets/newstfavicon.png">
   <link rel="apple-touch-icon" sizes="180x180" href="/assets/newstfavicon.png">
@@ -54,54 +54,64 @@
       src: url('/assets/fonts/HvDTrial_Brandon_Grotesque_bold-BF64a625c9151d5.otf') format('opentype');
       font-weight: 700; font-style: normal; font-display: swap;
     }
-  </style>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
+
+    :root {
+      --font-heading: 'Brandon Grotesque', 'brandon-grotesque', 'Inter', system-ui, sans-serif;
+      --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+      --bg: #0a0a0a;
+      --text-primary: #e2e8f0;
+      --text-secondary: #94a3b8;
+      --text-heading: #ccd6f6;
+      --text-white: #ffffff;
+      --text-muted: #64748b;
+      --nav-bg: rgba(10, 10, 10, 0.95);
+      --glow-center: rgba(255, 255, 255, 0.04);
+      --glow-mid: rgba(255, 255, 255, 0.015);
+      --nav-link: rgba(255, 255, 255, 0.7);
+      --nav-link-hover: #FFFFFF;
+      --nav-border-hover: rgba(255, 255, 255, 0.5);
+      --info-border: rgba(255, 255, 255, 0.08);
+      --info-bg: rgba(255, 255, 255, 0.02);
     }
+
+    [data-theme="light"] {
+      --bg: #f5f2ee;
+      --text-primary: #2d3748;
+      --text-secondary: #5a6577;
+      --text-heading: #1a202c;
+      --text-white: #111827;
+      --text-muted: #8896a6;
+      --nav-bg: rgba(245, 242, 238, 0.95);
+      --glow-center: rgba(0, 0, 0, 0.025);
+      --glow-mid: rgba(0, 0, 0, 0.01);
+      --nav-link: rgba(0, 0, 0, 0.55);
+      --nav-link-hover: #111827;
+      --nav-border-hover: rgba(0, 0, 0, 0.3);
+      --info-border: rgba(0, 0, 0, 0.1);
+      --info-bg: rgba(0, 0, 0, 0.02);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
     html {
-      overflow-y: scroll;
+      scroll-behavior: smooth;
       scrollbar-width: none;
       -ms-overflow-style: none;
     }
-    html::-webkit-scrollbar {
-      display: none;
-    }
+    html::-webkit-scrollbar { display: none; }
 
     body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      color: #FFFFFF;
-      min-height: 100vh;
-      background: #0a0a0a;
+      font-family: var(--font-body);
+      background: var(--bg);
+      color: var(--text-primary);
+      line-height: 1.6;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
-      overflow-y: scroll;
-      scrollbar-width: none;
-      -ms-overflow-style: none;
-    }
-    body::-webkit-scrollbar {
-      display: none;
     }
 
-    /* Cursor Glow */
-    .cursor-glow {
-      position: fixed;
-      width: 600px;
-      height: 600px;
-      border-radius: 50%;
-      pointer-events: none;
-      z-index: 1;
-      background: radial-gradient(circle, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.015) 40%, transparent 70%);
-      transform: translate(-50%, -50%);
-      transition: opacity 0.3s ease;
-      opacity: 0;
-    }
-    .cursor-glow.visible { opacity: 1; }
+    a { color: inherit; text-decoration: none; }
 
-    /* Navigation Bar */
+    /* ---- Top Nav (fixed with backdrop) ---- */
     .nav-bar {
       position: fixed;
       top: 0;
@@ -113,323 +123,394 @@
       justify-content: center;
       align-items: center;
       gap: 40px;
-      background: transparent;
+      background: var(--nav-bg);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
       height: 80px;
-      box-sizing: border-box;
     }
 
     .nav-link {
-      color: rgba(255, 255, 255, 0.7);
+      color: var(--nav-link);
       text-decoration: none;
       font-size: 13px;
       font-weight: 500;
       letter-spacing: 0.15em;
       text-transform: uppercase;
-      transition: all 0.3s ease;
-      padding: 8px 0;
+      font-family: var(--font-heading);
       border-bottom: 1px solid transparent;
-      font-family: 'Brandon Grotesque', 'brandon-grotesque', 'Inter', system-ui, sans-serif;
+      padding: 8px 0;
+      transition: all 0.3s ease;
       line-height: 1;
     }
 
     .nav-link:hover {
-      color: #FFFFFF;
-      border-bottom-color: rgba(255, 255, 255, 0.5);
+      color: var(--nav-link-hover);
+      border-bottom-color: var(--nav-border-hover);
     }
 
     .nav-link.active {
-      color: #FFFFFF;
-      border-bottom-color: #FFFFFF;
+      color: var(--nav-link-hover);
+      border-bottom-color: var(--nav-link-hover);
     }
 
-    /* Main Container */
-    .connect-container {
-      min-height: 100vh;
+    /* ---- Theme Toggle ---- */
+    .theme-toggle {
+      position: fixed;
+      top: 28px;
+      right: 40px;
+      z-index: 1002;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--text-muted);
+      padding: 4px;
       display: flex;
-      flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 120px 40px 60px;
-      max-width: 800px;
-      margin: 0 auto;
-      width: 100%;
+      transition: color 0.25s ease;
     }
 
-    /* Header */
-    .connect-header {
-      text-align: center;
-      margin-bottom: 48px;
-      width: 100%;
+    .theme-toggle:hover { color: var(--text-white); }
+
+    .theme-toggle svg {
+      width: 18px;
+      height: 18px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.5;
     }
 
-    .connect-heading {
-      font-family: 'Brandon Grotesque', 'brandon-grotesque', 'Inter', system-ui, sans-serif;
-      font-size: clamp(48px, 8vw, 72px);
-      font-weight: 400;
-      color: #FFFFFF;
-      letter-spacing: 0.02em;
-      margin-bottom: 16px;
+    .theme-toggle .icon-sun { display: none; }
+    .theme-toggle .icon-moon { display: block; }
+
+    [data-theme="light"] .theme-toggle .icon-sun { display: block; }
+    [data-theme="light"] .theme-toggle .icon-moon { display: none; }
+
+    /* ---- Cursor Glow ---- */
+    .cursor-glow {
+      position: fixed;
+      width: 600px;
+      height: 600px;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 1;
+      background: radial-gradient(circle, var(--glow-center) 0%, var(--glow-mid) 40%, transparent 70%);
+      transform: translate(-50%, -50%);
+      transition: opacity 0.3s ease;
       opacity: 0;
     }
+    .cursor-glow.visible { opacity: 1; }
 
-    .connect-subtitle {
-      font-family: 'Inter', sans-serif;
-      font-size: 15px;
-      font-weight: 300;
-      color: rgba(255, 255, 255, 0.4);
-      letter-spacing: 0.03em;
+    /* ---- Two-Column Layout ---- */
+    .layout {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: flex;
+      min-height: 100vh;
+      padding: 0 48px;
+      padding-top: 80px;
+    }
+
+    /* ---- Left Sidebar (Sticky) ---- */
+    .sidebar {
+      position: sticky;
+      top: 80px;
+      width: 48%;
+      max-height: calc(100vh - 80px);
+      padding: 48px 48px 24px 0;
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+      overflow: hidden;
+    }
+
+    .sidebar h1 {
+      font-family: var(--font-body);
+      font-size: 48px;
+      font-weight: 700;
+      color: var(--text-white);
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+    }
+
+    .sidebar .subtitle {
+      font-family: var(--font-body);
+      font-size: 16px;
+      font-weight: 400;
+      color: var(--text-secondary);
+      margin-top: 12px;
       line-height: 1.6;
     }
 
-    @keyframes fadeInUp {
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    /* Contact Links Row */
-    .contact-row {
+    /* ---- Contact Links ---- */
+    .contact-links {
       display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 16px;
-      margin-bottom: 56px;
-      opacity: 0;
-      transform: translateY(20px);
-      animation: fadeInUp 0.6s ease 0.3s forwards;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 36px;
     }
 
-    .contact-pill {
+    .contact-link-item {
       display: inline-flex;
       align-items: center;
-      justify-content: center;
       gap: 10px;
-      padding: 10px 26px;
-      min-width: 140px;
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      border-radius: 100px;
-      text-decoration: none;
-      color: rgba(255, 255, 255, 0.7);
-      font-family: 'Inter', sans-serif;
+      color: var(--text-muted);
       font-size: 14px;
       font-weight: 400;
-      transition: all 0.3s ease;
-      background: transparent;
+      transition: color 0.25s ease;
     }
 
-    .contact-pill:hover {
-      color: #FFFFFF;
-      border-color: rgba(255, 255, 255, 0.5);
-      background: rgba(255, 255, 255, 0.05);
-      transform: translateY(-2px);
+    .contact-link-item:hover {
+      color: var(--text-white);
     }
 
-    .contact-pill svg {
-      width: 16px;
-      height: 16px;
+    .contact-link-item svg {
+      width: 18px;
+      height: 18px;
       stroke: currentColor;
       fill: none;
       stroke-width: 1.5;
       flex-shrink: 0;
     }
 
-    .pill-divider {
-      width: 1px;
-      height: 20px;
-      background: rgba(255, 255, 255, 0.12);
-    }
-
-    /* Calendar Section */
-    .calendar-section {
-      width: 100%;
+    .contact-link-item .link-arrow {
+      font-size: 12px;
       opacity: 0;
-      transform: translateY(20px);
-      animation: fadeInUp 0.6s ease 0.5s forwards;
+      transition: opacity 0.25s ease, transform 0.25s ease;
+      margin-left: 2px;
     }
 
-    .calendar-label {
-      font-family: 'Brandon Grotesque', 'brandon-grotesque', 'Inter', system-ui, sans-serif;
+    .contact-link-item:hover .link-arrow {
+      opacity: 1;
+      transform: translate(2px, -2px);
+    }
+
+    /* ---- Footer Note ---- */
+    .sidebar-footer {
+      margin-top: auto;
+      padding-top: 32px;
+    }
+
+    .sidebar-footer p {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* ---- Right Content ---- */
+    .content {
+      width: 52%;
+      padding: 48px 0 96px 0;
+    }
+
+    .section-label {
+      font-family: var(--font-heading);
       font-size: 11px;
-      font-weight: 400;
-      color: rgba(255, 255, 255, 0.3);
-      text-transform: uppercase;
+      font-weight: 600;
       letter-spacing: 0.2em;
-      margin-bottom: 16px;
-      text-align: center;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 24px;
     }
 
+    /* ---- Calendar ---- */
     .calendar-wrapper {
-      position: relative;
       width: 100%;
-      border-radius: 12px;
+      border-radius: 8px;
       overflow: hidden;
-      background: rgba(255, 255, 255, 0.02);
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: var(--info-bg);
+      border: 1px solid var(--info-border);
     }
 
     .calendar-iframe {
       width: 100%;
-      height: 420px;
+      height: 520px;
       border: 0;
       display: block;
       background: transparent;
       filter: invert(1) hue-rotate(180deg) brightness(1.2) contrast(0.9);
     }
 
-    /* Footer Note */
-    .connect-footer {
-      margin-top: 48px;
-      text-align: center;
-      opacity: 0;
-      animation: fadeInUp 0.6s ease 0.7s forwards;
+    [data-theme="light"] .calendar-iframe {
+      filter: none;
     }
 
-    .footer-text {
-      font-family: 'Inter', sans-serif;
+    /* ---- Info Section ---- */
+    .info-section {
+      margin-top: 56px;
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+    }
+
+    .info-block h4 {
+      font-family: var(--font-body);
       font-size: 13px;
-      font-weight: 300;
-      color: rgba(255, 255, 255, 0.3);
-      line-height: 1.8;
+      font-weight: 600;
+      color: var(--text-heading);
+      margin-bottom: 8px;
     }
 
-    /* Responsive */
+    .info-block p {
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    .info-block a {
+      color: var(--text-secondary);
+      transition: color 0.2s ease;
+    }
+
+    .info-block a:hover {
+      color: var(--text-white);
+    }
+
+    /* ============================================
+       MOBILE RESPONSIVE (<= 768px)
+       ============================================ */
     @media (max-width: 768px) {
       .cursor-glow { display: none; }
-
-      body, .nav-link, .connect-heading, .connect-subtitle,
-      .contact-pill, .calendar-label, .footer-text {
-        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
-      }
+      .theme-toggle { top: 16px; right: 16px; }
 
       .nav-bar {
         position: absolute !important;
         padding: 16px 16px;
         gap: 24px;
-        justify-content: center;
         height: auto;
         background: transparent !important;
         backdrop-filter: none !important;
-        border-bottom: none !important;
       }
 
-      .nav-link {
-        font-size: 11px;
-        padding: 6px 0;
-        letter-spacing: 0.1em;
+      .nav-link { font-size: 11px; letter-spacing: 0.1em; }
+
+      .layout { flex-direction: column; padding: 0 24px; padding-top: 60px; }
+
+      .sidebar {
+        position: relative; top: 0; width: 100%;
+        max-height: none; padding: 24px 0 32px 0;
       }
 
-      .connect-container {
-        padding: 110px 24px 50px;
-        justify-content: flex-start;
-      }
+      .sidebar h1 { font-size: 32px; text-align: center; }
+      .sidebar .subtitle { font-size: 14px; text-align: center; }
 
-      .connect-header {
-        margin-bottom: 36px;
-      }
-
-      .contact-row {
+      .contact-links {
         flex-direction: row;
-        gap: 12px;
-        margin-bottom: 40px;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 16px;
+        margin-top: 24px;
       }
 
-      .pill-divider {
-        display: none;
-      }
+      .contact-link-item .link-arrow { display: none; }
 
-      .contact-pill {
-        min-width: 0;
-        padding: 9px 18px;
-        font-size: 13px;
-      }
+      .sidebar-footer { display: none; }
 
-      .calendar-iframe {
-        height: 380px;
-      }
+      .content { width: 100%; padding: 16px 0 64px 0; }
 
-      .connect-footer {
-        margin-top: 32px;
-      }
+      .calendar-iframe { height: 380px; }
+
+      .info-grid { grid-template-columns: 1fr; gap: 20px; }
     }
-
-    @media (max-width: 480px) {
-      .nav-link {
-        font-size: 11px;
-        letter-spacing: 0.1em;
-      }
-
-      .connect-container {
-        padding: 90px 16px 40px;
-      }
-
-      .contact-pill {
-        font-size: 13px;
-        padding: 9px 18px;
-      }
-
-      .calendar-iframe {
-        height: 340px;
-      }
-    }
-
   </style>
 </head>
 <body>
   <div class="cursor-glow" id="cursorGlow"></div>
 
-  <!-- Navigation Bar -->
+  <!-- Theme Toggle -->
+  <button class="theme-toggle" id="themeToggle" aria-label="Toggle light mode">
+    <svg class="icon-moon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    <svg class="icon-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+  </button>
+
+  <!-- Top Nav -->
   <nav class="nav-bar">
     <a href="/" class="nav-link">HOME</a>
     <a href="/resume" class="nav-link">RESUME</a>
-    <a href="/projects" class="nav-link">Projects</a>
-    <a href="/connect" class="nav-link active">Connect</a>
+    <a href="/projects" class="nav-link">PROJECTS</a>
+    <a href="/connect" class="nav-link active">CONNECT</a>
   </nav>
 
-  <!-- Main Content -->
-  <div class="connect-container">
-    <div class="connect-header">
-      <h1 class="connect-heading" id="connectHeading">Connect</h1>
-      <p class="connect-subtitle">Prefer email for the fastest response.</p>
-    </div>
+  <div class="layout">
+    <!-- ====== LEFT SIDEBAR ====== -->
+    <header class="sidebar">
+      <div>
+        <h1>Connect</h1>
+        <p class="subtitle">Prefer email for the fastest response. Open to opportunities, collaborations, and conversations.</p>
 
-    <div class="contact-row">
-      <a href="mailto:aaditkannan@berkeley.edu" class="contact-pill">
-        <svg viewBox="0 0 24 24">
-          <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
-          <polyline points="22,6 12,13 2,6"/>
-        </svg>
-        Email me
-      </a>
-      <div class="pill-divider"></div>
-      <a href="https://www.linkedin.com/in/aaditkannan" target="_blank" rel="noopener noreferrer" class="contact-pill">
-        <svg viewBox="0 0 24 24">
-          <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
-          <rect x="2" y="9" width="4" height="12"/>
-          <circle cx="4" cy="4" r="2"/>
-        </svg>
-        LinkedIn
-      </a>
-    </div>
-
-    <div class="calendar-section">
-      <p class="calendar-label">My Availability</p>
-      <div class="calendar-wrapper">
-        <iframe
-          src="https://calendar.google.com/calendar/embed?src=aaditkannan%40berkeley.edu&ctz=America%2FLos_Angeles"
-          class="calendar-iframe"
-          frameborder="0"
-          scrolling="no"
-          title="Aadit Kannan's Calendar Availability"
-        ></iframe>
+        <div class="contact-links">
+          <a href="mailto:aaditkannan@berkeley.edu" class="contact-link-item">
+            <svg viewBox="0 0 24 24">
+              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+              <polyline points="22,6 12,13 2,6"/>
+            </svg>
+            aaditkannan@berkeley.edu
+            <span class="link-arrow">&#8599;</span>
+          </a>
+          <a href="https://www.linkedin.com/in/aaditkannan" target="_blank" rel="noopener noreferrer" class="contact-link-item">
+            <svg viewBox="0 0 24 24">
+              <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
+              <rect x="2" y="9" width="4" height="12"/>
+              <circle cx="4" cy="4" r="2"/>
+            </svg>
+            LinkedIn
+            <span class="link-arrow">&#8599;</span>
+          </a>
+          <a href="https://x.com/aadit_kannan" target="_blank" rel="noopener noreferrer" class="contact-link-item">
+            <svg viewBox="0 0 24 24" fill="currentColor" stroke="none">
+              <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+            </svg>
+            @aadit_kannan
+            <span class="link-arrow">&#8599;</span>
+          </a>
+        </div>
       </div>
-    </div>
 
-    <div class="connect-footer">
-      <p class="footer-text">
-        Based in Berkeley, CA — open to opportunities and collaborations.
-      </p>
-    </div>
+      <div class="sidebar-footer">
+        <p>Based in Berkeley, CA.</p>
+      </div>
+    </header>
+
+    <!-- ====== RIGHT CONTENT ====== -->
+    <main class="content">
+      <section>
+        <h2 class="section-label">My Availability</h2>
+        <div class="calendar-wrapper">
+          <iframe
+            src="https://calendar.google.com/calendar/embed?src=aaditkannan%40berkeley.edu&ctz=America%2FLos_Angeles"
+            class="calendar-iframe"
+            frameborder="0"
+            scrolling="no"
+            title="Aadit Kannan's Calendar Availability"
+          ></iframe>
+        </div>
+      </section>
+
+      <section class="info-section">
+        <h2 class="section-label">Info</h2>
+        <div class="info-grid">
+          <div class="info-block">
+            <h4>Location</h4>
+            <p>Berkeley, CA</p>
+          </div>
+          <div class="info-block">
+            <h4>Phone</h4>
+            <p><a href="tel:+17345460380">+1 (734) 546-0380</a></p>
+          </div>
+          <div class="info-block">
+            <h4>University</h4>
+            <p>UC Berkeley, Mechanical Engineering</p>
+          </div>
+          <div class="info-block">
+            <h4>Resume</h4>
+            <p><a href="/assets/NewResume.pdf" target="_blank">View PDF</a></p>
+          </div>
+        </div>
+      </section>
+    </main>
   </div>
 
   <script type="module" src="/connect-scramble.js"></script>
@@ -451,6 +532,23 @@
         requestAnimationFrame(animate);
       }
       animate();
+    })();
+
+    // Theme toggle
+    (function() {
+      const toggle = document.getElementById('themeToggle');
+      const saved = localStorage.getItem('theme');
+      if (saved === 'light') document.documentElement.setAttribute('data-theme', 'light');
+      toggle.addEventListener('click', () => {
+        const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+        if (isLight) {
+          document.documentElement.removeAttribute('data-theme');
+          localStorage.setItem('theme', 'dark');
+        } else {
+          document.documentElement.setAttribute('data-theme', 'light');
+          localStorage.setItem('theme', 'light');
+        }
+      });
     })();
   </script>
 </body>

@@ -56,6 +56,29 @@
       --text-muted: #555;
       --border: rgba(255,255,255,0.08);
       --border-light: rgba(255,255,255,0.15);
+      --nav-bg: rgba(10, 10, 10, 0.95);
+      --nav-link: rgba(255, 255, 255, 0.7);
+      --nav-link-hover: #FFFFFF;
+      --nav-border-hover: rgba(255, 255, 255, 0.5);
+      --glow-center: rgba(255, 255, 255, 0.04);
+      --glow-mid: rgba(255, 255, 255, 0.015);
+      --card-bg: rgba(255,255,255,0.02);
+    }
+
+    [data-theme="light"] {
+      --bg: #f5f2ee;
+      --text: #111827;
+      --text-dim: #5a6577;
+      --text-muted: #8896a6;
+      --border: rgba(0,0,0,0.08);
+      --border-light: rgba(0,0,0,0.18);
+      --nav-bg: rgba(245, 242, 238, 0.95);
+      --nav-link: rgba(0, 0, 0, 0.55);
+      --nav-link-hover: #111827;
+      --nav-border-hover: rgba(0, 0, 0, 0.3);
+      --glow-center: rgba(0, 0, 0, 0.025);
+      --glow-mid: rgba(0, 0, 0, 0.01);
+      --card-bg: rgba(0,0,0,0.02);
     }
 
     html { 
@@ -80,6 +103,39 @@
     }
     body::-webkit-scrollbar { display: none; }
 
+    /* Theme Toggle */
+    .theme-toggle {
+      position: fixed;
+      top: 28px;
+      right: 40px;
+      z-index: 1002;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--text-muted);
+      padding: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: color 0.25s ease;
+    }
+
+    .theme-toggle:hover { color: var(--text); }
+
+    .theme-toggle svg {
+      width: 18px;
+      height: 18px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.5;
+    }
+
+    .theme-toggle .icon-sun { display: none; }
+    .theme-toggle .icon-moon { display: block; }
+
+    [data-theme="light"] .theme-toggle .icon-sun { display: block; }
+    [data-theme="light"] .theme-toggle .icon-moon { display: none; }
+
     /* Cursor Glow */
     .cursor-glow {
       position: fixed;
@@ -88,7 +144,7 @@
       border-radius: 50%;
       pointer-events: none;
       z-index: 1;
-      background: radial-gradient(circle, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.015) 40%, transparent 70%);
+      background: radial-gradient(circle, var(--glow-center) 0%, var(--glow-mid) 40%, transparent 70%);
       transform: translate(-50%, -50%);
       transition: opacity 0.3s ease;
       opacity: 0;
@@ -111,13 +167,15 @@
       justify-content: center;
       align-items: center;
       gap: 40px;
-      background: transparent;
+      background: var(--nav-bg);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
       height: 80px;
       box-sizing: border-box;
     }
 
     .nav-link {
-      color: rgba(255, 255, 255, 0.7);
+      color: var(--nav-link);
       text-decoration: none;
       font-size: 13px;
       font-weight: 500;
@@ -131,10 +189,10 @@
     }
 
     .nav-link:hover {
-      color: #FFFFFF;
-      border-bottom-color: rgba(255, 255, 255, 0.5);
+      color: var(--nav-link-hover);
+      border-bottom-color: var(--nav-border-hover);
     }
-    .nav-link.active { color: #FFFFFF; border-bottom-color: #FFFFFF; }
+    .nav-link.active { color: var(--nav-link-hover); border-bottom-color: var(--nav-link-hover); }
 
     /* Main content */
     main {
@@ -234,7 +292,7 @@
       font-family: 'Inter', system-ui, -apple-system, sans-serif;
       font-size: clamp(42px, 7vw, 56px);
       font-weight: 700;
-      color: #FFFFFF;
+      color: var(--text);
       letter-spacing: -0.02em;
       line-height: 1.1;
       margin: 0;
@@ -256,7 +314,7 @@
     }
 
     .project-card {
-      background: rgba(255,255,255,0.02);
+      background: var(--card-bg);
       border: 1px solid var(--border);
       cursor: pointer;
       overflow: hidden;
@@ -267,13 +325,20 @@
     }
 
     .project-card:hover {
-      border-color: rgba(255,255,255,0.3);
-      background: rgba(255,255,255,0.03);
-      box-shadow: 
+      border-color: var(--border-light);
+      background: var(--card-bg);
+      box-shadow:
         0 0 20px rgba(255,255,255,0.1),
         0 0 40px rgba(255,255,255,0.05),
         inset 0 0 30px rgba(255,255,255,0.02);
       animation: cardGlow 2s ease-in-out infinite;
+    }
+
+    [data-theme="light"] .project-card:hover {
+      box-shadow:
+        0 4px 20px rgba(0,0,0,0.08),
+        0 1px 6px rgba(0,0,0,0.04);
+      animation: none;
     }
 
     @keyframes cardGlow {
@@ -580,6 +645,7 @@
       right: 0;
       bottom: 0;
       background: var(--bg);
+      color: var(--text);
       z-index: 150;
       opacity: 0;
       visibility: hidden;
@@ -613,13 +679,13 @@
       display: none;
     }
 
-    /* Title matches page-title exactly */
+    /* Title matches resume name style */
     .detail-title {
-      font-family: 'Brandon Grotesque', 'brandon-grotesque', 'Inter', system-ui, sans-serif;
-      font-size: clamp(42px, 7vw, 56px);
-      font-weight: 400;
-      color: #FFFFFF;
-      letter-spacing: 0.02em;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      font-size: clamp(36px, 5vw, 48px);
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: -0.02em;
       line-height: 1.1;
       margin: 0 0 12px 0;
     }
@@ -773,7 +839,7 @@
     .detail-description {
       font-size: 16px;
       line-height: 1.8;
-      color: rgba(255,255,255,0.8);
+      color: var(--text-dim);
       margin-bottom: 32px;
       columns: 2;
       column-gap: 40px;
@@ -792,9 +858,24 @@
       overflow-x: auto;
     }
 
+    [data-theme="light"] .detail-description code {
+      background: rgba(0,0,0,0.04);
+      border-color: rgba(0,0,0,0.1);
+      color: #0369a1;
+    }
+
     .detail-description strong {
-      color: #fff;
+      color: var(--text);
       font-weight: 600;
+      display: block;
+      margin-top: 24px;
+      margin-bottom: 8px;
+      break-after: avoid;
+      -webkit-column-break-after: avoid;
+    }
+
+    .detail-description strong:first-child {
+      margin-top: 0;
     }
 
     .detail-tags {
@@ -896,6 +977,15 @@
       transition: all 0.3s ease;
       opacity: 0;
       transform: scale(0.8);
+    }
+
+    [data-theme="light"] .detail-close {
+      background: rgba(255,255,255,0.9);
+    }
+
+    [data-theme="light"] .detail-close::before,
+    [data-theme="light"] .detail-close::after {
+      background: #111;
     }
 
     .detail-content.visible .detail-close {
@@ -1227,6 +1317,12 @@
 <body>
   <div class="cursor-glow" id="cursorGlow"></div>
 
+  <!-- Theme Toggle -->
+  <button class="theme-toggle" id="themeToggle" aria-label="Toggle light mode">
+    <svg class="icon-moon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    <svg class="icon-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+  </button>
+
   <nav class="nav-bar">
     <a href="/" class="nav-link">HOME</a>
     <a href="/resume" class="nav-link">RESUME</a>
@@ -1320,11 +1416,11 @@
         filterCategory: 'hardware',
         years: [2025],
         period: 'college',
-        date: 'Jan 2025 — Present',
+        date: 'Sep 2025 — Present',
         active: true,
         featured: false,
         excerpt: 'High-voltage battery system for Berkeley\'s Formula Electric racing team.',
-        description: `<strong>The Accumulator</strong><br><br>I work on the Accumulator subteam at Formula Electric at Berkeley, designing and manufacturing the casing for our 588V lithium-ion battery pack. The pack's energy is governed by:<br><br><code>E_pack = N_parallel × ∫₀ᵠ V(q) dq</code><br><br>where V(q) is cell voltage as a function of charge depleted. At 588V, a mistake means serious injury. I once accidentally shorted two segment busbars together and watched the cells heat up alarmingly fast. Nobody was hurt, but it changed how I approach every decision on this system.<br><br><strong>My Role: The Casing</strong><br><br>The casing must withstand FSAE crash loads (40g lateral, 40g longitudinal, 20g vertical), maintain dielectric strength at 588V, pass a rain test, and dissipate cell heat. I run FEA checking Von Mises stress everywhere:<br><br><code>σ_vm = √(σ₁² − σ₁σ₂ + σ₂²)</code><br><br>Everything must stay below yield with a 1.5x safety factor. I chose 6061-T6 aluminum because after TIG welding and post-weld heat treatment (530°C solutionize, quench, age at 175°C for 8 hours), it recovers ~70% of base yield strength. 7075 does not recover from welding, steel is too heavy, and carbon fiber has conductivity concerns near HV components.<br><br><strong>Floor and Sealing</strong><br><br>The floor uses 6mm polycarbonate for electrical isolation:<br><br><code>V_breakdown = 15 kV/mm × 6 mm = 90 kV</code><br><br>That gives enormous margin over 588V, plus it is transparent for visual inspection without disassembly. Waterproofing uses a 3mm neoprene gasket (50A durometer) at 20-30% compression, with aluminum standoffs preventing over-compression. I chose neoprene over silicone for petroleum resistance near the powertrain.<br><br><img src="/assets/gas.png" alt="Gasket compression equation" style="max-width: 100%; margin: 20px 0; border-radius: 8px;"><br><br><strong>Insulation and Thermal</strong><br><br>All internal surfaces near HV components are lined with Nomex 410 (18 kV/mm dielectric, rated to 220°C, UL 94 V-0 fire resistance). For thermal management, the wall conductive resistance is low at 3mm 6061 (k ≈ 167 W/m·K), so the real bottleneck is convection off the outer surface, which is why we focused on optimizing airflow around the casing.<br><br><strong>Manufacturing</strong><br><br>Panels are laser-cut on a FabLight fiber laser, TIG welded, then heat-treated. The polycarbonate floor and neoprene gasket are waterjet cut. Before approval, the casing passes a 1500V AC dielectric test, IP65 water ingress test, 40g structural simulation, and perimeter gasket compression checks. Looking forward to competing in Michigan.`,
+        description: `<strong>The Accumulator</strong><br><br>I work on the Accumulator subteam at Formula Electric at Berkeley, designing and manufacturing the attic casing for our 588V lithium-ion battery pack. The pack's energy is governed by:<br><br><code>E_pack = N_parallel × ∫₀ᵠ V(q) dq</code><br><br>where V(q) is cell voltage as a function of charge depleted. At 588V, a mistake means serious injury. I once accidentally shorted two segment busbars together and watched the cells heat up alarmingly fast. Nobody was hurt, but it changed how I approach every decision on this system.<br><br><strong>My Role: The Attic</strong><br><br>The casing must withstand FSAE crash loads (40g lateral, 40g longitudinal, 20g vertical), maintain dielectric strength at 588V, pass a rain test, and dissipate cell heat. I run FEA checking Von Mises stress everywhere:<br><br><code>σ_vm = √(σ₁² − σ₁σ₂ + σ₂²)</code><br><br>Everything must stay below yield with a 1.5x safety factor. I chose 6061-T6 aluminum because after TIG welding and post-weld heat treatment (530°C solutionize, quench, age at 175°C for 8 hours), it recovers ~70% of base yield strength. 7075 does not recover from welding, steel is too heavy, and carbon fiber has conductivity concerns near HV components.<br><br><strong>Floor and Sealing</strong><br><br>The floor uses 6mm polycarbonate for electrical isolation:<br><br><code>V_breakdown = 15 kV/mm × 6 mm = 90 kV</code><br><br>That gives enormous margin over 588V, plus it is transparent for visual inspection without disassembly. Waterproofing uses a 3mm neoprene gasket (50A durometer) at 20-30% compression, with aluminum standoffs preventing over-compression. I chose neoprene over silicone for petroleum resistance near the powertrain.<br><br><img src="/assets/gas.png" alt="Gasket compression equation" style="max-width: 100%; margin: 20px 0; border-radius: 8px;"><br><br><strong>Insulation and Thermal</strong><br><br>All internal surfaces near HV components are lined with Nomex 410 (18 kV/mm dielectric, rated to 220°C, UL 94 V-0 fire resistance). For thermal management, the wall conductive resistance is low at 3mm 6061 (k ≈ 167 W/m·K), so the real bottleneck is convection off the outer surface, which is why we focused on optimizing airflow around the casing.<br><br><strong>Manufacturing</strong><br><br>Panels are laser-cut on a FabLight fiber laser, TIG welded, then heat-treated. The polycarbonate floor and neoprene gasket are waterjet cut. Before approval, the casing passes a 1500V AC dielectric test, IP65 water ingress test, 40g structural simulation, and perimeter gasket compression checks. Looking forward to competing in Michigan.`,
         tags: ['Solidworks', 'Solidworks PDM', 'CAD/CAM/CAE', 'Composites', 'High Voltage', 'Manufacturing', 'DFM/DFA'],
         links: [{ url: 'https://ev.berkeley.edu/', label: 'Team Website' }],
         images: [
@@ -1334,6 +1430,41 @@
           '/assets/img3.png',
           '/assets/accumsa.png'
         ]
+      },
+      {
+        id: 'ramesh-lab',
+        title: 'Ramesh Lab',
+        category: 'Research',
+        filterCategory: 'research',
+        years: [2026],
+        period: 'college',
+        date: 'Jan 2026 — Present',
+        active: true,
+        featured: false,
+        excerpt: 'Researching oxide thin films for next-gen memory and compute.',
+        description: `<strong>Research Position</strong><br><br><em style="opacity: 0.7;">I recently joined the lab in January 2026, so more content will be added here as I get deeper into the work.</em><br><br>I am working in Ramesh Lab, learning how complex-oxide thin films are grown and engineered for next-gen memory and compute. The core question is how atomic-level decisions during fabrication reshape the electronic and ferroic behavior of the final material.<br><br><strong>The Growth Workflow</strong><br><br>I am learning the full process: substrate prep (annealing, solvent cleaning, step-terrace control for atomically flat surfaces), PLD growth (laser fluence tuning, oxygen partial pressure control, substrate temperature stabilization), RHEED monitoring (reading oscillations during layer-by-layer growth), and post-growth characterization with AFM, XRD, PFM, and electrical measurements.<br><br><strong>Why It Matters</strong><br><br>Strain, interfaces, and atomic stacking order create emergent behaviors you cannot get in any single material alone: switchable polarization for ultra-low-energy memory, interfacial conduction (2DEGs) for novel logic, coupled ferroic states enabling electrical control of magnetism. Right now I am shadowing growth sessions, learning how small deviations -- oxygen vacancy concentration, plume shape, a few degrees of temperature drift -- completely change domain structures, mobility, or coercive fields. The long-term goal is to take ownership of small growth experiments and explore how interface engineering can push these materials toward practical device integration, especially as traditional silicon scaling hits fundamental physical limits.`,
+        tags: ['Materials Science', 'Thin Films', 'PLD', 'Characterization', 'Oxide Electronics', 'Research'],
+        links: [{ label: 'Lab Website', url: 'https://rameshlab.lbl.gov' }],
+        images: ['/assets/pld_system.gif']
+      },
+      {
+        id: 'atlas-smr',
+        title: 'Atlas SMR',
+        category: 'Research/Software',
+        filterCategory: ['research', 'software'],
+        years: [2025, 2026],
+        period: 'highschool',
+        date: 'Oct 2025 — Present',
+        active: true,
+        featured: false,
+        excerpt: 'Interactive tool for evaluating nuclear reactor site feasibility + research paper.',
+        description: `<strong>The Research</strong><br><br>My AP Research capstone, turned interactive tool. Rural America pays ~25% more for electricity than urban areas and relies on aging infrastructure. I investigated whether hybrid Small Modular Reactor + solar systems could address this inequity. Solar costs dropped 89% since 2010 but cannot generate at night; SMRs provide 24/7 low-carbon baseload. Together they balance each other out. Almost all existing SMR research focuses on urban implementation, which left a clear gap for rural applications.<br><br><strong>The Tool</strong><br><br>Atlas SMR is an interactive web platform pulling data from the NRC, EIA, and USGS seismic databases. It displays 89 operating reactors, 13 shutdown facilities, and 119 candidate sites scored by a weighted algorithm. Users scrub a timeline from 2010 to 2050 to see reactor status shift with license expirations. Each candidate site's viability score:<br><br><code>S = w₁(1 - P/Pₘₐₓ) + w₂(1 - Dₛ/Dₘₐₓ) + w₃(W/Wₘₐₓ) + w₄(G/Gₘₐₓ)</code><br><br>where P is population in the 10-mile NRC emergency zone, Dₛ is distance to nearest seismic fault, W is cooling water proximity, and G is grid interconnection capacity. Default weights (0.30/0.25/0.25/0.20) are calibrated against historical NRC approvals, but users can adjust them and watch candidate rankings shift.<br><br><strong>Scenario Builder</strong><br><br>Users configure 50-300 MWe per module, 1-12 modules per site, and deployment year. For hybrid systems, annual energy:<br><br><code>E_annual = (C_smr × 8760 × CF_smr) + (C_solar × 8760 × CF_solar × (1 - curtailment))</code><br><br>In solar-rich regions like Navajo Nation, larger solar arrays reduce SMR daytime load. In cloudier areas like Nome, Alaska, the system leans on SMR output. My analysis showed a properly configured hybrid could meet ~24% of rural energy needs, with clear scalability beyond that.<br><br><strong>Limitations</strong><br><br>SMR cost estimates still lack large-scale U.S. operational data. Nuclear stigma is real. This tool is a prototype visualization, not a policy instrument -- actual site selection requires Environmental Impact Statements and full NRC licensing far beyond what a scoring algorithm captures.`,
+        tags: ['Web Dev', 'GIS', 'Energy', 'Data Viz', 'Nuclear', 'Policy Research', 'AP Research'],
+        links: [
+          { label: 'Live Site', url: 'https://atlas-smr.vercel.app/' },
+          { label: 'Research Paper', url: '/assets/AtlasSMR_Research_Paper.pdf' }
+        ],
+        images: ['/assets/atmaslet.png', '/assets/atmas.png', '/assets/smrbuilder.png', '/assets/smsad.png', '/assets/smrtech.png']
       },
       {
         id: 'dejavu-2024-25',
@@ -1368,25 +1499,6 @@
         images: ['/assets/Deja_Vu_Bot_Assemble_Version_1_v4_v1112.png', '/assets/IMG_2714.png', '/assets/dejapp.png']
       },
       {
-        id: 'atlas-smr',
-        title: 'Atlas SMR',
-        category: 'Research/Software',
-        filterCategory: ['research', 'software'],
-        years: [2025, 2026],
-        period: 'highschool',
-        date: 'Oct 2025 — Present',
-        active: true,
-        featured: false,
-        excerpt: 'Interactive tool for evaluating nuclear reactor site feasibility + research paper.',
-        description: `<strong>The Research</strong><br><br>My AP Research capstone, turned interactive tool. Rural America pays ~25% more for electricity than urban areas and relies on aging infrastructure. I investigated whether hybrid Small Modular Reactor + solar systems could address this inequity. Solar costs dropped 89% since 2010 but cannot generate at night; SMRs provide 24/7 low-carbon baseload. Together they balance each other out. Almost all existing SMR research focuses on urban implementation, which left a clear gap for rural applications.<br><br><strong>The Tool</strong><br><br>Atlas SMR is an interactive web platform pulling data from the NRC, EIA, and USGS seismic databases. It displays 89 operating reactors, 13 shutdown facilities, and 119 candidate sites scored by a weighted algorithm. Users scrub a timeline from 2010 to 2050 to see reactor status shift with license expirations. Each candidate site's viability score:<br><br><code>S = w₁(1 - P/Pₘₐₓ) + w₂(1 - Dₛ/Dₘₐₓ) + w₃(W/Wₘₐₓ) + w₄(G/Gₘₐₓ)</code><br><br>where P is population in the 10-mile NRC emergency zone, Dₛ is distance to nearest seismic fault, W is cooling water proximity, and G is grid interconnection capacity. Default weights (0.30/0.25/0.25/0.20) are calibrated against historical NRC approvals, but users can adjust them and watch candidate rankings shift.<br><br><strong>Scenario Builder</strong><br><br>Users configure 50-300 MWe per module, 1-12 modules per site, and deployment year. For hybrid systems, annual energy:<br><br><code>E_annual = (C_smr × 8760 × CF_smr) + (C_solar × 8760 × CF_solar × (1 - curtailment))</code><br><br>In solar-rich regions like Navajo Nation, larger solar arrays reduce SMR daytime load. In cloudier areas like Nome, Alaska, the system leans on SMR output. My analysis showed a properly configured hybrid could meet ~24% of rural energy needs, with clear scalability beyond that.<br><br><strong>Limitations</strong><br><br>SMR cost estimates still lack large-scale U.S. operational data. Nuclear stigma is real. This tool is a prototype visualization, not a policy instrument -- actual site selection requires Environmental Impact Statements and full NRC licensing far beyond what a scoring algorithm captures.`,
-        tags: ['Web Dev', 'GIS', 'Energy', 'Data Viz', 'Nuclear', 'Policy Research', 'AP Research'],
-        links: [
-          { label: 'Live Site', url: 'https://atlas-smr.vercel.app/' },
-          { label: 'Research Paper', url: '/assets/AtlasSMR_Research_Paper.pdf' }
-        ],
-        images: ['/assets/atmaslet.png', '/assets/atmas.png', '/assets/smrbuilder.png', '/assets/smsad.png', '/assets/smrtech.png']
-      },
-      {
         id: 'zenith-2022-23',
         title: 'Zenith — POWERPLAY',
         category: 'Hardware/Software',
@@ -1401,22 +1513,6 @@
         tags: ['CAD', 'Java', 'Leadership', 'Mentoring', 'FTC', 'Rigging', 'OpenCV'],
         links: [{ label: 'Team Website', url: 'https://zenithftc.wixsite.com/zenithftc' }],
         images: ['/assets/zenithnot-removebg-preview.png', '/assets/zenithbottt.png', '/assets/IMG_0537.png', '/assets/IMG_0691-ezgif.com-video-to-gif-converter.gif', '/assets/zensim.png', '/assets/zensim22.png']
-      },
-      {
-        id: 'ramesh-lab',
-        title: 'Ramesh Lab',
-        category: 'Research',
-        filterCategory: 'research',
-        years: [2026],
-        period: 'college',
-        date: 'Jan 2026 — Present',
-        active: true,
-        featured: false,
-        excerpt: 'Researching oxide thin films for next-gen memory and compute.',
-        description: `<strong>Research Position</strong><br><br><em style="opacity: 0.7;">I recently joined the lab in January 2026, so more content will be added here as I get deeper into the work.</em><br><br>I am working in Ramesh Lab, learning how complex-oxide thin films are grown and engineered for next-gen memory and compute. The core question is how atomic-level decisions during fabrication reshape the electronic and ferroic behavior of the final material.<br><br><strong>The Growth Workflow</strong><br><br>I am learning the full process: substrate prep (annealing, solvent cleaning, step-terrace control for atomically flat surfaces), PLD growth (laser fluence tuning, oxygen partial pressure control, substrate temperature stabilization), RHEED monitoring (reading oscillations during layer-by-layer growth), and post-growth characterization with AFM, XRD, PFM, and electrical measurements.<br><br><strong>Why It Matters</strong><br><br>Strain, interfaces, and atomic stacking order create emergent behaviors you cannot get in any single material alone: switchable polarization for ultra-low-energy memory, interfacial conduction (2DEGs) for novel logic, coupled ferroic states enabling electrical control of magnetism. Right now I am shadowing growth sessions, learning how small deviations -- oxygen vacancy concentration, plume shape, a few degrees of temperature drift -- completely change domain structures, mobility, or coercive fields. The long-term goal is to take ownership of small growth experiments and explore how interface engineering can push these materials toward practical device integration, especially as traditional silicon scaling hits fundamental physical limits.`,
-        tags: ['Materials Science', 'Thin Films', 'PLD', 'Characterization', 'Oxide Electronics', 'Research'],
-        links: [{ label: 'Lab Website', url: 'https://rameshlab.lbl.gov' }],
-        images: ['/assets/pld_system.gif']
       },
       {
         id: 'inventry',
@@ -1755,11 +1851,9 @@
         `;
       }
 
-      // Description & tags
+      // Description (tags moved to sidebar)
       document.getElementById('detailDescription').innerHTML = project.description;
-      document.getElementById('detailTags').innerHTML = project.tags.map(t => 
-        `<span class="detail-tag">${t}</span>`
-      ).join('');
+      document.getElementById('detailTags').innerHTML = '';
 
       // Sidebar
       const sidebar = document.getElementById('detailSidebar');
@@ -1792,6 +1886,15 @@
           <strong style="color: var(--text);">Status:</strong> ${project.active ? 'Active' : 'Completed'}
         </p>
       `;
+
+      if (project.tags && project.tags.length > 0) {
+        sidebarHTML += `
+          <h3 style="margin-top: 32px;">Skills</h3>
+          <div class="detail-tags">
+            ${project.tags.map(t => `<span class="detail-tag">${t}</span>`).join('')}
+          </div>
+        `;
+      }
 
       sidebar.innerHTML = sidebarHTML;
     }
@@ -1947,6 +2050,23 @@
         requestAnimationFrame(animate);
       }
       animate();
+    })();
+
+    // Theme toggle
+    (function() {
+      const toggle = document.getElementById('themeToggle');
+      const saved = localStorage.getItem('theme');
+      if (saved === 'light') document.documentElement.setAttribute('data-theme', 'light');
+      toggle.addEventListener('click', () => {
+        const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+        if (isLight) {
+          document.documentElement.removeAttribute('data-theme');
+          localStorage.setItem('theme', 'dark');
+        } else {
+          document.documentElement.setAttribute('data-theme', 'light');
+          localStorage.setItem('theme', 'light');
+        }
+      });
     })();
   </script>
 </body>
