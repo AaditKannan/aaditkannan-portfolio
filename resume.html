@@ -300,17 +300,15 @@
       font-size: 14px;
       font-weight: 700;
       opacity: 0;
-      display: inline-block;
     }
 
     .sidebar-nav a.active .nav-cursor {
-      opacity: 0.8;
-      animation: cursorBounce 1.2s ease-in-out infinite;
+      animation: cursorBlink 1s step-end infinite;
     }
 
-    @keyframes cursorBounce {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-3px); }
+    @keyframes cursorBlink {
+      0%, 100% { opacity: 0.9; }
+      50% { opacity: 0; }
     }
 
     /* ---- Resume PDF typing tooltip ---- */
