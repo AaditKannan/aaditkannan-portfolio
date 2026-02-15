@@ -367,19 +367,20 @@
        ============================================ */
     @media (max-width: 768px) {
       .cursor-glow { display: none; }
-      .theme-toggle { position: static; transform: none; }
 
       .nav-bar {
         position: absolute;
         padding: 16px 16px;
         gap: 24px;
+        justify-content: center;
         height: auto;
         background: transparent;
         backdrop-filter: none;
         -webkit-backdrop-filter: none;
       }
+      .theme-toggle { right: 16px; }
 
-      .nav-link { font-size: 11px; letter-spacing: 0.1em; padding: 6px 0; }
+      .nav-link { font-size: 11px; letter-spacing: 0.1em; padding: 6px 0; font-family: 'Inter', system-ui, -apple-system, sans-serif; }
 
       .layout { flex-direction: column; padding: 0 24px; padding-top: 60px; }
 

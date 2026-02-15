@@ -387,7 +387,6 @@
       margin-bottom: 32px;
     }
 
-    .section-top-btn { display: none; }
 
     /* ---- About Section ---- */
     .about-text p {
@@ -418,7 +417,7 @@
       gap: 16px;
       padding: 20px;
       margin: 0 -20px;
-      border-radius: 8px;
+      border-radius: 0;
       transition: background 0.2s ease, box-shadow 0.2s ease;
       margin-bottom: 4px;
     }
@@ -539,18 +538,19 @@
        ============================================ */
     @media (max-width: 768px) {
       .cursor-glow { display: none; }
-      .theme-toggle { position: static; transform: none; }
 
       .nav-bar {
         position: absolute;
         padding: 16px 16px;
         gap: 24px;
+        justify-content: center;
         height: auto;
         background: transparent;
         backdrop-filter: none;
         -webkit-backdrop-filter: none;
       }
-      .nav-link { font-size: 11px; letter-spacing: 0.1em; padding: 6px 0; }
+      .theme-toggle { right: 16px; }
+      .nav-link { font-size: 11px; letter-spacing: 0.1em; padding: 6px 0; font-family: 'Inter', system-ui, -apple-system, sans-serif; }
 
       .layout { flex-direction: column; padding: 0 24px; padding-top: 60px; }
 
@@ -580,7 +580,7 @@
       }
 
       .sidebar-photo {
-        width: 100px; height: 100px;
+        width: 160px; height: 160px;
         grid-column: 1; grid-row: 3;
         margin: 8px 0 0;
       }
@@ -588,9 +588,9 @@
       .social-icons {
         grid-column: 1; grid-row: 4;
         margin-top: 8px;
-        justify-content: center;
+        justify-content: space-between;
+        width: 160px;
       }
-      .social-icons a[aria-label="X"] { display: none; }
 
       /* Nav aligned: top with subtitle, bottom with social icons */
       .sidebar-nav {
@@ -610,24 +610,7 @@
       .section-label {
         position: sticky; top: 0;
         background: var(--bg); padding: 12px 0; z-index: 10;
-        display: flex; justify-content: space-between; align-items: center;
       }
-
-      /* Back-to-top: hidden by default, shown only when heading is stuck */
-      .section-top-btn {
-        display: none;
-        align-items: center; justify-content: center;
-        width: 28px; height: 28px;
-        color: var(--text-muted);
-        cursor: pointer;
-        transition: color 0.2s ease;
-        border: none; background: none; padding: 0;
-      }
-      .section-label.is-stuck .section-top-btn {
-        display: flex;
-      }
-      .section-top-btn:hover { color: var(--text-white); }
-      .section-top-btn svg { width: 16px; height: 16px; fill: currentColor; }
 
       .pdf-typing-text { display: none; }
 
@@ -711,7 +694,7 @@
 
       <!-- About -->
       <section id="about">
-        <h2 class="section-label">About <button class="section-top-btn" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Back to top"><svg viewBox="0 0 24 24"><path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/></svg></button></h2>
+        <h2 class="section-label">About</h2>
         <div class="about-text">
           <p>Mechanical engineering student at UC Berkeley interested in robotics, materials, and space. Currently working on the high-voltage accumulator as a part of <a href="https://ev.berkeley.edu/" target="_blank" rel="noopener noreferrer" class="about-link">Berkeley Formula Electric</a>, while researching thin-film oxide heterostructures for next-gen low-power memory in <a href="https://www.rameshlab.com/" target="_blank" rel="noopener noreferrer" class="about-link">Ramesh Lab</a>.</p>
           <p>Also developing Atlas SMR, a website to evaluate grid capabilities of small modular nuclear reactors and hybrid SMR/renewable energy systems, to inform cost-effective strategies for clean-energy transitions. <a href="/projects" class="about-link" style="text-decoration: underline; text-underline-offset: 3px;">View all projects &rarr;</a></p>
@@ -720,7 +703,7 @@
 
       <!-- Experience (Technical + Work combined) -->
       <section id="experience">
-        <h2 class="section-label">Experience <button class="section-top-btn" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Back to top"><svg viewBox="0 0 24 24"><path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/></svg></button></h2>
+        <h2 class="section-label">Experience</h2>
 
         <div class="entry-card">
           <div class="entry-body">
@@ -817,7 +800,7 @@
 
       <!-- Education -->
       <section id="education">
-        <h2 class="section-label">Education <button class="section-top-btn" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Back to top"><svg viewBox="0 0 24 24"><path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/></svg></button></h2>
+        <h2 class="section-label">Education</h2>
 
         <div class="entry-card">
           <div class="entry-body">
@@ -844,7 +827,7 @@
 
       <!-- Volunteering -->
       <section id="volunteering">
-        <h2 class="section-label">Volunteering <button class="section-top-btn" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Back to top"><svg viewBox="0 0 24 24"><path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/></svg></button></h2>
+        <h2 class="section-label">Volunteering</h2>
 
         <div class="entry-card">
           <div class="entry-body">
@@ -899,7 +882,7 @@
 
       <!-- Skills -->
       <section id="skills">
-        <h2 class="section-label">Skills <button class="section-top-btn" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Back to top"><svg viewBox="0 0 24 24"><path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/></svg></button></h2>
+        <h2 class="section-label">Skills</h2>
         <div class="skills-grid">
           <div>
             <h4>Mechanical Engineering</h4>
@@ -1038,21 +1021,6 @@
       });
     })();
 
-    // ---- Sticky heading detection (mobile back-to-top) ----
-    (function() {
-      if (window.innerWidth > 768) return;
-      const labels = document.querySelectorAll('.section-label');
-      if (!labels.length) return;
-      const observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach(entry => {
-            entry.target.classList.toggle('is-stuck', !entry.isIntersecting);
-          });
-        },
-        { threshold: [1], rootMargin: '-1px 0px 0px 0px' }
-      );
-      labels.forEach(label => observer.observe(label));
-    })();
   </script>
 </body>
 </html>
