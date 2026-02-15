@@ -21,31 +21,11 @@
   <link rel="apple-touch-icon" sizes="180x180" href="/assets/newstfavicon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="preload" href="/assets/fonts/HvDTrial_Brandon_Grotesque_regular-BF64a625c9311e1.otf" as="font" type="font/opentype" crossorigin>
-  <link rel="preload" href="/assets/fonts/HvDTrial_Brandon_Grotesque_medium-BF64a625c84a521.otf" as="font" type="font/opentype" crossorigin>
-  <link rel="preload" href="/assets/fonts/HvDTrial_Brandon_Grotesque_bold-BF64a625c9151d5.otf" as="font" type="font/opentype" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
   <!-- KaTeX for LaTeX math rendering -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
-  <style>
-    @font-face {
-      font-family: 'Brandon Grotesque';
-      src: url('/assets/fonts/HvDTrial_Brandon_Grotesque_regular-BF64a625c9311e1.otf') format('opentype');
-      font-weight: 400; font-style: normal; font-display: swap;
-    }
-    @font-face {
-      font-family: 'Brandon Grotesque';
-      src: url('/assets/fonts/HvDTrial_Brandon_Grotesque_medium-BF64a625c84a521.otf') format('opentype');
-      font-weight: 500; font-style: normal; font-display: swap;
-    }
-    @font-face {
-      font-family: 'Brandon Grotesque';
-      src: url('/assets/fonts/HvDTrial_Brandon_Grotesque_bold-BF64a625c9151d5.otf') format('opentype');
-      font-weight: 700; font-style: normal; font-display: swap;
-    }
-  </style>
   <style>
     * {
       margin: 0;
@@ -197,7 +177,7 @@
       font-weight: 500;
       letter-spacing: 0.15em;
       text-transform: uppercase;
-      font-family: 'Brandon Grotesque', 'brandon-grotesque', 'Inter', system-ui, sans-serif;
+      font-family: 'JetBrains Mono', monospace;
       border-bottom: 1px solid transparent;
       padding: 8px 0;
       transition: all 0.3s ease;
@@ -250,7 +230,7 @@
       letter-spacing: 0.15em;
       text-transform: uppercase;
       color: var(--text-muted);
-      font-family: 'Brandon Grotesque', 'brandon-grotesque', 'Inter', system-ui, sans-serif;
+      font-family: 'JetBrains Mono', monospace;
       margin-right: 8px;
     }
 
@@ -260,7 +240,7 @@
       border: 1px solid var(--border);
       color: var(--text-dim);
       font-size: 11px;
-      font-family: 'Brandon Grotesque', 'brandon-grotesque', 'Inter', system-ui, sans-serif;
+      font-family: 'JetBrains Mono', monospace;
       letter-spacing: 0.1em;
       text-transform: uppercase;
       cursor: pointer;
@@ -339,10 +319,6 @@
       opacity: 1;
       transform: scale(1);
       grid-column: span 1;
-    }
-
-    .project-card .project-image {
-      display: none;
     }
 
     .project-card:hover {
@@ -527,7 +503,7 @@
       font-size: 10px;
       letter-spacing: 0.15em;
       text-transform: uppercase;
-      font-family: 'Brandon Grotesque', 'brandon-grotesque', 'Inter', system-ui, sans-serif;
+      font-family: 'JetBrains Mono', monospace;
     }
 
     .project-content {
@@ -546,13 +522,13 @@
       letter-spacing: 0.15em;
       text-transform: uppercase;
       color: var(--text-dim);
-      font-family: 'Brandon Grotesque', 'brandon-grotesque', 'Inter', system-ui, sans-serif;
+      font-family: 'JetBrains Mono', monospace;
     }
 
     .project-date {
       font-size: 12px;
       color: var(--text-muted);
-      font-family: 'Brandon Grotesque', 'brandon-grotesque', 'Inter', system-ui, sans-serif;
+      font-family: 'JetBrains Mono', monospace;
     }
 
     .project-title {
@@ -693,7 +669,7 @@
     .detail-date {
       font-size: 14px;
       color: var(--text-dim);
-      font-family: 'Brandon Grotesque', 'brandon-grotesque', 'Inter', system-ui, sans-serif;
+      font-family: 'JetBrains Mono', monospace;
       opacity: 0;
       transform: translateY(10px);
       transition: all 0.3s ease 0.15s;
@@ -791,7 +767,7 @@
       font-size: 11px;
       letter-spacing: 0.1em;
       text-transform: uppercase;
-      font-family: 'Brandon Grotesque', 'brandon-grotesque', 'Inter', system-ui, sans-serif;
+      font-family: 'JetBrains Mono', monospace;
     }
 
     .gallery-thumbs {
@@ -907,7 +883,7 @@
       border: 1px solid var(--border);
       font-size: 12px;
       color: var(--text-dim);
-      font-family: 'Brandon Grotesque', 'brandon-grotesque', 'Inter', system-ui, sans-serif;
+      font-family: 'JetBrains Mono', monospace;
       transition: all 0.2s;
     }
 
@@ -921,7 +897,7 @@
       letter-spacing: 0.15em;
       text-transform: uppercase;
       color: var(--text-dim);
-      font-family: 'Brandon Grotesque', 'brandon-grotesque', 'Inter', system-ui, sans-serif;
+      font-family: 'JetBrains Mono', monospace;
       margin-bottom: 16px;
     }
 
@@ -942,7 +918,7 @@
       color: var(--text-dim);
       text-decoration: none;
       font-size: 13px;
-      font-family: 'Brandon Grotesque', 'brandon-grotesque', 'Inter', system-ui, sans-serif;
+      font-family: 'JetBrains Mono', monospace;
       transition: all 0.2s;
     }
 
@@ -1231,7 +1207,7 @@
     @media (max-width: 600px) {
       .projects-grid {
         grid-template-columns: 1fr;
-        gap: 12px;
+        gap: 10px;
       }
 
       .project-card {
@@ -1242,23 +1218,28 @@
         box-shadow: none;
       }
 
+      .project-image {
+        aspect-ratio: 16/8;
+      }
+
       .project-content {
-        padding: 16px 20px;
+        padding: 12px 16px;
       }
 
       .project-meta {
-        margin-bottom: 4px;
+        margin-bottom: 2px;
       }
 
       .project-category { font-size: 9px; }
       .project-date { font-size: 10px; }
-      .project-title { font-size: 15px; margin-bottom: 4px; }
+      .project-title { font-size: 15px; margin-bottom: 2px; }
       .project-excerpt {
         display: -webkit-box;
         -webkit-line-clamp: 2;
         -webkit-box-orient: vertical;
         overflow: hidden;
         font-size: 12px;
+        line-height: 1.4;
       }
     }
 
@@ -1382,7 +1363,7 @@
       letter-spacing: 0.2em;
       text-transform: uppercase;
       color: var(--text-muted);
-      font-family: 'Brandon Grotesque', 'brandon-grotesque', 'Inter', system-ui, sans-serif;
+      font-family: 'JetBrains Mono', monospace;
     }
 
     .footage-title {

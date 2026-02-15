@@ -24,7 +24,7 @@
 @media (min-width: 769px) {
   :root {
     --font-body: "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-    --font-mono: 'Brandon Grotesque', 'brandon-grotesque', 'Inter', system-ui, sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
   }
 
   /* Body text uses Inter */
@@ -84,7 +84,7 @@ html::-webkit-scrollbar {
 }
 
 body {
-  font-family: 'Brandon Grotesque', 'brandon-grotesque', 'Inter', system-ui, sans-serif;
+  font-family: 'JetBrains Mono', monospace;
   background-color: #0a0a0a; /* Slightly lighter black */
   color: var(--text-white);
   line-height: 1.6;
@@ -129,7 +129,7 @@ body::-webkit-scrollbar {
 
 /* Typography - Typewriter font for headings, Inter for body */
 .heading {
-  font-family: 'Brandon Grotesque', 'brandon-grotesque', 'Inter', system-ui, sans-serif;
+  font-family: 'JetBrains Mono', monospace;
   font-size: 64px;
   font-weight: 700;
   color: var(--text-white);
@@ -139,7 +139,7 @@ body::-webkit-scrollbar {
 }
 
 .subheading {
-  font-family: 'Brandon Grotesque', 'brandon-grotesque', 'Inter', system-ui, sans-serif;
+  font-family: 'JetBrains Mono', monospace;
   font-size: 24px;
   font-weight: 400;
   color: var(--text-gray);
@@ -234,7 +234,7 @@ body::-webkit-scrollbar {
   font-size: 14px;
   font-weight: 400;
   letter-spacing: 0.05em;
-  font-family: 'Brandon Grotesque', 'brandon-grotesque', 'Inter', system-ui, sans-serif;
+  font-family: 'JetBrains Mono', monospace;
   height: 44px;
   box-sizing: border-box;
   line-height: 1;
@@ -290,7 +290,7 @@ body::-webkit-scrollbar {
   font-weight: 600;
   color: var(--text-white);
   margin-bottom: 4px;
-  font-family: 'Brandon Grotesque', 'brandon-grotesque', 'Inter', system-ui, sans-serif;
+  font-family: 'JetBrains Mono', monospace;
   display: flex;
   align-items: center;
   flex-wrap: wrap;
@@ -498,7 +498,7 @@ body::-webkit-scrollbar {
   border-radius: 6px;
   font-size: 13px;
   font-weight: 400;
-  font-family: 'Brandon Grotesque', 'brandon-grotesque', 'Inter', system-ui, sans-serif;
+  font-family: 'JetBrains Mono', monospace;
   white-space: nowrap;
   opacity: 0;
   pointer-events: none;
