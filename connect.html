@@ -94,7 +94,7 @@
       border-radius: 50%;
       pointer-events: none;
       z-index: 1;
-      background: radial-gradient(circle, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.03) 40%, transparent 70%);
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.015) 40%, transparent 70%);
       transform: translate(-50%, -50%);
       transition: opacity 0.3s ease;
       opacity: 0;
@@ -444,8 +444,8 @@
         if (!glow.classList.contains('visible')) glow.classList.add('visible');
       });
       function animate() {
-        glowX += (mouseX - glowX) * 0.12;
-        glowY += (mouseY - glowY) * 0.12;
+        glowX += (mouseX - glowX) * 0.3;
+        glowY += (mouseY - glowY) * 0.3;
         glow.style.left = glowX + 'px';
         glow.style.top = glowY + 'px';
         requestAnimationFrame(animate);

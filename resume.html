@@ -89,9 +89,9 @@
 
     a { color: inherit; text-decoration: none; }
 
-    /* ---- Top Nav (scrolls with page, NOT fixed) ---- */
+    /* ---- Top Nav (fixed with backdrop) ---- */
     .nav-bar {
-      position: absolute;
+      position: fixed;
       top: 0;
       left: 0;
       right: 0;
@@ -101,7 +101,9 @@
       justify-content: center;
       align-items: center;
       gap: 40px;
-      background: transparent;
+      background: rgba(10, 10, 10, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
       height: 80px;
     }
 
@@ -137,7 +139,7 @@
       border-radius: 50%;
       pointer-events: none;
       z-index: 1;
-      background: radial-gradient(circle, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.03) 40%, transparent 70%);
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.015) 40%, transparent 70%);
       transform: translate(-50%, -50%);
       transition: opacity 0.3s ease;
       opacity: 0;
@@ -157,10 +159,10 @@
     /* ---- Left Sidebar (Sticky) ---- */
     .sidebar {
       position: sticky;
-      top: 24px;
+      top: 80px;
       width: 48%;
-      max-height: calc(100vh - 48px);
-      padding: 48px 48px 24px 0;
+      max-height: calc(100vh - 80px);
+      padding: 24px 48px 24px 0;
       display: flex;
       flex-direction: column;
       flex-shrink: 0;
@@ -249,6 +251,35 @@
       50% { opacity: 0; }
     }
 
+    /* ---- Resume PDF typing tooltip ---- */
+    .resume-pdf-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .pdf-typing-text {
+      position: absolute;
+      left: calc(100% + 10px);
+      top: 50%;
+      transform: translateY(-50%);
+      font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+      font-size: 12px;
+      color: var(--text-muted);
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
+    }
+
+    .pdf-typing-text .typing-cursor {
+      display: inline-block;
+      width: 6px;
+      height: 14px;
+      background: var(--text-muted);
+      margin-left: 1px;
+      animation: cursorBlink 0.8s step-end infinite;
+    }
+
     /* ---- Social Icons ---- */
     .social-icons {
       display: flex;
@@ -280,22 +311,34 @@
 
     .content section {
       margin-bottom: 80px;
-      scroll-margin-top: 80px;
+      scroll-margin-top: 100px;
     }
 
     .content section:last-child {
       margin-bottom: 48px;
     }
 
-    /* ---- Section Headings (subtle, always visible) ---- */
+    /* ---- Section Headings (terminal-style) ---- */
     .section-label {
-      font-family: var(--font-heading);
+      font-family: var(--font-body);
       font-size: 11px;
-      font-weight: 600;
-      letter-spacing: 0.2em;
+      font-weight: 500;
+      letter-spacing: 0.15em;
       text-transform: uppercase;
       color: var(--text-muted);
       margin-bottom: 32px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .section-label::before {
+      content: '>';
+      font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--text-muted);
+      opacity: 0.7;
     }
 
     /* ---- About Section ---- */
@@ -304,6 +347,19 @@
       color: var(--text-secondary);
       line-height: 1.7;
       margin-bottom: 16px;
+    }
+
+    .about-link {
+      color: var(--text-secondary);
+      text-decoration: none;
+      text-underline-offset: 3px;
+      transition: color 0.2s ease;
+    }
+
+    .about-link:hover {
+      color: var(--text-white);
+      text-decoration: underline;
+      text-underline-offset: 3px;
     }
 
     /* ---- Entry Cards ---- */
@@ -477,6 +533,10 @@
         background: var(--bg); padding: 12px 0; z-index: 10;
       }
 
+      .section-label::before { display: none; }
+
+      .pdf-typing-text { display: none; }
+
       .entry-card {
         grid-template-columns: 1fr; gap: 4px;
         padding: 16px 12px; margin: 0 -12px;
@@ -534,16 +594,19 @@
         <a href="https://www.linkedin.com/in/aaditkannan" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
         </a>
-        <a href="https://x.com/aad1t" target="_blank" rel="noopener noreferrer" aria-label="X">
+        <a href="https://x.com/aad1t_" target="_blank" rel="noopener noreferrer" aria-label="X">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
         </a>
         <a href="https://instagram.com/aaditkannan" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
         </a>
         <!-- Resume PDF -->
-        <a href="/assets/NewResume.pdf" target="_blank" rel="noopener noreferrer" aria-label="Resume PDF">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm-1 2l5 5h-5V4zM6 20V4h5v7h7v9H6zm2-4h8v1.5H8V16zm0-3h8v1.5H8V13z"/></svg>
-        </a>
+        <div class="resume-pdf-wrapper">
+          <a href="/assets/NewResume.pdf" target="_blank" rel="noopener noreferrer" aria-label="Resume PDF">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm-1 2l5 5h-5V4zM6 20V4h5v7h7v9H6zm2-4h8v1.5H8V16zm0-3h8v1.5H8V13z"/></svg>
+          </a>
+          <span class="pdf-typing-text" id="pdfTypingText"><span class="typing-cursor"></span></span>
+        </div>
       </div>
     </header>
 
@@ -554,8 +617,8 @@
       <section id="about">
         <h2 class="section-label">About</h2>
         <div class="about-text">
-          <p>Mechanical engineering student at UC Berkeley interested in robotics, materials research, and space. Currently working on the high-voltage accumulator as part of Berkeley Formula Electric, while beginning research on thin-film oxide heterostructures for next-gen low-power memory in Ramesh Lab.</p>
-          <p>Also developing Atlas, an SMR and hybrid-energy analysis tool, building off my prior research.</p>
+          <p>Mechanical engineering student at UC Berkeley interested in robotics, materials, and space. Currently working on the high-voltage accumulator as a part of <a href="https://ev.berkeley.edu/" target="_blank" rel="noopener noreferrer" class="about-link">Berkeley Formula Electric</a>, while researching thin-film oxide heterostructures for next-gen low-power memory in <a href="https://www.rameshlab.com/" target="_blank" rel="noopener noreferrer" class="about-link">Ramesh Lab</a>.</p>
+          <p>Also developing Atlas SMR, a website to evaluate grid capabilities of small modular nuclear reactors and hybrid SMR/renewable energy systems, to inform cost-effective strategies for clean-energy transitions. <a href="/projects" class="about-link">View all projects &rarr;</a></p>
         </div>
       </section>
 
@@ -806,8 +869,8 @@
         if (!glow.classList.contains('visible')) glow.classList.add('visible');
       });
       function animate() {
-        glowX += (mouseX - glowX) * 0.12;
-        glowY += (mouseY - glowY) * 0.12;
+        glowX += (mouseX - glowX) * 0.3;
+        glowY += (mouseY - glowY) * 0.3;
         glow.style.left = glowX + 'px';
         glow.style.top = glowY + 'px';
         requestAnimationFrame(animate);
@@ -822,17 +885,22 @@
       if (!navLinks.length || !sections.length) return;
 
       function updateActiveNav() {
-        const viewportMiddle = window.innerHeight / 2;
         let current = '';
 
-        // If scrolled to near bottom, highlight last section
+        // If at the very top, highlight first section (About)
+        const scrolledToTop = window.scrollY < 100;
         const scrolledToBottom = (window.innerHeight + window.scrollY) >= document.body.scrollHeight - 100;
-        if (scrolledToBottom) {
+
+        if (scrolledToTop) {
+          current = sections[0].id;
+        } else if (scrolledToBottom) {
           current = sections[sections.length - 1].id;
         } else {
+          // Find the section whose top is closest to but above the viewport top + offset
+          const offset = 200;
           sections.forEach((section) => {
             const rect = section.getBoundingClientRect();
-            if (rect.top <= viewportMiddle) {
+            if (rect.top <= offset) {
               current = section.id;
             }
           });
@@ -848,6 +916,43 @@
 
       window.addEventListener('scroll', updateActiveNav, { passive: true });
       updateActiveNav();
+    })();
+
+    // ---- Resume PDF typing animation ----
+    (function() {
+      const el = document.getElementById('pdfTypingText');
+      if (!el || window.innerWidth < 769) return;
+
+      const text = '\u2190 Resume PDF';
+      const cursor = el.querySelector('.typing-cursor');
+      let charIndex = 0;
+      let textNode = document.createTextNode('');
+      el.insertBefore(textNode, cursor);
+
+      function typeChar() {
+        if (charIndex < text.length) {
+          textNode.textContent += text[charIndex];
+          charIndex++;
+          setTimeout(typeChar, 60 + Math.random() * 40);
+        } else {
+          setTimeout(startDelete, 3000);
+        }
+      }
+
+      function startDelete() {
+        deleteChar();
+      }
+
+      function deleteChar() {
+        if (textNode.textContent.length > 0) {
+          textNode.textContent = textNode.textContent.slice(0, -1);
+          setTimeout(deleteChar, 30 + Math.random() * 20);
+        } else {
+          cursor.style.display = 'none';
+        }
+      }
+
+      setTimeout(typeChar, 1200);
     })();
   </script>
 </body>

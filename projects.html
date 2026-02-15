@@ -88,7 +88,7 @@
       border-radius: 50%;
       pointer-events: none;
       z-index: 1;
-      background: radial-gradient(circle, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.03) 40%, transparent 70%);
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.015) 40%, transparent 70%);
       transform: translate(-50%, -50%);
       transition: opacity 0.3s ease;
       opacity: 0;
@@ -231,11 +231,11 @@
     }
 
     .page-title {
-      font-family: 'Brandon Grotesque', 'brandon-grotesque', 'Inter', system-ui, sans-serif;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
       font-size: clamp(42px, 7vw, 56px);
-      font-weight: 400;
+      font-weight: 700;
       color: #FFFFFF;
-      letter-spacing: 0.02em;
+      letter-spacing: -0.02em;
       line-height: 1.1;
       margin: 0;
       transition: opacity 0.3s;
@@ -1940,8 +1940,8 @@
         if (!glow.classList.contains('visible')) glow.classList.add('visible');
       });
       function animate() {
-        glowX += (mouseX - glowX) * 0.12;
-        glowY += (mouseY - glowY) * 0.12;
+        glowX += (mouseX - glowX) * 0.3;
+        glowY += (mouseY - glowY) * 0.3;
         glow.style.left = glowX + 'px';
         glow.style.top = glowY + 'px';
         requestAnimationFrame(animate);
