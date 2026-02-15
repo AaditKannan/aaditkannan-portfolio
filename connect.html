@@ -387,6 +387,13 @@
         z-index: 1002;
         opacity: 1;
         transition: opacity 0.3s ease;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 50%;
+        width: 36px;
+        height: 36px;
+      }
+      [data-theme="light"] .theme-toggle {
+        background: rgba(0, 0, 0, 0.08);
       }
       .theme-toggle svg { width: 14px; height: 14px; }
 
@@ -538,13 +545,14 @@
         setTimeout(() => document.documentElement.classList.remove('theme-transition'), 350);
       });
 
-      // Mobile: fade toggle on scroll
+      // Mobile: fade toggle out on first scroll only
       if (window.innerWidth <= 768) {
-        let scrollTimer;
+        let faded = false;
         window.addEventListener('scroll', () => {
-          toggle.style.opacity = '0';
-          clearTimeout(scrollTimer);
-          scrollTimer = setTimeout(() => { toggle.style.opacity = '1'; }, 400);
+          if (!faded && window.scrollY > 50) {
+            toggle.style.opacity = '0';
+            faded = true;
+          }
         }, { passive: true });
       }
     })();
