@@ -86,7 +86,12 @@
 
     body {
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      background: var(--bg);
+      background-color: var(--bg);
+      background-image: url('./assets/Gemini_Generated_Image_x8vd12x8vd12x8vd.png');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      background-repeat: no-repeat;
       color: var(--text);
       font-weight: 400;
       -webkit-font-smoothing: antialiased;
@@ -95,6 +100,10 @@
       overflow-y: scroll;
       scrollbar-width: none;
       -ms-overflow-style: none;
+    }
+
+    [data-theme="light"] body {
+      background-image: none;
     }
     body::-webkit-scrollbar { display: none; }
 
@@ -149,6 +158,7 @@
 
     @media (max-width: 768px) {
       .cursor-glow { display: none; }
+      body { background-attachment: scroll; }
     }
 
     /* Nav */

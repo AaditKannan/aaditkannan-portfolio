@@ -102,20 +102,11 @@
 
     body {
       font-family: var(--font-body);
-      background-color: var(--bg);
-      background-image: url('./assets/Gemini_Generated_Image_x8vd12x8vd12x8vd.png');
-      background-size: cover;
-      background-position: center;
-      background-attachment: fixed;
-      background-repeat: no-repeat;
+      background: var(--bg);
       color: var(--text-primary);
       line-height: 1.6;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
-    }
-
-    [data-theme="light"] body {
-      background-image: none;
     }
 
     a { color: inherit; text-decoration: none; }
@@ -561,7 +552,6 @@
        ============================================ */
     @media (max-width: 768px) {
       .cursor-glow { display: none; }
-      body { background-attachment: scroll; }
 
       .nav-bar {
         position: absolute;
