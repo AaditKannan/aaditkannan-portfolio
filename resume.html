@@ -735,7 +735,7 @@
       <section id="about">
         <h2 class="section-label">About</h2>
         <div class="about-text">
-          <p>Mechanical engineering student at UC Berkeley interested in robotics, materials, and space. Currently working on the high-voltage accumulator as a part of <a href="https://ev.berkeley.edu/" target="_blank" rel="noopener noreferrer" class="about-link">Berkeley Formula Electric</a>, while researching thin-film oxide heterostructures for next-gen low-power memory in <a href="https://www.rameshlab.com/" target="_blank" rel="noopener noreferrer" class="about-link">Ramesh Lab</a>.</p>
+          <p>Mechanical engineering student at UC Berkeley interested in robotics, materials, and space. Currently working on the high-voltage accumulator as a part of <a href="https://ev.berkeley.edu/" target="_blank" rel="noopener noreferrer" class="about-link">Berkeley Formula Electric</a>, while researching thin-film oxide heterostructures for next-gen low-power memory in <a href="https://rameshlab.lbl.gov/" target="_blank" rel="noopener noreferrer" class="about-link">Ramesh Lab</a>.</p>
           <p>Also developing Atlas SMR, a website to evaluate grid capabilities of small modular nuclear reactors and hybrid SMR/renewable energy systems, to inform cost-effective strategies for clean-energy transitions. <a href="/projects" class="about-link" style="text-decoration: underline; text-underline-offset: 3px;">View all projects &rarr;</a></p>
         </div>
       </section>
@@ -1074,7 +1074,11 @@
     (function() {
       const toggle = document.getElementById('themeToggle');
       const saved = localStorage.getItem('theme');
-      if (saved === 'light') document.documentElement.setAttribute('data-theme', 'light');
+      if (saved === 'light') {
+        document.documentElement.setAttribute('data-theme', 'light');
+      } else if (!saved && window.matchMedia('(prefers-color-scheme: light)').matches) {
+        document.documentElement.setAttribute('data-theme', 'light');
+      }
       toggle.addEventListener('click', () => {
         document.documentElement.classList.add('theme-transition');
         const isLight = document.documentElement.getAttribute('data-theme') === 'light';
