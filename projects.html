@@ -1364,7 +1364,7 @@
       display: block;
       position: relative;
       padding: 32px 40px;
-      background: rgba(255,255,255,0.02);
+      background: var(--card-bg);
       border: 1px solid var(--border);
       text-decoration: none;
       overflow: hidden;
@@ -1372,9 +1372,13 @@
     }
 
     .footage-link:hover {
-      background: rgba(255,255,255,0.04);
+      background: rgba(10,10,10,0.9);
       border-color: var(--border-light);
       transform: translateY(-2px);
+    }
+
+    [data-theme="light"] .footage-link:hover {
+      background: rgba(245,242,238,0.9);
     }
 
     .footage-content {
