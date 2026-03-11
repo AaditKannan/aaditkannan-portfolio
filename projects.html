@@ -453,6 +453,17 @@
       transform: scale(1.23);
     }
 
+    /* Leitmotif - cover, slight zoom */
+    .project-card[data-id="leitmotif"] .project-image img {
+      object-fit: cover;
+      object-position: center center;
+      transform: scale(1.05);
+    }
+
+    .project-card[data-id="leitmotif"]:hover .project-image img {
+      transform: scale(1.08);
+    }
+
     /* Atlas SMR - show more UI, no black bars */
     .project-card[data-id="atlas-smr"] .project-image img {
       object-fit: cover;
