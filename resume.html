@@ -421,6 +421,46 @@
       text-underline-offset: 3px;
     }
 
+    .about-currently {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 16px 0;
+    }
+
+    .about-currently li {
+      font-size: 15px;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      padding: 6px 0;
+      padding-left: 20px;
+      position: relative;
+    }
+
+    .about-currently li::before {
+      content: '—';
+      position: absolute;
+      left: 0;
+      color: var(--text-muted);
+    }
+
+    .about-highlight {
+      color: var(--text-heading);
+      font-weight: 500;
+      text-decoration: none;
+      border-bottom: 1px solid transparent;
+      transition: color 0.2s ease, border-color 0.2s ease;
+    }
+
+    a.about-highlight:hover {
+      color: var(--text-white);
+      border-bottom-color: var(--text-white);
+    }
+
+    .about-book {
+      font-style: italic;
+      color: var(--text-secondary);
+    }
+
     /* ---- Entry Cards ---- */
     .entry-card {
       display: grid;
@@ -735,8 +775,14 @@
       <section id="about">
         <h2 class="section-label">About</h2>
         <div class="about-text">
-          <p>Mechanical engineering student at UC Berkeley interested in robotics, materials, and space. Currently working on the high-voltage accumulator as a part of <a href="https://ev.berkeley.edu/" target="_blank" rel="noopener noreferrer" class="about-link">Berkeley Formula Electric</a>, while researching thin-film oxide heterostructures for next-gen low-power memory in <a href="https://rameshlab.lbl.gov/" target="_blank" rel="noopener noreferrer" class="about-link">Ramesh Lab</a>.</p>
-          <p>Also developing Atlas SMR, a website to evaluate grid capabilities of small modular nuclear reactors and hybrid SMR/renewable energy systems, to inform cost-effective strategies for clean-energy transitions. <a href="/projects" class="about-link" style="text-decoration: underline; text-underline-offset: 3px;">View all projects &rarr;</a></p>
+          <p>Mechanical engineering student at UC Berkeley interested in robotics, materials, and space. Currently:</p>
+          <ul class="about-currently">
+            <li>Designing and manufacturing the custom high-voltage accumulator for <a href="/projects#formula-electric" class="about-highlight">Formula Electric at Berkeley</a></li>
+            <li>Researching emergent phenomena in oxide heterostructures, growing BFO, and characterizing XRD/AFM/PFM data in <a href="https://rameshlab.lbl.gov/" target="_blank" rel="noopener noreferrer" class="about-highlight">Ramesh Lab</a></li>
+            <li>Building <a href="/projects#atlas-smr" class="about-highlight">Atlas SMR</a>, a tool to evaluate SMR grid capabilities in hybrid renewable systems, to push clean-energy transition</li>
+            <li>Reading <span class="about-book">Principles and Applications of Ferroelectric and Related Materials</span> (Lines and Glass)</li>
+          </ul>
+          <p><a href="/projects" class="about-link" style="text-decoration: underline; text-underline-offset: 3px;">View all projects &rarr;</a></p>
         </div>
       </section>
 
@@ -746,7 +792,7 @@
 
         <div class="entry-card">
           <div class="entry-body">
-            <h3><a href="/projects#formula-electric" class="link-group">Accumulator Mech. Engineer · Formula Electric at Berkeley <span class="arrow">&#8599;</span></a></h3>
+            <h3><a href="/projects#formula-electric" class="link-group">Accumulator Mech Engineer · Formula Electric at Berkeley <span class="arrow">&#8599;</span></a></h3>
             <div class="entry-desc">
               <p>Designed and manufactured the attic casing for the 588V accumulator with waterproofing and high-dielectric-strength insulation, reducing attic mass by 18%.</p>
             </div>
