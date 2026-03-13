@@ -377,6 +377,10 @@
       scroll-margin-top: 96px;
     }
 
+    .content section#about {
+      padding-bottom: 40px;
+    }
+
     .content section:last-child {
       padding-bottom: 48px;
     }
@@ -402,10 +406,10 @@
 
     /* ---- About Section ---- */
     .about-text p {
-      font-size: 15px;
+      font-size: 14px;
       color: var(--text-secondary);
-      line-height: 1.7;
-      margin-bottom: 16px;
+      line-height: 1.6;
+      margin-bottom: 10px;
     }
 
     .about-link {
@@ -424,14 +428,14 @@
     .about-currently {
       list-style: none;
       padding: 0;
-      margin: 0 0 16px 0;
+      margin: 0 0 10px 0;
     }
 
     .about-currently li {
-      font-size: 15px;
+      font-size: 14px;
       color: var(--text-secondary);
-      line-height: 1.7;
-      padding: 6px 0;
+      line-height: 1.6;
+      padding: 3px 0;
       padding-left: 20px;
       position: relative;
     }
@@ -443,17 +447,57 @@
       color: var(--text-muted);
     }
 
+    .about-verb {
+      font-family: var(--font-heading);
+      font-size: 12px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
     .about-highlight {
       color: var(--text-heading);
       font-weight: 500;
       text-decoration: none;
       border-bottom: 1px solid transparent;
       transition: color 0.2s ease, border-color 0.2s ease;
+      position: relative;
     }
 
     a.about-highlight:hover {
       color: var(--text-white);
       border-bottom-color: var(--text-white);
+    }
+
+    /* ---- Hover Preview Card ---- */
+    .about-preview {
+      position: fixed;
+      pointer-events: none;
+      z-index: 9998;
+      width: 200px;
+      height: 130px;
+      border-radius: 8px;
+      overflow: hidden;
+      opacity: 0;
+      transform: scale(0.92);
+      transition: opacity 0.2s ease, transform 0.2s ease;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+      border: 1px solid var(--card-border);
+    }
+
+    .about-preview.visible {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .about-preview img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    [data-theme="light"] .about-preview {
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
     }
 
     .about-book {
@@ -775,16 +819,19 @@
       <section id="about">
         <h2 class="section-label">About</h2>
         <div class="about-text">
-          <p>Mechanical engineering student at UC Berkeley interested in robotics, materials, and space. Currently:</p>
+          <p>Mechanical engineering and EECS student at UC Berkeley interested in robotics, materials, and space.</p>
           <ul class="about-currently">
-            <li>Designing and manufacturing the custom high-voltage accumulator for <a href="/projects#formula-electric" class="about-highlight">Formula Electric at Berkeley</a></li>
-            <li>Researching emergent phenomena in oxide heterostructures, growing BFO, and characterizing XRD/AFM/PFM data in <a href="https://rameshlab.lbl.gov/" target="_blank" rel="noopener noreferrer" class="about-highlight">Ramesh Lab</a></li>
-            <li>Building <a href="/projects#atlas-smr" class="about-highlight">Atlas SMR</a>, a tool to evaluate SMR grid capabilities in hybrid renewable systems, to push clean-energy transition</li>
-            <li>Reading <span class="about-book">Principles and Applications of Ferroelectric and Related Materials</span> (Lines and Glass)</li>
+            <li><span class="about-verb">Designing</span> the custom high-voltage accumulator for <a href="/projects#formula-electric" class="about-highlight" data-preview="/assets/accumimg.png">Formula Electric at Berkeley</a></li>
+            <li><span class="about-verb">Researching</span> emergent phenomena in oxide heterostructures and characterizing XRD/AFM/PFM data in <a href="/projects#ramesh-lab" class="about-highlight" data-preview="/assets/Screenshot 2026-03-13 000052.png">Ramesh Lab</a></li>
+            <li><span class="about-verb">Building</span> <a href="/projects#atlas-smr" class="about-highlight" data-preview="/assets/atmaslet.png">Atlas SMR</a>, a tool to evaluate SMR grid capabilities in hybrid renewable systems</li>
+            <li><span class="about-verb">Reading</span> <span class="about-book">Principles and Applications of Ferroelectric and Related Materials</span> (Lines &amp; Glass)</li>
           </ul>
           <p><a href="/projects" class="about-link" style="text-decoration: underline; text-underline-offset: 3px;">View all projects &rarr;</a></p>
         </div>
       </section>
+
+      <!-- Hover Preview -->
+      <div class="about-preview" id="aboutPreview"><img id="aboutPreviewImg" src="" alt=""></div>
 
       <!-- Technical Experience -->
       <section id="technical-experience">
@@ -1190,6 +1237,35 @@
         }
         requestAnimationFrame(animate);
       }, 100);
+    })();
+
+    // ---- About Hover Preview ----
+    (function() {
+      const preview = document.getElementById('aboutPreview');
+      const previewImg = document.getElementById('aboutPreviewImg');
+      if (!preview || window.innerWidth < 769) return;
+
+      const links = document.querySelectorAll('.about-highlight[data-preview]');
+      let isVisible = false;
+
+      links.forEach(link => {
+        link.addEventListener('mouseenter', () => {
+          previewImg.src = link.dataset.preview;
+          isVisible = true;
+          preview.classList.add('visible');
+        });
+
+        link.addEventListener('mouseleave', () => {
+          isVisible = false;
+          preview.classList.remove('visible');
+        });
+
+        link.addEventListener('mousemove', (e) => {
+          if (!isVisible) return;
+          preview.style.left = (e.clientX + 16) + 'px';
+          preview.style.top = (e.clientY - 70) + 'px';
+        });
+      });
     })();
 
   </script>
