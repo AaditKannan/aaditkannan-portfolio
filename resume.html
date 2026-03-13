@@ -1258,8 +1258,14 @@
 
         link.addEventListener('mousemove', (e) => {
           if (!isVisible) return;
-          preview.style.left = (e.clientX + 16) + 'px';
-          preview.style.top = (e.clientY - 70) + 'px';
+          const pw = 200, ph = 130;
+          let left = e.clientX - pw / 2;
+          let top = e.clientY + 20;
+          if (left < 8) left = 8;
+          if (left + pw > window.innerWidth - 8) left = window.innerWidth - pw - 8;
+          if (top + ph > window.innerHeight - 8) top = e.clientY - ph - 16;
+          preview.style.left = left + 'px';
+          preview.style.top = top + 'px';
         });
       });
     })();
