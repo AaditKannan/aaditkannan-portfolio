@@ -436,6 +436,16 @@
       color: var(--text-secondary);
       line-height: 1.7;
       padding: 4px 0;
+      padding-left: 16px;
+      position: relative;
+    }
+
+    .about-currently li::before {
+      content: '·';
+      position: absolute;
+      left: 2px;
+      color: var(--text-muted);
+      font-weight: 700;
     }
 
     .about-highlight {
@@ -802,7 +812,7 @@
       <section id="about">
         <h2 class="section-label">About</h2>
         <div class="about-text">
-          <p>Mechanical engineering and EECS student at UC Berkeley interested in robotics, materials, and space.</p>
+          <p>Mechanical engineering and EECS student at UC Berkeley interested in robotics, materials, and space. Currently:</p>
           <ul class="about-currently">
             <li>Designing the custom high-voltage accumulator for <a href="/projects#formula-electric" class="about-highlight" data-preview="/assets/accumimg.png">Formula Electric at Berkeley</a></li>
             <li>Researching emergent phenomena in oxide heterostructures and characterizing XRD/AFM/PFM data in <a href="/projects#ramesh-lab" class="about-highlight" data-preview="/assets/Screenshot 2026-03-13 000052.png">Ramesh Lab</a></li>
