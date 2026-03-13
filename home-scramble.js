@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
   
   // Change subtitle text on mobile BEFORE scrambling - split into two lines
   if (window.innerWidth < 768 && subtitle) {
-    subtitle.innerHTML = 'MECHANICAL ENGINEERING<br>+ EECS @ UC BERKELEY';
+    subtitle.innerHTML = 'MECHE + EECS<br>@ UC BERKELEY';
     // Store the HTML version for scrambling
     const finalHTML = subtitle.innerHTML;
     // Reset to scrambled state first
