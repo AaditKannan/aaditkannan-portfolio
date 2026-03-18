@@ -2084,7 +2084,7 @@
     }
 
     // Open detail view
-    function openDetail(projectId) {
+    function openDetail(projectId, pushHistory = true) {
       const index = projects.findIndex(p => p.id === projectId);
       if (index === -1) return;
 
@@ -2103,13 +2103,16 @@
       detailContent.classList.add('visible');
       isDetailOpen = true;
 
+      // Update URL hash
+      if (pushHistory) history.pushState(null, '', '#' + projectId);
+
       // Scroll to top
       detailContent.scrollTop = 0;
       window.scrollTo(0, 0);
     }
 
     // Close detail view
-    function closeDetail() {
+    function closeDetail(pushHistory = true) {
       if (!isDetailOpen) return;
 
       // Scramble title back
@@ -2117,7 +2120,10 @@
 
       // Black hole close animation - fast
       detailContent.classList.add('closing');
-      
+
+      // Clear URL hash
+      if (pushHistory) history.pushState(null, '', window.location.pathname);
+
       setTimeout(() => {
         detailContent.classList.remove('visible', 'closing');
         document.body.classList.remove('detail-active');
@@ -2156,6 +2162,16 @@
       if (e.key === 'Escape') closeDetail();
     });
 
+    // Handle browser back/forward
+    window.addEventListener('hashchange', () => {
+      const hash = window.location.hash.substring(1);
+      if (hash && projects.some(p => p.id === hash)) {
+        openDetail(hash, false);
+      } else if (isDetailOpen) {
+        closeDetail(false);
+      }
+    });
+
     // Initialize
     renderGrid();
     
@@ -2164,7 +2180,7 @@
       const projectId = window.location.hash.substring(1);
       const projectExists = projects.some(p => p.id === projectId);
       if (projectExists) {
-        setTimeout(() => openDetail(projectId), 100);
+        setTimeout(() => openDetail(projectId, false), 100);
       }
     }
     
