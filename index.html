@@ -89,7 +89,7 @@
     }
     .cursor-glow.visible { opacity: 1; }
 
-    /* Background Video - optimized for performance */
+    /* Background Video - deferred load with fade-in */
     .background-video {
       position: absolute;
       inset: 0;
@@ -519,19 +519,15 @@
 
   <!-- Background Video Container -->
   <div style="position: fixed; inset: 0; z-index: -3; overflow: hidden;">
-    <video 
-      class="background-video" 
-      autoplay 
-      muted 
-      loop 
-      playsinline 
+    <video
+      class="background-video"
+      muted
+      loop
+      playsinline
       id="bgVideo"
-      preload="metadata"
+      preload="none"
       poster="./assets/video-poster.jpg"
     >
-      <source src="./assets/background-video.mp4" type="video/mp4">
-      <source src="assets/background-video.mp4" type="video/mp4">
-      Your browser does not support the video tag.
     </video>
     <div class="video-overlay"></div>
   </div>
@@ -590,48 +586,37 @@
     })();
   </script>
           <script>
-    // Optimized video loading and playback
+    // Deferred video loading - page renders instantly, video loads after
     (function() {
       const video = document.getElementById('bgVideo');
       if (!video) return;
 
-      // Set loading strategy
-      video.loading = 'lazy';
-      
-      // Ensure video plays with fallbacks
-      const playVideo = () => {
-        const playPromise = video.play();
-        if (playPromise !== undefined) {
-          playPromise.catch(error => {
-            // Autoplay was prevented - try again on interaction
-            const tryPlay = () => {
-              video.play().catch(() => {});
-              document.removeEventListener('click', tryPlay);
-              document.removeEventListener('touchstart', tryPlay);
-            };
-            document.addEventListener('click', tryPlay, { once: true });
-            document.addEventListener('touchstart', tryPlay, { once: true });
-          });
-        }
+      const loadAndPlay = () => {
+        const source = document.createElement('source');
+        source.src = './assets/background-video.mp4';
+        source.type = 'video/mp4';
+        video.appendChild(source);
+        video.load();
+
+        const playVideo = () => {
+          const p = video.play();
+          if (p !== undefined) {
+            p.catch(() => {
+              const tryPlay = () => video.play().catch(() => {});
+              document.addEventListener('click', tryPlay, { once: true });
+              document.addEventListener('touchstart', tryPlay, { once: true });
+            });
+          }
+        };
+
+        video.addEventListener('canplay', playVideo, { once: true });
       };
 
-      // Wait for video metadata to load before playing
-      if (video.readyState >= 2) {
-        playVideo();
+      // Wait until page is fully painted before fetching video
+      if ('requestIdleCallback' in window) {
+        requestIdleCallback(loadAndPlay);
       } else {
-        video.addEventListener('loadedmetadata', playVideo, { once: true });
-      }
-
-      // Handle video errors gracefully
-      video.addEventListener('error', () => {
-        console.warn('Background video failed to load');
-        // Fallback: could show a static image here
-      });
-
-      // Optimize for mobile
-      if (window.innerWidth < 768) {
-        video.setAttribute('playsinline', '');
-        // Reduce quality on mobile if needed
+        setTimeout(loadAndPlay, 200);
       }
     })();
   </script>

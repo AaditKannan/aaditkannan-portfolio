@@ -32,3 +32,6 @@ yarn-error.log*
 
 .vercel
 .env*.local
+
+# Original uncompressed video
+assets/background-video-original.mp4
