@@ -96,33 +96,36 @@
     }
     .cursor-glow.visible { opacity: 1; }
 
-    /* Background video wrapper. CSS poster shows instantly; the native <video>
-       poster (same image) covers it, then is replaced by the video itself on
-       playback — a clean browser-native swap with no custom fade. */
+    /* Background video wrapper. Poster and video are both rendered with
+       identical object-fit rules so their layout is pixel-identical —
+       prevents any "bounce" when the native swap happens. */
     .bg-video-wrap {
       position: fixed;
       inset: 0;
       z-index: -3;
       overflow: hidden;
-      background-image: url('./assets/video-poster.jpg');
-      background-size: cover;
-      background-position: center;
       background-color: #1a1a1a;
     }
 
+    .bg-poster,
     .background-video {
       position: absolute;
       inset: 0;
       width: 100%;
       height: 100%;
       object-fit: cover;
+      object-position: center;
       pointer-events: none;
     }
+
+    .bg-poster { z-index: 1; }
+    .background-video { z-index: 2; background: transparent; }
 
     /* Dark overlay above video, below text */
     .video-overlay {
       position: absolute;
       inset: 0;
+      z-index: 3;
       background: rgba(0, 0, 0, 0.35);
       pointer-events: none;
     }
@@ -530,6 +533,7 @@
 
   <!-- Background Video Container -->
   <div class="bg-video-wrap">
+    <img class="bg-poster" src="./assets/video-poster.jpg" alt="" aria-hidden="true" fetchpriority="high">
     <video
       class="background-video"
       autoplay
@@ -538,7 +542,6 @@
       playsinline
       id="bgVideo"
       preload="auto"
-      poster="./assets/video-poster.jpg"
     >
       <source src="./assets/background-video.mp4" type="video/mp4">
     </video>
