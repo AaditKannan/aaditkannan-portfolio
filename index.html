@@ -116,7 +116,7 @@
       object-fit: cover;
       pointer-events: none;
       opacity: 0;
-      transition: opacity 600ms ease;
+      transition: opacity 250ms linear;
     }
     .background-video.is-ready { opacity: 1; }
 
@@ -533,12 +533,15 @@
   <div class="bg-video-wrap">
     <video
       class="background-video"
+      autoplay
       muted
       loop
       playsinline
       id="bgVideo"
-      preload="none"
+      preload="auto"
+      poster="./assets/video-poster.jpg"
     >
+      <source src="./assets/background-video.mp4" type="video/mp4">
     </video>
     <div class="video-overlay"></div>
   </div>
@@ -597,41 +600,20 @@
     })();
   </script>
           <script>
-    // Deferred video loading - page renders instantly, video loads after
-    (function() {
+    // Video fades in once it can play. Poster matches the exact first frame,
+    // so the transition from still image to motion is nearly imperceptible.
+    (function () {
       const video = document.getElementById('bgVideo');
       if (!video) return;
-
-      const loadAndPlay = () => {
-        const source = document.createElement('source');
-        source.src = './assets/background-video.mp4';
-        source.type = 'video/mp4';
-        video.appendChild(source);
-        video.load();
-
-        const reveal = () => video.classList.add('is-ready');
-        const playVideo = () => {
-          const p = video.play();
-          if (p !== undefined) {
-            p.then(reveal).catch(() => {
-              const tryPlay = () => video.play().then(reveal).catch(() => {});
-              document.addEventListener('click', tryPlay, { once: true });
-              document.addEventListener('touchstart', tryPlay, { once: true });
-            });
-          } else {
-            reveal();
-          }
-        };
-
-        video.addEventListener('canplay', playVideo, { once: true });
-      };
-
-      // Wait until page is fully painted before fetching video
-      if ('requestIdleCallback' in window) {
-        requestIdleCallback(loadAndPlay);
-      } else {
-        setTimeout(loadAndPlay, 200);
-      }
+      const reveal = () => video.classList.add('is-ready');
+      if (video.readyState >= 3) { reveal(); return; }
+      video.addEventListener('canplay', reveal, { once: true });
+      // Some mobile browsers block autoplay until user interaction.
+      const tryPlay = () => video.play().then(reveal).catch(() => {});
+      video.play().then(reveal).catch(() => {
+        document.addEventListener('click', tryPlay, { once: true });
+        document.addEventListener('touchstart', tryPlay, { once: true });
+      });
     })();
   </script>
 </body>
