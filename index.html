@@ -96,7 +96,9 @@
     }
     .cursor-glow.visible { opacity: 1; }
 
-    /* Background video wrapper — poster shows first, video crossfades in on top */
+    /* Background video wrapper. CSS poster shows instantly; the native <video>
+       poster (same image) covers it, then is replaced by the video itself on
+       playback — a clean browser-native swap with no custom fade. */
     .bg-video-wrap {
       position: fixed;
       inset: 0;
@@ -115,10 +117,7 @@
       height: 100%;
       object-fit: cover;
       pointer-events: none;
-      opacity: 0;
-      transition: opacity 250ms linear;
     }
-    .background-video.is-ready { opacity: 1; }
 
     /* Dark overlay above video, below text */
     .video-overlay {
@@ -600,17 +599,13 @@
     })();
   </script>
           <script>
-    // Video fades in once it can play. Poster matches the exact first frame,
-    // so the transition from still image to motion is nearly imperceptible.
+    // Fallback play trigger for mobile browsers that block autoplay until
+    // first user interaction.
     (function () {
       const video = document.getElementById('bgVideo');
       if (!video) return;
-      const reveal = () => video.classList.add('is-ready');
-      if (video.readyState >= 3) { reveal(); return; }
-      video.addEventListener('canplay', reveal, { once: true });
-      // Some mobile browsers block autoplay until user interaction.
-      const tryPlay = () => video.play().then(reveal).catch(() => {});
-      video.play().then(reveal).catch(() => {
+      const tryPlay = () => video.play().catch(() => {});
+      video.play().catch(() => {
         document.addEventListener('click', tryPlay, { once: true });
         document.addEventListener('touchstart', tryPlay, { once: true });
       });
