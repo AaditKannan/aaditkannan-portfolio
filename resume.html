@@ -36,6 +36,13 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
+    @view-transition { navigation: auto; }
+    ::view-transition-old(root),
+    ::view-transition-new(root) {
+      animation-duration: 320ms;
+      animation-timing-function: cubic-bezier(0.22, 0.61, 0.36, 1);
+    }
+
     :root {
       --font-heading: 'JetBrains Mono', monospace;
       --font-body: 'Inter', system-ui, -apple-system, sans-serif;
@@ -818,7 +825,7 @@
           <p>Mechanical engineering and EECS student at UC Berkeley interested in robotics, materials, and space. Currently:</p>
           <ul class="about-currently">
             <li>Designing the custom high-voltage accumulator for <a href="/projects#formula-electric" class="about-highlight" data-preview="/assets/accumimg.png">Formula Electric at Berkeley</a></li>
-            <li>Researching emergent phenomena in oxide heterostructures and characterizing XRD/AFM/PFM data in <a href="/projects#ramesh-lab" class="about-highlight" data-preview="/assets/Screenshot 2026-03-13 000052.png">Ramesh Lab</a></li>
+            <li>Researching complex-oxide thin films (BiFeO₃) for faster, lower-power memory and logic beyond DRAM and CMOS, in <a href="/projects#ramesh-lab" class="about-highlight" data-preview="/assets/Screenshot 2026-03-13 000052.png">Ramesh Lab</a></li>
             <li>Building <a href="/projects#atlas-smr" class="about-highlight" data-preview="/assets/atmaslet.png">Atlas SMR</a>, a tool to evaluate SMR grid capabilities in hybrid renewable systems</li>
             <li>Reading <span class="about-book">Principles and Applications of Ferroelectric and Related Materials</span> (Lines &amp; Glass)</li>
           </ul>
@@ -854,7 +861,7 @@
           <div class="entry-body">
             <h3><a href="/projects#ramesh-lab" class="link-group">Undergraduate Researcher · Ramesh Lab <span class="arrow">&#8599;</span></a></h3>
             <div class="entry-desc">
-              <p>Researching complex-oxide thin films (BiFeO₃) for next-gen memory. Built a PLD deposition tracking system to log and analyze 30+ experiments, correlating growth parameters with XRD, AFM, and PFM characterization data. Includes data explorer, camera-integrated substrate positioning, and automated slide-deck parsing.</p>
+              <p>Researching complex-oxide thin films (BiFeO₃) for faster, lower-power memory and logic beyond DRAM and CMOS. Built a PLD deposition tracking system linking 30+ experiments to their characterization data (XRD/AFM/PFM), with camera-integrated substrate positioning and automated slide-deck parsing.</p>
             </div>
             <div class="skill-pills">
               <span class="skill-pill">Python</span>

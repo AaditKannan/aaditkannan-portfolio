@@ -36,6 +36,13 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
+    @view-transition { navigation: auto; }
+    ::view-transition-old(root),
+    ::view-transition-new(root) {
+      animation-duration: 320ms;
+      animation-timing-function: cubic-bezier(0.22, 0.61, 0.36, 1);
+    }
+
     * {
       margin: 0;
       padding: 0;
@@ -89,31 +96,36 @@
     }
     .cursor-glow.visible { opacity: 1; }
 
-    /* Background Video - deferred load with fade-in */
+    /* Background video wrapper — poster shows first, video crossfades in on top */
+    .bg-video-wrap {
+      position: fixed;
+      inset: 0;
+      z-index: -3;
+      overflow: hidden;
+      background-image: url('./assets/video-poster.jpg');
+      background-size: cover;
+      background-position: center;
+      background-color: #1a1a1a;
+    }
+
     .background-video {
       position: absolute;
       inset: 0;
       width: 100%;
       height: 100%;
       object-fit: cover;
-      z-index: -3;
       pointer-events: none;
-      background: #1a1a1a;
+      opacity: 0;
+      transition: opacity 600ms ease;
     }
-    
+    .background-video.is-ready { opacity: 1; }
+
     /* Dark overlay above video, below text */
     .video-overlay {
       position: absolute;
       inset: 0;
       background: rgba(0, 0, 0, 0.35);
-      z-index: -2;
       pointer-events: none;
-    }
-
-    /* Video poster fallback */
-    .background-video[poster] {
-      background-size: cover;
-      background-position: center;
     }
 
     /* Dark overlay - lighter for aerial landscape */
@@ -518,7 +530,7 @@
   <div class="cursor-glow" id="cursorGlow"></div>
 
   <!-- Background Video Container -->
-  <div style="position: fixed; inset: 0; z-index: -3; overflow: hidden;">
+  <div class="bg-video-wrap">
     <video
       class="background-video"
       muted
@@ -526,7 +538,6 @@
       playsinline
       id="bgVideo"
       preload="none"
-      poster="./assets/video-poster.jpg"
     >
     </video>
     <div class="video-overlay"></div>
@@ -598,14 +609,17 @@
         video.appendChild(source);
         video.load();
 
+        const reveal = () => video.classList.add('is-ready');
         const playVideo = () => {
           const p = video.play();
           if (p !== undefined) {
-            p.catch(() => {
-              const tryPlay = () => video.play().catch(() => {});
+            p.then(reveal).catch(() => {
+              const tryPlay = () => video.play().then(reveal).catch(() => {});
               document.addEventListener('click', tryPlay, { once: true });
               document.addEventListener('touchstart', tryPlay, { once: true });
             });
+          } else {
+            reveal();
           }
         };
 
