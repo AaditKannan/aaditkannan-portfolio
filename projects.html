@@ -2144,14 +2144,18 @@
     const pageTitle = document.getElementById('pageTitle');
     const detailContent = document.getElementById('detailContent');
     const detailClose = document.getElementById('detailClose');
+    let scrambleRunId = 0;
 
     // Scramble animation
     function scrambleText(element, targetText, duration = 500) {
+      const runId = ++scrambleRunId;
       const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%&*';
       const startTime = Date.now();
       const originalText = element.textContent;
       
       function animate() {
+        if (runId !== scrambleRunId) return;
+
         const elapsed = Date.now() - startTime;
         const progress = Math.min(elapsed / duration, 1);
         const eased = 1 - Math.pow(1 - progress, 3);
@@ -2538,12 +2542,12 @@
       // the detail content. Heavier pages can otherwise skip the same fade/slide
       // transition that lighter project pages visibly show.
       detailContent.offsetHeight;
+      isDetailOpen = true;
       requestAnimationFrame(() => {
         if (currentProjectIndex === index && isDetailOpen) {
           detailContent.classList.add('visible');
         }
       });
-      isDetailOpen = true;
 
       // Update URL hash
       if (pushHistory) history.pushState(null, '', '#' + projectId);
@@ -2634,7 +2638,9 @@
     }
     
     // Initial title scramble
-    scrambleText(pageTitle, 'Projects', 600);
+    if (!window.location.hash) {
+      scrambleText(pageTitle, 'Projects', 600);
+    }
 
 
     // Unavailable link scramble effect
