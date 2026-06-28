@@ -554,6 +554,16 @@
       object-position: center center;
     }
 
+    .project-card[data-id="field-station-toolbox"] .project-image,
+    .project-card[data-id="field-station-toolbox"] .project-image img {
+      background: #f6f4ef;
+    }
+
+    .project-card[data-id="field-station-toolbox"] .project-image img {
+      object-fit: cover;
+      object-position: center center;
+    }
+
     .project-preview-link {
       color: var(--text);
       font-weight: 600;
@@ -745,7 +755,7 @@
     .detail-inner {
       max-width: 1100px;
       margin: 0 auto;
-      padding: 120px 40px 100px;
+      padding: 140px 40px 100px;
     }
 
     .detail-header {
@@ -756,10 +766,10 @@
       display: none;
     }
 
-    /* Title matches resume name style */
+    /* Match the project index heading so title transitions happen in place */
     .detail-title {
       font-family: 'Inter', system-ui, -apple-system, sans-serif;
-      font-size: clamp(36px, 5vw, 48px);
+      font-size: clamp(42px, 7vw, 56px);
       font-weight: 700;
       color: var(--text);
       letter-spacing: -0.02em;
@@ -779,6 +789,11 @@
     .detail-content.visible .detail-date {
       opacity: 1;
       transform: translateY(0);
+    }
+
+    .detail-content[data-project-id="ns-us-pulse-generator"] .detail-title {
+      font-size: clamp(34px, 5.4vw, 46px);
+      max-width: 980px;
     }
 
     /* Top row: gallery + sidebar side by side */
@@ -1412,12 +1427,12 @@
       }
     }
 
-    /* Black hole close animation - fast */
+    /* Detail close mirrors the entry fade without the title feeling detached */
     .detail-content.closing {
-      animation: blackHoleClose 0.25s cubic-bezier(0.55, 0, 1, 0.45) forwards;
+      animation: detailCloseFade 0.28s cubic-bezier(0.55, 0, 1, 0.45) forwards;
     }
 
-    @keyframes blackHoleClose {
+    @keyframes detailCloseFade {
       0% {
         opacity: 1;
         transform: scale(1);
@@ -1425,8 +1440,8 @@
       }
       100% {
         opacity: 0;
-        transform: scale(0.95);
-        filter: blur(6px);
+        transform: scale(0.985);
+        filter: blur(2px);
       }
     }
 
@@ -1937,6 +1952,30 @@
         images: ['/assets/Screenshot 2026-03-13 000052.png', '/assets/Screenshot 2026-03-13 000118.png', '/assets/Screenshot 2026-03-13 000132.png', '/assets/Screenshot 2026-03-13 000202.png', '/assets/Screenshot 2026-03-13 000143.png', '/assets/Screenshot 2026-03-13 000538.png']
       },
       {
+        id: 'field-station-toolbox',
+        title: 'Custom Toolbox Design & Manufacturing',
+        category: 'Manufacturing',
+        filterCategory: 'hardware',
+        years: [2026],
+        period: 'college',
+        date: 'May 2026 — Jun 2026',
+        active: false,
+        featured: false,
+        excerpt: 'Custom toolbox assembly taken from CAD to production-style drawings, GD&T callouts, laser/FDM fabrication planning, inspection, and prototype fit-up.',
+        description: `<strong>Overview</strong><br><br>Designed and fabricated a custom toolbox prototype from production-style CAD drawings, applying ASME Y14.5-2018-style GD&T, datum selection, tolerance stackup thinking, and DFM principles to control lid, hinge, latch, handle, Gridfinity base, and fastener alignment through fabrication and assembly.<br><br>The goal was not just to make a box. I treated it as a compact mechanical manufacturing exercise: define design intent in CAD, break the assembly into fabricated parts, communicate the build through drawings, choose tolerances based on function, fabricate with available shop processes, then inspect and fit the prototype.<br><br><strong>Design Goals</strong><br><br>• Durable toolbox body with clean prototype fit-up.<br>• Lid, hinge, latch, handle, and side-wall alignment that survives fabrication error.<br>• Manufacturable geometry using accessible processes: CO2 laser-cut plywood panels, FDM printed inserts, drilled/fastened joints, and off-the-shelf hardware.<br>• Toleranced hole patterns and fastener interfaces for repeatable assembly.<br>• Drawings clear enough that someone else could understand the build sequence and critical interfaces.<br>• Minimize hand-fitting by thinking through datum strategy, hole positions, and tolerances before cutting parts.<br><br><strong>CAD + Drawing Package</strong><br><br>I modeled the toolbox as a full assembly, then split it into individual fabricated components: top walls, bottom walls, side panels, lid, hardware interfaces, and a Gridfinity-style base insert. The drawing package included assembly views, section views, part drawings, hole callouts, datum references, and notes for the intended manufacturing processes.<br><br><img src="/assets/toolbox-assembly-drawing.png" alt="Toolbox assembly drawing showing isometric, front, side, top, section, and bill of materials views" style="max-width: 100%; margin: 20px 0; border-radius: 8px;"><br><em style="opacity: 0.7; font-size: 0.9em;">Assembly drawing defining the lid, latch, hinge, handle, body, and Gridfinity insert interfaces before fabrication.</em><br><br>I applied GD&T principles based on ASME Y14.5-2018 rather than treating the drawing as a dimension dump. Functional datums were chosen around how the toolbox body would be assembled and inspected, with critical dimensions called out for lid fit, hinge alignment, latch engagement, handle placement, and repeated fastener patterns.<br><br><strong>GD&T / Tolerancing</strong><br><br>I treated the toolbox like a small mechanical assembly rather than a one-off shop part. The body established the primary datums, and the hinge/latch interfaces were dimensioned from those references so the lid would close repeatably after fabrication. Hole patterns were controlled with positional tolerances where alignment mattered, while non-critical dimensions were left with looser general tolerances to keep the design manufacturable.<br><br><img src="/assets/toolbox-bottom-walls-drawing.png" alt="Bottom wall drawing with datum references and positional tolerance callouts for fastener holes" style="max-width: 100%; margin: 20px 0; border-radius: 8px;"><br><em style="opacity: 0.7; font-size: 0.9em;">Bottom wall drawing with datum references, critical dimensions, and positional tolerance callouts for functional hole patterns.</em><br><br>The main tolerance stackup ran through the body panels, lid panels, hinge locations, latch engagement, and fastener clearances. I used position tolerance where hole alignment mattered, and kept flatness, perpendicularity, and parallelism tied to actual assembly function instead of over-tolerancing every edge.<br><br><strong>Manufacturing / DFM</strong><br><br>The prototype was designed around available shop processes rather than idealized manufacturing. The drawing package called out CO2 laser cutting for plywood panels and FDM 3D printing for the Gridfinity base, with sanding/deburring and mechanical fasteners used during assembly. That meant the CAD had to account for edge clearances, kerf/fit-up behavior, fastener access, hardware spacing, and how the parts would be held and aligned during assembly.<br><br><img src="/assets/toolbox-gridfinity-base-drawing.png" alt="Gridfinity base drawing with hole patterns, datum references, and flatness/perpendicularity callouts" style="max-width: 100%; margin: 20px 0; border-radius: 8px;"><br><em style="opacity: 0.7; font-size: 0.9em;">Gridfinity base drawing: an FDM-printed insert controlled with hole patterns, datum references, and fit-related tolerances.</em><br><br>Design decisions were driven by manufacturability: avoid impossible internal corners, leave realistic clearances around fasteners and moving hardware, plan the assembly sequence before cutting, and choose tolerances that matched the actual process capability of laser-cut plywood and printed parts.<br><br><strong>Inspection + Assembly</strong><br><br>After fabrication, I checked fit-up using calipers, fastener fit checks, squares, and physical assembly validation. The key inspections were hole alignment, lid closure, latch engagement, hinge alignment, and whether the Gridfinity base fit inside the body without forcing the assembly out of square.<br><br><img src="/assets/toolbox-prototype-closed.png" alt="Closed prototype toolbox fabricated from laser-cut plywood panels with hinges, latch, handle, and fasteners" style="max-width: 100%; margin: 20px 0; border-radius: 8px;"><br><em style="opacity: 0.7; font-size: 0.9em;">Prototype fit-up after fabrication with the lid, latches, hinges, handle, and fastener interfaces assembled.</em><br><br><img src="/assets/toolbox-prototype-open.png" alt="Open prototype toolbox showing interior storage and fit-up of the fabricated body and lid" style="max-width: 100%; margin: 20px 0; border-radius: 8px;"><br><em style="opacity: 0.7; font-size: 0.9em;">Open prototype showing the internal fit-up and hardware alignment. I do not have photos of the final version, so these prototype photos show the fabrication/assembly validation stage.</em><br><br>The prototype revealed the normal gap between drawing intent and shop reality: fasteners need access, laser-cut edges need finishing, hole patterns need enough clearance to tolerate small shifts, and datums only help if they match how the part is actually assembled and inspected.<br><br><strong>What I Learned</strong><br><br>Drawings are design tools, not paperwork. GD&T only matters when tied to function, and over-tolerancing makes a part harder to build without improving the assembly. Datum selection should match how the part is actually assembled and checked. Even a small toolbox exposes real tolerance stackup problems quickly, especially when hinges, latches, handles, printed inserts, and repeated fastener patterns all have to line up at once.<br><br><strong>Technical Work</strong><br><br>• Modeled the full toolbox assembly and generated part/assembly drawings for fabrication.<br>• Applied GD&T principles using ASME Y14.5-2018-style conventions for datums, hole patterns, and critical interfaces.<br>• Designed for manufacturability with realistic shop tolerances, fastener clearances, hardware spacing, and laser/FDM process constraints.<br>• Planned fabrication and assembly sequence to reduce hand-fitting and improve alignment.<br>• Inspected prototype parts with calipers, fastener fit checks, squareness checks, and physical assembly validation.`,
+        tags: ['SolidWorks', 'Engineering Drawings', 'GD&T', 'ASME Y14.5-2018', 'DFM', 'Tolerance Stackups', 'Laser Cutting', 'FDM Printing', 'Inspection'],
+        links: [],
+        images: [
+          '/assets/toolbox-assembly-drawing.png',
+          '/assets/toolbox-bottom-walls-drawing.png',
+          '/assets/toolbox-top-walls-drawing.png',
+          '/assets/toolbox-bottom-walls-rev-drawing.png',
+          '/assets/toolbox-gridfinity-base-drawing.png',
+          '/assets/toolbox-prototype-closed.png',
+          '/assets/toolbox-prototype-open.png'
+        ]
+      },
+      {
         id: 'leitmotif',
         title: 'Leitmotif',
         category: 'Software',
@@ -2144,17 +2183,20 @@
     const pageTitle = document.getElementById('pageTitle');
     const detailContent = document.getElementById('detailContent');
     const detailClose = document.getElementById('detailClose');
-    let scrambleRunId = 0;
+    const detailTitle = document.getElementById('detailTitle');
+    const scrambleRunIds = new WeakMap();
+    let nextScrambleRunId = 0;
 
     // Scramble animation
     function scrambleText(element, targetText, duration = 500) {
-      const runId = ++scrambleRunId;
+      const runId = ++nextScrambleRunId;
+      scrambleRunIds.set(element, runId);
       const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%&*';
       const startTime = Date.now();
       const originalText = element.textContent;
       
       function animate() {
-        if (runId !== scrambleRunId) return;
+        if (scrambleRunIds.get(element) !== runId) return;
 
         const elapsed = Date.now() - startTime;
         const progress = Math.min(elapsed / duration, 1);
@@ -2268,7 +2310,6 @@
     function updateDetailView(project) {
       detailContent.dataset.projectId = project.id;
       document.getElementById('detailCategory').textContent = project.category.toUpperCase();
-      document.getElementById('detailTitle').textContent = project.title;
       document.getElementById('detailDate').textContent = (project.active ? '● ' : '') + project.date;
 
       // Interactive 3D viewer: click-to-load (model-viewer for .glb, or iframe embed).
@@ -2520,12 +2561,11 @@
 
       currentProjectIndex = index;
       const project = projects[index];
-
-      // Scramble title
-      scrambleText(pageTitle, project.title, 400);
+      const titleStart = isDetailOpen ? detailTitle.textContent : 'Projects';
 
       // Update detail content
       updateDetailView(project);
+      detailTitle.textContent = titleStart;
 
       document.querySelectorAll('.project-card.active-card').forEach(card => {
         card.classList.remove('active-card');
@@ -2546,6 +2586,7 @@
       requestAnimationFrame(() => {
         if (currentProjectIndex === index && isDetailOpen) {
           detailContent.classList.add('visible');
+          scrambleText(detailTitle, project.title, 420);
         }
       });
 
@@ -2562,9 +2603,10 @@
       if (!isDetailOpen) return;
 
       // Scramble title back
-      scrambleText(pageTitle, 'Projects', 400);
+      pageTitle.textContent = 'Projects';
+      scrambleText(detailTitle, 'Projects', 220);
 
-      // Black hole close animation - fast
+      // Smooth detail close animation
       detailContent.classList.add('closing');
 
       // Clear URL hash
@@ -2577,9 +2619,11 @@
           card.classList.remove('active-card');
         });
         document.body.classList.remove('detail-active');
+        pageTitle.textContent = 'Projects';
+        detailTitle.textContent = '';
         isDetailOpen = false;
         currentProjectIndex = -1;
-      }, 250);
+      }, 280);
     }
 
     // Event listeners
