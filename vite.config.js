@@ -14,7 +14,10 @@ export default defineConfig({
                 resume: './resume.html',
                 connect: './connect.html',
                 footage: './footage.html',
-                projects: './projects.html'
+                projects: './projects.html',
+                fieldStationToolbox: './field-station-toolbox.html',
+                nsUsPulseGenerator: './ns-us-pulse-generator.html',
+                pldtracker: './pldtracker.html'
             }
     }
   }

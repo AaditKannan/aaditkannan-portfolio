@@ -19,6 +19,18 @@
     {
       "source": "/projects",
       "destination": "/projects.html"
+    },
+    {
+      "source": "/projects/field-station-toolbox",
+      "destination": "/field-station-toolbox.html"
+    },
+    {
+      "source": "/projects/ns-us-pulse-generator",
+      "destination": "/ns-us-pulse-generator.html"
+    },
+    {
+      "source": "/projects/pldtracker",
+      "destination": "/pldtracker.html"
     }
   ],
   "redirects": [

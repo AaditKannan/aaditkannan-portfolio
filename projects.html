@@ -26,6 +26,7 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+  <script type="module" src="https://cdn.jsdelivr.net/npm/@google/model-viewer@3.5.0/dist/model-viewer.min.js"></script>
   <style>
     @view-transition { navigation: auto; }
     ::view-transition-old(root),
@@ -479,14 +480,14 @@
       transform: scale(1.08);
     }
 
-    /* Atlas SMR - show more UI, no black bars */
-    .project-card[data-id="atlas-smr"] .project-image img {
+    /* Wolfrom Actuator - fill the card with the gearbox top-down */
+    .project-card[data-id="wolfrom-actuator"] .project-image img {
       object-fit: cover;
-      object-position: left center;
+      object-position: center center;
       transform: scale(1.0);
     }
 
-    .project-card[data-id="atlas-smr"]:hover .project-image img {
+    .project-card[data-id="wolfrom-actuator"]:hover .project-image img {
       transform: scale(1.03);
     }
 
@@ -521,6 +522,81 @@
 
     .project-card[data-id="inventry"]:hover .project-image img {
       transform: scale(1.23);
+    }
+
+    .project-card[data-id="ns-us-pulse-generator"] .project-image,
+    .project-card[data-id="ns-us-pulse-generator"] .project-image img {
+      background: #f7f1df;
+    }
+
+    .project-card[data-id="ns-us-pulse-generator"] .project-image img {
+      object-fit: cover;
+      object-position: center center;
+    }
+
+    .project-card[data-id="pldtracker"] .project-image img {
+      object-fit: cover;
+      object-position: center center;
+    }
+
+    .project-card[data-id="pldtracker"]:hover .project-image img {
+      transform: scale(1.05);
+    }
+
+    .detail-content[data-project-id="pldtracker"] .gallery-main img {
+      object-fit: cover;
+      object-position: center center;
+    }
+
+    .project-card[data-id="friendly-fires"] .project-image img,
+    .detail-content[data-project-id="friendly-fires"] .gallery-main img {
+      object-fit: cover;
+      object-position: center center;
+    }
+
+    .project-preview-link {
+      color: var(--text);
+      font-weight: 600;
+      text-decoration: none;
+      border-bottom: 1px solid transparent;
+      transition: color 0.2s ease, border-color 0.2s ease;
+      position: relative;
+    }
+
+    .project-preview-link:hover {
+      color: var(--text);
+      border-bottom-color: var(--text);
+    }
+
+    .project-hover-preview {
+      position: fixed;
+      pointer-events: none;
+      z-index: 9998;
+      width: 220px;
+      height: 140px;
+      border-radius: 8px;
+      overflow: hidden;
+      opacity: 0;
+      transform: scale(0.92);
+      transition: opacity 0.2s ease, transform 0.2s ease;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+      border: 1px solid var(--border);
+      background: #000;
+    }
+
+    .project-hover-preview.visible {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .project-hover-preview img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    [data-theme="light"] .project-hover-preview {
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
     }
 
     .project-image-placeholder {
@@ -835,6 +911,148 @@
     .detail-content.visible .detail-body {
       opacity: 1;
       transform: translateY(0);
+    }
+
+    /* Interactive 3D viewer */
+    .detail-model {
+      margin-top: 8px;
+      margin-bottom: 28px;
+    }
+
+    .detail-model-heading {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      margin: 0 0 14px;
+    }
+
+    /* Click-to-load poster */
+    .model-poster {
+      display: block;
+      width: 100%;
+      height: 520px;
+      padding: 0;
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 8px;
+      background-color: #0d0d0f;
+      background-size: cover;
+      background-position: center;
+    }
+
+    [data-theme="light"] .model-poster {
+      border-color: rgba(0,0,0,0.1);
+      background-color: #f0f0f2;
+    }
+
+    .model-poster::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 50% 50%, rgba(0,0,0,0.15), rgba(0,0,0,0.55));
+      transition: background 0.3s ease;
+    }
+
+    .model-poster:hover::after {
+      background: radial-gradient(circle at 50% 50%, rgba(0,0,0,0.05), rgba(0,0,0,0.4));
+    }
+
+    .model-poster-cta {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 1;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 20px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: #fff;
+      background: rgba(20,20,22,0.72);
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 999px;
+      backdrop-filter: blur(6px);
+      transition: transform 0.2s ease, background 0.2s ease;
+    }
+
+    .model-poster:hover .model-poster-cta {
+      transform: translate(-50%, -50%) scale(1.04);
+      background: rgba(20,20,22,0.88);
+    }
+
+    .model-poster-cta svg { fill: currentColor; }
+
+    .model-progress {
+      background: rgba(255,255,255,0.85);
+      height: 3px;
+      border-radius: 2px;
+    }
+
+    @media (max-width: 768px) {
+      .model-poster { height: 340px; }
+    }
+
+    .detail-model model-viewer {
+      width: 100%;
+      height: 520px;
+      background: radial-gradient(circle at 50% 35%, rgba(255,255,255,0.06), rgba(0,0,0,0) 70%), #0d0d0f;
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 8px;
+      --poster-color: transparent;
+    }
+
+    [data-theme="light"] .detail-model model-viewer {
+      background: radial-gradient(circle at 50% 35%, rgba(0,0,0,0.04), rgba(0,0,0,0) 70%), #f0f0f2;
+      border-color: rgba(0,0,0,0.1);
+    }
+
+    .detail-model-frame {
+      position: relative;
+      width: 100%;
+      height: 0;
+      padding-bottom: 62%;
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 8px;
+      overflow: hidden;
+      background: #0d0d0f;
+    }
+
+    [data-theme="light"] .detail-model-frame {
+      border-color: rgba(0,0,0,0.1);
+      background: #f0f0f2;
+    }
+
+    .detail-model-frame iframe {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+
+    .detail-model-hint {
+      display: block;
+      margin-top: 8px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      opacity: 0.7;
+    }
+
+    @media (max-width: 768px) {
+      .detail-model model-viewer { height: 340px; }
+      .detail-model-frame { padding-bottom: 75%; }
     }
 
     .detail-description {
@@ -1569,6 +1787,12 @@
           <div class="detail-tags" id="detailTags"></div>
         </div>
       </div>
+
+      <div class="detail-model" id="detailModel" hidden></div>
+    </div>
+
+    <div class="project-hover-preview" id="projectHoverPreview">
+      <img id="projectHoverPreviewImg" src="" alt="">
     </div>
 
     <!-- Back to top button -->
@@ -1584,18 +1808,36 @@
     // Projects data
     const projects = [
       {
+        id: 'wolfrom-actuator',
+        title: 'Wolfrom Robotic Actuator',
+        category: 'Hardware',
+        filterCategory: 'hardware',
+        years: [2026],
+        period: 'college',
+        date: 'Jun 2026 — Present',
+        active: true,
+        featured: true,
+        excerpt: 'Wolfrom compound planetary actuator for humanoid joints, designed for backdrivability, low reflected inertia, and around 80% efficiency at 50:1 and 125:1 reduction.',
+        description: `A high-ratio Wolfrom gearbox for humanoid-scale joints. I'm building it around the three things gearboxes this small are usually bad at: backdrivability, low reflected inertia, and real efficiency at high reduction.<br><br><strong>Overview</strong><br><br>Humanoid robots need joints that are small, put out a lot of torque, and can still feel what they touch. That last part is the hard one. Most small high-ratio gearboxes are basically one way: you can drive the output from the motor, but you can't easily push the motor backward from the output, so the joint feels dead and can't do force control. I'm designing a Wolfrom compound planetary actuator that hits a high reduction in a small package while staying efficient enough to actually backdrive.<br><br>The layout: the motor drives a sun gear, and each compound planet carries two gears, one meshing a fixed inner ring and the other driving the output ring. The small difference between those two ring meshes is where the big reduction comes from. I'm targeting around 50:1, with a 125:1 version in the same family.<br><br><strong>Gear Ratio</strong><br><br>The reduction is the product of a sun-to-carrier stage and a carrier-to-output-ring stage:<br><br>$$i = i_0 \\cdot i_W = \\left(1 + \\frac{Z_{Ps}}{Z_{S}}\\cdot\\frac{Z_{Ra}}{Z_{Pa}}\\right)\\!\\cdot\\frac{S_3}{S_3 - S_2}$$<br>With my tooth counts (S=33, Ps=57, Pa=27, Pb=25, Ra=72, Rb=75) it comes out exactly to<br><br>$$i = \\frac{555}{11} \\approx 50.45 : 1$$<br>so one stage does what would normally take two stacked planetary gearboxes.<br><br><img src="/assets/wolfrom-render-face.jpg" alt="CAD front view of the Wolfrom gearbox showing the sun gear, three compound planets, and the ring gears" style="display:block; max-width: 56%; margin: 18px auto; border-radius: 8px;"><br><em style="opacity: 0.7; font-size: 0.9em;">CAD front view: the sun in the center driving three compound planets, with the fixed and output ring gears around them.</em><br><br><strong>Reflected Inertia</strong><br><br>A gearbox multiplies torque by the ratio N, but it also multiplies the rotor inertia the output feels by N squared:<br><br>$$J_{\\text{out}} = N^2 \\, J_{\\text{motor}}, \\qquad N \\approx 50 \\;\\Rightarrow\\; N^2 \\approx 2500$$<br>At 50:1 the joint feels about 2500 times the motor's rotor inertia. You can't design that away, it comes with the ratio. So the only way to keep the joint quick and backdrivable is to attack the part you can control, which is friction. Low friction is what stops all that reflected mass from turning into a joint that feels locked.<br><br><strong>Efficiency, and Why It Matters Most</strong><br><br>Wolfrom gearboxes are famous for being small and famous for being inefficient. The reason is circulating power. The high ratio comes from the small difference between two almost equal ring meshes, so far more power spins around inside the gearbox than ever comes out the other side, and that extra power turns into friction. I track it with the latent power ratio:<br><br>$$\\text{LPR} = \\left(1 - \\frac{2}{i_0}\\right) + (2\\,i_W - 1) \\approx 17.6$$<br>An LPR around 17.6 means roughly 0.1% of friction in one ring mesh costs about 1.7 points of overall efficiency. A naive Wolfrom at this ratio sits closer to LPR 50 and lands in the 60s for efficiency or worse. My target is about 80%. For a single-stage 50:1 gearbox that puts it in the same range as much more expensive harmonic and cycloidal drives, while staying backdrivable, which those usually are not.<br><br><strong>Why This One Is Different</strong><br><br>The standout move is how I split the ratio. A textbook Wolfrom dumps almost all of its reduction into the high-loss ring differential, which is exactly why the circulating power blows up. I re-split it so more of the reduction happens in the first sun stage and less in the ring differential. That alone drops the latent power ratio from around 50 to about 17.6 on my current tooth counts, and the metal redesign pushes it lower still. Lower circulating power is the single biggest lever on both efficiency and backdrivability, so the whole design is built to chase it.<br><br>For a humanoid that combination is the entire point. You get a small, torque-dense joint that can hold a load without a brake, but can also go soft and compliant the moment a person bumps into it. Strong, light, and safe to be around, in something that fits inside a leg or an arm.<br><br><strong>Primary Problems to Solve</strong><br><br>• <b>Ring-mesh efficiency:</b> the two internal ring meshes carry almost all the load and cause almost all the friction, so their tooth shape and surface finish matter far more than the sun gear.<br>• <b>Planet-bearing drag:</b> the compound planets spin at about 2.67x carrier speed, so their bearings are a big loss path. The metal version moves from printed bushings to needle bearings on hardened, ground pins.<br>• <b>Load sharing:</b> three planets are over-constrained, so I float the sun and the carrier and time the planets at assembly so all three actually share the load.<br>• <b>Backdrivability:</b> rough printed teeth make the joint feel dead, so I use profile-shifted, low-friction gears and low-drag bearings to keep it transparent.<br>• <b>Manufacturing:</b> internal ring teeth can't be cleanly milled, so the production rings are wire-EDM hardened steel pressed into an aluminum housing.<br><br><strong>What I Built</strong><br><br>• Designed the full Wolfrom compound planetary gearbox targeting about 50:1, with a 125:1 variant in the same envelope.<br>• Modeled the whole actuator stack: sun, compound planets, fixed ring, output ring, carrier, bearings, shafts, and output hub.<br>• Iterated on splitting the output ring, bolt access, bearing support, and axial spacing so it actually goes together.<br>• Designed around real manufacturing: FDM and SLA prototypes now, CNC and waterjet later, press-fit bearings, dowel alignment, low-profile fasteners.<br>• Built printed prototypes to check gear meshing, packaging, the assembly sequence, and fit.<br><br><strong>Technical Details</strong><br><br>The motor drives the sun, one planet gear meshes the fixed inner ring, and the other planet gear drives the output ring, both on the same compound planet. All three meshes share one planet-axis center distance, which forces the module ratio across the stages into roughly 1 : 2 : 1.8, so every stage is sized to its own teeth on the same circle. The output-ring mesh is both the highest loaded and the finest pitch, so it gets the widest face and, in the metal build, the hardest steel.<br><br><img src="/assets/wolfrom-render-section.jpg" alt="CAD cutaway section of the Wolfrom actuator showing the sun gear, compound planet stacks, fixed inner ring, and output ring" style="max-width: 100%; margin: 20px 0; border-radius: 8px;"><br><em style="opacity: 0.7; font-size: 0.9em;">CAD cutaway: the sun drives the compound planets, which mesh the fixed inner ring with one gear and the output ring with the other, all in one axial package.</em><br><br>The current prototype runs on a goBILDA gearmotor for bench testing, with the whole gearbox built as a stack of plates (motor mount, carrier cheeks, fixed ring, output ring) tied together by standoffs and dowels so I can tear it down and re-time it by hand.<br><br><img src="/assets/wolfrom-render-side.jpg" alt="Side view of the Wolfrom actuator as a stack of plates mounted on the goBILDA motor" style="display:block; max-width: 88%; margin: 18px auto; border-radius: 8px;"><br><em style="opacity: 0.7; font-size: 0.9em;">The actuator as a stack of plates on the goBILDA motor: motor mount, carrier, and the fixed and output rings, set by standoffs and dowels.</em><br><br><strong>Skills Used</strong><br><br>CAD, gearbox design, actuator design, Wolfrom geartrains, KISSsoft gear optimization, tolerance stackups, bearing selection, fastener packaging, FDM and SLA prototyping, CNC and DFM planning, robotic hardware integration, mechanical testing.<br><br><strong>Status</strong><br><br>Right now I'm iterating on printed prototypes for the kinematics, packaging, and assembly while optimizing the design for a metal build. That means running the gear macro-geometry in KISSsoft (profile shifts and tip relief on the high-load ring meshes), and moving toward wire-EDM hardened-steel rings, needle bearings on hardened pins, and a floating sun and carrier before I commit to the metal version. Bench testing follows a one-variable-at-a-time plan: contact patterns to confirm all three planets share load, breakaway and backdrive measurements to see how transparent the joint feels, and an efficiency sweep against that 80% target.`,
+        tags: ['Onshape', 'KISSsoft', 'Planetary Gear Design', 'Tolerance Stackups', 'Bearing Selection', 'FDM/SLA Prototyping', 'DFM'],
+        links: [],
+        model: '/assets/wolfrom-gearbox.glb',
+        modelPoster: '/assets/wolfrom-render-iso.jpg',
+        images: ['/assets/wolfrom-cover.jpg', '/assets/wolfrom-render-iso.jpg', '/assets/wolfrom-render-face.jpg', '/assets/wolfrom-render-section.jpg', '/assets/wolfrom-render-side.jpg', '/assets/wolfrom-stand.jpg', '/assets/wolfrom-spin.mp4', '/assets/wolfrom-bench.jpg']
+      },
+      {
         id: 'formula-electric',
         title: 'Formula Electric at Berkeley (FEB)',
         category: 'Hardware',
         filterCategory: 'hardware',
-        years: [2025],
+        years: [2025, 2026],
         period: 'college',
         date: 'Sep 2025 — Present',
         active: true,
         featured: false,
         excerpt: 'High-voltage battery system for Berkeley\'s Formula Electric racing team.',
         description: `<strong>The Accumulator</strong><br><br>I work on the Accumulator subteam at Formula Electric at Berkeley, designing and manufacturing the attic casing for our 588V lithium-ion battery pack. The pack's energy is governed by:<br><br>$$E_{\\text{pack}} = N_{\\text{parallel}} \\times \\int_0^Q V(q)\\,dq$$<br>where V(q) is cell voltage as a function of charge depleted. At 588V, a mistake means serious injury. I once accidentally shorted two segment busbars together and watched the cells heat up alarmingly fast. Nobody was hurt, but it changed how I approach every decision on this system.<br><br><strong>My Role: The Attic</strong><br><br>The casing must withstand FSAE crash loads (40g lateral, 40g longitudinal, 20g vertical), maintain dielectric strength at 588V, pass a rain test, and dissipate cell heat. I run FEA checking Von Mises stress everywhere:<br><br>$$\\sigma_{\\text{vm}} = \\sqrt{\\sigma_1^2 - \\sigma_1 \\sigma_2 + \\sigma_2^2}$$<br>Everything must stay below yield with a 1.5x safety factor. I reduced attic mass by 18% while meeting all structural and dielectric requirements. I chose 6061-T6 aluminum because after TIG welding and post-weld heat treatment (530°C solutionize, quench, age at 175°C for 8 hours), it recovers ~70% of base yield strength. 7075 does not recover from welding, steel is too heavy, and carbon fiber has conductivity concerns near HV components.<br><br><strong>Floor and Sealing</strong><br><br>The floor uses 6mm polycarbonate for electrical isolation:<br><br>$$V_{\\text{breakdown}} = 15\\,\\text{kV/mm} \\times 6\\,\\text{mm} = 90\\,\\text{kV}$$<br>That gives enormous margin over 588V, plus it is transparent for visual inspection without disassembly. Waterproofing uses a 3mm neoprene gasket (50A durometer) at 20-30% compression, with aluminum standoffs preventing over-compression. I chose neoprene over silicone for petroleum resistance near the powertrain.<br><br><img src="/assets/gas.png" alt="Gasket compression equation" style="max-width: 100%; margin: 20px 0; border-radius: 8px;"><br><br><strong>Insulation and Thermal</strong><br><br>All internal surfaces near HV components are lined with Nomex 410 (18 kV/mm dielectric, rated to 220°C, UL 94 V-0 fire resistance). For thermal management, the wall conductive resistance is low at 3mm 6061 (k ≈ 167 W/m·K), so the real bottleneck is convection off the outer surface, which is why we focused on optimizing airflow around the casing.<br><br><strong>Manufacturing</strong><br><br>Panels are laser-cut on a FabLight fiber laser, TIG welded, then heat-treated. The polycarbonate floor and neoprene gasket are waterjet cut. Before approval, the casing passes a 1500V AC dielectric test, IP65 water ingress test, 40g structural simulation, and perimeter gasket compression checks. Looking forward to competing in Michigan.`,
-        tags: ['Solidworks', 'Solidworks PDM', 'CAD/CAM/CAE', 'Composites', 'High Voltage', 'Manufacturing', 'DFM/DFA'],
+        tags: ['SolidWorks', 'SolidWorks PDM', 'FEA', 'GD&T', 'High-Voltage Packaging', 'Laser Cutting', 'Waterjet', 'TIG Welding'],
         links: [{ url: 'https://ev.berkeley.edu/', label: 'Team Website' }],
         images: [
           '/assets/accumimg.png',
@@ -1607,7 +1849,7 @@
       },
       {
         id: 'ramesh-lab',
-        title: 'Ramesh Lab',
+        title: 'Ramesh Lab: Complex-Oxide Thin Films',
         category: 'Research',
         filterCategory: 'research',
         years: [2026],
@@ -1615,11 +1857,84 @@
         date: 'Jan 2026 — Present',
         active: true,
         featured: false,
-        excerpt: 'Researching complex-oxide thin films (BiFeO₃) for faster, lower-power memory and logic beyond DRAM and CMOS. Built a PLD deposition tracking system for 30+ experiments.',
-        description: `<strong>Research Position</strong><br><br>I work in Ramesh Lab researching complex-oxide thin films (BiFeO₃) for faster, lower-power memory and logic beyond DRAM and CMOS. These materials store and switch state through polarization rather than charge, enabling non-volatile memory and ferroelectric logic far more efficient than today's silicon-based hardware. The core question is how atomic-level fabrication choices — stacking order, strain, interface chemistry — reshape the electronic behavior of the final device.<br><br><strong>The Growth Workflow</strong><br><br>I am learning the full process: substrate prep (annealing, solvent cleaning, step-terrace control for atomically flat surfaces), PLD growth (laser fluence tuning, oxygen partial pressure control, substrate temperature stabilization), RHEED monitoring (reading oscillations during layer-by-layer growth), and post-growth characterization with AFM, XRD, PFM, and electrical measurements.<br><br><strong>PLD Deposition Tracking System</strong><br><br>I built a custom experiment tracking and data management system for the lab's PLD setup. The tool digitally logs, organizes, and analyzes thin-film deposition experiments so researchers can correlate growth parameters with characterization results across 30+ depositions.<br><br>The system tracks each deposition run's substrate, target material, temperature, oxygen pressure, laser fluence, deposition time, and wafer disk position. It stores and links characterization data (XRD scans, AFM/PFM domain images) to specific runs, and provides a data explorer UI for filtering and visualizing parameter trends with line-of-best-fit and connected datapoint plots. A camera integration module monitors substrate positioning during deposition, with image capture logging tied to each run. I also built a PDF slide-deck parser that extracts and indexes analysis images (AFM/PFM/XRD) from lab presentations, auto-linking them to the correct depositions.<br><br>The system replaces previously scattered experimental notes, slides, and spreadsheets with a centralized searchable dataset — making it easier to analyze growth-property relationships, track reproducibility, and visualize materials trends across experiments. Built with Python, Pandas, and a web dashboard frontend. I also CAD-modeled a custom camera mount for the PLD chamber in SolidWorks.<br><br><strong>Why It Matters</strong><br><br>Strain, interfaces, and atomic stacking order create emergent behaviors you cannot get in any single material alone: switchable polarization for ultra-low-energy memory, interfacial conduction (2DEGs) for novel logic, coupled ferroic states enabling electrical control of magnetism. Right now I am shadowing growth sessions, learning how small deviations -- oxygen vacancy concentration, plume shape, a few degrees of temperature drift -- completely change domain structures, mobility, or coercive fields. The long-term goal is to take ownership of small growth experiments and explore how interface engineering can push these materials toward practical device integration, especially as traditional silicon scaling hits fundamental physical limits.`,
-        tags: ['Materials Science', 'Thin Films', 'PLD', 'Characterization', 'Oxide Electronics', 'Research', 'Python', 'Pandas', 'Data Viz', 'SolidWorks', 'OpenCV'],
-        links: [{ label: 'PLD Tracker', url: 'https://pldtracker.vercel.app/' }, { label: 'Lab Website', url: 'https://rameshlab.lbl.gov' }],
-        images: ['/assets/IMG_4508.JPG', '/assets/IMG_4507.JPG', '/assets/IMG_4509.JPG', '/assets/Screenshot 2026-03-13 000052.png', '/assets/Screenshot 2026-03-13 000118.png', '/assets/Screenshot 2026-03-13 000132.png', '/assets/Screenshot 2026-03-13 000202.png', '/assets/Screenshot 2026-03-13 000143.png', '/assets/Screenshot 2026-03-13 000538.png']
+        excerpt: 'Researching complex-oxide thin films for faster, lower-power memory and logic beyond DRAM and CMOS, with supervised PLD growth work and linked instrumentation/software projects.',
+        description: `<strong>Research Context</strong><br><br>I work in Ramesh Lab researching complex-oxide thin films for faster, lower-power memory and logic beyond DRAM and CMOS. These materials store and switch state through polarization rather than charge, enabling non-volatile memory and ferroelectric logic far more efficient than today's silicon-based hardware. The core question is how atomic-level fabrication choices -- stacking order, strain, interface chemistry, oxygen vacancy concentration -- reshape the electronic behavior of the final device.<br><br><strong>Physics and Materials Learning</strong><br><br>A major part of this work is building the physics foundation behind the experiments. I am reading <em>Principles and Applications of Ferroelectric and Related Materials</em> by Lines and Glass while learning how polarization, domains, coercive fields, hysteresis, dielectric response, strain, and defects show up in real oxide films. The goal is to understand not just how to run a tool, but what the measurements mean physically.<br><br><strong>Growth and Deposition Work</strong><br><br>I am learning the full thin-film workflow through supervised growth and characterization work: substrate prep, solvent cleaning, annealing, step-terrace control for atomically flat surfaces, PLD growth, laser fluence tuning, oxygen partial pressure control, substrate temperature stabilization, RHEED monitoring, and post-growth characterization with AFM, XRD, PFM, and electrical measurements.<br><br>I am also practicing thin-film deposition workflows with Donald's guidance. That means learning how small process choices -- oxygen pressure, plume shape, target/substrate geometry, temperature drift, and interface preparation -- can change domain structures, mobility, coercive fields, leakage behavior, or whether the film is useful at all.<br><br><strong>Connected Technical Projects</strong><br><br>This Ramesh Lab page is the hub for two technical projects I built around that workflow. <a href="#pldtracker" class="project-preview-link" data-preview="/assets/Screenshot 2026-03-13 000052.png">PLDTracker (Ramesh Lab)</a> supports growth documentation and deposition-data organization. <a href="#ns-us-pulse-generator" class="project-preview-link" data-preview="/assets/ns-pulse-schematic-thumbnail.png">Nanosecond Pulse Generator (Ramesh Lab)</a> supports fast electrical characterization after films and devices are fabricated.<br><br>Together, the projects cover both sides of the lab process: making and tracking the thin films, then building the instrumentation needed to measure how they switch.<br><br><strong>Why It Matters</strong><br><br>Strain, interfaces, and atomic stacking order create emergent behaviors you cannot get in any single material alone: switchable polarization for ultra-low-energy memory, interfacial conduction for novel logic, and coupled ferroic states that can enable electrical control of magnetism. My long-term goal is to take more ownership of growth and characterization experiments while building tools that make the research workflow more repeatable, measurable, and technically grounded.`,
+        tags: ['PLD Growth', 'RHEED', 'AFM', 'XRD', 'PFM', 'Ferroelectric Characterization', 'BiFeO3 Thin Films'],
+        links: [
+          { label: 'Nanosecond Pulse Generator', url: '#ns-us-pulse-generator' },
+          { label: 'PLDTracker', url: '#pldtracker' },
+          { label: 'Lab Website', url: 'https://rameshlab.lbl.gov' }
+        ],
+        images: ['/assets/IMG_4508.JPG', '/assets/IMG_4507.JPG', '/assets/IMG_4509.JPG']
+      },
+      {
+        id: 'ns-us-pulse-generator',
+        title: 'Nanosecond Pulse Generator (Ramesh Lab)',
+        category: 'Research Hardware',
+        filterCategory: ['hardware', 'research'],
+        years: [2026],
+        period: 'college',
+        date: 'May 2026 — Present',
+        active: true,
+        featured: false,
+        excerpt: 'Nanosecond pulse-generator PCB for BiFeO3 spin-transport and ferroelectric characterization, with GaN switching, grounded coax/BNC I/O, source-measure biasing, and RP2040/Python triggering.',
+        description: `
+          <strong>Overview</strong><br><br>
+          I am designing a nanosecond pulse-generator board in Ramesh Lab for electrical characterization of BiFeO<sub>3</sub> and related complex-oxide thin-film devices. The board is meant to support spin-transport and ferroelectric testing where the sample needs a clean voltage pulse while the rest of the bench setup handles biasing, synchronization, and measurement.<br><br>
+          Current BFO testing is generally around a 30 V pulse range, with the next goal being controlled sweeps down to smaller voltages. The board is therefore not just a generic fast pulser; it is an experiment interface for applying known voltage stress to oxide devices while preserving timing, bias state, and measurement visibility.<br><br>
+          <strong>Experiment Target</strong><br><br>
+          The useful voltage is the voltage that actually lands across the BFO device, not the nominal setting at the connector. I am treating the pulse as a bounded experiment waveform:<br><br>
+          $$V_{\\text{BFO}}(t) = V_{\\text{bias}} + A_{\\text{pulse}}p(t), \\qquad A_{\\text{pulse}} \\leq 30\\,\\text{V initially}$$<br>
+          where \\(p(t)\\) is the measured pulse shape at the fixture or device-side test point. The engineering problem is making \\(p(t)\\) repeatable enough that voltage sweeps mean something physically, especially as the amplitude moves below the current 30 V test range.<br><br>
+          <strong>What The Current Means</strong><br><br>
+          For ferroelectric characterization, the measured current is a mixture of the signal I care about and the things the fixture/device adds. Written as current density:<br><br>
+          $$J_{\\text{meas}}(t)=\\frac{I_{\\text{meas}}(t)}{A}=\\frac{dP_{\\text{BFO}}}{dt}+\\sigma_{\\text{leak}}E_{\\text{BFO}}(t)+\\epsilon_0\\epsilon_r\\frac{dE_{\\text{BFO}}}{dt}+J_{\\text{transport}}(t)$$<br>
+          The board layout and measurement flow are built around separating those pieces: switching current, leakage, capacitive displacement current, and the transport response. That is why the design emphasizes grounded coax/BNC interfaces, oscilloscope sync, known dummy loads, and source-measure compatibility instead of only making a pulse appear somewhere on a schematic.<br><br>
+          <strong>Extracting A Useful Measurement</strong><br><br>
+          One target measurement is switched polarization after subtracting a non-switching baseline. In practice, that means comparing pulse captures rather than trusting a single transient:<br><br>
+          $$\\Delta P_{\\text{sw}} \\approx \\frac{1}{A}\\int_{t_1}^{t_2}\\left(I_{\\text{switch}}(t)-I_{\\text{baseline}}(t)\\right)dt$$<br>
+          This is the reason for Python/JupyterLab analysis hooks and repeatable triggering. The board needs to make the pulse sequence, trigger timing, and captured waveform stable enough that later analysis can tell BFO switching apart from leakage and fixture capacitance.<br><br>
+          <strong>Circuit Direction</strong><br><br>
+          The current nanosecond board uses trigger conditioning into a GaN switching stage, with local driver power, range/control relays, shared external trigger, sync output, and Keithley/source-measure paths separated enough to bring up independently. LTspice is part of the design loop for checking timing and switching behavior before board bring-up; KiCad is the schematic/layout environment; Python, JupyterLab, and LabVIEW are the intended bench-control and analysis layer around the hardware.<br><br>
+          <strong>V1 Microsecond Prototype</strong><br><br>
+          Before the nanosecond board, I built a first-pass microsecond pulse-generator prototype to test the basic source-measure pulse workflow. V1 used a one-shot timing stage, gate driver, MOSFET output stage, manual/external trigger path, and Keithley/source-measure interface.<br><br>
+          <img src="/assets/pulse-v1-physical.jpg" alt="First microsecond pulse-generator board under oscilloscope probe during bench testing" style="display:block; max-width: 70%; margin: 18px auto; border-radius: 8px;"><br>
+          <em style="opacity: 0.7; font-size: 0.9em;">V1 microsecond board during bench testing. It made the measurement workflow concrete, but also showed why the nanosecond version needed tighter layout and grounded coax/BNC interfaces.</em><br><br>
+          The V1 board was useful design history, not validation for the current nanosecond board. It showed the limits of terminal-block-style connections, loose wiring, and microsecond-oriented timing when the actual research need moves toward faster pulse edges, cleaner synchronization, and smaller-voltage sweeps.<br><br>
+          <strong>Bring-Up Plan</strong><br><br>
+          I am bringing the board up in stages: verify rails and microcontroller trigger logic, simulate and scope the driver path, validate the GaN output into known dummy loads, then move toward device fixtures. The oscilloscope work is focused on what matters for BFO testing: delivered amplitude near the 30 V regime, timing jitter between trigger and sync, overshoot/ringing at the fixture, and whether lower-amplitude pulses remain distinguishable from noise and pickup.<br><br>
+          <strong>Status</strong><br><br>
+          The nanosecond board is currently in schematic/layout and validation planning. I am not claiming final measured rise time, amplitude stability, timing jitter, or device results here; the next real milestone is bench characterization with oscilloscope captures and known loads before fragile thin-film devices are connected.<br><br>
+          <strong>Skills Used</strong><br><br>
+          KiCad, LTspice, RF PCB layout, GaN switching, coax/BNC lab interfaces, oscilloscope bring-up, Python, JupyterLab, LabVIEW, RP2040/microcontroller triggering, source-measure integration, and thin-film electrical characterization.`,
+        tags: ['KiCad', 'LTspice', 'RF PCB Layout', 'Python', 'LabVIEW', 'JupyterLab', 'Oscilloscope Bring-Up', 'RP2040', 'GaN FET Switching', 'Coax/BNC Interfaces'],
+        links: [],
+        images: [
+          '/assets/ns-pulse-schematic-thumbnail.png',
+          '/assets/pulse-pcb-top.svg',
+          '/assets/pulse-pcb-copper.svg',
+          '/assets/pulse-v1-physical.jpg',
+          '/assets/pulse-v1-us-schematic.png',
+          '/assets/pulse-v1-us-layout.png',
+          '/assets/pulse-v1-ltspice.png',
+          '/assets/pulse-v1-us-render.png'
+        ]
+      },
+      {
+        id: 'pldtracker',
+        title: 'PLDTracker (Ramesh Lab)',
+        category: 'Research Tool',
+        filterCategory: ['software', 'research'],
+        years: [2026],
+        period: 'college',
+        date: 'Jan 2026 — Mar 2026',
+        active: false,
+        featured: false,
+        excerpt: 'Experiment tracking and data-management system for PLD thin-film workflows, linking growth parameters, wafer position, characterization data, and lab documentation.',
+        description: `<strong>Overview</strong><br><br>PLDTracker is a custom experiment tracking and data-management system I built for the lab's pulsed laser deposition setup. The goal was to replace scattered notes, slide decks, screenshots, and spreadsheets with a searchable dataset that connects how a film was grown with how it later characterized.<br><br><strong>What It Tracks</strong><br><br>The system logs each deposition run's substrate, target material, temperature, oxygen pressure, laser fluence, deposition time, and wafer disk position. It stores and links characterization data such as XRD scans and AFM/PFM domain images to specific runs, so researchers can correlate growth parameters with resulting film structure and properties.<br><br><strong>Data Explorer</strong><br><br>I built a dashboard-style data explorer for filtering deposition records and visualizing parameter trends with line-of-best-fit and connected datapoint plots. The point was not just storing data, but making it easier to see whether a change in growth conditions might explain changes in characterization results.<br><br><strong>Image and Document Pipeline</strong><br><br>A camera integration module monitors substrate positioning during deposition, with image capture tied to each run. I also built a PDF slide-deck parser that extracts and indexes analysis images from lab presentations, including AFM, PFM, and XRD figures, then helps associate them with the correct deposition records.<br><br><strong>Why It Matters</strong><br><br>Thin-film growth is sensitive to small process changes. Oxygen vacancy concentration, substrate temperature, plume shape, and interface quality can all reshape domain structures, mobility, leakage, or coercive fields. PLDTracker was built to make those relationships easier to document and revisit across experiments.<br><br><strong>Skills Used</strong><br><br>Python, Pandas, data modeling, dashboard development, computer vision, image processing, PDF parsing, experiment tracking, thin-film research workflows, and SolidWorks CAD for a PLD chamber camera mount.`,
+        tags: ['Python', 'Pandas', 'OpenCV', 'PDF Parsing', 'Data Visualization', 'Experiment Metadata Modeling', 'SolidWorks'],
+        links: [{ label: 'Ramesh Lab Hub', url: '#ramesh-lab' }],
+        images: ['/assets/Screenshot 2026-03-13 000052.png', '/assets/Screenshot 2026-03-13 000118.png', '/assets/Screenshot 2026-03-13 000132.png', '/assets/Screenshot 2026-03-13 000202.png', '/assets/Screenshot 2026-03-13 000143.png', '/assets/Screenshot 2026-03-13 000538.png']
       },
       {
         id: 'leitmotif',
@@ -1629,32 +1944,13 @@
         years: [2026],
         period: 'college',
         date: 'Mar 2026',
-        active: true,
+        active: false,
         featured: false,
         excerpt: 'YC x DeepMind hackathon winner. Real-time generative music for the visually impaired.',
         description: `<strong>YC x DeepMind Hackathon Winner</strong><br><br>Built at the YC x Google DeepMind hackathon in San Francisco. Leitmotif generates adaptive, real-time background music for visually impaired users. A webcam watches the scene, and every person who enters gets assigned a unique musical motif -- a short melodic signature that weaves into an evolving soundtrack reflecting the room's mood. When someone leaves, their motif plays back inverted as a farewell cue. The whole system is designed to give spatial awareness through sound alone, no screen needed.<br><br><strong>The Pipeline</strong><br><br>Everything runs in a continuous loop. A webcam frame gets captured and base64-encoded, then sent to Gemini 2.5 Flash for vision analysis (who is visible, what the scene feels like). That scene data goes to the Music Engine, which pulls each person's stored motif from Supabase (PostgreSQL). A prompt builder constructs a Lyria-compatible music prompt, Gemini refines it with tempo, key, and instrumentation decisions, and the Google Lyria RealTime API generates PCM audio streamed directly to speakers. The cycle repeats on every new frame.<br><br>Crossfading between emotional states uses a 4-6 second blend window. Without smooth transitions, mood shifts sounded jarring -- like someone changing the radio station mid-song. The crossfade duration is a tradeoff: too short and the transitions feel abrupt, too long and the system feels unresponsive to actual scene changes.<br><br><strong>The Motif System</strong><br><br>Each person's musical signature is a structured JSON object: note count, interval patterns, rhythm sequences, melodic contours, and character descriptors. On entry, the motif plays once as a bright solo phrase over a ducked background. On exit, the motif plays descending and inverted. This gives users a learnable, consistent association between people and sounds.<br><br>Motif management enforces musical rules to prevent overlaps. If two people enter within a short window, the system queues motifs rather than layering them, since simultaneous melodic lines become indistinguishable -- which defeats the purpose. The prompt builder also handles key compatibility so motifs do not clash harmonically with the background:<br><br>$$\\text{consonance}(f_1, f_2) = \\frac{\\gcd(f_1, f_2)}{\\min(f_1, f_2)}$$<br>where simple frequency ratios (octave 2:1, fifth 3:2, fourth 4:3) produce the most consonant intervals. The system biases motif assignments toward intervals that sit well against common background keys.<br><br><strong>Architecture</strong><br><br>Two servers. The Music Engine (port 3001) handles real-time scene orchestration, adaptive prompt generation, entry/exit transitions, and crossfading. The Camera Server (port 3002) runs Gemini vision analysis on webcam frames and auto-forwards results. We split them because vision analysis and music generation have very different latency profiles, and decoupling lets each run at its own pace without blocking the other.<br><br>Backend is Node.js with TypeScript, native HTTP server, Gemini 2.5 Flash for vision + orchestration, Lyria RealTime for generative music, Supabase for persistence. The React Native companion app (iOS/Android) has four screens (Monitor, Contacts, Visualizer, Settings) for real-time entity tracking and motif management. Web mockup built with React, Vite, and Tailwind.`,
-        tags: ['AI', 'Generative Music', 'Computer Vision', 'TypeScript', 'Node.js', 'React Native', 'Gemini'],
+        tags: ['TypeScript', 'Node.js', 'React Native', 'Gemini API', 'Lyria Realtime', 'Supabase', 'Computer Vision'],
         links: [{ label: 'Live Site', url: 'https://leitmotif-flame.vercel.app/' }, { label: 'GitHub', url: 'https://github.com/AaditKannan/leitmotif' }],
         images: ['/assets/IMG_0286.jpg', '/assets/Screenshot 2026-03-10 172428.png', '/assets/IMG_4613.jpeg']
-      },
-      {
-        id: 'atlas-smr',
-        title: 'Atlas SMR',
-        category: 'Research/Software',
-        filterCategory: ['research', 'software'],
-        years: [2025, 2026],
-        period: 'highschool',
-        date: 'Oct 2025 — Present',
-        active: true,
-        featured: false,
-        excerpt: 'Interactive tool for evaluating nuclear reactor site feasibility + research paper.',
-        description: `<strong>The Research</strong><br><br>My AP Research capstone, turned interactive tool. Rural America pays ~25% more for electricity than urban areas and relies on aging infrastructure. I investigated whether hybrid Small Modular Reactor + solar systems could address this inequity. Solar costs dropped 89% since 2010 but cannot generate at night; SMRs provide 24/7 low-carbon baseload. Together they balance each other out. Almost all existing SMR research focuses on urban implementation, which left a clear gap for rural applications.<br><br><strong>The Tool</strong><br><br>Atlas SMR is an interactive web platform pulling data from the NRC, EIA, and USGS seismic databases. It displays 89 operating reactors, 13 shutdown facilities, and 119 candidate sites scored by a weighted algorithm. Users scrub a timeline from 2010 to 2050 to see reactor status shift with license expirations. Each candidate site's viability score:<br><br>$$S = w_1\\!\\left(1 - \\frac{P}{P_{\\max}}\\right) + w_2\\!\\left(1 - \\frac{D_s}{D_{\\max}}\\right) + w_3\\!\\left(\\frac{W}{W_{\\max}}\\right) + w_4\\!\\left(\\frac{G}{G_{\\max}}\\right)$$<br>where P is population in the 10-mile NRC emergency zone, Dₛ is distance to nearest seismic fault, W is cooling water proximity, and G is grid interconnection capacity. Default weights (0.30/0.25/0.25/0.20) are calibrated against historical NRC approvals, but users can adjust them and watch candidate rankings shift.<br><br><strong>Scenario Builder</strong><br><br>Users configure 50-300 MWe per module, 1-12 modules per site, and deployment year. For hybrid systems, annual energy:<br><br>$$E_{\\text{annual}} = C_{\\text{smr}} \\cdot 8760 \\cdot CF_{\\text{smr}} + C_{\\text{solar}} \\cdot 8760 \\cdot CF_{\\text{solar}} \\cdot (1 - \\text{curtailment})$$<br>In solar-rich regions like Navajo Nation, larger solar arrays reduce SMR daytime load. In cloudier areas like Nome, Alaska, the system leans on SMR output. My analysis showed a properly configured hybrid could meet ~24% of rural energy needs, with clear scalability beyond that.<br><br><strong>Limitations</strong><br><br>SMR cost estimates still lack large-scale U.S. operational data. Nuclear stigma is real. This tool is a prototype visualization, not a policy instrument -- actual site selection requires Environmental Impact Statements and full NRC licensing far beyond what a scoring algorithm captures.`,
-        tags: ['Web Dev', 'GIS', 'Energy', 'Data Viz', 'Nuclear', 'Policy Research', 'AP Research'],
-        links: [
-          { label: 'Live Site', url: 'https://atlas-smr.vercel.app/' },
-          { label: 'Research Paper', url: '/assets/AtlasSMR_Research_Paper.pdf' }
-        ],
-        images: ['/assets/atmaslet.png', '/assets/atmas.png', '/assets/smrbuilder.png', '/assets/smsad.png', '/assets/smrtech.png']
       },
       {
         id: 'dejavu-2024-25',
@@ -1663,12 +1959,12 @@
         filterCategory: ['hardware', 'software'],
         years: [2024, 2025],
         period: 'highschool',
-        date: '2024 — 2025',
+        date: 'Aug 2024 — Jun 2025',
         active: false,
         featured: false,
         excerpt: 'Hardware Lead for FTC #13216. Designed robot with 500+ custom parts.',
         description: `<strong>The Robot</strong><br><br>INTO THE DEEP (2024-25 FTC game): collect samples from a submersible, score them in baskets and specimen chambers, and hang from a bar for endgame points. As Hardware Lead for Team Deja Vu #13216, I owned the mechanical design, CAD management, and manufacturing coordination. The robot CAD model has over 500 unique parts across mecanum drivetrain, active intake, transfer pathway, arm/lift, end effector, and hang mechanism.<br><br><strong>The Intake</strong><br><br>Our most iterated subsystem, four revisions total. V1 (passive funnel with compliant wheels) was too slow. V2 (active roller with surgical tubing) had inconsistent grip. V3 (dual-stage roller with speed differential) jammed at odd angles. V4 landed on a single high-speed roller with optimized geometry, and that became our competition design. Each version taught us something about the trade-offs between speed, reliability, and complexity with these specific game pieces.<br><br><strong>Manufacturing and FEA</strong><br><br>We used Markforged printers for structural nylon, Prusa for prototypes, laser-cut polycarbonate and Delrin plates, CNC-machined aluminum for high-stress parts, and standard manual tools for modifications. For the arm pivot and hang brackets, I ran FEA in SolidWorks, checking stress vs. yield (safety factor > 2.0) and deflection under load to ensure nothing interfered with mechanism travel.<br><br><strong>Software</strong><br><br>I also wrote the TeleOp code in Java: mecanum drive with field-centric control using IMU heading, arm and lift position control with encoder-based PID loops, intake/transfer sequencing, and driver feedback through gamepad rumble. Writing both the hardware and driver code let me optimize how the mechanisms actually feel to operate, which fed directly back into design decisions.<br><br>The reliability-focused approach paid off: minimal mechanical failures during matches, and we advanced through qualifications into elimination rounds.<br><br><em style="opacity: 0.7; font-size: 0.9em;">Note: Team Deja Vu #13216 has since become a legacy team, with a new group of students carrying the name forward.</em>`,
-        tags: ['CAD', 'FEA', 'Manufacturing', 'Leadership', 'SolidWorks', 'FTC', '3D Printing', 'Java'],
+        tags: ['SolidWorks', 'FEA', 'Java', 'FTC SDK', 'PID Control', 'Mecanum Kinematics', 'Laser Cutting', 'Markforged'],
         links: [{ label: 'Team Website', url: 'https://dejavurobotics.org/' }],
         images: ['/assets/newiamge.png', '/assets/dejavubot-removebg-preview.png', '/assets/intake.png', '/assets/gnag.png', '/assets/deja.png', '/assets/deja1.png', '/assets/Screenshot 2026-02-01 145613.png']
       },
@@ -1679,12 +1975,12 @@
         filterCategory: ['hardware', 'software'],
         years: [2023, 2024],
         period: 'highschool',
-        date: '2023 — 2024',
+        date: 'Aug 2023 — Jun 2024',
         active: false,
         featured: false,
         excerpt: 'Hardware Lead for FTC #13216. Designed pixel-scoring mechanisms.',
         description: `<strong>The Game</strong><br><br>CENTERSTAGE (2023-24 FTC): robots collected hexagonal "pixels" and placed them on a vertical backdrop to create mosaic patterns, with bonus points for specific arrangements and launching paper airplane drones during endgame. I joined Deja Vu #13216 as Hardware Lead after Zenith dissolved when its founder graduated.<br><br><strong>The Claw</strong><br><br>The hardest mechanism to get right. Hexagonal pixels interlock in weird ways, and the claw had to grip them reliably without blocking the vision system. The final design used compliant TPU fingers that conform to pixel geometry, spring-loaded hinges for passive grip, and servo-actuated release. Dual-pixel capacity was critical -- grabbing two per trip to the backdrop doubled our scoring potential.<br><br><strong>Vision and Software</strong><br><br>The robot used AprilTags on the backdrop for autonomous alignment and a camera for detecting pixel positions. I wrote the TeleOp code in Java: mecanum drive with configurable speed curves, arm position presets for different backdrop heights, claw control with pixel detection feedback, drone launcher arming sequence, and intake/transfer coordination. Writing both hardware and driver code meant I could tune the controls specifically for our drivers' preferences.<br><br><strong>Results</strong><br><br>We qualified for the NorCal regional championship with minimal mechanical failures during matches. The reliability-first philosophy I brought from Zenith paid off here.<br><br><em style="opacity: 0.7; font-size: 0.9em;">Note: Team Deja Vu #13216 has since become a legacy team, with a new group of students carrying the name forward.</em>`,
-        tags: ['CAD', 'FEA', 'Manufacturing', 'Leadership', 'FTC', 'Java'],
+        tags: ['SolidWorks', 'Java', 'FTC SDK', 'AprilTags', 'OpenCV', 'PID Control', 'Mecanum Kinematics'],
         links: [{ label: 'Team Website', url: 'https://dejavurobotics.org/' }],
         images: ['/assets/Deja_Vu_Bot_Assemble_Version_1_v4_v1112.png', '/assets/IMG_2714.png', '/assets/dejapp.png']
       },
@@ -1695,12 +1991,12 @@
         filterCategory: ['hardware', 'software'],
         years: [2022, 2023],
         period: 'highschool',
-        date: '2022 — 2023',
+        date: 'Aug 2022 — Jun 2023',
         active: false,
         featured: false,
         excerpt: 'Team Lead for FTC #20424. Built cone-stacking robot with custom lift.',
         description: `<strong>The Lift</strong><br><br>POWERPLAY (2022-23 FTC): stack cones on junctions of varying heights. My second year in FTC, first as Team Lead for Zenith #20424. The core mechanism was a linear lift needing 30+ inches of travel, full extension under 1.5 seconds, carrying ~200g. We used continuous rigging with dyneema string and a high-RPM motor. Lift speed depends on spool geometry:<br><br>$$v_{\\text{lift}} = \\frac{\\omega_{\\text{motor}} \\cdot d_{\\text{spool}} \\cdot \\pi}{2G}$$<br>But the motor also needs enough torque to accelerate the carriage without stalling:<br><br>$$\\tau_{\\text{motor}} = \\frac{(m_{\\text{carriage}} \\cdot g + m_{\\text{carriage}} \\cdot a_{\\text{desired}}) \\cdot d_{\\text{spool}}}{2 \\cdot G \\cdot \\eta}$$<br>where $\\eta$ is drivetrain efficiency (~0.85 for string-on-spool). Getting the gear ratio right meant balancing these two equations: too aggressive and the motor stalls under load, too conservative and you lose cycle time.<br><br><strong>Cone Manipulation</strong><br><br>The claw went through three versions. V1 (simple pinch) dropped cones during fast lift moves because acceleration pulled them loose. V2 added spring-loaded compliance but was inconsistent with cone orientation. The breakthrough was V3: internal centering guides that funnel the cone into position before gripping. The claw needed to actively center the cone, not just grab it.<br><br><strong>Software</strong><br><br>I wrote both TeleOp and autonomous in Java. TeleOp had mecanum kinematics, lift PID control, and speed scaling modes. Autonomous used OpenCV color thresholding for signal sleeve detection, dead wheel odometry, and IMU heading correction to fight encoder drift over the 30-second period.<br><br><strong>ZenLender</strong><br><br>I noticed teams scrambling for parts before competitions with $50+ overnight shipping on $15 parts. I built ZenLender, a basic spreadsheet system for lending parts between teams. Primitive, but the concept eventually evolved into Inventry. During one match, our lift string snapped mid-cycle because we had not inspected it for wear. Preventive maintenance matters as much as good design.<br><br><em style="opacity: 0.7; font-size: 0.9em;">Note: Team Zenith #20424 has since dissolved.</em>`,
-        tags: ['CAD', 'Java', 'Leadership', 'Mentoring', 'FTC', 'Rigging', 'OpenCV'],
+        tags: ['Onshape', 'Java', 'FTC SDK', 'OpenCV', 'Dead-Wheel Odometry', 'PID Control', 'String Rigging'],
         links: [{ label: 'Team Website', url: 'https://zenithftc.wixsite.com/zenithftc' }],
         images: ['/assets/zenithnot-removebg-preview.png', '/assets/zenithbottt.png', '/assets/IMG_0537.png', '/assets/IMG_0691-ezgif.com-video-to-gif-converter.mp4', '/assets/zensim.png', '/assets/zensim22.png']
       },
@@ -1711,12 +2007,12 @@
         filterCategory: 'software',
         years: [2025],
         period: 'college',
-        date: 'Jun 2025 — Present',
-        active: true,
+        date: 'Jun 2025 — Dec 2025',
+        active: false,
         featured: false,
         excerpt: 'AI-powered robotics parts inventory and marketplace.',
         description: `<strong>The Problem</strong><br><br>If you have been on an FTC team, you know the panic: a motor burns out two nights before competition, and overnight shipping on a $15 part is $150+. My team scrambled through group chats and outdated spreadsheets to find nearby teams with spares. I first built ZenLender on Zenith -- a basic spreadsheet lending system -- but manual data entry killed adoption. Inventry is the real version.<br><br><strong>What It Does</strong><br><br>Three components: inventory management (track parts, quantities, conditions), a part lending network (find nearby teams with what you need), and a marketplace (in development). The stack is React/TypeScript with Tailwind on the frontend, Node.js/Express/PostgreSQL on the backend, OAuth 2.0 with team verification through FIRST's public data, hosted on Vercel and Railway.<br><br><strong>AI Invoice Parsing</strong><br><br>The biggest friction with inventory tools is data entry. Nobody wants to type in 200 parts from a GoBilda order. Users upload invoice PDFs or photos and the system extracts part numbers, quantities, prices, and dates using Tesseract OCR + GPT-4 for structured parsing. Accuracy is ~94% on clean invoices, ~85% on photographed receipts. I also built weekly scrapers for GoBilda, REV, ServoCity, and AndyMark -- 3,000+ unique SKUs feeding the search system with current pricing and availability.<br><br><strong>The Lending System</strong><br><br>The hard part: getting teams to lend parts to strangers. The solution is a reputation system where lender points unlock priority borrowing access, distance matching prioritizes teams within driving range (default 30 miles), and requests get flagged as urgent if a competition is within 7 days. Privacy was non-negotiable -- exact addresses are never shown, communication stays on-platform, and all data is encrypted and GDPR-deletable.<br><br>FTC teams already spend too much money. If this saves one team from paying $200 in emergency shipping, it is worth more than whatever I could charge.`,
-        tags: ['Web Dev', 'AI', 'Webscraping', 'Database', 'React', 'Node.js', 'PostgreSQL', 'FTC'],
+        tags: ['React', 'TypeScript', 'Node.js', 'Express', 'PostgreSQL', 'Tesseract OCR', 'Web Scraping', 'OAuth 2.0'],
         links: [{ label: 'Live Site', url: '#', unavailable: true }],
         images: ['/assets/homepageinve.png', '/assets/invends.png']
       },
@@ -1732,7 +2028,7 @@
         featured: false,
         excerpt: 'Platform connecting 2000+ students with volunteer opportunities.',
         description: `<strong>The Problem</strong><br><br>Finding volunteer opportunities as a high school student was frustrating -- word of mouth, missed deadlines, full events. Organizers coordinating through email chains and Google Forms had no way to verify students or track participation. Pear connected both sides: 2000+ registered student volunteers, 20+ event organizers (nonprofits, school clubs, community orgs), and school administrators who needed verified hour logs.<br><br><strong>How It Works</strong><br><br>Three user types: students browse and sign up for events, organizers create listings and manage volunteers, administrators verify hours for school records. Built on Wix with custom Velo code for business logic and webhook integrations. When a student signs up, the system validates their student ID, checks for schedule conflicts, notifies the organizer, and updates capacity. For high-volume events (some filled 50+ spots in under an hour), I built an async webhook queue:<br><br><code>Event Signup → Wix Backend → Webhook Queue → Email Service → Database Update</code><br><br>This prevents timeouts during traffic spikes and handles ~10 requests per second.<br><br><strong>Hour Tracking</strong><br><br>The biggest pain point for students was proving volunteer hours for college applications. Organizers check in volunteers via QR code scan, hours auto-log with event details, and students can request official verification letters auto-generated as PDFs with school letterhead. This saved counselors significant paperwork. All communication flows through Pear -- student contact info is never shown to organizers, data is encrypted, and parents can request deletion at any time.<br><br>I handed off Pear when I left for college in 2025.`,
-        tags: ['App Dev', 'Web Dev', 'CMS', 'Security', 'Wix Velo', 'Webhooks', 'Community'],
+        tags: ['Wix Velo', 'JavaScript', 'Webhook Queues', 'QR Check-In', 'PDF Generation', 'Role-Based Access', 'Data Privacy'],
         links: [],
         images: ['/assets/pearpage.png', '/assets/pearis.png', '/assets/pearrr.png', '/assets/pearvoluyn.png']
       },
@@ -1748,7 +2044,7 @@
         featured: false,
         excerpt: 'Low-cost probe alternative to save $118M in city spending.',
         description: `<strong>The Problem</strong><br><br>Palo Alto projected $118 million over the next decade on construction acclimation probes -- devices that track temperature and humidity during concrete curing. These commercial units cost $500-2,000 each, and regulations require multiple per site. That seemed absurd for what is essentially temperature and humidity logging. Concrete cures through an exothermic hydration reaction, and the maturity method models strength gain:<br><br>$$M(t) = \\sum (T_a - T_0) \\cdot \\Delta t$$<br>where $T_a$ is average concrete temperature, T₀ is the datum temperature (-10°C), and Δt is the time interval. Building codes require continuous documentation that curing conditions stayed within range.<br><br><strong>The Prototype</strong><br><br>I built a $47 probe: Arduino Nano, DHT22 (±0.5°C temp, ±2-5% humidity), DS18B20 for redundancy, MicroSD logging every 5 minutes, RTC for accurate timestamps, and a 3.7V LiPo battery. PETG enclosure with two 30mm fans for airflow. Tested alongside a calibrated Humboldt H-4210 ($1,200 commercial unit) for 14 days: temperature deviation ±0.8°C, humidity ±3.2%, 4,028 of 4,032 readings captured (99.7% reliability). Well within building code thresholds.<br><br><code>Arduino Nano clone............$8<br>DHT22 sensor...................$6<br>DS18B20 sensor.................$4<br>MicroSD module.................$5<br>RTC module.....................$3<br>LiPo battery...................$12<br>3D printed enclosure...........$5<br>Fans and misc wiring...........$4<br>---------------------------------<br>Total: $47</code><br><br><strong>Dashboard and Presentation</strong><br><br>I built a client-side web dashboard (vanilla JS + Chart.js) for uploading SD card CSVs, graphing conditions over time, flagging out-of-range periods, and generating PDF reports for inspectors. In April 2023, I presented to City of Palo Alto construction officials. They were interested in the cost savings but raised valid concerns about calibration certification, liability, and durability. One official mentioned they would consider a pilot if the probe could be formally certified.<br><br>This was a proof of concept -- no wireless transmission, no weatherproofing, 10-day battery life. But an 85-96% cost reduction over commercial alternatives suggests the approach has legs.`,
-        tags: ['Hardware', 'Arduino', 'Sensors', 'Data Collection', 'Web Dev', '3D Printing', 'Civic Tech'],
+        tags: ['Arduino Nano', 'DHT22', 'DS18B20', 'RTC Logging', 'MicroSD Data Logging', 'Chart.js', 'PETG Enclosure Design'],
         links: [],
         images: ['/assets/IMG_0297.png', '/assets/IMG_0313.png']
       },
@@ -1764,7 +2060,7 @@
         featured: false,
         excerpt: 'Drone-based beach cleanup coordination system.',
         description: `<strong>The Concept</strong><br><br>Built in 24 hours at a hackathon (March 2023). Beach cleanups are reactive -- by the time humans show up with trash bags, damage is done. BeachSweep pairs autonomous drone surveillance with a volunteer coordination platform. Drones detect and map trash continuously; the platform directs humans to where cleanup is needed most.<br><br><strong>Drone and CV Pipeline</strong><br><br>We designed a custom quadcopter for coastal environments: solar panel on top for extended flight, stabilized downward-facing camera, corrosion-resistant frame, GPS/RTK for precise trash mapping. Drones patrol autonomously and return to solar-powered charging docks. The detection pipeline uses YOLO trained on beach debris:<br><br><code>Drone captures image → Onboard preprocessing → Object detection inference →<br>Trash objects classified → GPS coordinates tagged → Data uploaded to server</code><br><br>Trained to recognize plastic bottles, bags, fishing nets, cigarette butts, and general litter. Initial accuracy ~78% on our test dataset.<br><br><strong>The Volunteer Platform</strong><br><br>The website (beachsweep.github.io) shows an interactive map with pollution levels from drone surveys, scheduled cleanup events, and volunteer sign-up. After a drone patrol identifies trash concentrations, the system generates cleanup requests, notifies nearby volunteers, and re-surveys after cleanup to confirm improvement. Volunteers earn documented community service hours.<br><br>This is a concept, not a deployed system. Real deployment would need FAA Part 107 waivers for autonomous BVLOS operations, local government partnerships, and more robust CV models. But the core loop -- drones see what humans miss, platforms connect people who want to help with places that need it -- is compelling.`,
-        tags: ['Drones', 'Computer Vision', 'Solar', 'YOLO', 'Hackathon', 'Community', 'CAD'],
+        tags: ['YOLO Object Detection', 'Drone CAD', 'GPS Mapping', 'Solar Charging', 'Computer Vision', 'GitHub Pages'],
         links: [
           { label: 'Live Site', url: 'https://beachsweep.github.io/' }
         ],
@@ -1777,12 +2073,12 @@
         filterCategory: ['hardware', 'software'],
         years: [2021, 2022],
         period: 'highschool',
-        date: '2021 — 2022',
+        date: 'Aug 2021 — Jun 2022',
         active: false,
         featured: false,
         excerpt: 'First year on FTC #20424. Learned CAD and manufacturing.',
         description: `<strong>First Season</strong><br><br>FREIGHT FRENZY was my first season in FTC. I joined Zenith #20424 as a freshman knowing nothing -- no CAD, no drill press experience, barely knew what a motor controller was. The game: collect freight (balls and cubes) from a warehouse, deposit into a multi-level shipping hub, and spin a duck carousel for bonus points.<br><br><strong>Learning CAD and Manufacturing</strong><br><br>I started learning Onshape and my first models were rough. I did not understand constraints, so parts broke unpredictably during modification. I designed everything as separate parts and hoped they would fit together when manufactured. By mid-season I could design simple brackets with confidence; by the end I could model complete subassemblies that worked on the first try. On the shop side, I learned drill press technique, bandsaw operation, and 3D printing fundamentals -- snapping drill bits, warped prints, holes in the wrong place.<br><br><strong>Software</strong><br><br>I started learning Java and the FTC SDK, writing basic gamepad input handling, arm and intake motor control, encoder-based autonomous movements, and duck carousel timing. The code was hard-coded and full of magic numbers -- no PID, no state machines -- but it got us through matches and gave me the foundation for much more sophisticated code later.<br><br><strong>Competition</strong><br><br>My first competition was overwhelming in the best way. Our robot was nothing spectacular, but it scored freight, delivered ducks, and parked successfully. What stuck with me most was the pit atmosphere -- seeing other teams' approaches to the same problem up close and realizing FTC is a community as much as a competition. This season set the foundation for everything that followed.<br><br><em style="opacity: 0.7; font-size: 0.9em;">Note: Team Zenith #20424 has since dissolved.</em>`,
-        tags: ['CAD', 'Manufacturing', 'Learning', 'FTC', 'Onshape', 'Java'],
+        tags: ['Onshape', 'Java', 'FTC SDK', 'Encoder Autonomous', '3D Printing', 'Drill Press', 'Bandsaw'],
         links: [{ label: 'Team Website', url: 'https://zenithftc.wixsite.com/zenithftc' }],
         images: ['/assets/haulrobot-removebg-preview.png', '/assets/IMG_7934.png', '/assets/IMG_9617.png']
       },
@@ -1793,12 +2089,12 @@
         filterCategory: ['hardware', 'software'],
         years: [2021, 2022],
         period: 'highschool',
-        date: '2021 — 2022',
+        date: 'Aug 2021 — Jun 2022',
         active: false,
         featured: false,
         excerpt: 'Team Lead for FTC #13215. Managed design and build process.',
         description: `<strong>Two Teams, One Season</strong><br><br>During FREIGHT FRENZY, I was simultaneously on Zenith (learning fundamentals) and Serenity #13215 (as Team Lead). Unusual, but Serenity was a newer team that needed experienced members to help establish their program. On one team I was the student; on the other I was expected to guide decisions and mentor others.<br><br><strong>Building Infrastructure</strong><br><br>Serenity had no established processes. I helped create weekly design review meetings, a shared CAD workspace with naming conventions, manufacturing priority lists, and engineering notebook assignments. It was my first time building team infrastructure rather than working within it.<br><br><strong>The Robot</strong><br><br>Simpler than Zenith's, reflecting our experience level: tank drive, basic arm for freight placement, passive intake with compliant wheels, and a carousel spinner for duck delivery. The philosophy was to build something that worked every match rather than something impressive that broke. We competed in several league meets and did not advance far, but the robot functioned reliably -- for a young team, that was the win. Teaching new members was challenging because I was still learning myself, but explaining concepts to others forced me to understand them more deeply.`,
-        tags: ['CAD', 'Leadership', 'Manufacturing', 'FTC', 'Mentoring'],
+        tags: ['Onshape', 'Robot CAD', 'Manufacturing Planning', 'Engineering Notebook', 'Tank Drive', 'Carousel Mechanism'],
         links: [],
         images: ['/assets/View_recent_photos-removebg-preview.png']
       },
@@ -1814,9 +2110,9 @@
         featured: false,
         excerpt: 'Coal-seam fire detection system for mining safety.',
         description: `<strong>The Problem</strong><br><br>Coal-seam fires burn underground for years, sometimes centuries -- the Centralia mine fire in Pennsylvania has been burning since 1962. Carbon monoxide is odorless, and by the time you feel heat from a nearby fire, it may be too late. Miners in developing countries often work without detection equipment because it is too expensive.<br><br><strong>The Device</strong><br><br>Friendly Fires is a sensor array designed to retrofit onto tools miners already carry, rather than adding new equipment they might forget. It monitors temperature (infrared), carbon monoxide (electrochemical), methane (catalytic bead), and oxygen depletion (galvanic cell). Key specs:<br><br><code>CO sensor: 0-1000 ppm range, ±5% accuracy, <2s response time<br>CH4 sensor: 0-5% LEL range, ±10% accuracy, continuous monitoring<br>Temp sensor: -20°C to 300°C range, ±1°C accuracy</code><br><br>Alerts come through haptic vibration on the tool handle, LEDs for low-light visibility, and an optional audio alarm. Powered by rechargeable lithium battery with solar surface charging and low-power sleep mode for 12+ hours of continuous operation.<br><br><strong>Prototype</strong><br><br>I built a functional prototype with Arduino-based electronics and off-the-shelf sensors, demonstrating CO detection from controlled sources, temperature gradient detection near heat, and multi-sensor integration in a compact package. This was a proof of concept -- sensor calibration in actual mining environments, long-term durability, false positive rates in dusty conditions, and regulatory approval were all unaddressed. Mining is not a lab; equipment gets dropped, covered in dust, and exposed to humidity swings.`,
-        tags: ['Sensors', 'Safety', 'Hardware', 'Arduino', 'IoT', 'Mining'],
+        tags: ['Arduino', 'Electrochemical CO Sensor', 'Methane Sensor', 'IR Temperature Sensor', 'Haptic Alerts', 'Sensor Integration'],
         links: [],
-        images: []
+        images: ['/assets/friendly-fires-prototype.jpeg']
       },
       {
         id: 'prototype-flood',
@@ -1830,7 +2126,7 @@
         featured: false,
         excerpt: 'Low-cost flood detection for Jakarta, Indonesia.',
         description: `<strong>The Context</strong><br><br>Jakarta sinks up to 25 cm per year from groundwater extraction. Combined with rising sea levels and monsoon rains, flooding kills dozens and displaces hundreds of thousands. Existing warning systems are expensive and concentrated in wealthy areas. Informal settlements along riverbanks -- where the most vulnerable live -- often get no warning at all. I started this during COVID, wondering if low-cost IoT sensors could fill that gap.<br><br><strong>The Device</strong><br><br>An ultrasonic distance sensor mounted above water. As water rises, measured distance decreases. When it crosses a threshold, an alert fires:<br><br>$$\\text{Water level} = \\text{Sensor height} - \\text{Measured distance}$$$$\\text{Alert threshold} = \\text{Historical flood level} + \\text{Safety margin}$$<br><br>The sensor connects to an ESP32 communicating via cellular to a central server that aggregates data from multiple sensors and sends SMS alerts (chosen because it works on basic phones without internet). Powered by a 5W solar panel and lithium battery with 3+ days autonomy without sun. The prototype demonstrated centimeter-level water measurement, cellular connectivity, solar charging, and alert triggering -- tested in a bathtub in California, not actual flood conditions.<br><br><strong>Recognition and Limitations</strong><br><br>The project received a Certificate of Achievement from the American Society of Civil Engineers (ASCE). But I want to be honest: I never deployed sensors in Jakarta, I do not speak Indonesian, and single-point measurements may not represent actual flood risk. Real deployment would require local partners, maintained infrastructure, and field validation. This was my first time thinking about technology in a global context, and it taught me that a working prototype is just the beginning.`,
-        tags: ['Sensors', 'IoT', 'International', 'ESP32', 'Solar', 'SMS', 'ASCE'],
+        tags: ['ESP32', 'Ultrasonic Sensing', 'Solar Charging', 'Cellular SMS', 'Water-Level Thresholding', 'LiPo Power Management'],
         links: [],
         images: []
       }
@@ -1906,10 +2202,14 @@
       }
 
       const webpSrc = (src) => src.replace(/\.(png|jpe?g)$/i, '.webp');
+      const hasWebpVariant = (src) => /\.(png|jpe?g)$/i.test(src);
       const isVideoSrc = (src) => src.endsWith('.mp4') || src.endsWith('.webm');
       const gridThumb = (src, alt) => {
         if (isVideoSrc(src)) {
           return `<video src="${src}" muted autoplay loop playsinline style="width:100%;height:100%;object-fit:cover;"></video>`;
+        }
+        if (!hasWebpVariant(src)) {
+          return `<img src="${src}" alt="${alt}" loading="lazy" decoding="async">`;
         }
         return `<picture>
           <source srcset="${webpSrc(src)}" type="image/webp">
@@ -1962,9 +2262,52 @@
 
     // Update detail view
     function updateDetailView(project) {
+      detailContent.dataset.projectId = project.id;
       document.getElementById('detailCategory').textContent = project.category.toUpperCase();
       document.getElementById('detailTitle').textContent = project.title;
       document.getElementById('detailDate').textContent = (project.active ? '● ' : '') + project.date;
+
+      // Interactive 3D viewer: click-to-load (model-viewer for .glb, or iframe embed).
+      // Renders on demand only (no auto-rotate) so it never bogs the page down when idle.
+      const modelEl = document.getElementById('detailModel');
+      if (project.model || project.embed) {
+        modelEl.hidden = false;
+        const poster = project.modelPoster || (project.images && project.images[0]) || '';
+        const modelHeading = '<h3 class="detail-model-heading">Interactive 3D Model</h3>';
+        modelEl.innerHTML = `
+          ${modelHeading}
+          <button class="model-poster" type="button" id="modelPosterBtn" style="background-image:url('${poster}')">
+            <span class="model-poster-cta">
+              <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M12 2 2 7v10l10 5 10-5V7L12 2zm0 2.2L19.5 8 12 11.8 4.5 8 12 4.2zM4 9.5l7 3.5v6.8l-7-3.5V9.5zm16 0v6.8l-7 3.5V13l7-3.5z"/></svg>
+              Load interactive 3D
+            </span>
+          </button>
+          <span class="detail-model-hint">High-detail CAD model · loads on click</span>`;
+        document.getElementById('modelPosterBtn').addEventListener('click', () => {
+          if (project.model) {
+            modelEl.innerHTML = `
+              ${modelHeading}
+              <model-viewer src="${project.model}" alt="${project.title} interactive 3D model"
+                camera-controls touch-action="pan-y" interaction-prompt="none"
+                tone-mapping="neutral" exposure="1.15" shadow-intensity="0.85" shadow-softness="1"
+                environment-image="neutral" min-field-of-view="22deg" loading="eager">
+                <div class="model-progress" slot="progress-bar"></div>
+              </model-viewer>
+              <span class="detail-model-hint">Drag to orbit · scroll to zoom · right-drag to pan</span>`;
+          } else {
+            modelEl.innerHTML = `
+              ${modelHeading}
+              <div class="detail-model-frame">
+                <iframe src="${project.embed}" title="${project.title} interactive 3D model"
+                  allow="autoplay; fullscreen; xr-spatial-tracking" allowfullscreen loading="eager"></iframe>
+              </div>
+              <span class="detail-model-hint">Drag to orbit · scroll to zoom</span>`;
+          }
+        });
+      } else {
+        modelEl.hidden = true;
+        modelEl.innerHTML = '';
+      }
 
       // Gallery
       const galleryEl = document.getElementById('detailGallery');
@@ -1973,16 +2316,20 @@
       if (project.images && project.images.length > 0) {
         const hasMultiple = project.images.length > 1;
         const isVideo = (src) => src.endsWith('.mp4') || src.endsWith('.webm');
-        const webpSrc = (src) => src.replace(/\.(png|jpe?g)$/i, '.webp');
-        const firstMedia = project.images[0];
+      const webpSrc = (src) => src.replace(/\.(png|jpe?g)$/i, '.webp');
+      const hasWebpVariant = (src) => /\.(png|jpe?g)$/i.test(src);
+      const firstMedia = project.images[0];
 
-        const renderMedia = (src, id) => {
-          if (isVideo(src)) {
-            return `<video src="${src}" id="${id}" autoplay loop muted playsinline style="width:100%;height:100%;object-fit:contain;"></video>`;
-          }
-          return `<picture>
-            <source srcset="${webpSrc(src)}" type="image/webp">
-            <img src="${src}" alt="${project.title}" id="${id}" loading="lazy" decoding="async">
+      const renderMedia = (src, id) => {
+        if (isVideo(src)) {
+          return `<video src="${src}" id="${id}" autoplay loop muted playsinline style="width:100%;height:100%;object-fit:contain;"></video>`;
+        }
+        if (!hasWebpVariant(src)) {
+          return `<img src="${src}" alt="${project.title}" id="${id}" loading="lazy" decoding="async">`;
+        }
+        return `<picture>
+          <source srcset="${webpSrc(src)}" type="image/webp">
+          <img src="${src}" alt="${project.title}" id="${id}" loading="lazy" decoding="async">
           </picture>`;
         };
 
@@ -1996,10 +2343,9 @@
             </div>`;
           }
           return `<div class="gallery-thumb${i === 0 ? ' active' : ''}" data-index="${i}">
-            <picture>
-              <source srcset="${webpSrc(src)}" type="image/webp">
-              <img src="${src}" alt="Thumbnail ${i + 1}" loading="lazy" decoding="async">
-            </picture>
+            ${hasWebpVariant(src)
+              ? `<picture><source srcset="${webpSrc(src)}" type="image/webp"><img src="${src}" alt="Thumbnail ${i + 1}" loading="lazy" decoding="async"></picture>`
+              : `<img src="${src}" alt="Thumbnail ${i + 1}" loading="lazy" decoding="async">`}
           </div>`;
         };
         
@@ -2060,17 +2406,23 @@
       // Description (tags moved to sidebar)
       document.getElementById('detailDescription').innerHTML = project.description;
       document.getElementById('detailTags').innerHTML = '';
+      initializeProjectPreviews();
 
-      // Render LaTeX math with KaTeX
-      if (typeof renderMathInElement === 'function') {
-        renderMathInElement(document.getElementById('detailDescription'), {
-          delimiters: [
-            { left: '$$', right: '$$', display: true },
-            { left: '$', right: '$', display: false }
-          ],
-          throwOnError: false
-        });
-      }
+      // Render LaTeX math with KaTeX. Retry if the deferred auto-render script
+      // hasn't loaded yet (happens when deep-linking straight to a project URL).
+      (function renderMath(tries) {
+        if (typeof renderMathInElement === 'function') {
+          renderMathInElement(document.getElementById('detailDescription'), {
+            delimiters: [
+              { left: '$$', right: '$$', display: true },
+              { left: '$', right: '$', display: false }
+            ],
+            throwOnError: false
+          });
+        } else if (tries < 40) {
+          setTimeout(function () { renderMath(tries + 1); }, 100);
+        }
+      })(0);
 
       // Sidebar
       const sidebar = document.getElementById('detailSidebar');
@@ -2084,6 +2436,11 @@
               <a href="#" class="detail-link unavailable-link" data-original-text="${l.label}" onclick="return false;">
                 <svg viewBox="0 0 24 24"><path d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg>
                 <span class="link-text">${l.label}</span>
+              </a>
+            ` : l.url && l.url.startsWith('#') ? `
+              <a href="${l.url}" class="detail-link">
+                <svg viewBox="0 0 24 24"><path d="M9 5v2h6.59l-9.83 9.83 1.41 1.41L17 8.41V15h2V5H9z"/></svg>
+                ${l.label}
               </a>
             ` : `
               <a href="${l.url}" target="_blank" rel="noopener" class="detail-link">
@@ -2116,6 +2473,42 @@
       sidebar.innerHTML = sidebarHTML;
     }
 
+    // Resume-style project preview links inside rich project descriptions
+    function initializeProjectPreviews() {
+      const preview = document.getElementById('projectHoverPreview');
+      const previewImg = document.getElementById('projectHoverPreviewImg');
+      if (!preview || !previewImg) return;
+
+      preview.classList.remove('visible');
+      previewImg.src = '';
+
+      const links = document.querySelectorAll('.project-preview-link[data-preview]');
+      links.forEach(link => {
+        link.addEventListener('mouseenter', () => {
+          if (window.innerWidth < 769) return;
+          previewImg.src = link.dataset.preview;
+          preview.classList.add('visible');
+        });
+
+        link.addEventListener('mouseleave', () => {
+          preview.classList.remove('visible');
+        });
+
+        link.addEventListener('mousemove', (e) => {
+          if (window.innerWidth < 769 || !preview.classList.contains('visible')) return;
+          const pw = 220;
+          const ph = 140;
+          let left = e.clientX - pw / 2;
+          let top = e.clientY + 20;
+          if (left < 8) left = 8;
+          if (left + pw > window.innerWidth - 8) left = window.innerWidth - pw - 8;
+          if (top + ph > window.innerHeight - 8) top = e.clientY - ph - 16;
+          preview.style.left = left + 'px';
+          preview.style.top = top + 'px';
+        });
+      });
+    }
+
     // Open detail view
     function openDetail(projectId, pushHistory = true) {
       const index = projects.findIndex(p => p.id === projectId);
@@ -2129,6 +2522,12 @@
 
       // Update detail content
       updateDetailView(project);
+
+      document.querySelectorAll('.project-card.active-card').forEach(card => {
+        card.classList.remove('active-card');
+      });
+      const activeCard = grid.querySelector(`.project-card[data-id="${projectId}"]`);
+      if (activeCard) activeCard.classList.add('active-card');
 
       // Show detail view
       document.body.classList.add('detail-active');
@@ -2159,6 +2558,10 @@
 
       setTimeout(() => {
         detailContent.classList.remove('visible', 'closing');
+        delete detailContent.dataset.projectId;
+        document.querySelectorAll('.project-card.active-card').forEach(card => {
+          card.classList.remove('active-card');
+        });
         document.body.classList.remove('detail-active');
         isDetailOpen = false;
         currentProjectIndex = -1;
@@ -2168,7 +2571,10 @@
     // Event listeners
     grid.addEventListener('click', e => {
       const card = e.target.closest('.project-card');
-      if (card) openDetail(card.dataset.id);
+      if (!card) return;
+      const proj = projects.find(p => p.id === card.dataset.id);
+      if (proj && proj.pageUrl) { window.location.href = proj.pageUrl; return; }
+      openDetail(card.dataset.id);
     });
 
     detailClose.addEventListener('click', closeDetail);
