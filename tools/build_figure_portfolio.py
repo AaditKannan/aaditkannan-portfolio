@@ -3,7 +3,7 @@ import re
 
 from PIL import Image, ImageOps
 from reportlab.lib import colors
-from reportlab.lib.pagesizes import letter, landscape
+from reportlab.lib.pagesizes import letter
 from reportlab.lib.utils import ImageReader
 from reportlab.pdfgen import canvas
 
@@ -14,17 +14,19 @@ OUT_DIR = ROOT / "output" / "pdf"
 CACHE_DIR = ROOT / "tmp" / "pdfs" / "portfolio-cache"
 OUT = OUT_DIR / "aadit-kannan-figure-robotics-portfolio.pdf"
 
-W, H = landscape(letter)
-M = 42
+W, H = letter
+M = 48
+CONTENT_W = W - 2 * M
+BOTTOM = 42
 
 BG = colors.HexColor("#fbfbfa")
-INK = colors.HexColor("#111111")
-TEXT = colors.HexColor("#333333")
-MUTED = colors.HexColor("#777777")
-LINE = colors.HexColor("#d8d8d4")
-SOFT = colors.HexColor("#eeeeeb")
+INK = colors.HexColor("#101010")
+TEXT = colors.HexColor("#303030")
+MUTED = colors.HexColor("#747474")
+FAINT = colors.HexColor("#dadad6")
+SOFT = colors.HexColor("#efefec")
+ACCENT = colors.HexColor("#4b5b60")
 PAPER = colors.HexColor("#ffffff")
-ACCENT = colors.HexColor("#4f5f66")
 
 
 def ensure_dirs():
@@ -32,13 +34,104 @@ def ensure_dirs():
     CACHE_DIR.mkdir(parents=True, exist_ok=True)
 
 
-def clean(text):
+def ascii_clean(text):
+    text = text.replace("—", "-").replace("–", "-").replace("µ", "u")
+    text = text.replace("₃", "3").replace("Ø", "O").replace("×", "x")
+    text = text.replace("≥", ">=").replace("≤", "<=").replace("±", "+/-")
     return re.sub(r"\s+", " ", text).strip()
 
 
-def fit_image(src, w_pt, h_pt, mode="cover", bg=(251, 251, 250), scale=2.6):
+def font(c, name="Helvetica", size=8, color=TEXT):
+    c.setFont(name, size)
+    c.setFillColor(color)
+
+
+def rule(c, x1, y1, x2, y2, color=FAINT, width=0.55):
+    c.setStrokeColor(color)
+    c.setLineWidth(width)
+    c.line(x1, y1, x2, y2)
+
+
+def wrap(c, text, width, name="Helvetica", size=8):
+    words = ascii_clean(text).split(" ")
+    lines, cur = [], ""
+    for word in words:
+        trial = word if not cur else f"{cur} {word}"
+        if c.stringWidth(trial, name, size) <= width:
+            cur = trial
+        else:
+            if cur:
+                lines.append(cur)
+            cur = word
+    if cur:
+        lines.append(cur)
+    return lines
+
+
+def text(c, value, x, y, width, size=8.2, leading=10.2, color=TEXT, name="Helvetica", max_lines=None):
+    font(c, name, size, color)
+    used = 0
+    for para in str(value).split("\n"):
+        para = para.strip()
+        if not para:
+            y -= leading * 0.5
+            continue
+        for line in wrap(c, para, width, name, size):
+            if max_lines is not None and used >= max_lines:
+                c.drawString(x, y, "...")
+                return y - leading
+            c.drawString(x, y, line)
+            y -= leading
+            used += 1
+    return y
+
+
+def label(c, value, x, y, size=6.6):
+    font(c, "Helvetica-Bold", size, ACCENT)
+    c.drawString(x, y, ascii_clean(value).upper())
+
+
+def title(c, value, x, y, width=CONTENT_W, size=20):
+    lines = wrap(c, value, width, "Helvetica-Bold", size)
+    font(c, "Helvetica-Bold", size, INK)
+    for line in lines[:2]:
+        c.drawString(x, y, line)
+        y -= size + 4
+    return y
+
+
+def bullets(c, items, x, y, width, size=7.55, leading=9.4, max_items=None, min_y=BOTTOM):
+    count = 0
+    for item in items[:max_items or len(items)]:
+        lines = wrap(c, item, width - 11, "Helvetica", size)
+        for i, line in enumerate(lines):
+            if y < min_y:
+                font(c, "Helvetica", size, MUTED)
+                c.drawString(x + 11, y, "...")
+                return y - leading
+            if i == 0:
+                font(c, "Helvetica", size, ACCENT)
+                c.drawString(x, y, "-")
+            font(c, "Helvetica", size, TEXT)
+            c.drawString(x + 11, y, line)
+            y -= leading
+        y -= 1.5
+        count += 1
+    return y
+
+
+def section(c, heading, body, x, y, width, size=7.65, min_y=BOTTOM):
+    label(c, heading, x, y)
+    y -= 17
+    if isinstance(body, str):
+        return text(c, body, x, y, width, size=size, leading=size + 2.2, min_lines=None if False else None)
+    return bullets(c, body, x, y, width, size=size, leading=size + 1.9, min_y=min_y)
+
+
+def fit_image(src, w_pt, h_pt, mode="cover", bg=(251, 251, 250), scale=2.7):
     src = Path(src)
-    out = CACHE_DIR / f"case-{src.stem}-{int(w_pt)}x{int(h_pt)}-{mode}.jpg"
+    key = re.sub(r"[^A-Za-z0-9_.-]", "_", src.stem)
+    out = CACHE_DIR / f"portrait-{key}-{int(w_pt)}x{int(h_pt)}-{mode}.jpg"
     if out.exists() and out.stat().st_mtime >= src.stat().st_mtime:
         return out
 
@@ -70,426 +163,829 @@ def fit_image(src, w_pt, h_pt, mode="cover", bg=(251, 251, 250), scale=2.6):
             top = (img.height - nh) // 2
             img = img.crop((0, top, img.width, top + nh))
         img = img.resize((target_w, target_h), Image.Resampling.LANCZOS)
-
-    img.save(out, "JPEG", quality=91, optimize=True)
+    img.save(out, "JPEG", quality=92, optimize=True)
     return out
 
 
-def font(c, name="Helvetica", size=9, color=INK):
-    c.setFont(name, size)
-    c.setFillColor(color)
+def image(c, src, x, y, w, h, caption="", mode="cover", bg=(251, 251, 250), border=False):
+    if not src or not (ASSET / src).exists():
+        c.setFillColor(SOFT)
+        c.rect(x, y, w, h, fill=1, stroke=0)
+        font(c, "Helvetica", 7.5, MUTED)
+        c.drawCentredString(x + w / 2, y + h / 2, "visual unavailable")
+    else:
+        if border:
+            c.setStrokeColor(FAINT)
+            c.setLineWidth(0.5)
+            c.rect(x, y, w, h, fill=0, stroke=1)
+        p = fit_image(ASSET / src, w, h, mode=mode, bg=bg)
+        c.drawImage(ImageReader(str(p)), x, y, w, h)
+    if caption:
+        cap_y = y - 9
+        font(c, "Helvetica", 6.45, MUTED)
+        for line in wrap(c, caption, w, "Helvetica", 6.45)[:2]:
+            c.drawString(x, cap_y, line)
+            cap_y -= 7.0
 
 
-def rule(c, x1, y1, x2, y2, color=LINE):
-    c.setStrokeColor(color)
-    c.setLineWidth(0.55)
-    c.line(x1, y1, x2, y2)
-
-
-def wrap(c, text, width, name="Helvetica", size=8):
-    words = clean(text).split(" ")
+def pills(c, items, x, y, width, size=6.8):
+    font(c, "Helvetica", size, MUTED)
+    line = ""
     lines = []
-    cur = ""
-    for word in words:
-        trial = word if not cur else cur + " " + word
-        if c.stringWidth(trial, name, size) <= width:
-            cur = trial
-        else:
-            if cur:
-                lines.append(cur)
-            cur = word
-    if cur:
-        lines.append(cur)
-    return lines
-
-
-def paragraph(c, text, x, y, width, size=8.0, leading=10.1, color=TEXT, max_lines=None):
-    font(c, "Helvetica", size, color)
-    count = 0
-    for para in text.split("\n"):
-        para = para.strip()
-        if not para:
-            y -= leading * 0.45
-            continue
-        for line in wrap(c, para, width, "Helvetica", size):
-            if max_lines is not None and count >= max_lines:
-                c.drawString(x, y, "...")
-                return y - leading
-            c.drawString(x, y, line)
-            y -= leading
-            count += 1
-        y -= leading * 0.18
-    return y
-
-
-def bullets(c, items, x, y, width, size=7.6, leading=9.6, max_lines=None):
-    used = 0
     for item in items:
-        lines = wrap(c, item, width - 12, "Helvetica", size)
-        for i, line in enumerate(lines):
-            if max_lines is not None and used >= max_lines:
-                font(c, "Helvetica", size, TEXT)
-                c.drawString(x + 12, y, "...")
-                return y - leading
-            if i == 0:
-                font(c, "Helvetica", size, ACCENT)
-                c.drawString(x, y, "-")
-            font(c, "Helvetica", size, TEXT)
-            c.drawString(x + 12, y, line)
-            y -= leading
-            used += 1
-        y -= 1.6
+        trial = item if not line else f"{line} / {item}"
+        if c.stringWidth(trial, "Helvetica", size) <= width:
+            line = trial
+        else:
+            if line:
+                lines.append(line)
+            line = item
+    if line:
+        lines.append(line)
+    for line in lines[:3]:
+        c.drawString(x, y, line)
+        y -= size + 3
     return y
 
 
-def small_label(c, text, x, y):
-    font(c, "Helvetica-Bold", 6.6, ACCENT)
-    c.drawString(x, y, text.upper())
-
-
-def page_base(c, title, page, kicker="Selected Hardware Projects"):
+def page_header(c, page, section_name="Selected Projects"):
     c.setFillColor(BG)
     c.rect(0, 0, W, H, fill=1, stroke=0)
-    font(c, "Helvetica", 7.0, MUTED)
-    c.drawString(M, H - 30, kicker)
-    font(c, "Helvetica-Bold", 19.5, INK)
-    c.drawString(M, H - 58, title)
-    rule(c, M, H - 76, W - M, H - 76)
     font(c, "Helvetica", 6.8, MUTED)
-    c.drawRightString(W - M, 18, f"Aadit Kannan / aaditkannan.com/projects / {page}")
+    c.drawString(M, H - 28, section_name)
+    c.drawRightString(W - M, H - 28, f"Aadit Kannan / {page}")
+    rule(c, M, H - 42, W - M, H - 42)
 
 
-def image(c, src, x, y, w, h, cap="", mode="cover", bg=(251, 251, 250)):
-    c.setFillColor(PAPER)
-    c.setStrokeColor(LINE)
-    c.setLineWidth(0.55)
-    c.rect(x, y, w, h, fill=1, stroke=1)
-    p = fit_image(ASSET / src, w, h, mode=mode, bg=bg)
-    c.drawImage(ImageReader(str(p)), x, y, w, h)
-    if cap:
-        font(c, "Helvetica", 6.35, MUTED)
-        cap_lines = wrap(c, cap, w, "Helvetica", 6.35)
-        for i, line in enumerate(cap_lines[:2]):
-            c.drawString(x, y - 9 - i * 7.2, line)
+def finish(c):
+    c.showPage()
 
 
-def field(c, label, value, x, y, width):
-    rule(c, x, y + 4, x + width, y + 4, SOFT)
-    small_label(c, label, x, y - 8)
-    paragraph(c, value, x + 68, y - 8, width - 70, size=7.3, leading=8.6, max_lines=2)
-    return y - 25
+def project_title(c, page, name, date, category, subtitle):
+    page_header(c, page)
+    y = title(c, name, M, H - 70, CONTENT_W, size=19.5)
+    font(c, "Helvetica", 7.4, MUTED)
+    c.drawString(M, y - 3, f"{date} / {category}")
+    y -= 30
+    y = text(c, subtitle, M, y, CONTENT_W, size=8.4, leading=10.4, max_lines=4)
+    return y - 8
 
 
-def callout(c, label, x1, y1, x2, y2, align="left"):
+def callout(c, label_text, x1, y1, x2, y2, right=False):
     c.setStrokeColor(ACCENT)
-    c.setLineWidth(0.65)
+    c.setLineWidth(0.55)
     c.line(x1, y1, x2, y2)
-    font(c, "Helvetica-Bold", 6.5, ACCENT)
-    if align == "right":
-        c.drawRightString(x1 - 4, y1 - 2, label)
+    font(c, "Helvetica-Bold", 6.2, ACCENT)
+    if right:
+        c.drawRightString(x1 - 4, y1 - 1, ascii_clean(label_text))
     else:
-        c.drawString(x1 + 4, y1 - 2, label)
+        c.drawString(x1 + 4, y1 - 1, ascii_clean(label_text))
 
 
-def block_diagram(c, x, y, w):
-    labels = [
-        "Python / RP2040 trigger",
-        "Driver + switching stage",
-        "coax / BNC output",
-        "device / probe station",
-        "scope + source-measure",
-    ]
-    box_w = (w - 48) / 5
-    box_h = 42
-    for i, label in enumerate(labels):
-        bx = x + i * (box_w + 12)
-        c.setFillColor(PAPER)
-        c.setStrokeColor(LINE)
-        c.roundRect(bx, y, box_w, box_h, 4, fill=1, stroke=1)
-        paragraph(c, label, bx + 7, y + 25, box_w - 14, size=6.7, leading=8.0, color=INK, max_lines=2)
-        if i < len(labels) - 1:
-            font(c, "Helvetica", 11, MUTED)
-            c.drawString(bx + box_w + 4, y + 17, "->")
+def two_text_columns(c, left_title, left_items, right_title, right_items, y_top=232):
+    gutter = 26
+    col_w = (CONTENT_W - gutter) / 2
+    label(c, left_title, M, y_top)
+    bullets(c, left_items, M, y_top - 18, col_w, size=7.4, leading=9.15, min_y=BOTTOM)
+    label(c, right_title, M + col_w + gutter, y_top)
+    bullets(c, right_items, M + col_w + gutter, y_top - 18, col_w, size=7.4, leading=9.15, min_y=BOTTOM)
 
 
 def cover(c):
-    page_base(c, "Aadit Kannan", 1, "")
-    font(c, "Helvetica-Bold", 17, INK)
-    c.drawString(M, H - 100, "Selected Hardware Projects")
-    font(c, "Helvetica", 10.5, TEXT)
-    c.drawString(M, H - 123, "Mechanical design, robotics hardware, fabrication, electronics integration, and test.")
+    c.setFillColor(BG)
+    c.rect(0, 0, W, H, fill=1, stroke=0)
+    font(c, "Helvetica-Bold", 27, INK)
+    c.drawString(M, H - 86, "Aadit Kannan")
+    font(c, "Helvetica-Bold", 15, INK)
+    c.drawString(M, H - 120, "Selected Hardware + Software Projects")
+    text(c, "Mechanical design, robotics hardware, fabrication, electronics integration, research instrumentation, and software systems.", M, H - 146, CONTENT_W, size=9.2, leading=11.2)
 
-    link_y = H - 162
-    small_label(c, "Links", M, link_y)
-    font(c, "Helvetica", 8.0, INK)
-    c.drawString(M, link_y - 20, "aaditkannan.com")
-    c.linkURL("https://aaditkannan.com", (M, link_y - 24, M + 100, link_y - 8), relative=0)
-    c.drawString(M + 132, link_y - 20, "aaditkannan.com/projects")
-    c.linkURL("https://aaditkannan.com/projects", (M + 132, link_y - 24, M + 284, link_y - 8), relative=0)
-    c.drawString(M, link_y - 42, "aaditkannan@berkeley.edu")
-    c.linkURL("mailto:aaditkannan@berkeley.edu", (M, link_y - 46, M + 150, link_y - 30), relative=0)
-    c.drawString(M + 182, link_y - 42, "linkedin.com/in/aaditkannan")
-    c.linkURL("https://www.linkedin.com/in/aaditkannan", (M + 182, link_y - 46, M + 342, link_y - 30), relative=0)
-    c.drawString(M, link_y - 64, "github.com/aaditkannan")
-    c.linkURL("https://github.com/aaditkannan", (M, link_y - 68, M + 135, link_y - 52), relative=0)
-
-    small_label(c, "Project Index", M, H - 280)
+    contact_y = H - 198
+    label(c, "Contact", M, contact_y)
     rows = [
-        ("1", "Wolfrom Compound Planetary Actuator"),
-        ("2", "Formula Electric 588V Accumulator Hardware"),
-        ("3", "Ramesh Lab ns/us Pulse Generator PCB"),
-        ("4", "Custom Toolbox Design & Manufacturing"),
-        ("5", "FIRST Robotics Hardware"),
+        ("website", "aaditkannan.com", "https://aaditkannan.com"),
+        ("projects", "aaditkannan.com/projects", "https://aaditkannan.com/projects"),
+        ("email", "aaditkannan@berkeley.edu", "mailto:aaditkannan@berkeley.edu"),
+        ("github", "github.com/aaditkannan", "https://github.com/aaditkannan"),
+        ("linkedin", "linkedin.com/in/aaditkannan", "https://www.linkedin.com/in/aaditkannan"),
     ]
-    y = H - 306
-    for num, name in rows:
-        rule(c, M, y + 10, M + 365, y + 10, SOFT)
-        font(c, "Helvetica-Bold", 9.0, INK)
-        c.drawString(M, y - 2, num)
-        font(c, "Helvetica", 9.0, INK)
-        c.drawString(M + 28, y - 2, name)
-        y -= 31
+    x_positions = [M, M + 180, M + 360]
+    y = contact_y - 22
+    for i, (k, v, url) in enumerate(rows):
+        x = x_positions[i % 3]
+        yy = y - 30 * (i // 3)
+        font(c, "Helvetica-Bold", 6.2, MUTED)
+        c.drawString(x, yy + 12, k.upper())
+        font(c, "Helvetica", 8.1, INK)
+        c.drawString(x, yy, v)
+        c.linkURL(url, (x, yy - 3, x + 150, yy + 11), relative=0)
 
-    image(c, "wolfrom-render-section.jpg", 464, 340, 250, 142, "Wolfrom actuator section render", "contain", bg=(255, 255, 255))
-    image(c, "accumimg.png", 464, 196, 250, 112, "588V accumulator CAD", "cover")
-    image(c, "ns-pulse-schematic-thumbnail.png", 464, 74, 116, 82, "ns pulse generator schematic", "contain", bg=(250, 248, 243))
-    image(c, "toolbox-assembly-drawing.png", 598, 74, 116, 82, "Toolbox drawing package", "contain", bg=(250, 248, 243))
-    c.showPage()
+    idx_y = H - 318
+    label(c, "Portfolio Contents", M, idx_y)
+    projects = [
+        "Wolfrom Robotic Actuator",
+        "Formula Electric 588V Accumulator",
+        "Ramesh Lab Thin Films",
+        "Nanosecond Pulse Generator",
+        "PLDTracker",
+        "Custom Toolbox Design",
+        "FIRST Robotics Hardware",
+        "Deja Vu - INTO THE DEEP",
+        "Deja Vu - CENTERSTAGE",
+        "Zenith - POWERPLAY",
+        "Inventry",
+        "Pear Volunteering",
+        "Leitmotif",
+        "Atlas SMR",
+        "Construction Acclimation",
+        "Beachsweep",
+        "Zenith - FREIGHT FRENZY",
+        "Serenity - FREIGHT FRENZY",
+        "Friendly Fires",
+        "Prototype O Flood",
+    ]
+    col_w = 244
+    for i, name in enumerate(projects):
+        col = 0 if i < 10 else 1
+        row = i if i < 10 else i - 10
+        x = M + col * (col_w + 28)
+        yy = idx_y - 28 - row * 27
+        rule(c, x, yy + 10, x + col_w, yy + 10, SOFT)
+        font(c, "Helvetica-Bold", 7.7, INK)
+        c.drawString(x, yy, f"{i + 1:02d}")
+        font(c, "Helvetica", 7.9, INK)
+        c.drawString(x + 27, yy, name)
+
+    image(c, "wolfrom-render-section.jpg", M, 74, 154, 88, "Actuator section render", "contain", bg=(255, 255, 255))
+    image(c, "accumimg.png", M + 181, 74, 154, 88, "Accumulator attic CAD", "cover")
+    image(c, "ns-pulse-schematic-thumbnail.png", M + 362, 74, 154, 88, "Pulse-generator schematic", "contain", bg=(250, 248, 243))
+    finish(c)
 
 
 def wolfrom_architecture(c):
-    page_base(c, "Wolfrom Compound Planetary Actuator", 2)
-    font(c, "Helvetica", 9.5, TEXT)
-    paragraph(
-        c,
-        "Compact 50:1 compound Wolfrom gearbox for robotic joints. The motor drives a sun gear; each compound planet meshes with a fixed internal ring on one side and an output internal ring on the other. The small tooth-count difference at the ring meshes creates high reduction in one compact axial package.",
-        M,
-        H - 105,
-        365,
-        size=8.5,
-        leading=10.6,
-        max_lines=6,
+    y = project_title(
+        c, 2, "Wolfrom Robotic Actuator", "Jun 2026 - Present", "Robotics Hardware",
+        "Compact compound planetary actuator for humanoid-scale joints, focused on high reduction, backdrivability, reflected inertia, and mechanical packaging."
     )
-    image(c, "wolfrom-render-section.jpg", M, 158, 420, 300, "CAD section showing the sun, compound planets, fixed ring, output ring, bearings, and output interface.", "contain", bg=(255, 255, 255))
-    callout(c, "driven sun", M + 88, 442, M + 184, 354)
-    callout(c, "compound planets", M + 44, 396, M + 234, 330)
-    callout(c, "fixed ring", M + 380, 420, M + 298, 380, "right")
-    callout(c, "output ring", M + 386, 384, M + 306, 338, "right")
-    callout(c, "bearing stack", M + 382, 300, M + 278, 240, "right")
-    callout(c, "output interface", M + 112, 184, M + 244, 204)
-
-    x = 500
-    small_label(c, "My Role", x, 458)
-    paragraph(c, "Designed the gearbox architecture, actuator stackup, bearing support, output ring split, fastener access, and prototype assembly sequence.", x, 438, 214, size=8.0, leading=10.0)
-    small_label(c, "Architecture Decisions", x, 354)
-    bullets(c, [
-        "Used a compound planetary Wolfrom layout instead of stacking multiple conventional stages.",
-        "Kept the actuator axial package compact around the sun, carrier, rings, bearings, and output hub.",
-        "Split the output ring and designed around bolt access so the prototype can be assembled and re-timed.",
-        "Designed the bearing stack and output interface around printed prototypes first, then a metal revision path."
-    ], x, 334, 214, size=7.4, leading=9.4)
-    small_label(c, "Why It Matters For Robotic Joints", x, 176)
-    paragraph(c, "The relevant tradeoff is packaging high reduction while keeping friction, reflected inertia, assembly tolerance, and output support under control. The project is still in prototype iteration; the value is the architecture and mechanical packaging work, not a finished actuator claim.", x, 156, 214, size=7.8, leading=9.8)
-    c.showPage()
+    img_y, img_h = 306, 310
+    image(c, "wolfrom-render-section.jpg", M, img_y, CONTENT_W, img_h, "CAD section: driven sun, compound planets, fixed ring, output ring, bearing stack, and output interface.", "contain", bg=(255, 255, 255))
+    callout(c, "driven sun", M + 56, img_y + 270, M + 210, img_y + 168)
+    callout(c, "compound planets", M + 55, img_y + 215, M + 232, img_y + 145)
+    callout(c, "fixed ring", W - M - 34, img_y + 250, M + 365, img_y + 208, right=True)
+    callout(c, "output ring", W - M - 30, img_y + 205, M + 382, img_y + 165, right=True)
+    callout(c, "bearing stack", W - M - 32, img_y + 110, M + 362, img_y + 96, right=True)
+    callout(c, "output interface", M + 85, img_y + 33, M + 295, img_y + 55)
+    two_text_columns(
+        c,
+        "Designed",
+        [
+            "Full actuator stackup: sun, compound planet pairs, fixed ring, output ring, carrier, bearings, shafts, and output hub.",
+            "One compact axial package instead of stacking multiple conventional planetary stages.",
+            "Split output ring, bolt access, dowel alignment, bearing support, and assembly timing strategy.",
+            "Printed prototype geometry first, with a metal revision path around CNC aluminum and wire-EDM ring gears.",
+        ],
+        "Technical Notes",
+        [
+            "Current tooth counts produce 555/11, or about 50.45:1 reduction; a 125:1 variant is in the same design family.",
+            "Ratio split moves more reduction into the sun/carrier stage and less into the lossy ring differential.",
+            "Main loss paths are ring-mesh friction, planet-bearing drag, load sharing, and rough printed tooth surfaces.",
+            "Backdrivability work focuses on reducing friction rather than pretending reflected rotor inertia disappears.",
+        ],
+        y_top=266,
+    )
+    finish(c)
 
 
 def wolfrom_status(c):
-    page_base(c, "Wolfrom Actuator - Prototype Status", 3)
-    image(c, "wolfrom-cover.jpg", M, 328, 205, 160, "Printed prototype used for gear mesh, stack height, and assembly checks.", "cover")
-    image(c, "wolfrom-bench.jpg", M + 225, 328, 205, 160, "Bench assembly work: checking fit-up and hand assembly sequence.", "cover")
-    image(c, "wolfrom-render-face.jpg", M, 120, 205, 150, "Top view of compound planets, output ring, and fastener pattern.", "contain", bg=(255, 255, 255))
-    image(c, "wolfrom-render-side.jpg", M + 225, 120, 205, 150, "Side view of the plate stack, motor interface, and axial package.", "contain", bg=(255, 255, 255))
-
-    x = 512
-    small_label(c, "Current Design Decisions", x, 486)
-    bullets(c, [
-        "Rebalanced the stage split so less reduction happens in the high-loss ring differential, reducing internal power recirculation compared with a naive Wolfrom split.",
-        "Targeting about 50:1 reduction; current tooth counts produce about 50.45:1.",
-        "Working toward near-zero backlash through split-gear preloading rather than claiming final measured backlash.",
-        "Printed prototypes are being used for gear mesh, packaging, stack height, and assembly checks."
-    ], x, 466, 214, size=7.6, leading=9.6)
-    small_label(c, "In Progress", x, 292)
-    bullets(c, [
-        "KISSsoft refinement for macro-geometry, profile shifts, and tip relief on high-load ring meshes.",
-        "Next mechanical revision: CNC aluminum structure, wire-EDM rings, hardened pins, and needle bearings.",
-        "Planned dyno characterization for torque, efficiency, and backdrive behavior after the metal version is built."
-    ], x, 272, 214, size=7.6, leading=9.6)
-    small_label(c, "Status", x, 146)
-    paragraph(c, "Printed prototype built and fit-checked; metal revision, KISSsoft refinement, and dyno characterization are in progress.", x, 126, 214, size=8.0, leading=10.0)
-    c.showPage()
-
-
-def formula(c):
-    page_base(c, "Formula Electric 588V Accumulator Hardware", 4)
-    image(c, "accumimg.png", M, 314, 420, 195, "Accumulator CAD showing HV electronics attic, fans, service access, and enclosure packaging.", "cover")
-    image(c, "accumsa.png", M, 120, 205, 142, "Electronics attic layout and board/connector packaging.", "cover")
-    image(c, "IMG_7934.png", M + 225, 120, 205, 142, "Physical hardware packaging context for accumulator integration.", "cover")
-
-    x = 512
-    small_label(c, "My Role", x, 486)
-    paragraph(c, "Designed and manufactured the HV electronics attic enclosure and busbar packaging for a 588V accumulator, focusing on insulation, sealing, access, mass, and review documentation.", x, 466, 214, size=8.0, leading=10.0)
-    small_label(c, "Engineering Work", x, 374)
-    bullets(c, [
-        "Packaged the HV electronics attic, busbars, boards, fans, fasteners, and service interfaces inside the accumulator envelope.",
-        "Preserved insulation clearances, cooling paths, board access, fastener access, and inspection access while reducing attic mass by 18%.",
-        "Designed around waterproofing and high-dielectric insulation requirements for a 588V battery system.",
-        "Routed busbars for 80A peak discharge and prepared design material for SES/ESF review.",
-    ], x, 354, 214, size=7.55, leading=9.5)
-    small_label(c, "Design Constraints", x, 160)
-    paragraph(c, "The packaging problem was not just fitting electronics in a box: it had to leave room for service, cooling, inspection, sealing, high-voltage isolation, and manufacturable fastener access.", x, 140, 214, size=8.0, leading=10.0)
-    c.showPage()
+    y = project_title(
+        c, 3, "Wolfrom Actuator - Prototype + Next Revision", "Jun 2026 - Present", "Robotics Hardware",
+        "Printed prototypes are being used for gear mesh, packaging, stack height, and assembly checks before committing to the metal build."
+    )
+    image(c, "wolfrom-cover.jpg", M, 486, 248, 164, "Printed prototype used for gear mesh, bearing placement, and stack-height checks.", "cover")
+    image(c, "wolfrom-bench.jpg", M + 268, 486, 248, 164, "Bench assembly and fit-checking before re-timing the actuator by hand.", "cover")
+    image(c, "wolfrom-render-face.jpg", M, 286, 248, 144, "Top view: three compound planets, output ring, fastener pattern, and center sun.", "contain", bg=(255, 255, 255))
+    image(c, "wolfrom-render-side.jpg", M + 268, 286, 248, 144, "Side view: plate stack, motor interface, standoffs, and axial package.", "contain", bg=(255, 255, 255))
+    two_text_columns(
+        c,
+        "Current Prototype",
+        [
+            "Built and fit-checked printed actuator hardware for meshing, assembly access, and stack alignment.",
+            "Working toward split-gear preloading for near-zero backlash; no final backlash claim yet.",
+            "Evaluating printed gears as geometry prototypes, not as final load-bearing actuator hardware.",
+        ],
+        "Next Revision",
+        [
+            "KISSsoft refinement for macro-geometry, profile shifts, and tip relief on the loaded ring meshes.",
+            "Metal version planned around CNC aluminum structure, wire-EDM hardened-steel rings, hardened pins, and needle bearings.",
+            "Dyno characterization planned for breakaway torque, backdrive feel, efficiency, and load behavior after the metal revision.",
+        ],
+        y_top=228,
+    )
+    finish(c)
 
 
-def pulse_overview(c):
-    page_base(c, "Ramesh Lab ns/us Pulse Generator PCB", 5)
-    paragraph(c, "Instrument for ferroelectric and RF characterization of BiFeO3 thin-film devices. The goal is controlled nanosecond and microsecond pulse generation with grounded lab I/O, source-measure biasing, RP2040/Python triggering, and oscilloscope validation.", M, H - 106, 440, size=8.5, leading=10.6)
-    small_label(c, "System Flow", M, 424)
-    block_y = 368
-    labels = [
-        "Python / RP2040 trigger",
-        "driver + switching stage",
-        "coax / BNC output",
-        "device / probe station",
-        "scope + source-measure capture",
-    ]
-    box_w = 122
-    for i, txt in enumerate(labels):
-        x = M + i * 138
-        c.setFillColor(PAPER)
-        c.setStrokeColor(LINE)
-        c.roundRect(x, block_y, box_w, 48, 4, fill=1, stroke=1)
-        paragraph(c, txt, x + 8, block_y + 30, box_w - 16, size=7.0, leading=8.2, color=INK, max_lines=2)
-        if i < len(labels) - 1:
-            font(c, "Helvetica", 12, MUTED)
-            c.drawString(x + box_w + 8, block_y + 20, "->")
-
-    image(c, "ns-pulse-schematic-thumbnail.png", M, 148, 318, 166, "Current nanosecond pulse-generator schematic.", "contain", bg=(250, 248, 243))
-    image(c, "pulse-v1-physical.jpg", M + 344, 148, 170, 166, "V1 microsecond board during bench probing.", "cover")
-    image(c, "pulse-v1-ltspice.png", M + 534, 148, 170, 166, "V1 timing/switching simulation used during early design work.", "contain", bg=(0, 0, 0))
-
-    small_label(c, "Design Focus", M, 96)
-    bullets(c, [
-        "Separate ns and us pulse paths around the needs of thin-film switching and transport tests.",
-        "Use GaN switching and clean trigger/sync routing instead of loose bench wiring.",
-        "Expose grounded coax/BNC-style I/O and source-measure biasing for probe-station work.",
-    ], M, 78, 665, size=7.7, leading=9.7)
-    c.showPage()
+def formula_packaging(c):
+    project_title(
+        c, 4, "Formula Electric 588V Accumulator", "Sep 2025 - Present", "High-Voltage Packaging",
+        "Designed and manufactured accumulator attic hardware for Berkeley Formula Electric: HV electronics packaging, enclosure design, busbar routing, waterproofing, insulation, cooling, and inspection access."
+    )
+    image(c, "accumimg.png", M, 372, CONTENT_W, 220, "588V accumulator CAD showing the HV electronics attic, fan wall, service access, and enclosure packaging.", "contain", bg=(255, 255, 255))
+    image(c, "accumsa.png", M, 204, 248, 112, "Electronics attic layout: board, connector, busbar, and mechanical interface packaging.", "contain", bg=(255, 255, 255))
+    image(c, "img3.png", M + 268, 204, 248, 112, "Internal attic CAD view with board/connector access and enclosure clearances.", "contain", bg=(255, 255, 255))
+    two_text_columns(
+        c,
+        "Built",
+        [
+            "Packaged the HV electronics attic, busbars, boards, fans, fasteners, and service interfaces inside the accumulator envelope.",
+            "Reduced attic mass by 18% while preserving insulation clearances, cooling paths, inspection access, and fastener access.",
+            "Designed around a 588V pack, waterproofing needs, high-dielectric insulation, and SES/ESF review material.",
+        ],
+        "Constraints",
+        [
+            "Busbar routing for 80A peak discharge without turning the attic into an unserviceable wiring box.",
+            "FSAE structural load cases, high-voltage isolation, rain-test sealing, fan airflow, and board access all fight for the same volume.",
+            "Transparent/inspectable surfaces and removable interfaces mattered because serviceability is part of safety.",
+        ],
+        y_top=154,
+    )
+    finish(c)
 
 
-def pulse_details(c):
-    page_base(c, "Pulse Generator - Schematic, Layout, Test", 6)
-    image(c, "ns-pulse-schematic-thumbnail.png", M, 242, 430, 260, "KiCad schematic for the current ns/us pulse generator revision.", "contain", bg=(250, 248, 243))
-    callout(c, "RP2040 / trigger control", M + 30, 486, M + 72, 450)
-    callout(c, "GaN switching path", M + 392, 450, M + 290, 418, "right")
-    callout(c, "source-measure bias", M + 388, 322, M + 280, 338, "right")
-    callout(c, "sync / range control", M + 384, 386, M + 346, 402, "right")
-    callout(c, "decoupling / rails", M + 42, 292, M + 160, 308)
-    image(c, "pulse-v1-us-layout.png", M, 92, 205, 98, "V1 PCB layout used to check routing, connector placement, and return paths.", "contain", bg=(20, 22, 26))
-    image(c, "pulse-v1-us-render.png", M + 225, 92, 205, 98, "V1 rendered board: useful as a physical integration reference, not the current ns revision.", "contain", bg=(242, 242, 246))
+def formula_validation(c):
+    project_title(
+        c, 5, "Accumulator Hardware - Materials + Validation", "Sep 2025 - Present", "High-Voltage Packaging",
+        "The accumulator attic is a packaging problem, a manufacturing problem, and a safety-review problem at the same time."
+    )
+    image(c, "img2.png", M, 500, 248, 148, "Top-down attic CAD view used to check electronics layout and access.", "contain", bg=(255, 255, 255))
+    image(c, "gas.png", M + 268, 500, 248, 148, "Gasket compression sizing used for the weather-seal interface.", "contain", bg=(255, 255, 255))
+    image(c, "accumsa.png", M, 284, CONTENT_W, 154, "Detailed accumulator subassembly view for board, connector, and internal support packaging.", "contain", bg=(255, 255, 255))
+    two_text_columns(
+        c,
+        "Manufacturing Plan",
+        [
+            "Laser-cut aluminum panels, TIG welded structure, waterjet-cut polycarbonate floor, and waterjet-cut neoprene gasket.",
+            "Polycarbonate floor provides electrical isolation and visual inspection without disassembling the accumulator.",
+            "Nomex 410 insulation selected for dielectric strength, high temperature rating, and flame resistance near HV components.",
+        ],
+        "Checks",
+        [
+            "FEA against 40g lateral, 40g longitudinal, and 20g vertical load cases with yield margin.",
+            "Dielectric margin, gasket compression, water ingress, service access, fastener access, and cooling airflow reviewed together.",
+            "1500V AC dielectric test and IP65-style water ingress testing are the target validation gates before competition use.",
+        ],
+        y_top=232,
+    )
+    finish(c)
 
-    x = 512
-    small_label(c, "V1 Learning Artifact", x, 486)
-    paragraph(c, "The first microsecond board validated the basic bench workflow, but exposed integration issues: clip-lead power, weak lab I/O, and awkward triggering.", x, 466, 214, size=8.0, leading=10.0)
-    small_label(c, "Current Revision", x, 374)
-    bullets(c, [
-        "Folds nanosecond and microsecond pulse generation into a cleaner instrument.",
-        "Adds coax output, source-measure biasing, shared trigger/sync paths, and Python/RP2040 control.",
-        "Bring-up plan: verify rails and trigger logic, validate switching into dummy loads, then move toward device fixtures.",
-        "No final rise-time, jitter, amplitude stability, or device-result claims yet."
-    ], x, 354, 214, size=7.55, leading=9.5)
-    small_label(c, "Tools", x, 154)
-    paragraph(c, "KiCad, LTspice, RP2040, Python, LabVIEW, JupyterLab, oscilloscope, source-measure equipment, coax/BNC lab interfaces.", x, 134, 214, size=7.8, leading=9.8)
-    c.showPage()
+
+def ramesh_lab(c):
+    project_title(
+        c, 6, "Ramesh Lab: Complex-Oxide Thin Films", "Jan 2026 - Present", "Research",
+        "Researching BiFeO3 and related complex-oxide thin films for faster, lower-power memory and logic beyond DRAM and CMOS."
+    )
+    image(c, "IMG_4508.JPG", M, 460, 160, 156, "Lab/growth workflow context.", "cover")
+    image(c, "IMG_4507.JPG", M + 178, 460, 160, 156, "Thin-film process and sample handling context.", "cover")
+    image(c, "IMG_4509.JPG", M + 356, 460, 160, 156, "Experimental hardware context from lab work.", "cover")
+    two_text_columns(
+        c,
+        "Learning + Growth Work",
+        [
+            "Reading Lines and Glass to build the physics base: polarization, domains, coercive fields, hysteresis, dielectric response, strain, and defects.",
+            "Learning supervised substrate prep, solvent cleaning, annealing, step-terrace control, PLD growth, and RHEED monitoring.",
+            "Practicing thin-film deposition workflow with Donald's guidance: oxygen pressure, plume shape, target/substrate geometry, and temperature stability.",
+            "Connecting growth choices to AFM, XRD, PFM, and electrical characterization results.",
+        ],
+        "Connected Projects",
+        [
+            "Nanosecond Pulse Generator: lab instrument for fast electrical characterization of oxide devices after fabrication.",
+            "PLDTracker: data-management tool linking deposition conditions to characterization data and lab documentation.",
+            "The point is the full research loop: grow films, track process parameters, then measure how the devices switch.",
+        ],
+        y_top=394,
+    )
+    label(c, "Why It Matters", M, 136)
+    text(c, "Strain, interfaces, atomic stacking order, and oxygen vacancies can create switchable polarization, interfacial conduction, and coupled ferroic states that do not exist in a single bulk material. The work is about learning how process choices reshape device behavior.", M, 118, CONTENT_W, size=7.8, leading=9.8, max_lines=5)
+    finish(c)
+
+
+def pulse_system(c):
+    project_title(
+        c, 7, "Nanosecond Pulse Generator", "May 2026 - Present", "Research Hardware / PCB",
+        "Nanosecond and microsecond pulse-generator board for BiFeO3 spin-transport and ferroelectric characterization with GaN switching, source-measure biasing, grounded coax/BNC I/O, and RP2040/Python triggering."
+    )
+    image(c, "ns-pulse-schematic-thumbnail.png", M, 392, CONTENT_W, 244, "Current nanosecond pulse-generator schematic. Shown as the main artifact because it is the current board revision.", "contain", bg=(250, 248, 243))
+    label(c, "Bench Interface", M, 332)
+    text(c, "Python/RP2040 trigger -> driver and switching stage -> coax/BNC output -> device or probe station -> oscilloscope and source-measure capture.", M, 315, CONTENT_W, size=7.8, leading=9.8)
+    two_text_columns(
+        c,
+        "Designed",
+        [
+            "Dual-range pulse architecture around current BFO testing near 30V, with future sweeps toward smaller voltage ranges.",
+            "GaN switching path, trigger/sync routing, grounded lab I/O, and source-measure bias interface.",
+            "Board organization around probe-station use, scope validation, dummy-load bring-up, and controlled pulse visibility.",
+        ],
+        "Case-Specific Notes",
+        [
+            "The useful quantity is the voltage that actually lands across the BFO device, not just a nominal connector setting.",
+            "Current response mixes polarization switching, leakage, dielectric capacitance, and fixture parasitics, so timing and grounding matter.",
+            "No final rise-time, jitter, device result, or amplitude-stability claim yet; bring-up is still in progress.",
+        ],
+        y_top=270,
+    )
+    finish(c)
+
+
+def pulse_board(c):
+    project_title(
+        c, 8, "Pulse Generator - Board + V1 Learning", "May 2026 - Present", "Research Hardware / PCB",
+        "V1 microsecond hardware validated the basic bench workflow and exposed why the current board needs cleaner triggering, lab I/O, and grounding."
+    )
+    image(c, "pulse-v1-physical.jpg", M, 500, 220, 148, "V1 microsecond board during bench probing. Useful as a learning artifact, not the current ns revision.", "cover")
+    image(c, "pulse-v1-us-layout.png", M + 244, 500, 272, 148, "V1 PCB layout used to inspect trace routing, connector placement, and returns.", "contain", bg=(24, 25, 29))
+    image(c, "pulse-v1-us-render.png", M, 326, 220, 118, "V1 rendered PCB for physical integration reference.", "contain", bg=(242, 242, 246))
+    image(c, "pulse-v1-us-schematic.png", M + 244, 326, 272, 118, "V1 microsecond schematic, included only as a predecessor to the current ns/us board.", "contain", bg=(250, 248, 243))
+    two_text_columns(
+        c,
+        "V1 Exposed",
+        [
+            "Clip-lead power and weak lab I/O made the first version awkward to use around real bench equipment.",
+            "Triggering needed to be integrated with Python/RP2040 control instead of treated as an isolated pulse node.",
+            "LTspice transient work was useful for V1 timing intuition, but the current PDF does not use the screenshot because it reads poorly.",
+            "Grounding and connector strategy had to be designed as part of the experiment, not left to bench improvisation.",
+        ],
+        "Current Revision Adds",
+        [
+            "Nanosecond and microsecond paths in one cleaner instrument.",
+            "Coax/BNC-style outputs, shared sync/trigger handling, source-measure biasing, and clearer return paths.",
+            "Validation plan: rails, trigger logic, dummy loads, switching behavior, then device-side fixture measurements.",
+        ],
+        y_top=270,
+    )
+    finish(c)
+
+
+def pldtracker(c):
+    project_title(
+        c, 9, "PLDTracker (Ramesh Lab)", "Jan 2026 - Mar 2026", "Research Software",
+        "Experiment tracking and data-management system for PLD thin-film workflows, built to connect growth parameters, wafer position, characterization images, and lab documentation."
+    )
+    image(c, "Screenshot 2026-03-13 000052.png", M, 470, CONTENT_W, 168, "Dashboard and deposition data explorer for tracking thin-film growth records.", "contain", bg=(255, 255, 255))
+    image(c, "Screenshot 2026-03-13 000118.png", M, 284, 248, 126, "Filtering and data exploration interface.", "contain", bg=(255, 255, 255))
+    image(c, "Screenshot 2026-03-13 000132.png", M + 268, 284, 248, 126, "Analysis-image/document workflow tied back to deposition records.", "contain", bg=(255, 255, 255))
+    two_text_columns(
+        c,
+        "Implemented",
+        [
+            "Logs substrate, target material, temperature, oxygen pressure, laser fluence, deposition time, and wafer disk position.",
+            "Links XRD scans, AFM/PFM domain images, slide-deck figures, and camera captures to specific runs.",
+            "Built a dashboard for filtering records and visualizing parameter trends with connected datapoints and fit lines.",
+        ],
+        "Research Value",
+        [
+            "Replaces scattered notes, spreadsheets, screenshots, and slide decks with searchable experiment metadata.",
+            "Makes it easier to revisit whether growth-condition changes explain film-structure or device-property changes.",
+            "Includes a SolidWorks camera mount path for substrate-position monitoring at the PLD chamber.",
+        ],
+        y_top=232,
+    )
+    finish(c)
 
 
 def toolbox(c):
-    page_base(c, "Custom Toolbox Design & Manufacturing", 7)
-    image(c, "toolbox-assembly-drawing.png", M, 332, 250, 160, "Assembly drawing defining lid, latch, hinge, body, and insert interfaces.", "contain", bg=(250, 248, 243))
-    image(c, "toolbox-bottom-walls-drawing.png", M + 270, 332, 250, 160, "Part drawing with datum references and positional tolerance callouts.", "contain", bg=(250, 248, 243))
-    image(c, "toolbox-prototype-closed.png", M, 104, 250, 172, "Prototype fit-up after fabrication with hinges, latches, handle, and fasteners.", "cover")
-    image(c, "toolbox-prototype-open.png", M + 270, 104, 250, 172, "Open prototype showing interior fit-up; final-version photos unavailable.", "cover")
-
-    x = 592
-    small_label(c, "My Role", x, 486)
-    paragraph(c, "Used the toolbox as a controlled manufacturing exercise: model the assembly, define functional datums, create buildable drawings, fabricate parts, and inspect fit-up instead of relying on hand-fitting.", x, 466, 150, size=7.7, leading=9.7)
-    small_label(c, "Engineering Work", x, 328)
-    bullets(c, [
-        "Created production-style drawings using ASME Y14.5-2018 GD&T conventions.",
-        "Specified datums, position tolerances, fastener clearances, and lid/hinge/latch interfaces.",
-        "Designed around laser-cut plywood panels, FDM inserts, and fastened joints visible in the prototype.",
-        "Checked fit-up using calipers, fasteners/gauge pins, squareness, lid closure, and hinge/latch alignment."
-    ], x, 308, 150, size=7.25, leading=9.2)
-    c.showPage()
-
-
-def first(c):
-    page_base(c, "FIRST Robotics Hardware", 8)
-    image(c, "newiamge.png", M, 322, 278, 176, "INTO THE DEEP robot CAD and subsystem packaging.", "cover")
-    image(c, "intake.png", M + 300, 322, 190, 176, "High-iteration intake mechanism CAD.", "cover")
-    image(c, "Deja_Vu_Bot_Assemble_Version_1_v4_v1112.png", M, 110, 232, 156, "CENTERSTAGE robot CAD assembly.", "cover")
-    image(c, "deja1.png", M + 254, 110, 236, 156, "Linkage and end-effector packaging detail.", "contain", bg=(255, 255, 255))
-
-    x = 560
-    small_label(c, "My Role", x, 486)
-    paragraph(c, "Hardware Lead for FTC #13216 and captain/founder work across FIRST teams. Focus here is mechanism design, reliability, serviceability, and iteration under match constraints.", x, 466, 170, size=7.8, leading=9.8)
-    small_label(c, "Engineering Work", x, 350)
-    bullets(c, [
-        "Designed 8 robots and 500+ part CAD assemblies across drivetrain, intake, transfer, arm/lift, end effector, and hang systems.",
-        "Used FEA to guide custom aluminum and printed components for stress and weight.",
-        "Built with printed parts, laser-cut plates, CNC-machined aluminum, and shop-fabricated hardware.",
-        "Wrote Java TeleOp for field-centric mecanum drive, PID loops, mechanism sequencing, and driver feedback.",
-        "Won Robot Design Award 3 times; mentored 30+ members in CAD and Java."
-    ], x, 330, 170, size=7.2, leading=9.1)
-    c.showPage()
+    project_title(
+        c, 10, "Custom Toolbox Design + Manufacturing", "May 2026 - Jun 2026", "Mechanical Design",
+        "Controlled CAD-to-drawings-to-fabrication exercise: model the assembly, define functional datums, create buildable drawings, fabricate parts, and inspect fit-up."
+    )
+    image(c, "toolbox-assembly-drawing.png", M, 488, 248, 150, "Assembly drawing defining lid, latch, hinge, body, and insert interfaces.", "contain", bg=(250, 248, 243))
+    image(c, "toolbox-bottom-walls-drawing.png", M + 268, 488, 248, 150, "Part drawing with datum references and positional tolerance callouts.", "contain", bg=(250, 248, 243))
+    image(c, "toolbox-prototype-closed.png", M, 292, 248, 136, "Prototype fit-up after fabrication with hinges, latches, handle, and fasteners.", "cover")
+    image(c, "toolbox-prototype-open.png", M + 268, 292, 248, 136, "Open prototype showing interior fit-up; final-version photos unavailable.", "cover")
+    two_text_columns(
+        c,
+        "Designed",
+        [
+            "Production-style drawings using ASME Y14.5-2018 GD&T conventions.",
+            "Datum scheme, position tolerances, fastener clearances, bend/edge reliefs, hinge/latch interfaces, and lid closure.",
+            "Laser-cut plywood body with FDM/Gridfinity-style inserts and fastened joints visible in the prototype.",
+        ],
+        "Inspected",
+        [
+            "Fit-up checked with calipers, fasteners/gauge pins, squareness checks, lid closure, and hinge/latch alignment.",
+            "The value is drawing discipline and datum strategy, not pretending this was a metal production enclosure.",
+            "Prototype photos are included honestly because final-version photos are not available.",
+        ],
+        y_top=236,
+    )
+    finish(c)
 
 
-def tools_methods(c):
-    page_base(c, "Tools + Methods", 9)
+def first_overview(c):
+    project_title(
+        c, 11, "FIRST Robotics Hardware", "Aug 2021 - Jun 2025", "Robotics Hardware / Controls",
+        "Four seasons of FTC hardware: 8 robots, 500+ part CAD assemblies, mechanism iteration under match constraints, Java controls, and three Robot Design Awards."
+    )
+    image(c, "newiamge.png", M, 478, 248, 158, "INTO THE DEEP robot CAD with drivetrain, active intake, transfer path, lift, and end effector.", "cover")
+    image(c, "Deja_Vu_Bot_Assemble_Version_1_v4_v1112.png", M + 268, 478, 248, 158, "CENTERSTAGE robot CAD assembly with pixel scoring mechanisms.", "cover")
+    image(c, "zenithbottt.png", M, 290, 248, 128, "POWERPLAY robot CAD with lift and cone manipulation systems.", "contain", bg=(255, 255, 255))
+    image(c, "intake.png", M + 268, 290, 248, 128, "High-iteration intake subsystem CAD from Deja Vu INTO THE DEEP.", "cover")
+    two_text_columns(
+        c,
+        "Built Across Seasons",
+        [
+            "Mecanum drivetrains, active intakes, transfer paths, arms/lifts, claws/end effectors, hang mechanisms, and game-specific scoring systems.",
+            "FEA-informed custom aluminum and printed components for stress, deflection, and mechanism clearance.",
+            "Manufacturing through printed parts, laser-cut plates, CNC-machined aluminum, and shop-fabricated hardware.",
+        ],
+        "Controls-Aware Design",
+        [
+            "Java TeleOp with field-centric mecanum, encoder PID loops, mechanism sequencing, driver feedback, and autonomous routines.",
+            "Hardware and driver code were tuned together so mechanisms were not only possible in CAD but usable under match pressure.",
+            "Mentored 30+ members in CAD and Java; team-building is secondary here, but it affected design execution.",
+        ],
+        y_top=232,
+    )
+    finish(c)
+
+
+def generic_project(c, page, data):
+    project_title(c, page, data["title"], data["date"], data["category"], data["subtitle"])
+    imgs = data.get("images", [])
+    if len(imgs) >= 2:
+        image(c, imgs[0][0], M, 492, 248, 148, imgs[0][1], imgs[0][2], bg=imgs[0][3] if len(imgs[0]) > 3 else (251, 251, 250))
+        image(c, imgs[1][0], M + 268, 492, 248, 148, imgs[1][1], imgs[1][2], bg=imgs[1][3] if len(imgs[1]) > 3 else (251, 251, 250))
+    elif len(imgs) == 1:
+        image(c, imgs[0][0], M, 448, CONTENT_W, 192, imgs[0][1], imgs[0][2], bg=imgs[0][3] if len(imgs[0]) > 3 else (251, 251, 250))
+    else:
+        label(c, "No Project Image Available", M, 610)
+        text(c, "This page is included for completeness, but the website does not currently have a strong visual asset for it.", M, 592, CONTENT_W, size=8, leading=10)
+
+    if len(imgs) >= 4:
+        image(c, imgs[2][0], M, 316, 248, 116, imgs[2][1], imgs[2][2], bg=imgs[2][3] if len(imgs[2]) > 3 else (251, 251, 250))
+        image(c, imgs[3][0], M + 268, 316, 248, 116, imgs[3][1], imgs[3][2], bg=imgs[3][3] if len(imgs[3]) > 3 else (251, 251, 250))
+        y_top = 266
+    else:
+        y_top = 384 if len(imgs) <= 1 else 440
+
+    two_text_columns(c, data["left_title"], data["left"], data["right_title"], data["right"], y_top=y_top)
+    label(c, "Tools", M, 74)
+    pills(c, data["tools"], M, 58, CONTENT_W, size=6.9)
+    finish(c)
+
+
+GENERIC_PROJECTS = [
+    {
+        "title": "Deja Vu - INTO THE DEEP",
+        "date": "Aug 2024 - Jun 2025",
+        "category": "FTC Robotics / Hardware Lead",
+        "subtitle": "500+ part CAD robot for sample pickup, basket scoring, specimen scoring, and endgame hang, designed under real match reliability constraints.",
+        "images": [
+            ("newiamge.png", "Full robot CAD with intake, transfer, lift, end effector, drivetrain, and hang packaging.", "cover"),
+            ("intake.png", "High-iteration intake mechanism CAD.", "cover"),
+            ("deja1.png", "End-effector/linkage packaging detail.", "contain", (255, 255, 255)),
+            ("dejavubot-removebg-preview.png", "Physical robot reference for mechanism packaging and service access.", "contain", (255, 255, 255)),
+        ],
+        "left_title": "Designed",
+        "left": [
+            "Owned mechanical design, CAD management, and manufacturing coordination for FTC #13216.",
+            "Four intake revisions: passive funnel, surgical-tubing roller, dual-stage roller, then a simpler high-speed roller geometry.",
+            "Designed mecanum drivetrain, active intake, transfer pathway, arm/lift, end effector, and hang hardware.",
+        ],
+        "right_title": "Technical Work",
+        "right": [
+            "FEA on arm pivot and hang brackets; checked stress, safety factor, and deflection against mechanism travel.",
+            "Manufactured with Markforged nylon, Prusa prototypes, laser-cut polycarbonate/Delrin, CNC aluminum, and shop tools.",
+            "Wrote Java TeleOp with field-centric drive, arm/lift PID, intake sequencing, and driver rumble feedback.",
+        ],
+        "tools": ["SolidWorks", "FEA", "Java", "FTC SDK", "PID Control", "Mecanum Kinematics", "Laser Cutting", "Markforged"],
+    },
+    {
+        "title": "Deja Vu - CENTERSTAGE",
+        "date": "Aug 2023 - Jun 2024",
+        "category": "FTC Robotics / Hardware Lead",
+        "subtitle": "Pixel-scoring robot for FTC CENTERSTAGE, focused on reliable dual-pixel handling, backdrop scoring, vision alignment, and driver-controlled mechanism sequencing.",
+        "images": [
+            ("Deja_Vu_Bot_Assemble_Version_1_v4_v1112.png", "Full robot CAD assembly for CENTERSTAGE.", "cover"),
+            ("dejapp.png", "Robot/app or subsystem reference from the season.", "contain", (255, 255, 255)),
+            ("IMG_2714.png", "Physical robot/build context from the season.", "cover"),
+        ],
+        "left_title": "Designed",
+        "left": [
+            "Compliant TPU claw fingers, passive spring-loaded grip, and servo-actuated release for hexagonal pixels.",
+            "Dual-pixel capacity to cut cycles to the backdrop; geometry had to grip without blocking the vision workflow.",
+            "Robot packaging around mecanum drive, arm presets, claw actuation, and paper-airplane endgame launcher.",
+        ],
+        "right_title": "Controls + Results",
+        "right": [
+            "AprilTag-based autonomous alignment and camera-based pixel-position feedback.",
+            "Java TeleOp with speed curves, arm presets, claw control, drone launcher arming, and intake/transfer coordination.",
+            "Qualified for NorCal regional championship with minimal mechanical failures during matches.",
+        ],
+        "tools": ["SolidWorks", "Java", "FTC SDK", "AprilTags", "OpenCV", "PID Control", "Mecanum Kinematics"],
+    },
+    {
+        "title": "Zenith - POWERPLAY",
+        "date": "Aug 2022 - Jun 2023",
+        "category": "FTC Robotics / Team Lead",
+        "subtitle": "Cone-stacking robot built around a fast linear lift, cone-centering claw, mecanum drive, and autonomous positioning.",
+        "images": [
+            ("zenithbottt.png", "POWERPLAY robot CAD with lift and cone-scoring mechanism.", "contain", (255, 255, 255)),
+            ("zensim.png", "Mechanism/simulation reference for the season.", "cover"),
+            ("zensim22.png", "Additional CAD/simulation view.", "cover"),
+            ("zenithnot-removebg-preview.png", "Robot or subsystem image from Zenith.", "contain", (255, 255, 255)),
+        ],
+        "left_title": "Built",
+        "left": [
+            "Linear lift with 30+ inches of travel, sub-1.5s extension target, and about 200g carried load.",
+            "String-rigged lift using dyneema and spool geometry balanced against motor torque and cycle time.",
+            "Three claw revisions, landing on internal centering guides before gripping.",
+        ],
+        "right_title": "Controls + Lessons",
+        "right": [
+            "Java TeleOp with mecanum kinematics, lift PID, and speed scaling modes.",
+            "Autonomous used OpenCV signal-sleeve detection, dead-wheel odometry, and IMU heading correction.",
+            "ZenLender spreadsheet lending system started here and later evolved into Inventry.",
+        ],
+        "tools": ["Onshape", "Java", "FTC SDK", "OpenCV", "Dead-Wheel Odometry", "PID Control", "String Rigging"],
+    },
+    {
+        "title": "Inventry",
+        "date": "Jun 2025 - Dec 2025",
+        "category": "Robotics Software",
+        "subtitle": "Robotics-parts inventory, lending, and marketplace system built to reduce emergency shipping and scattered spreadsheet workflows for FTC teams.",
+        "images": [
+            ("homepageinve.png", "Inventry landing/interface screenshot.", "contain", (255, 255, 255)),
+            ("invends.png", "Inventory/product interface screenshot.", "contain", (255, 255, 255)),
+        ],
+        "left_title": "Implemented",
+        "left": [
+            "Inventory management for parts, quantities, condition, team ownership, and search.",
+            "Part lending network with distance matching, urgent requests, and lender reputation.",
+            "Marketplace path for robotics components, with team verification through FIRST data.",
+        ],
+        "right_title": "Technical Work",
+        "right": [
+            "React/TypeScript frontend, Node/Express backend, PostgreSQL data model, Vercel/Railway hosting.",
+            "Invoice parsing with Tesseract OCR and GPT-4 structured extraction for part numbers, quantities, and prices.",
+            "Weekly scrapers for GoBilda, REV, ServoCity, and AndyMark with 3,000+ SKU search data.",
+        ],
+        "tools": ["React", "TypeScript", "Node.js", "Express", "PostgreSQL", "Tesseract OCR", "Web Scraping", "OAuth 2.0"],
+    },
+    {
+        "title": "Pear Volunteering",
+        "date": "Aug 2023 - May 2025",
+        "category": "Web Platform",
+        "subtitle": "Volunteer platform connecting 2000+ students, 20+ organizers, and administrators who needed verified hour logs.",
+        "images": [
+            ("pearpage.png", "Pear volunteer/event platform screenshot.", "contain", (255, 255, 255)),
+            ("pearis.png", "Volunteer interface or organizer screen.", "contain", (255, 255, 255)),
+            ("pearrr.png", "Supporting platform screenshot.", "contain", (255, 255, 255)),
+            ("pearvoluyn.png", "Volunteer workflow screenshot.", "contain", (255, 255, 255)),
+        ],
+        "left_title": "Implemented",
+        "left": [
+            "Student event browsing, organizer event creation, administrator verification, and hour-log workflows.",
+            "Student ID validation, schedule-conflict checks, capacity updates, organizer notifications, and QR check-in.",
+            "Auto-generated verification letters as PDFs for documented service hours.",
+        ],
+        "right_title": "Technical Work",
+        "right": [
+            "Wix Velo backend logic, custom JavaScript, webhook integrations, and role-based access.",
+            "Async webhook queue for high-volume signup events that could fill 50+ spots quickly.",
+            "Privacy constraints: student contact data stayed protected and communication flowed through the platform.",
+        ],
+        "tools": ["Wix Velo", "JavaScript", "Webhook Queues", "QR Check-In", "PDF Generation", "Role-Based Access", "Data Privacy"],
+    },
+    {
+        "title": "Leitmotif",
+        "date": "Mar 2026",
+        "category": "Hackathon / Accessibility Software",
+        "subtitle": "YC x DeepMind hackathon winner: real-time generative music interface for visually impaired users, assigning musical motifs to people in a scene.",
+        "images": [
+            ("Screenshot 2026-03-10 172428.png", "Leitmotif web/app interface screenshot.", "contain", (255, 255, 255)),
+            ("IMG_0286.jpg", "Hackathon or demo context.", "cover"),
+            ("IMG_4613.jpeg", "Project/demo context from the hackathon.", "cover"),
+        ],
+        "left_title": "Implemented",
+        "left": [
+            "Camera loop sends frames to Gemini vision, extracts scene/person state, then updates the music engine.",
+            "Each person gets a persistent musical motif with entry and exit cues.",
+            "Crossfades emotional state changes over 4-6 seconds so scene changes do not sound abrupt.",
+        ],
+        "right_title": "Architecture",
+        "right": [
+            "Two-server split: camera analysis and real-time music orchestration decoupled for different latency profiles.",
+            "Gemini 2.5 Flash for vision/orchestration, Lyria RealTime for PCM audio generation, Supabase for persistence.",
+            "React Native companion app with monitor, contacts, visualizer, and settings views.",
+        ],
+        "tools": ["TypeScript", "Node.js", "React Native", "Gemini API", "Lyria Realtime", "Supabase", "Computer Vision"],
+    },
+    {
+        "title": "Atlas SMR",
+        "date": "Oct 2025 - Jan 2026",
+        "category": "Research / Software",
+        "subtitle": "Interactive tool and AP Research capstone evaluating hybrid Small Modular Reactor plus solar feasibility for rural energy applications.",
+        "images": [
+            ("atmaslet.png", "Atlas SMR interface screenshot.", "contain", (255, 255, 255)),
+            ("atmas.png", "Map/data visualization view for candidate sites.", "contain", (255, 255, 255)),
+            ("smrbuilder.png", "Scenario builder interface.", "contain", (255, 255, 255)),
+            ("smsad.png", "SMR analysis/dashboard view.", "contain", (255, 255, 255)),
+        ],
+        "left_title": "Implemented",
+        "left": [
+            "Interactive platform pulling NRC, EIA, and USGS/seismic datasets.",
+            "Displays 89 operating reactors, 13 shutdown facilities, and 119 candidate sites.",
+            "Timeline scrubber from 2010 to 2050 to show status shifts with license expirations.",
+        ],
+        "right_title": "Analysis",
+        "right": [
+            "Weighted site-viability scoring for population, seismic distance, cooling-water proximity, and grid capacity.",
+            "Scenario builder for 50-300 MWe modules, 1-12 modules/site, deployment year, and hybrid solar contribution.",
+            "Prototype visualization only; actual site selection requires EIS and NRC licensing work.",
+        ],
+        "tools": ["Web Dev", "GIS", "Energy Modeling", "Data Visualization", "Nuclear Policy Research"],
+    },
+    {
+        "title": "Construction Acclimation",
+        "date": "Oct 2022 - Apr 2023",
+        "category": "Hardware / Data Logging",
+        "subtitle": "$47 concrete-curing temperature/humidity probe and dashboard prototype intended as a low-cost alternative to commercial construction acclimation devices.",
+        "images": [
+            ("IMG_0297.png", "Probe prototype hardware.", "cover"),
+            ("IMG_0313.png", "Electronics/enclosure or dashboard context.", "cover"),
+        ],
+        "left_title": "Built",
+        "left": [
+            "Arduino Nano, DHT22, DS18B20, RTC, MicroSD logging, LiPo battery, fans, and PETG enclosure.",
+            "Logged readings every 5 minutes with redundant temperature measurement.",
+            "Client-side dashboard for CSV upload, trend plotting, out-of-range flags, and PDF reporting.",
+        ],
+        "right_title": "Tested",
+        "right": [
+            "Compared against a calibrated Humboldt H-4210 commercial unit for 14 days.",
+            "Temperature deviation about +/-0.8C, humidity about +/-3.2%, and 4,028/4,032 readings captured.",
+            "Presented to City of Palo Alto officials; certification/liability/durability remained open issues.",
+        ],
+        "tools": ["Arduino Nano", "DHT22", "DS18B20", "RTC", "MicroSD", "Chart.js", "PETG Enclosure"],
+    },
+    {
+        "title": "Beachsweep",
+        "date": "Mar 2023",
+        "category": "Hackathon / Drone Software",
+        "subtitle": "24-hour concept pairing autonomous drone beach surveillance with a volunteer coordination platform.",
+        "images": [
+            ("beas2.png", "BeachSweep interface or drone concept view.", "contain", (255, 255, 255)),
+            ("beas3.png", "Volunteer/map workflow screenshot.", "contain", (255, 255, 255)),
+            ("beas4.png", "Supporting platform view.", "contain", (255, 255, 255)),
+            ("beas5.png", "Additional prototype/simulation view.", "contain", (255, 255, 255)),
+        ],
+        "left_title": "Designed",
+        "left": [
+            "Custom quadcopter concept for coastal survey work with downward camera and solar charging dock idea.",
+            "Computer-vision loop to detect bottles, bags, fishing nets, cigarette butts, and general litter.",
+            "GPS-tagged trash map connected to cleanup-event creation and volunteer signup.",
+        ],
+        "right_title": "Limitations",
+        "right": [
+            "Initial CV accuracy around 78% on the test dataset.",
+            "Concept was not deployed; real system would need FAA, local government, field validation, and more robust models.",
+            "Useful project because it connected hardware concept, CV pipeline, and civic workflow in one loop.",
+        ],
+        "tools": ["YOLO", "Drone CAD", "GPS Mapping", "Computer Vision", "GitHub Pages", "Solar Charging Concept"],
+    },
+    {
+        "title": "Zenith - FREIGHT FRENZY",
+        "date": "Aug 2021 - Jun 2022",
+        "category": "FTC Robotics / First Season",
+        "subtitle": "First FTC season on Zenith #20424: learned CAD, manufacturing, basic Java control, and robot subsystem assembly through a freight-scoring robot.",
+        "images": [
+            ("haulrobot-removebg-preview.png", "Freight Frenzy robot image.", "contain", (255, 255, 255)),
+            ("haulrobot.png", "Freight Frenzy robot CAD/build reference.", "contain", (255, 255, 255)),
+        ],
+        "left_title": "Learned",
+        "left": [
+            "Onshape constraints, simple brackets, subassemblies, and complete robot packaging basics.",
+            "Drill press, bandsaw, 3D printing, hole placement, print warping, and basic shop workflow.",
+            "Motor-controller wiring and basic mechanism integration through a functioning FTC robot.",
+        ],
+        "right_title": "Software",
+        "right": [
+            "Java gamepad input handling, arm/intake motor control, encoder-based autonomous moves, and carousel timing.",
+            "Code was simple and hard-coded, but it established the foundation for later PID/state-machine work.",
+            "Robot scored freight, delivered ducks, and parked successfully in matches.",
+        ],
+        "tools": ["Onshape", "Java", "FTC SDK", "Encoder Autonomous", "3D Printing", "Drill Press", "Bandsaw"],
+    },
+    {
+        "title": "Serenity - FREIGHT FRENZY",
+        "date": "Aug 2021 - Jun 2022",
+        "category": "FTC Robotics / Team Lead",
+        "subtitle": "Led a newer FTC team while also learning on Zenith, building team process and a reliable Freight Frenzy robot.",
+        "images": [
+            ("View_recent_photos-removebg-preview.png", "Serenity robot/team visual asset from the website.", "contain", (255, 255, 255)),
+        ],
+        "left_title": "Built",
+        "left": [
+            "Tank-drive robot with basic arm for freight placement, passive intake with compliant wheels, and carousel spinner.",
+            "Design priority was reliability and match completion rather than maximum mechanism complexity.",
+            "Competed in league meets with a functioning robot for a young team.",
+        ],
+        "right_title": "Team Process",
+        "right": [
+            "Started weekly design reviews, shared CAD workspace conventions, manufacturing priority lists, and notebook assignments.",
+            "Mentoring while still learning forced me to explain CAD, build, and competition decisions clearly.",
+            "This was the first time I built team infrastructure, not only robot parts.",
+        ],
+        "tools": ["Onshape", "Robot CAD", "Manufacturing Planning", "Engineering Notebook", "Tank Drive", "Carousel Mechanism"],
+    },
+    {
+        "title": "Friendly Fires",
+        "date": "Sep 2021 - Mar 2022",
+        "category": "Sensor Hardware",
+        "subtitle": "Coal-seam fire detection prototype using temperature, gas, and alert sensors integrated into a low-cost safety device concept.",
+        "images": [
+            ("friendly-fires-prototype.jpeg", "Functional prototype electronics with sensors, power, microcontroller, and breadboard wiring.", "cover"),
+        ],
+        "left_title": "Built",
+        "left": [
+            "Arduino-based sensor array for temperature, carbon monoxide, methane, and oxygen-depletion monitoring.",
+            "Haptic, LED, and optional audio alerts intended for low-light mining environments.",
+            "Rechargeable battery and low-power sleep-mode concept for a 12+ hour work shift.",
+        ],
+        "right_title": "Prototype Status",
+        "right": [
+            "Demonstrated controlled CO detection, temperature-gradient detection, and multi-sensor integration.",
+            "Proof of concept only: no mining-environment calibration, false-positive study, dust/humidity durability, or regulatory approval.",
+            "Included as an early sensor-integration project, not a deployable safety product.",
+        ],
+        "tools": ["Arduino", "CO Sensor", "Methane Sensor", "IR Temperature", "Haptic Alerts", "Sensor Integration"],
+    },
+    {
+        "title": "Prototype O Flood",
+        "date": "Nov 2020 - May 2021",
+        "category": "IoT Hardware",
+        "subtitle": "Low-cost flood-warning prototype for Jakarta using ultrasonic water-level sensing, solar power, cellular communication, and SMS alerts.",
+        "images": [],
+        "left_title": "Built",
+        "left": [
+            "Ultrasonic distance sensor mounted above water; rising water decreases measured distance.",
+            "ESP32/cellular path to aggregate sensor readings and send SMS alerts for basic-phone accessibility.",
+            "Solar panel plus lithium battery concept for multi-day autonomy without grid power.",
+        ],
+        "right_title": "Status",
+        "right": [
+            "Prototype demonstrated centimeter-level water measurement, cellular connectivity, solar charging, and alert triggering.",
+            "Tested locally, not deployed in Jakarta; local partners and field validation would be required.",
+            "Recognized with an ASCE Certificate of Achievement.",
+        ],
+        "tools": ["ESP32", "Ultrasonic Sensing", "Solar Charging", "Cellular SMS", "LiPo Power", "Water-Level Thresholding"],
+    },
+]
+
+
+def tools_methods(c, page):
+    project_title(
+        c, page, "Tools + Methods", "Current", "Engineering Toolkit",
+        "A compact map of the tools and methods that show up across the project pages."
+    )
     cols = [
-        ("CAD / Mechanical", ["SolidWorks", "Onshape", "GD&T", "DFM/DFA", "FEA", "mechanism packaging"]),
-        ("Manufacturing", ["mill", "lathe", "waterjet", "laser cutter", "TIG", "FDM/SLA", "fastener fit-up"]),
-        ("Electronics / Test", ["KiCad", "LTspice", "oscilloscope", "source-measure", "RP2040/Python", "coax/BNC interfaces"]),
-        ("Analysis / Software", ["KISSsoft", "MATLAB/Simulink", "Python", "JupyterLab", "LabVIEW", "data logging"]),
+        ("CAD / Mechanical", ["SolidWorks", "Onshape", "Fusion 360", "GD&T", "DFM/DFA", "FEA", "mechanism packaging", "tolerance stackups"]),
+        ("Manufacturing", ["mill", "lathe", "waterjet", "laser cutter", "TIG", "FDM/SLA", "Markforged", "fastener fit-up"]),
+        ("Electronics / Test", ["KiCad", "LTspice", "oscilloscope", "source-measure", "RP2040/Python", "coax/BNC interfaces", "microcontrollers"]),
+        ("Software / Data", ["Python", "MATLAB/Simulink", "Java", "React/TypeScript", "Node.js", "PostgreSQL", "JupyterLab", "LabVIEW"]),
     ]
-    x_positions = [M, M + 185, M + 370, M + 555]
-    for x, (title, items) in zip(x_positions, cols):
-        font(c, "Helvetica-Bold", 11.5, INK)
-        c.drawString(x, 448, title)
-        rule(c, x, 432, x + 145, 432)
-        bullets(c, items, x, 410, 145, size=8.0, leading=10.4)
-
-    image(c, "wolfrom-internals.jpg", M, 122, 170, 120, "Actuator stackup prototype", "cover")
-    image(c, "pulse-v1-ltspice.png", M + 190, 122, 170, 120, "Pulse simulation workflow", "contain", bg=(0, 0, 0))
-    image(c, "deja1.png", M + 380, 122, 170, 120, "Mechanism packaging", "contain", bg=(255, 255, 255))
-
-    x = M + 585
-    small_label(c, "Links", x, 218)
-    font(c, "Helvetica", 8.2, INK)
-    c.drawString(x, 196, "aaditkannan.com")
-    c.linkURL("https://aaditkannan.com", (x, 192, x + 105, 208), relative=0)
-    c.drawString(x, 174, "aaditkannan.com/projects")
-    c.linkURL("https://aaditkannan.com/projects", (x, 170, x + 160, 186), relative=0)
-    c.drawString(x, 152, "github.com/aaditkannan")
-    c.linkURL("https://github.com/aaditkannan", (x, 148, x + 138, 164), relative=0)
-    c.drawString(x, 130, "linkedin.com/in/aaditkannan")
-    c.linkURL("https://www.linkedin.com/in/aaditkannan", (x, 126, x + 166, 142), relative=0)
-    c.showPage()
+    col_w = (CONTENT_W - 24) / 2
+    positions = [(M, 556), (M + col_w + 24, 556), (M, 332), (M + col_w + 24, 332)]
+    for (heading, items), (x, y) in zip(cols, positions):
+        label(c, heading, x, y)
+        rule(c, x, y - 10, x + col_w, y - 10)
+        bullets(c, items, x, y - 30, col_w, size=8.0, leading=10.2)
+    image(c, "wolfrom-internals.jpg", M, 86, 154, 96, "Actuator prototype", "cover")
+    image(c, "ns-pulse-schematic-thumbnail.png", M + 181, 86, 154, 96, "PCB schematic", "contain", bg=(250, 248, 243))
+    image(c, "toolbox-bottom-walls-drawing.png", M + 362, 86, 154, 96, "GD&T drawing", "contain", bg=(250, 248, 243))
+    finish(c)
 
 
 def build():
     ensure_dirs()
-    c = canvas.Canvas(str(OUT), pagesize=landscape(letter))
-    c.setTitle("Aadit Kannan - Selected Hardware Projects")
+    c = canvas.Canvas(str(OUT), pagesize=letter)
+    c.setTitle("Aadit Kannan - Selected Project Portfolio")
     c.setAuthor("Aadit Kannan")
     cover(c)
     wolfrom_architecture(c)
     wolfrom_status(c)
-    formula(c)
-    pulse_overview(c)
-    pulse_details(c)
+    formula_packaging(c)
+    formula_validation(c)
+    ramesh_lab(c)
+    pulse_system(c)
+    pulse_board(c)
+    pldtracker(c)
     toolbox(c)
-    first(c)
-    tools_methods(c)
+    first_overview(c)
+    page = 12
+    for project in GENERIC_PROJECTS:
+        generic_project(c, page, project)
+        page += 1
+    tools_methods(c, page)
     c.save()
     print(OUT)
 
