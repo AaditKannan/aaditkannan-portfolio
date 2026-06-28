@@ -2532,7 +2532,17 @@
       // Show detail view
       document.body.classList.add('detail-active');
       detailContent.classList.remove('closing');
-      detailContent.classList.add('visible');
+      detailContent.classList.remove('visible');
+
+      // Give every project one committed pre-animation frame before revealing
+      // the detail content. Heavier pages can otherwise skip the same fade/slide
+      // transition that lighter project pages visibly show.
+      detailContent.offsetHeight;
+      requestAnimationFrame(() => {
+        if (currentProjectIndex === index && isDetailOpen) {
+          detailContent.classList.add('visible');
+        }
+      });
       isDetailOpen = true;
 
       // Update URL hash
