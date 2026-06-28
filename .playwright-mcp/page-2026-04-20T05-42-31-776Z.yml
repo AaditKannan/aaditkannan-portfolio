@@ -1,0 +1,121 @@
+- generic [active] [ref=e247]:
+  - generic [ref=e248]:
+    - generic [ref=e249]: home
+    - generic [ref=e250]: resume
+    - generic [ref=e251]: projects
+    - generic [ref=e252]: connect
+    - generic [ref=e253]: footage
+    - generic [ref=e254]: theme · dark
+  - generic [ref=e255]:
+    - generic [ref=e256]:
+      - generic [ref=e257]: 15 entries · since 2020 · 4 active
+      - heading "projects" [level=1] [ref=e258]
+    - generic [ref=e259]:
+      - generic [ref=e260]: all
+      - generic [ref=e261]: hardware
+      - generic [ref=e262]: software
+      - generic [ref=e263]: research
+  - generic [ref=e264]:
+    - article [ref=e265] [cursor=pointer]:
+      - generic [ref=e266]:
+        - img [ref=e268]
+        - generic [ref=e273]: waveform · 02:47 / 04:30
+      - generic [ref=e274]:
+        - generic [ref=e275]: spike · mar 2026 · hackathon winner
+        - heading "Leitmotif" [level=2] [ref=e277]
+        - paragraph [ref=e278]: Generative music for visually impaired users — scored in real time from the environment. Two-week spike at YC × DeepMind.
+        - generic [ref=e279]:
+          - generic [ref=e280]: gemini 2.5 flash
+          - generic [ref=e281]: react native
+          - generic [ref=e282]: node
+          - generic [ref=e283]: audio synthesis
+    - article [ref=e284] [cursor=pointer]:
+      - generic [ref=e285]:
+        - img [ref=e286]
+        - generic [ref=e304]: candidate sites
+      - generic [ref=e305]:
+        - generic [ref=e306]: active · since oct 2025
+        - heading "Atlas SMR" [level=2] [ref=e308]
+        - paragraph [ref=e309]: Siting nuclear reactors where the grid actually needs them. GIS × energy-demand feasibility.
+        - generic [ref=e310]:
+          - generic [ref=e311]: gis
+          - generic [ref=e312]: energy
+          - generic [ref=e313]: research paper
+    - article [ref=e314] [cursor=pointer]:
+      - generic [ref=e315]:
+        - img [ref=e316]
+        - generic [ref=e326]: growth rate vs. t
+      - generic [ref=e327]:
+        - generic [ref=e328]: research · active
+        - heading "ramesh lab" [level=2] [ref=e330]
+        - paragraph [ref=e331]: PLD deposition tracker for a Berkeley oxide-film group.
+        - generic [ref=e332]:
+          - generic [ref=e333]: python
+          - generic [ref=e334]: pandas
+          - generic [ref=e335]: materials
+    - article [ref=e336] [cursor=pointer]:
+      - generic [ref=e337]:
+        - img [ref=e338]
+        - generic [ref=e342]: ocr · 94%
+      - generic [ref=e343]:
+        - generic [ref=e344]: active · since jun 2025
+        - heading "Inventry" [level=2] [ref=e346]
+        - paragraph [ref=e347]: FTC parts marketplace with invoice parsing that actually works.
+        - generic [ref=e348]:
+          - generic [ref=e349]: react
+          - generic [ref=e350]: postgres
+          - generic [ref=e351]: gpt-4
+    - article [ref=e352] [cursor=pointer]:
+      - generic [ref=e353]:
+        - img [ref=e354]:
+          - generic [ref=e369]: 18.0"
+        - generic [ref=e370]: "ftc #13216 · 2024–25"
+      - generic [ref=e371]:
+        - generic [ref=e372]: hardware · archived
+        - heading "Deja Vu into the deep" [level=2] [ref=e374]:
+          - text: Deja Vu
+          - text: into the deep
+        - paragraph [ref=e375]: 500+ CAD parts. Hardware lead.
+        - generic [ref=e376]:
+          - generic [ref=e377]: cad
+          - generic [ref=e378]: fea
+    - article [ref=e379] [cursor=pointer]:
+      - generic [ref=e380]:
+        - img [ref=e381]
+        - generic [ref=e383]: pid step response
+      - generic [ref=e384]:
+        - generic [ref=e385]: "hardware / software · ftc #20424"
+        - heading "Zenith powerplay" [level=2] [ref=e387]:
+          - text: Zenith
+          - text: powerplay
+        - generic [ref=e388]:
+          - generic [ref=e389]: pid
+          - generic [ref=e390]: opencv
+          - generic [ref=e391]: rigging
+    - article [ref=e392] [cursor=pointer]:
+      - generic [ref=e393]:
+        - img [ref=e394]
+        - generic [ref=e429]: qr check-in
+      - generic [ref=e430]:
+        - generic [ref=e431]: software · 2000+ students
+        - heading "Pear" [level=2] [ref=e433]
+        - paragraph [ref=e434]: Volunteering platform for high-schoolers.
+        - generic [ref=e435]:
+          - generic [ref=e436]: wix
+          - generic [ref=e437]: velo
+    - article [ref=e438] [cursor=pointer]:
+      - generic [ref=e439]:
+        - img [ref=e440]:
+          - generic [ref=e447]:
+            - generic [ref=e448]: "0.82"
+            - generic [ref=e449]: "0.74"
+            - generic [ref=e450]: "0.91"
+            - generic [ref=e451]: "0.63"
+        - generic [ref=e452]: yolo · 78%
+      - generic [ref=e453]:
+        - generic [ref=e454]: hackathon · 2023
+        - heading "beachsweep" [level=2] [ref=e456]
+        - generic [ref=e457]:
+          - generic [ref=e458]: yolo
+          - generic [ref=e459]: drone
+  - generic [ref=e460]: ↓ 7 more archived entries below

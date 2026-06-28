@@ -1,0 +1,181 @@
+- generic [active] [ref=e1]:
+  - navigation [ref=e2]:
+    - link "HOME" [ref=e3] [cursor=pointer]:
+      - /url: /
+    - link "RESUME" [ref=e4] [cursor=pointer]:
+      - /url: /resume
+    - link "PROJECTS" [ref=e5] [cursor=pointer]:
+      - /url: /projects
+    - link "CONNECT" [ref=e6] [cursor=pointer]:
+      - /url: /connect
+    - button "Toggle light mode" [ref=e7] [cursor=pointer]:
+      - img [ref=e8]
+  - main [ref=e10]:
+    - heading "Wolfrom Robotic ActDL!7N" [level=1] [ref=e12]
+    - generic [ref=e15]:
+      - generic [ref=e16]: Category
+      - button "All" [ref=e17] [cursor=pointer]
+      - button "Hardware" [ref=e18] [cursor=pointer]
+      - button "Software" [ref=e19] [cursor=pointer]
+      - button "Research" [ref=e20] [cursor=pointer]
+    - generic:
+      - generic:
+        - generic:
+          - generic:
+            - img "Wolfrom Robotic Actuator"
+        - generic:
+          - generic:
+            - generic: Hardware
+            - generic: 2026 — Present
+          - heading "Wolfrom Robotic Actuator" [level=3]
+          - paragraph: Wolfrom compound planetary actuator for humanoid joints, designed for backdrivability, low reflected inertia, and around 80% efficiency at 50:1 and 125:1 reduction.
+      - generic:
+        - generic:
+          - generic:
+            - img "Formula Electric at Berkeley (FEB)"
+        - generic:
+          - generic:
+            - generic: Hardware
+            - generic: Sep 2025 — Present
+          - heading "Formula Electric at Berkeley (FEB)" [level=3]
+          - paragraph: High-voltage battery system for Berkeley's Formula Electric racing team.
+      - generic:
+        - generic:
+          - generic:
+            - img "Ramesh Lab"
+        - generic:
+          - generic:
+            - generic: Research
+            - generic: Jan 2026 — Present
+          - heading "Ramesh Lab" [level=3]
+          - paragraph: Researching complex-oxide thin films for faster, lower-power memory and logic beyond DRAM and CMOS. Designing a dual-range nanosecond/microsecond pulse generator for spin transport and ferroelectric characterization.
+      - generic:
+        - generic:
+          - generic:
+            - img "Leitmotif"
+        - generic:
+          - generic:
+            - generic: Software
+            - generic: Mar 2026
+          - heading "Leitmotif" [level=3]
+          - paragraph: YC x DeepMind hackathon winner. Real-time generative music for the visually impaired.
+      - generic:
+        - generic:
+          - generic:
+            - img "Inventry"
+        - generic:
+          - generic:
+            - generic: Software
+            - generic: Jun 2025 — Present
+          - heading "Inventry" [level=3]
+          - paragraph: AI-powered robotics parts inventory and marketplace.
+      - generic:
+        - generic:
+          - generic:
+            - img "Deja Vu — INTO THE DEEP"
+        - generic:
+          - generic:
+            - generic: Hardware/Software
+            - generic: 2024 — 2025
+          - heading "Deja Vu — INTO THE DEEP" [level=3]
+          - paragraph: "Hardware Lead for FTC #13216. Designed robot with 500+ custom parts."
+      - generic:
+        - generic:
+          - generic:
+            - img "Deja Vu — CENTERSTAGE"
+        - generic:
+          - generic:
+            - generic: Hardware/Software
+            - generic: 2023 — 2024
+          - heading "Deja Vu — CENTERSTAGE" [level=3]
+          - paragraph: "Hardware Lead for FTC #13216. Designed pixel-scoring mechanisms."
+      - generic:
+        - generic:
+          - generic:
+            - img "Zenith — POWERPLAY"
+        - generic:
+          - generic:
+            - generic: Hardware/Software
+            - generic: 2022 — 2023
+          - heading "Zenith — POWERPLAY" [level=3]
+          - paragraph: "Team Lead for FTC #20424. Built cone-stacking robot with custom lift."
+      - generic:
+        - generic:
+          - generic:
+            - img "Pear Volunteering"
+        - generic:
+          - generic:
+            - generic: Software
+            - generic: Aug 2023 — May 2025
+          - heading "Pear Volunteering" [level=3]
+          - paragraph: Platform connecting 2000+ students with volunteer opportunities.
+      - generic:
+        - generic:
+          - generic:
+            - img "Construction Acclimation"
+        - generic:
+          - generic:
+            - generic: Hardware/Software
+            - generic: Oct 2022 — Apr 2023
+          - heading "Construction Acclimation" [level=3]
+          - paragraph: Low-cost probe alternative to save $118M in city spending.
+      - generic:
+        - generic:
+          - generic:
+            - img "Beachsweep"
+        - generic:
+          - generic:
+            - generic: Software
+            - generic: Mar 2023
+          - heading "Beachsweep" [level=3]
+          - paragraph: Drone-based beach cleanup coordination system.
+      - generic:
+        - generic:
+          - generic:
+            - img "Zenith — FREIGHT FRENZY"
+        - generic:
+          - generic:
+            - generic: Hardware/Software
+            - generic: 2021 — 2022
+          - heading "Zenith — FREIGHT FRENZY" [level=3]
+          - paragraph: "First year on FTC #20424. Learned CAD and manufacturing."
+      - generic:
+        - generic:
+          - generic:
+            - img "Serenity — FREIGHT FRENZY"
+        - generic:
+          - generic:
+            - generic: Hardware/Software
+            - generic: 2021 — 2022
+          - heading "Serenity — FREIGHT FRENZY" [level=3]
+          - paragraph: "Team Lead for FTC #13215. Managed design and build process."
+      - generic:
+        - generic:
+          - generic: Photo
+        - generic:
+          - generic:
+            - generic: Hardware/Software
+            - generic: Sep 2021 — Mar 2022
+          - heading "Friendly Fires" [level=3]
+          - paragraph: Coal-seam fire detection system for mining safety.
+      - generic:
+        - generic:
+          - generic: Photo
+        - generic:
+          - generic:
+            - generic: Hardware/Software
+            - generic: Nov 2020 — May 2021
+          - heading "Prototype Ø Flood" [level=3]
+          - paragraph: Low-cost flood detection for Jakarta, Indonesia.
+  - generic [ref=e21]:
+    - generic: or press esc
+    - generic [ref=e22]:
+      - banner [ref=e23]:
+        - heading "Wolfrom Robotic Actuator" [level=1] [ref=e24]
+      - generic [ref=e25]:
+        - heading "Interactive 3D Model" [level=3] [ref=e26]
+        - button "Load interactive 3D" [ref=e27] [cursor=pointer]:
+          - generic [ref=e28]:
+            - img [ref=e29]
+            - text: Load interactive 3D
+        - generic [ref=e31]: High-detail CAD model · loads on click

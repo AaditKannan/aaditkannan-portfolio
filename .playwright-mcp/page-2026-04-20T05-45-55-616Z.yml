@@ -1,0 +1,79 @@
+- generic [active] [ref=e461]:
+  - generic [ref=e462]:
+    - generic [ref=e463]: home
+    - generic [ref=e464]: resume
+    - generic [ref=e465]: projects
+    - generic [ref=e466]: connect
+    - generic [ref=e467]: footage
+    - generic [ref=e468]: theme · dark
+  - generic [ref=e469]:
+    - heading "projects" [level=1] [ref=e470]
+    - generic [ref=e471]: 15 entries · 4 active
+  - generic [ref=e472]:
+    - generic [ref=e473] [cursor=pointer]:
+      - generic [ref=e475]: leitmotif
+      - generic [ref=e476]: "2026"
+    - generic [ref=e477] [cursor=pointer]:
+      - generic [ref=e479]: ramesh lab
+      - generic [ref=e480]: 2026 — now
+    - generic [ref=e481] [cursor=pointer]:
+      - generic [ref=e483]: atlas smr
+      - generic [ref=e484]: 2025 — now
+      - generic:
+        - generic:
+          - img
+        - paragraph:
+          - text: Feasibility tool for siting small modular reactors where the grid
+          - emphasis: actually needs them
+          - text: .
+        - generic: gis · energy · research paper
+    - generic [ref=e485] [cursor=pointer]:
+      - generic [ref=e487]: inventry
+      - generic [ref=e488]: 2025 — now
+    - generic [ref=e489] [cursor=pointer]:
+      - generic [ref=e491]:
+        - text: deja vu
+        - emphasis [ref=e492]: — into the deep
+      - generic [ref=e493]: "2024"
+    - generic [ref=e494] [cursor=pointer]:
+      - generic [ref=e496]: formula electric
+      - generic [ref=e497]: "2024"
+    - generic [ref=e498] [cursor=pointer]:
+      - generic [ref=e500]:
+        - text: deja vu
+        - emphasis [ref=e501]: — centerstage
+      - generic [ref=e502]: "2023"
+    - generic [ref=e503] [cursor=pointer]:
+      - generic [ref=e505]: pear volunteering
+      - generic [ref=e506]: "2023"
+    - generic [ref=e507] [cursor=pointer]:
+      - generic [ref=e509]: beachsweep
+      - generic [ref=e510]: "2023"
+    - generic [ref=e511] [cursor=pointer]:
+      - generic [ref=e513]:
+        - text: zenith
+        - emphasis [ref=e514]: — powerplay
+      - generic [ref=e515]: "2022"
+    - generic [ref=e516] [cursor=pointer]:
+      - generic [ref=e518]: construction acclimation
+      - generic [ref=e519]: "2022"
+    - generic [ref=e520] [cursor=pointer]:
+      - generic [ref=e522]:
+        - text: zenith
+        - emphasis [ref=e523]: — freight frenzy
+      - generic [ref=e524]: "2021"
+    - generic [ref=e525] [cursor=pointer]:
+      - generic [ref=e527]:
+        - text: serenity
+        - emphasis [ref=e528]: — freight frenzy
+      - generic [ref=e529]: "2021"
+    - generic [ref=e530] [cursor=pointer]:
+      - generic [ref=e532]: friendly fires
+      - generic [ref=e533]: "2021"
+    - generic [ref=e534] [cursor=pointer]:
+      - generic [ref=e536]: prototype ø
+      - generic [ref=e537]: "2020"
+  - generic [ref=e538]:
+    - text: hover — preview
+    - text: click — expand
+    - text: / — filter

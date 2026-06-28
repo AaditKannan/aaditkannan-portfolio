@@ -1,0 +1,86 @@
+- generic [active] [ref=e2]:
+  - generic [ref=e3]:
+    - generic [ref=e4]: home
+    - generic [ref=e5]: resume
+    - generic [ref=e6]: projects
+    - generic [ref=e7]: connect
+    - generic [ref=e8]: footage
+    - generic [ref=e9]: theme · dark
+  - generic [ref=e10]:
+    - generic [ref=e11]: 15 entries · 6 technique clusters
+    - heading "projects / network" [level=1] [ref=e12]
+  - generic [ref=e13]:
+    - generic [ref=e14]: all
+    - generic [ref=e15]: hardware
+    - generic [ref=e16]: software
+    - generic [ref=e17]: research
+  - generic [ref=e18]:
+    - img
+    - generic: cad
+    - generic: fea
+    - generic: ml · vision
+    - generic: sensors
+    - generic: embedded
+    - generic: web · app
+    - generic [ref=e21] [cursor=pointer]:
+      - text: Deja Vu
+      - text: INTO THE DEEP
+      - generic [ref=e22]: "2024"
+    - generic [ref=e25] [cursor=pointer]:
+      - text: Deja Vu
+      - text: CENTERSTAGE
+      - generic [ref=e26]: "2023"
+    - generic [ref=e29] [cursor=pointer]:
+      - text: Zenith
+      - text: POWERPLAY
+      - generic [ref=e30]: "2022"
+    - generic [ref=e33] [cursor=pointer]:
+      - text: Zenith
+      - text: FREIGHT
+      - generic [ref=e34]: "2021"
+    - generic [ref=e37] [cursor=pointer]:
+      - text: Serenity
+      - text: FF
+      - generic [ref=e38]: "2021"
+    - generic [ref=e41] [cursor=pointer]:
+      - text: Construction
+      - text: Acclimation
+      - generic [ref=e42]: "2022"
+    - generic [ref=e45] [cursor=pointer]:
+      - text: Leitmotif
+      - generic [ref=e46]: "2026"
+    - generic [ref=e49] [cursor=pointer]:
+      - text: Inventry
+      - generic [ref=e50]: "2025"
+    - generic [ref=e53] [cursor=pointer]:
+      - text: Beachsweep
+      - generic [ref=e54]: "2023"
+    - generic [ref=e57] [cursor=pointer]:
+      - text: Atlas SMR
+      - generic [ref=e58]: "2025"
+    - generic [ref=e61] [cursor=pointer]:
+      - text: Friendly Fires
+      - generic [ref=e62]: "2021"
+    - generic [ref=e65] [cursor=pointer]:
+      - text: Prototype Ø
+      - generic [ref=e66]: "2020"
+    - generic [ref=e69] [cursor=pointer]:
+      - text: Ramesh Lab
+      - generic [ref=e70]: "2026"
+    - generic [ref=e73] [cursor=pointer]:
+      - text: Pear Volunteering
+      - generic [ref=e74]: "2023"
+    - generic [ref=e77] [cursor=pointer]:
+      - text: Formula Electric
+      - generic [ref=e78]: "2024"
+  - generic [ref=e79]:
+    - generic [ref=e80]: active
+    - generic [ref=e82]: archived
+  - generic [ref=e84]:
+    - text: hover — isolate subgraph
+    - text: click node — unfold inline
+    - text: drag — reshuffle clusters
+  - generic [ref=e85]:
+    - generic [ref=e86]: Leitmotif · 2026 · active
+    - generic [ref=e87]: gemini 2.5react nativenode
+    - generic [ref=e88]: →

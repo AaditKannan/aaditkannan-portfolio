@@ -1,0 +1,77 @@
+- generic [active] [ref=e168]:
+  - generic [ref=e169]:
+    - generic [ref=e170]: home
+    - generic [ref=e171]: resume
+    - generic [ref=e172]: projects
+    - generic [ref=e173]: connect
+    - generic [ref=e174]: footage
+    - generic [ref=e175]: theme · dark
+  - generic [ref=e176]:
+    - generic [ref=e177]:
+      - generic [ref=e178]: issue 01 · 15 entries · since 2020
+      - heading "Selected works, in varying volume." [level=1] [ref=e179]
+    - generic [ref=e180]:
+      - generic [ref=e181]: all
+      - generic [ref=e182]: hardware
+      - generic [ref=e183]: software
+      - generic [ref=e184]: research
+  - generic [ref=e185]:
+    - article [ref=e186] [cursor=pointer]:
+      - generic [ref=e188]: ● spike · mar 2026 · hackathon winner
+      - generic [ref=e189]:
+        - heading "Leit— motif" [level=2] [ref=e190]:
+          - text: Leit—
+          - text: motif
+        - paragraph [ref=e191]:
+          - text: Generative music for the
+          - emphasis [ref=e192]: visually impaired
+          - text: ", scored in real time. Built in two weeks at YC × DeepMind."
+      - generic [ref=e193]:
+        - generic [ref=e194]: gemini 2.5 · react native · node
+        - generic [ref=e195]: → unfold
+    - article [ref=e196] [cursor=pointer]:
+      - generic [ref=e198]: ● active · since oct 2025
+      - generic [ref=e199]:
+        - heading "Atlas SMR." [level=2] [ref=e200]:
+          - text: Atlas
+          - text: SMR.
+        - paragraph [ref=e201]: Siting nuclear reactors where the grid actually needs them.
+      - generic [ref=e202]: gis · energy · research paper →
+    - article [ref=e203] [cursor=pointer]:
+      - generic [ref=e205]: research · active
+      - generic [ref=e206]:
+        - heading "ramesh lab." [level=2] [ref=e207]
+        - paragraph [ref=e208]: Growth-log software for a pulsed-laser deposition chamber.
+      - generic [ref=e209]: python · pandas · materials →
+    - article [ref=e210] [cursor=pointer]:
+      - generic [ref=e212]: ● active · since jun 2025
+      - generic [ref=e213]:
+        - heading "Inventry." [level=2] [ref=e214]:
+          - text: Inventry
+          - emphasis [ref=e215]: .
+        - paragraph [ref=e216]: A marketplace for FTC teams, with invoice parsing that actually works.
+      - generic [ref=e217]: react · postgres · gpt-4 ocr
+    - article [ref=e218] [cursor=pointer]:
+      - generic [ref=e220]: "hardware · ftc #13216"
+      - generic [ref=e221]:
+        - heading "DEJA VU" [level=2] [ref=e222]
+        - paragraph [ref=e223]: into the deep, 2024–25.
+        - paragraph [ref=e224]: Hardware lead. 500+ custom CAD parts. Markforged + Prusa pipeline.
+      - generic [ref=e225]: cad · fea · markforged
+    - article [ref=e226] [cursor=pointer]:
+      - generic [ref=e228]: "hardware / software · ftc #20424"
+      - generic [ref=e229]:
+        - heading "ZENITH" [level=2] [ref=e230]
+        - paragraph [ref=e231]: powerplay, 22–23.
+      - generic [ref=e232]: pid control · opencv · rigging
+    - article [ref=e233] [cursor=pointer]:
+      - generic [ref=e235]: software · 2000+ students
+      - heading "Pear, briefly." [level=2] [ref=e237]
+      - generic [ref=e238]: wix · velo · webhook queues
+    - article [ref=e239] [cursor=pointer]:
+      - generic [ref=e241]: 24-hour hackathon · mar 2023
+      - generic [ref=e242]:
+        - heading "beachsweep" [level=2] [ref=e243]
+        - paragraph [ref=e244]: yolo drone surveillance · 78% accuracy
+      - generic [ref=e245]: more below ↓
+  - generic [ref=e246]: ↓ 7 more archived entries

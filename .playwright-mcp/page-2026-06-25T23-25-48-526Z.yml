@@ -1,0 +1,254 @@
+- generic [active] [ref=e1]:
+  - navigation [ref=e2]:
+    - link "HOME" [ref=e3] [cursor=pointer]:
+      - /url: /
+    - link "RESUME" [ref=e4] [cursor=pointer]:
+      - /url: /resume
+    - link "PROJECTS" [ref=e5] [cursor=pointer]:
+      - /url: /projects
+    - link "CONNECT" [ref=e6] [cursor=pointer]:
+      - /url: /connect
+    - button "Toggle light mode" [ref=e7] [cursor=pointer]:
+      - img [ref=e8]
+  - generic [ref=e10]:
+    - banner [ref=e11]:
+      - generic [ref=e12]:
+        - heading "Aadit Kannan" [level=1] [ref=e13]
+        - paragraph [ref=e14]: Mechanical Engineer
+        - img "Aadit Kannan" [ref=e15]
+        - navigation [ref=e16]:
+          - link "> About |" [ref=e17] [cursor=pointer]:
+            - /url: "#about"
+            - generic [ref=e18]: ">"
+            - text: About
+            - generic [ref=e19]: "|"
+          - link "> Technical |" [ref=e20] [cursor=pointer]:
+            - /url: "#technical-experience"
+            - generic [ref=e21]: ">"
+            - text: Technical
+            - generic [ref=e22]: "|"
+          - link "> Work |" [ref=e23] [cursor=pointer]:
+            - /url: "#work-experience"
+            - generic [ref=e24]: ">"
+            - text: Work
+            - generic [ref=e25]: "|"
+          - link "> Education |" [ref=e26] [cursor=pointer]:
+            - /url: "#education"
+            - generic [ref=e27]: ">"
+            - text: Education
+            - generic [ref=e28]: "|"
+          - link "> Volunteering |" [ref=e29] [cursor=pointer]:
+            - /url: "#volunteering"
+            - generic [ref=e30]: ">"
+            - generic [ref=e31]: Volunteering
+            - generic [ref=e32]: "|"
+          - link "> Skills |" [ref=e33] [cursor=pointer]:
+            - /url: "#skills"
+            - generic [ref=e34]: ">"
+            - text: Skills
+            - generic [ref=e35]: "|"
+      - generic [ref=e36]:
+        - link "GitHub" [ref=e37] [cursor=pointer]:
+          - /url: https://github.com/aaditkannan
+          - img [ref=e38]
+        - link "LinkedIn" [ref=e40] [cursor=pointer]:
+          - /url: https://www.linkedin.com/in/aaditkannan
+          - img [ref=e41]
+        - link "X" [ref=e43] [cursor=pointer]:
+          - /url: https://x.com/aadit_kannan
+          - img [ref=e44]
+        - link "Resume PDF" [ref=e47] [cursor=pointer]:
+          - /url: /assets/KannanAaditResumeMarch13.pdf
+          - img [ref=e48]
+    - main [ref=e50]:
+      - generic [ref=e51]:
+        - heading "About" [level=2] [ref=e52]
+        - generic [ref=e53]:
+          - paragraph [ref=e54]: "Mechanical engineering and EECS student at UC Berkeley interested in robotics, materials, and space. Currently:"
+          - list [ref=e55]:
+            - listitem [ref=e56]:
+              - text: · Designing the custom high-voltage accumulator for
+              - link "Formula Electric at Berkeley" [ref=e57] [cursor=pointer]:
+                - /url: /projects#formula-electric
+            - listitem [ref=e58]:
+              - text: · Researching complex-oxide thin films (BiFeO₃) for faster, lower-power memory and logic beyond DRAM and CMOS, in
+              - link "Ramesh Lab" [ref=e59] [cursor=pointer]:
+                - /url: /projects#ramesh-lab
+            - listitem [ref=e60]:
+              - text: · Developing a compact high-ratio
+              - link "Wolfrom compound planetary actuator" [ref=e61] [cursor=pointer]:
+                - /url: /projects#wolfrom-actuator
+              - text: for humanoid-scale robotic joints, focused on gearbox packaging, bearing stackups, output ring design, and prototype validation
+            - listitem [ref=e62]: · Reading Principles and Applications of Ferroelectric and Related Materials (Lines & Glass)
+          - paragraph [ref=e63]:
+            - link "View all projects →" [ref=e64] [cursor=pointer]:
+              - /url: /projects
+      - generic [ref=e65]:
+        - heading "Technical Experience" [level=2] [ref=e66]
+        - generic [ref=e67]:
+          - generic [ref=e68]:
+            - heading "Accumulator Mech Engineer · Formula Electric at Berkeley ↗" [level=3] [ref=e69]:
+              - link "Accumulator Mech Engineer · Formula Electric at Berkeley ↗" [ref=e70] [cursor=pointer]:
+                - /url: /projects#formula-electric
+                - text: Accumulator Mech Engineer · Formula Electric at Berkeley
+                - generic [ref=e71]: ↗
+            - paragraph [ref=e73]: Designed and manufactured the attic casing for the 588V accumulator with waterproofing and high-dielectric-strength insulation, reducing attic mass by 18%.
+            - generic [ref=e74]:
+              - generic [ref=e75]: SolidWorks/PDM
+              - generic [ref=e76]: CAM
+              - generic [ref=e77]: HV Systems
+              - generic [ref=e78]: Manufacturing
+              - generic [ref=e79]: DFMA
+          - generic [ref=e80]: Sep 2025 — Present
+        - generic [ref=e81]:
+          - generic [ref=e82]:
+            - heading "Undergraduate Researcher · Ramesh Lab ↗" [level=3] [ref=e83]:
+              - link "Undergraduate Researcher · Ramesh Lab ↗" [ref=e84] [cursor=pointer]:
+                - /url: /projects#ramesh-lab
+                - text: Undergraduate Researcher · Ramesh Lab
+                - generic [ref=e85]: ↗
+            - paragraph [ref=e87]: Researching complex-oxide thin films for faster, lower-power memory and logic beyond DRAM and CMOS. Designing a dual-range nanosecond/microsecond pulse generator for spin transport and ferroelectric characterization, including high-speed PCB layout, grounded coax/BNC test interfaces, Python-controlled triggering, and bench validation with oscilloscopes and source-measure equipment.
+            - generic [ref=e88]:
+              - generic [ref=e89]: KiCad
+              - generic [ref=e90]: Python
+              - generic [ref=e91]: High-Speed PCB Design
+              - generic [ref=e92]: Pulse Electronics
+              - generic [ref=e93]: Oscilloscope Testing
+              - generic [ref=e94]: Coax/BNC Test Interfaces
+              - generic [ref=e95]: Thin Films
+              - generic [ref=e96]: Electrical Characterization
+          - generic [ref=e97]: Jan 2026 — Present
+        - generic [ref=e98]:
+          - generic [ref=e99]:
+            - heading "Captain & Hardware Lead · Robotics (FIRST) ↗" [level=3] [ref=e100]:
+              - link "Captain & Hardware Lead · Robotics (FIRST) ↗" [ref=e101] [cursor=pointer]:
+                - /url: /projects#dejavu-2024-25
+                - text: Captain & Hardware Lead · Robotics (FIRST)
+                - generic [ref=e102]: ↗
+            - paragraph [ref=e103]: "Zenith #20424 · Deja Vu #13216 · Serenity #13215"
+            - paragraph [ref=e105]:
+              - text: Designed 8 robots in 500+ part Fusion360 assemblies, and used FEA to optimize custom aluminum/3D-printed components for stress, ultimately winning the Robot Design Award 3 times. Mentored 30+ members in Java and CAD, through hands-on worksessions. Raised over $5000 across 3 teams, launched a parts exchange program (
+              - link "Inventry" [ref=e106] [cursor=pointer]:
+                - /url: /projects#inventry
+              - text: ), and developed all 3 team websites.
+            - generic [ref=e107]:
+              - generic [ref=e108]: Java
+              - generic [ref=e109]: CAD/CAM/CAE
+              - generic [ref=e110]: Fusion360
+              - generic [ref=e111]: Leadership
+          - generic [ref=e112]: Aug 2021 — Aug 2025
+        - generic [ref=e113]:
+          - generic [ref=e114]:
+            - heading "Founder · Pear Volunteering ↗" [level=3] [ref=e115]:
+              - link "Founder · Pear Volunteering ↗" [ref=e116] [cursor=pointer]:
+                - /url: /projects#pear-volunteering
+                - text: Founder · Pear Volunteering
+                - generic [ref=e117]: ↗
+            - paragraph [ref=e119]: Developed app/website connecting 2000+ students, 20+ event organizers, and school admin. Built a secure webhook/CMS-integrated system for scalable data handling and encrypted communication (requires multiple security layers due to sensitive, FERPA-protected student data).
+            - generic [ref=e120]:
+              - generic [ref=e121]: HTML/CSS/JS
+              - generic [ref=e122]: App Dev
+              - generic [ref=e123]: CMS
+              - generic [ref=e124]: APIs
+          - generic [ref=e125]: Aug 2023 — Aug 2025
+        - generic [ref=e126]:
+          - generic [ref=e127]:
+            - heading "SLC & Program Member · STEM Leadership Institute ↗" [level=3] [ref=e128]:
+              - link "SLC & Program Member · STEM Leadership Institute ↗" [ref=e129] [cursor=pointer]:
+                - /url: https://www.svefoundation.org/programs/49ers-sli
+                - text: SLC & Program Member · STEM Leadership Institute
+                - generic [ref=e130]: ↗
+            - paragraph [ref=e132]: Trained 120 middle school STEM students on Arduino and engineering design process for science fair projects (SLC). Designed mock competition and mentored 5 FIRST Lego League teams (SLC). Member of the 6-year selective program (SLI), committing 1800+ hours to projects, STEM sessions, and advanced coursework.
+            - generic [ref=e133]:
+              - generic [ref=e134]: Arduino
+              - generic [ref=e135]: 3D Printing
+              - generic [ref=e136]: Laser Cutting
+              - generic [ref=e137]: Machining
+          - generic [ref=e138]: Aug 2019 — Aug 2025
+      - generic [ref=e139]:
+        - heading "Work Experience" [level=2] [ref=e140]
+        - generic [ref=e141]:
+          - generic [ref=e142]:
+            - heading "Mechanical Engineering Intern · Posha (Formerly Nymble) ↗" [level=3] [ref=e143]:
+              - link "Mechanical Engineering Intern · Posha (Formerly Nymble) ↗" [ref=e144] [cursor=pointer]:
+                - /url: https://www.posha.com/
+                - text: Mechanical Engineering Intern · Posha (Formerly Nymble)
+                - generic [ref=e145]: ↗
+            - paragraph [ref=e147]: Repaired 20+ customer cooking robots by troubleshooting electrical and mechanical systems.
+            - generic [ref=e148]:
+              - generic [ref=e149]: Robotics
+              - generic [ref=e150]: Troubleshooting
+              - generic [ref=e151]: Electrical
+          - generic [ref=e152]: Jun 2023 — Aug 2023
+        - generic [ref=e153]:
+          - generic [ref=e154]:
+            - heading "Squash Coach · Bay Club" [level=3] [ref=e155]
+            - paragraph [ref=e157]: Coached 15+ students age 5-12 in tournament prep, designing drills and lessons.
+            - generic [ref=e159]: Mentorship
+          - generic [ref=e160]: Aug 2024 — Aug 2025
+      - generic [ref=e161]:
+        - heading "Education" [level=2] [ref=e162]
+        - generic [ref=e163]:
+          - generic [ref=e164]:
+            - heading "B.S. Mechanical Engineering, Minor in EECS · UC Berkeley" [level=3] [ref=e165]
+            - paragraph [ref=e166]: Sophomore Standing
+            - paragraph [ref=e168]: "Current Coursework: Engin 29, Multivariable Calculus, Physics 7B (E&M). Prior Coursework: Engin 7 (Python/Matlab), Chem 1A, Physics 7A. Activities: Formula Electric, Ramesh Lab."
+          - generic [ref=e169]: Expected May 2028
+        - generic [ref=e171]:
+          - heading "Santa Clara High School" [level=3] [ref=e172]
+          - paragraph [ref=e173]: 4.5 W GPA
+          - paragraph [ref=e175]: "AP + DE: Calc BC, Linear Algebra, Physics C, Chemistry, CSP, Physics 1, Stats, Research, Macro."
+        - generic [ref=e176]:
+          - generic [ref=e177]:
+            - heading "Aerospace Engineering · New Mexico Institute of Technology" [level=3] [ref=e178]
+            - paragraph [ref=e179]: Summer Courses
+            - paragraph [ref=e181]: Completed Drones course with Mostafa Hassanalian, utilizing simulation software like XFLR5 for aircraft optimization. Gained insights into drone and aircraft technology, including Professor Hassanalian's taxidermy bird drone research. Used simulation software to optimize aircraft builds and deepened understanding of essential drone and aircraft concepts.
+          - generic [ref=e182]: Jun 2023 — Jul 2023
+        - generic [ref=e183]:
+          - generic [ref=e184]:
+            - heading "Business Administration · University of Cambridge" [level=3] [ref=e185]
+            - paragraph [ref=e186]: Summer Courses
+            - paragraph [ref=e188]: "Courses: Business Management, Economics, Leadership, International Relations."
+          - generic [ref=e189]: Jun 2022 — Aug 2022
+      - generic [ref=e190]:
+        - heading "Volunteering" [level=2] [ref=e191]
+        - generic [ref=e192]:
+          - generic [ref=e193]:
+            - heading "Mentor & Lab Assistant · 49ers STEM Leadership Institute" [level=3] [ref=e194]
+            - paragraph [ref=e196]: Supported students with CO2 laser cutters, 3D printers, vinyl cutters, and CNC machines.
+          - generic [ref=e197]: Aug 2021 — Jun 2025
+        - generic [ref=e198]:
+          - generic [ref=e199]:
+            - heading "Dinner Server · Family Supportive Housing" [level=3] [ref=e200]
+            - paragraph [ref=e202]: Dinner server for underserved families in San Jose.
+          - generic [ref=e203]: Aug 2021 — Aug 2023
+        - generic [ref=e204]:
+          - generic [ref=e205]:
+            - heading "Programming Tutor · Tulip Kids Afterschool" [level=3] [ref=e206]
+            - paragraph [ref=e208]: Tutored K-8 students in Python and Scratch. Designed hands-on lessons teaching basic circuit workings.
+          - generic [ref=e209]: May 2019 — Jul 2022
+        - generic [ref=e210]:
+          - generic [ref=e211]:
+            - heading "Lunch Server · California Scholarship Federation" [level=3] [ref=e212]
+            - paragraph [ref=e214]: Volunteered in the school cafeteria to serve lunch.
+          - generic [ref=e215]: Aug 2023 — Jul 2025
+        - generic [ref=e216]:
+          - generic [ref=e217]:
+            - heading "Field Technical Advisor · FIRST Tech Challenge" [level=3] [ref=e218]
+            - paragraph [ref=e220]: Technical support to teams and smooth operation of the robotics competition.
+          - generic [ref=e221]: Dec 2023 — Jan 2024
+      - generic [ref=e222]:
+        - heading "Skills" [level=2] [ref=e223]
+        - generic [ref=e224]:
+          - generic [ref=e225]:
+            - heading "Languages & Frameworks" [level=4] [ref=e226]
+            - list [ref=e227]:
+              - listitem [ref=e228]: Python, Java, JavaScript/TypeScript, SQL, HTML/CSS, React, Next.js, Node.js, Tailwind
+          - generic [ref=e229]:
+            - heading "Libraries & Tools" [level=4] [ref=e230]
+            - list [ref=e231]:
+              - listitem [ref=e232]: Pandas, NumPy, Matplotlib, OpenCV, TensorFlow, PyTorch, Git, PostgreSQL, Supabase
+          - generic [ref=e233]:
+            - heading "Engineering & Design" [level=4] [ref=e234]
+            - list [ref=e235]:
+              - listitem [ref=e236]: Fusion360, Solidworks/PDM, FEA (ANSYS), GD&T, CAD/CAM/CAE, XFLR5, Machining

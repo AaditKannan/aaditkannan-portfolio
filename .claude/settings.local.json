@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git add:*)",
+      "Bash(git commit -m \"$\\(cat <<''EOF''\nRedesign connect page: centered layout, pill links, smaller calendar\n\n- Replace boxy contact cards with minimal horizontal pill-style links\n- Center all content vertically for cohesive single-screen feel\n- Shrink calendar from 600px to 420px, add \"My Availability\" label\n- Move location/tagline to subtitle under heading\n- Cleaner footer text\n- Responsive: pills stack on mobile, calendar scales down\n\nCo-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>\nEOF\n\\)\")",
+      "Bash(git push:*)"
+    ]
+  }
+}

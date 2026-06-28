@@ -1,0 +1,77 @@
+- generic [active] [ref=e667]:
+  - generic [ref=e668]:
+    - generic [ref=e669]: home
+    - generic [ref=e670]: resume
+    - generic [ref=e671]: projects
+    - generic [ref=e672]: connect
+    - generic [ref=e673]: footage
+    - generic [ref=e674]: theme · light
+  - generic [ref=e675]:
+    - generic [ref=e676]:
+      - heading "Projects" [level=1] [ref=e677]
+      - generic [ref=e678]: 2020 — 2026 · 15 entries
+    - generic [ref=e679]: ongoing
+    - article [ref=e680] [cursor=pointer]:
+      - img [ref=e682]
+      - generic [ref=e693]:
+        - heading "Atlas SMR — reactor siting" [level=3] [ref=e694]:
+          - text: Atlas SMR
+          - emphasis [ref=e695]: — reactor siting
+        - paragraph [ref=e696]: A feasibility tool for siting small modular reactors where the grid actually needs them. GIS layers crossed with energy demand; published as a research paper.
+      - generic [ref=e697]:
+        - text: 2025 —
+        - emphasis [ref=e698]: ongoing
+    - article [ref=e699] [cursor=pointer]:
+      - img [ref=e701]
+      - generic [ref=e709]:
+        - heading "Ramesh Lab — thin-film deposition tracking" [level=3] [ref=e710]:
+          - text: Ramesh Lab
+          - emphasis [ref=e711]: — thin-film deposition tracking
+        - paragraph [ref=e712]: Pulsed-laser deposition tracking software for a Berkeley materials group. A growth-log dashboard in Python and a schema for cross-sample comparison.
+      - generic [ref=e713]:
+        - text: 2026 —
+        - emphasis [ref=e714]: ongoing
+    - article [ref=e715] [cursor=pointer]:
+      - img [ref=e717]
+      - generic [ref=e722]:
+        - heading "Inventry — FTC parts marketplace" [level=3] [ref=e723]:
+          - text: Inventry
+          - emphasis [ref=e724]: — FTC parts marketplace
+        - paragraph [ref=e725]: A marketplace for robotics teams with GPT-based invoice parsing at 94% accuracy. React / Postgres stack, shipping to teams across the country.
+      - generic [ref=e726]:
+        - text: 2025 —
+        - emphasis [ref=e727]: ongoing
+    - article [ref=e728] [cursor=pointer]:
+      - img [ref=e730]
+      - generic [ref=e734]:
+        - heading "Leitmotif — generative music for the visually impaired" [level=3] [ref=e735]:
+          - text: Leitmotif
+          - emphasis [ref=e736]: — generative music for the visually impaired
+        - paragraph [ref=e737]: A two-week spike at YC × DeepMind. Ambient scores generated in real time from the environment around you, scored for consonance and pacing.
+      - generic [ref=e738]: Mar 2026 · 2 weeks
+    - generic [ref=e739]: archive
+    - article [ref=e740] [cursor=pointer]:
+      - img [ref=e742]
+      - generic [ref=e750]:
+        - heading "Deja Vu — Into the Deep" [level=3] [ref=e751]:
+          - text: Deja Vu
+          - emphasis [ref=e752]: — Into the Deep
+        - paragraph [ref=e753]: "Hardware lead on FTC #13216. 500+ custom CAD parts, FEA on stress-critical joints, a full Markforged and Prusa manufacturing pipeline."
+      - generic [ref=e754]: 2024 — 2025
+    - article [ref=e755] [cursor=pointer]:
+      - img [ref=e757]
+      - generic [ref=e760]:
+        - heading "Zenith — Powerplay" [level=3] [ref=e761]:
+          - text: Zenith
+          - emphasis [ref=e762]: — Powerplay
+        - paragraph [ref=e763]: "FTC #20424 team lead. Rigging lifts, PID-controlled arm, an OpenCV autonomous that stayed within a percent of theoretical the entire season."
+      - generic [ref=e764]: 2022 — 2023
+    - article [ref=e765] [cursor=pointer]:
+      - img [ref=e767]
+      - generic [ref=e790]:
+        - heading "Pear Volunteering" [level=3] [ref=e791]
+        - paragraph [ref=e792]: A volunteer-coordination platform for Bay Area high-schoolers. 2,000 students, 20 orgs; webhook queues, QR check-in, automated service letters.
+      - generic [ref=e793]: 2023 — 2025
+    - generic [ref=e794]:
+      - generic [ref=e795]: eight more in the archive ↓
+      - generic [ref=e796]: allhardwaresoftwareresearch

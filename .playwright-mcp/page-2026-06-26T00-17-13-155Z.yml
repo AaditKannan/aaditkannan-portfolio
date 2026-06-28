@@ -1,0 +1,57 @@
+- generic [active] [ref=e1]:
+  - navigation [ref=e2]:
+    - link "HOME" [ref=e3] [cursor=pointer]:
+      - /url: /
+    - link "RESUME" [ref=e4] [cursor=pointer]:
+      - /url: /resume
+    - link "PROJECTS" [ref=e5] [cursor=pointer]:
+      - /url: /projects
+    - link "CONNECT" [ref=e6] [cursor=pointer]:
+      - /url: /connect
+    - button "Toggle light mode" [ref=e7] [cursor=pointer]:
+      - img [ref=e8]
+  - main [ref=e10]:
+    - generic [ref=e11]:
+      - link "Back to Projects" [ref=e12] [cursor=pointer]:
+        - /url: /projects
+        - img [ref=e13]
+        - text: Back to Projects
+      - generic [ref=e15]:
+        - heading "Compact Field Station Toolbox" [level=1] [ref=e16]
+        - paragraph [ref=e17]: A backpack-sized toolbox designed for Berkeley project teams working at the Richmond Field Station, focused on portability, practical shop use, GD&T drawings, and manufacturable design.
+      - generic [ref=e18]:
+        - generic [ref=e21]: Project Photos & Drawings Coming Soon
+        - complementary [ref=e22]:
+          - heading "Project Info" [level=3] [ref=e23]
+          - paragraph [ref=e24]:
+            - strong [ref=e25]: "Category:"
+            - text: Hardware
+            - strong [ref=e26]: "Focus:"
+            - text: CAD · GD&T · Manufacturing
+            - strong [ref=e27]: "Context:"
+            - text: Richmond Field Station project teams
+            - strong [ref=e28]: "Status:"
+            - text: Completed
+          - heading "Skills" [level=3] [ref=e29]
+          - generic [ref=e30]:
+            - generic [ref=e31]: CAD
+            - generic [ref=e32]: GD&T
+            - generic [ref=e33]: Manufacturing
+            - generic [ref=e34]: Drawings
+            - generic [ref=e35]: Fabrication
+      - generic [ref=e37]:
+        - strong [ref=e38]: Overview
+        - text: I designed a compact toolbox for Berkeley project teams working at the Richmond Field Station. The goal was to create a practical toolbox that could fit in a backpack and make it easier to carry essential tools between campus, project spaces, and the field station.
+        - text: "This was not meant to be a highly complex mechanical system. The value of the project was in the design-to-manufacturing workflow: CAD modeling, 2D drawings, GD&T, tolerancing, material/process constraints, fabrication planning, and documentation."
+        - strong [ref=e39]: What I Built
+        - text: • Designed a compact backpack-sized toolbox for project team use at the Richmond Field Station
+        - text: • Modeled the toolbox in CAD with portability and practical shop use in mind
+        - text: • Created 2D engineering drawings with dimensions and GD&T callouts
+        - text: • Practiced tolerancing and manufacturability decisions under a limited project timeline
+        - text: • Prepared documentation for fabrication and assembly
+        - text: • Used the project to improve drawing quality, manufacturing communication, and practical design habits
+        - strong [ref=e40]: Technical Details
+        - text: The toolbox was intentionally a relatively simple mechanical project, but it emphasized the manufacturing side of engineering. The design centered around making a portable, usable box for project team members who need to move tools between workspaces without carrying a full-size toolbox.
+        - text: I focused on clear drawings, fabrication order, tolerances where they mattered, and documentation that could communicate the design to someone else. The project gave me practice turning a real user need into a manufacturable design package under a short timeline.
+        - strong [ref=e41]: Skills Used
+        - text: CAD, GD&T, 2D drawings, tolerancing, manufacturing documentation, fabrication planning, mechanical design, design for manufacturing, practical prototyping.

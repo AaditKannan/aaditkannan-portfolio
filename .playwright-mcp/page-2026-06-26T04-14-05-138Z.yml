@@ -1,0 +1,149 @@
+- generic [active] [ref=e1]:
+  - navigation [ref=e2]:
+    - link "HOME" [ref=e3] [cursor=pointer]:
+      - /url: /
+    - link "RESUME" [ref=e4] [cursor=pointer]:
+      - /url: /resume
+    - link "PROJECTS" [ref=e5] [cursor=pointer]:
+      - /url: /projects
+    - link "CONNECT" [ref=e6] [cursor=pointer]:
+      - /url: /connect
+    - button "Toggle light mode" [ref=e7] [cursor=pointer]:
+      - img [ref=e8]
+  - main [ref=e10]:
+    - heading "ProjeU##" [level=1] [ref=e12]
+    - generic [ref=e15]:
+      - generic [ref=e16]: Category
+      - button "All" [ref=e17] [cursor=pointer]
+      - button "Hardware" [ref=e18] [cursor=pointer]
+      - button "Software" [ref=e19] [cursor=pointer]
+      - button "Research" [ref=e20] [cursor=pointer]
+    - generic [ref=e21]:
+      - generic [ref=e22] [cursor=pointer]:
+        - img "Wolfrom Robotic Actuator" [ref=e25]
+        - generic [ref=e26]:
+          - generic [ref=e27]:
+            - generic [ref=e28]: Hardware
+            - generic [ref=e29]: 2026 — Present
+          - heading "Wolfrom Robotic Actuator" [level=3] [ref=e31]
+          - paragraph [ref=e32]: Wolfrom compound planetary actuator for humanoid joints, designed for backdrivability, low reflected inertia, and around 80% efficiency at 50:1 and 125:1 reduction.
+      - generic [ref=e33] [cursor=pointer]:
+        - img "Formula Electric at Berkeley (FEB)" [ref=e36]
+        - generic [ref=e37]:
+          - generic [ref=e38]:
+            - generic [ref=e39]: Hardware
+            - generic [ref=e40]: Sep 2025 — Present
+          - heading "Formula Electric at Berkeley (FEB)" [level=3] [ref=e42]
+          - paragraph [ref=e43]: High-voltage battery system for Berkeley's Formula Electric racing team.
+      - generic [ref=e44] [cursor=pointer]:
+        - img "Ramesh Lab" [ref=e47]
+        - generic [ref=e48]:
+          - generic [ref=e49]:
+            - generic [ref=e50]: Research
+            - generic [ref=e51]: Jan 2026 — Present
+          - heading "Ramesh Lab" [level=3] [ref=e53]
+          - paragraph [ref=e54]: Researching complex-oxide thin films for faster, lower-power memory and logic beyond DRAM and CMOS. Designing a dual-range nanosecond/microsecond pulse generator for spin transport and ferroelectric characterization.
+      - generic [ref=e55] [cursor=pointer]:
+        - img "Leitmotif" [ref=e58]
+        - generic [ref=e59]:
+          - generic [ref=e60]:
+            - generic [ref=e61]: Software
+            - generic [ref=e62]: Mar 2026
+          - heading "Leitmotif" [level=3] [ref=e64]
+          - paragraph [ref=e65]: YC x DeepMind hackathon winner. Real-time generative music for the visually impaired.
+      - generic [ref=e66] [cursor=pointer]:
+        - img "Inventry" [ref=e69]
+        - generic [ref=e70]:
+          - generic [ref=e71]:
+            - generic [ref=e72]: Software
+            - generic [ref=e73]: Jun 2025 — Present
+          - heading "Inventry" [level=3] [ref=e75]
+          - paragraph [ref=e76]: AI-powered robotics parts inventory and marketplace.
+      - generic [ref=e77] [cursor=pointer]:
+        - img "Deja Vu — INTO THE DEEP" [ref=e80]
+        - generic [ref=e81]:
+          - generic [ref=e82]:
+            - generic [ref=e83]: Hardware/Software
+            - generic [ref=e84]: 2024 — 2025
+          - heading "Deja Vu — INTO THE DEEP" [level=3] [ref=e85]
+          - paragraph [ref=e86]: "Hardware Lead for FTC #13216. Designed robot with 500+ custom parts."
+      - generic [ref=e87] [cursor=pointer]:
+        - img "Deja Vu — CENTERSTAGE" [ref=e90]
+        - generic [ref=e91]:
+          - generic [ref=e92]:
+            - generic [ref=e93]: Hardware/Software
+            - generic [ref=e94]: 2023 — 2024
+          - heading "Deja Vu — CENTERSTAGE" [level=3] [ref=e95]
+          - paragraph [ref=e96]: "Hardware Lead for FTC #13216. Designed pixel-scoring mechanisms."
+      - generic [ref=e97] [cursor=pointer]:
+        - img "Zenith — POWERPLAY" [ref=e100]
+        - generic [ref=e101]:
+          - generic [ref=e102]:
+            - generic [ref=e103]: Hardware/Software
+            - generic [ref=e104]: 2022 — 2023
+          - heading "Zenith — POWERPLAY" [level=3] [ref=e105]
+          - paragraph [ref=e106]: "Team Lead for FTC #20424. Built cone-stacking robot with custom lift."
+      - generic [ref=e107] [cursor=pointer]:
+        - img "Pear Volunteering" [ref=e110]
+        - generic [ref=e111]:
+          - generic [ref=e112]:
+            - generic [ref=e113]: Software
+            - generic [ref=e114]: Aug 2023 — May 2025
+          - heading "Pear Volunteering" [level=3] [ref=e115]
+          - paragraph [ref=e116]: Platform connecting 2000+ students with volunteer opportunities.
+      - generic [ref=e117] [cursor=pointer]:
+        - img "Construction Acclimation" [ref=e120]
+        - generic [ref=e121]:
+          - generic [ref=e122]:
+            - generic [ref=e123]: Hardware/Software
+            - generic [ref=e124]: Oct 2022 — Apr 2023
+          - heading "Construction Acclimation" [level=3] [ref=e125]
+          - paragraph [ref=e126]: Low-cost probe alternative to save $118M in city spending.
+      - generic [ref=e127] [cursor=pointer]:
+        - img "Beachsweep" [ref=e130]
+        - generic [ref=e131]:
+          - generic [ref=e132]:
+            - generic [ref=e133]: Software
+            - generic [ref=e134]: Mar 2023
+          - heading "Beachsweep" [level=3] [ref=e135]
+          - paragraph [ref=e136]: Drone-based beach cleanup coordination system.
+      - generic [ref=e137] [cursor=pointer]:
+        - img "Zenith — FREIGHT FRENZY" [ref=e140]
+        - generic [ref=e141]:
+          - generic [ref=e142]:
+            - generic [ref=e143]: Hardware/Software
+            - generic [ref=e144]: 2021 — 2022
+          - heading "Zenith — FREIGHT FRENZY" [level=3] [ref=e145]
+          - paragraph [ref=e146]: "First year on FTC #20424. Learned CAD and manufacturing."
+      - generic [ref=e147] [cursor=pointer]:
+        - img "Serenity — FREIGHT FRENZY" [ref=e150]
+        - generic [ref=e151]:
+          - generic [ref=e152]:
+            - generic [ref=e153]: Hardware/Software
+            - generic [ref=e154]: 2021 — 2022
+          - heading "Serenity — FREIGHT FRENZY" [level=3] [ref=e155]
+          - paragraph [ref=e156]: "Team Lead for FTC #13215. Managed design and build process."
+      - generic [ref=e157] [cursor=pointer]:
+        - generic [ref=e159]: Photo
+        - generic [ref=e160]:
+          - generic [ref=e161]:
+            - generic [ref=e162]: Hardware/Software
+            - generic [ref=e163]: Sep 2021 — Mar 2022
+          - heading "Friendly Fires" [level=3] [ref=e164]
+          - paragraph [ref=e165]: Coal-seam fire detection system for mining safety.
+      - generic [ref=e166] [cursor=pointer]:
+        - generic [ref=e168]: Photo
+        - generic [ref=e169]:
+          - generic [ref=e170]:
+            - generic [ref=e171]: Hardware/Software
+            - generic [ref=e172]: Nov 2020 — May 2021
+          - heading "Prototype Ø Flood" [level=3] [ref=e173]
+          - paragraph [ref=e174]: Low-cost flood detection for Jakarta, Indonesia.
+    - link "WATCH Drone Footage & Aerial Views" [ref=e176] [cursor=pointer]:
+      - /url: /footage
+      - generic [ref=e177]:
+        - img [ref=e179]
+        - generic [ref=e182]:
+          - generic [ref=e183]: WATCH
+          - generic [ref=e184]: Drone Footage & Aerial Views
+        - img [ref=e186]

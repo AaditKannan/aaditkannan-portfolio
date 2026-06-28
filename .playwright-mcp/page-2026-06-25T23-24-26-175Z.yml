@@ -1,0 +1,464 @@
+- generic [active] [ref=e1]:
+  - navigation [ref=e2]:
+    - link "HOME" [ref=e3] [cursor=pointer]:
+      - /url: /
+    - link "RESUME" [ref=e4] [cursor=pointer]:
+      - /url: /resume
+    - link "PROJECTS" [ref=e5] [cursor=pointer]:
+      - /url: /projects
+    - link "CONNECT" [ref=e6] [cursor=pointer]:
+      - /url: /connect
+    - button "Toggle light mode" [ref=e7] [cursor=pointer]:
+      - img [ref=e8]
+  - main [ref=e10]:
+    - heading "Compact Wolfrom Robotic Actuator" [level=1] [ref=e189]
+    - generic [ref=e15]:
+      - generic [ref=e16]: Category
+      - button "All" [ref=e17] [cursor=pointer]
+      - button "Hardware" [ref=e18] [cursor=pointer]
+      - button "Software" [ref=e19] [cursor=pointer]
+      - button "Research" [ref=e20] [cursor=pointer]
+    - generic:
+      - generic:
+        - generic:
+          - generic:
+            - img "Compact Wolfrom Robotic Actuator"
+        - generic:
+          - generic:
+            - generic: Hardware
+            - generic: 2026 — Present
+          - heading "Compact Wolfrom Robotic Actuator" [level=3]
+          - paragraph: Compact Wolfrom compound planetary actuator for humanoid-scale joints, targeting ~50:1 reduction with custom geartrain geometry, bearing stackups, output ring design, and prototype validation.
+      - generic:
+        - generic:
+          - generic:
+            - img "Formula Electric at Berkeley (FEB)"
+        - generic:
+          - generic:
+            - generic: Hardware
+            - generic: Sep 2025 — Present
+          - heading "Formula Electric at Berkeley (FEB)" [level=3]
+          - paragraph: High-voltage battery system for Berkeley's Formula Electric racing team.
+      - generic:
+        - generic:
+          - generic:
+            - img "Ramesh Lab"
+        - generic:
+          - generic:
+            - generic: Research
+            - generic: Jan 2026 — Present
+          - heading "Ramesh Lab" [level=3]
+          - paragraph: Researching complex-oxide thin films for faster, lower-power memory and logic beyond DRAM and CMOS. Designing a dual-range nanosecond/microsecond pulse generator for spin transport and ferroelectric characterization.
+      - generic:
+        - generic:
+          - generic:
+            - img "Leitmotif"
+        - generic:
+          - generic:
+            - generic: Software
+            - generic: Mar 2026
+          - heading "Leitmotif" [level=3]
+          - paragraph: YC x DeepMind hackathon winner. Real-time generative music for the visually impaired.
+      - generic:
+        - generic:
+          - generic:
+            - img "Inventry"
+        - generic:
+          - generic:
+            - generic: Software
+            - generic: Jun 2025 — Present
+          - heading "Inventry" [level=3]
+          - paragraph: AI-powered robotics parts inventory and marketplace.
+      - generic:
+        - generic:
+          - generic:
+            - img "Deja Vu — INTO THE DEEP"
+        - generic:
+          - generic:
+            - generic: Hardware/Software
+            - generic: 2024 — 2025
+          - heading "Deja Vu — INTO THE DEEP" [level=3]
+          - paragraph: "Hardware Lead for FTC #13216. Designed robot with 500+ custom parts."
+      - generic:
+        - generic:
+          - generic:
+            - img "Deja Vu — CENTERSTAGE"
+        - generic:
+          - generic:
+            - generic: Hardware/Software
+            - generic: 2023 — 2024
+          - heading "Deja Vu — CENTERSTAGE" [level=3]
+          - paragraph: "Hardware Lead for FTC #13216. Designed pixel-scoring mechanisms."
+      - generic:
+        - generic:
+          - generic:
+            - img "Zenith — POWERPLAY"
+        - generic:
+          - generic:
+            - generic: Hardware/Software
+            - generic: 2022 — 2023
+          - heading "Zenith — POWERPLAY" [level=3]
+          - paragraph: "Team Lead for FTC #20424. Built cone-stacking robot with custom lift."
+      - generic:
+        - generic:
+          - generic:
+            - img "Pear Volunteering"
+        - generic:
+          - generic:
+            - generic: Software
+            - generic: Aug 2023 — May 2025
+          - heading "Pear Volunteering" [level=3]
+          - paragraph: Platform connecting 2000+ students with volunteer opportunities.
+      - generic:
+        - generic:
+          - generic:
+            - img "Construction Acclimation"
+        - generic:
+          - generic:
+            - generic: Hardware/Software
+            - generic: Oct 2022 — Apr 2023
+          - heading "Construction Acclimation" [level=3]
+          - paragraph: Low-cost probe alternative to save $118M in city spending.
+      - generic:
+        - generic:
+          - generic:
+            - img "Beachsweep"
+        - generic:
+          - generic:
+            - generic: Software
+            - generic: Mar 2023
+          - heading "Beachsweep" [level=3]
+          - paragraph: Drone-based beach cleanup coordination system.
+      - generic:
+        - generic:
+          - generic:
+            - img "Zenith — FREIGHT FRENZY"
+        - generic:
+          - generic:
+            - generic: Hardware/Software
+            - generic: 2021 — 2022
+          - heading "Zenith — FREIGHT FRENZY" [level=3]
+          - paragraph: "First year on FTC #20424. Learned CAD and manufacturing."
+      - generic:
+        - generic:
+          - generic:
+            - img "Serenity — FREIGHT FRENZY"
+        - generic:
+          - generic:
+            - generic: Hardware/Software
+            - generic: 2021 — 2022
+          - heading "Serenity — FREIGHT FRENZY" [level=3]
+          - paragraph: "Team Lead for FTC #13215. Managed design and build process."
+      - generic:
+        - generic:
+          - generic: Photo
+        - generic:
+          - generic:
+            - generic: Hardware/Software
+            - generic: Sep 2021 — Mar 2022
+          - heading "Friendly Fires" [level=3]
+          - paragraph: Coal-seam fire detection system for mining safety.
+      - generic:
+        - generic:
+          - generic: Photo
+        - generic:
+          - generic:
+            - generic: Hardware/Software
+            - generic: Nov 2020 — May 2021
+          - heading "Prototype Ø Flood" [level=3]
+          - paragraph: Low-cost flood detection for Jakarta, Indonesia.
+  - generic [ref=e190]:
+    - button [ref=e191] [cursor=pointer]
+    - generic: or press esc
+    - generic [ref=e192]:
+      - banner [ref=e193]:
+        - heading "Compact Wolfrom Robotic Actuator" [level=1] [ref=e194]
+        - paragraph [ref=e195]: ● 2026 — Present
+      - generic [ref=e196]:
+        - generic [ref=e197]:
+          - generic [ref=e198]:
+            - button [ref=e199] [cursor=pointer]:
+              - img [ref=e200]
+            - img "Compact Wolfrom Robotic Actuator" [ref=e204]
+            - button [ref=e205] [cursor=pointer]:
+              - img [ref=e206]
+          - generic [ref=e208]:
+            - img "Thumbnail 1" [ref=e211] [cursor=pointer]
+            - img "Thumbnail 2" [ref=e214] [cursor=pointer]
+            - img "Thumbnail 3" [ref=e217] [cursor=pointer]
+        - complementary [ref=e218]:
+          - heading "Project Info" [level=3] [ref=e219]
+          - paragraph [ref=e220]:
+            - strong [ref=e221]: "Category:"
+            - text: Hardware
+            - strong [ref=e222]: "Timeline:"
+            - text: 2026 — Present
+            - strong [ref=e223]: "Status:"
+            - text: Active
+          - heading "Skills" [level=3] [ref=e224]
+          - generic [ref=e225]:
+            - generic [ref=e226]: Robotics
+            - generic [ref=e227]: Actuators
+            - generic [ref=e228]: Wolfrom Gearbox
+            - generic [ref=e229]: CAD
+            - generic [ref=e230]: Prototyping
+      - generic [ref=e233]:
+        - text: A compact high-ratio Wolfrom compound planetary actuator prototype for humanoid-scale robotic joints, focused on torque-dense gearbox packaging, mechanical integration, and rapid prototype validation.
+        - strong [ref=e234]: Overview
+        - text: I designed a compact Wolfrom compound planetary actuator for humanoid-scale robotic joints. The goal is to package high reduction, high torque density, and clean mechanical integration into a small actuator module that can be prototyped quickly and later transitioned toward more robust manufacturing.
+        - text: The actuator uses a driven sun gear, compound planet stacks, a fixed internal ring, and an output internal ring to create a high-ratio reduction in a compact axial package. The current design targets approximately 50:1 reduction.
+        - strong [ref=e235]: Gear Ratio
+        - text: "The reduction is a split-Wolfrom: the motor drives the sun (S), and each compound planet carries two gears — one (Pa) meshing a fixed internal ring (Ra), the other (Pb) driving the output internal ring (Rb). The overall ratio is the product of a sun-to-carrier stage and a carrier-to-output-ring stage:"
+        - generic [ref=e238]:
+          - math [ref=e240]:
+            - generic [ref=e242]:
+              - generic [ref=e243]: i
+              - generic [ref=e244]: =
+              - generic [ref=e245]:
+                - generic [ref=e246]: i
+                - generic [ref=e247]: "0"
+              - generic [ref=e248]: ⋅
+              - generic [ref=e249]:
+                - generic [ref=e250]: i
+                - generic [ref=e251]: W
+              - generic [ref=e252]: =
+              - generic [ref=e253]:
+                - generic [ref=e254]: (
+                - generic [ref=e255]: "1"
+                - generic [ref=e256]: +
+                - generic [ref=e257]:
+                  - generic [ref=e258]:
+                    - generic [ref=e259]: Z
+                    - generic [ref=e260]:
+                      - generic [ref=e261]: P
+                      - generic [ref=e262]: s
+                  - generic [ref=e263]:
+                    - generic [ref=e264]: Z
+                    - generic [ref=e265]: S
+                - generic [ref=e266]: ⋅
+                - generic [ref=e267]:
+                  - generic [ref=e268]:
+                    - generic [ref=e269]: Z
+                    - generic [ref=e270]:
+                      - generic [ref=e271]: R
+                      - generic [ref=e272]: a
+                  - generic [ref=e273]:
+                    - generic [ref=e274]: Z
+                    - generic [ref=e275]:
+                      - generic [ref=e276]: P
+                      - generic [ref=e277]: a
+                - generic [ref=e278]: )
+              - text: ⁣
+              - generic [ref=e279]: ⋅
+              - generic [ref=e280]:
+                - generic [ref=e281]:
+                  - generic [ref=e282]: S
+                  - generic [ref=e283]: "3"
+                - generic [ref=e284]:
+                  - generic [ref=e285]:
+                    - generic [ref=e286]: S
+                    - generic [ref=e287]: "3"
+                  - generic [ref=e288]: −
+                  - generic [ref=e289]:
+                    - generic [ref=e290]: S
+                    - generic [ref=e291]: "2"
+          - generic [ref=e292]:
+            - generic [ref=e293]: i =
+            - generic [ref=e294]:
+              - generic [ref=e295]:
+                - text: i
+                - generic [ref=e300]: "0"
+              - text: ⋅
+            - generic [ref=e304]:
+              - generic [ref=e305]:
+                - text: i
+                - generic [ref=e310]: W
+              - text: =
+            - generic [ref=e314]:
+              - generic [ref=e315]:
+                - generic [ref=e316]: (
+                - text: 1 +
+                - generic [ref=e321]:
+                  - generic [ref=e323]:
+                    - text: Z
+                    - generic [ref=e329]: S
+                  - generic [ref=e335]:
+                    - text: Z
+                    - generic [ref=e341]: Ps
+                - text: ⋅
+                - generic [ref=e352]:
+                  - generic [ref=e354]:
+                    - text: Z
+                    - generic [ref=e360]: Pa
+                  - generic [ref=e366]:
+                    - text: Z
+                    - generic [ref=e372]: Ra
+                - generic [ref=e379]: )
+              - text: ⋅
+            - generic [ref=e385]:
+              - generic [ref=e386]:
+                - generic [ref=e387]:
+                  - text: S
+                  - generic [ref=e392]: "3"
+                - text: −
+                - generic [ref=e396]:
+                  - text: S
+                  - generic [ref=e401]: "2"
+              - generic [ref=e407]:
+                - text: S
+                - generic [ref=e412]: "3"
+        - text: With my tooth counts (S=33, Ps=57, Pa=27, Pb=25, Ra=72, Rb=75) this works out to exactly
+        - generic [ref=e421]:
+          - math [ref=e423]:
+            - generic [ref=e425]:
+              - generic [ref=e426]: i
+              - generic [ref=e427]: =
+              - generic [ref=e428]:
+                - generic [ref=e429]: "555"
+                - generic [ref=e430]: "11"
+              - generic [ref=e431]: ≈
+              - generic [ref=e432]: "50.45"
+              - generic [ref=e433]: ":"
+              - generic [ref=e434]: "1"
+          - generic [ref=e435]:
+            - generic [ref=e436]: i =
+            - generic [ref=e437]:
+              - generic [ref=e442]:
+                - generic [ref=e443]: "11"
+                - generic [ref=e445]: "555"
+              - text: ≈
+            - generic [ref=e449]: "50.45 :"
+            - generic [ref=e450]: "1"
+        - text: so a single compact stage replaces what would otherwise take two stacked planetary gearboxes.
+        - img "Top-down view of the printed Wolfrom gearbox showing the sun gear, three compound planets, fixed inner ring, and output ring" [ref=e451]
+        - emphasis [ref=e452]: "Printed prototype, top-down: central sun gear driving three compound planets, the fixed inner ring, and the output ring on the outer bolt circle."
+        - strong [ref=e453]: Reflected Inertia & Why It's Hard
+        - text: "A gearbox multiplies torque by the ratio N, but it reflects the motor's rotor inertia to the output by N²:"
+        - generic [ref=e456]:
+          - math [ref=e458]:
+            - generic [ref=e460]:
+              - generic [ref=e461]:
+                - generic [ref=e462]: J
+                - generic [ref=e463]: out
+              - generic [ref=e464]: =
+              - generic [ref=e465]:
+                - generic [ref=e466]: "N"
+                - generic [ref=e467]: "2"
+              - generic [ref=e468]:
+                - generic [ref=e469]: J
+                - generic [ref=e470]: motor
+              - generic [ref=e471]: ","
+              - generic [ref=e472]: "N"
+              - generic [ref=e473]: ≈
+              - generic [ref=e474]: "50"
+              - generic [ref=e475]: ⇒
+              - generic [ref=e476]:
+                - generic [ref=e477]: "N"
+                - generic [ref=e478]: "2"
+              - generic [ref=e479]: ≈
+              - generic [ref=e480]: "2500"
+          - generic [ref=e481]:
+            - generic [ref=e482]:
+              - generic [ref=e483]:
+                - text: J
+                - generic [ref=e490]: out
+              - text: =
+            - generic [ref=e494]:
+              - generic [ref=e495]:
+                - text: "N"
+                - generic [ref=e500]: "2"
+              - generic [ref=e501]:
+                - text: J
+                - generic [ref=e508]: motor
+              - text: ", N ≈"
+            - generic [ref=e512]: 50 ⇒
+            - generic [ref=e513]:
+              - generic [ref=e514]:
+                - text: "N"
+                - generic [ref=e519]: "2"
+              - text: ≈
+            - generic [ref=e520]: "2500"
+        - text: So even a light motor behind ~50:1 presents thousands of times its rotor inertia at the joint. For a robot that has to feel and react to external forces, that makes backdrivability and low internal friction the whole game — if the geartrain is lossy, the joint simply feels locked.
+        - text: "The Wolfrom's high ratio comes from the small difference between two nearly-equal internal ring meshes, which means power circulates inside the gearbox far above what actually passes through it. I track this with the Latent Power Ratio:"
+        - generic [ref=e523]:
+          - math [ref=e525]:
+            - generic [ref=e527]:
+              - generic [ref=e528]: LPR
+              - generic [ref=e529]: =
+              - generic [ref=e530]:
+                - generic [ref=e531]: (
+                - generic [ref=e532]: "1"
+                - generic [ref=e533]: −
+                - generic [ref=e534]:
+                  - generic [ref=e535]: "2"
+                  - generic [ref=e536]:
+                    - generic [ref=e537]: i
+                    - generic [ref=e538]: "0"
+                - generic [ref=e539]: )
+              - generic [ref=e540]: +
+              - generic [ref=e541]: (
+              - generic [ref=e542]: "2"
+              - generic [ref=e543]:
+                - generic [ref=e544]: i
+                - generic [ref=e545]: W
+              - generic [ref=e546]: −
+              - generic [ref=e547]: "1"
+              - generic [ref=e548]: )
+              - generic [ref=e549]: ≈
+              - generic [ref=e550]: "17.6"
+          - generic [ref=e551]:
+            - generic [ref=e552]:
+              - generic [ref=e553]: LPR
+              - text: =
+            - generic [ref=e554]:
+              - generic [ref=e555]:
+                - generic [ref=e556]: (
+                - text: 1 −
+                - generic [ref=e561]:
+                  - generic [ref=e563]:
+                    - text: i
+                    - generic [ref=e568]: "0"
+                  - generic [ref=e573]: "2"
+                - generic [ref=e577]: )
+              - text: +
+            - generic [ref=e578]:
+              - text: (2
+              - generic [ref=e579]:
+                - text: i
+                - generic [ref=e584]: W
+              - text: −
+            - generic [ref=e588]: 1) ≈
+            - generic [ref=e589]: "17.6"
+        - text: An LPR near 17.6 means roughly 0.1% of friction in a single ring mesh costs about 1.7 points of overall efficiency. That sensitivity drives almost every decision in the design.
+        - strong [ref=e590]: Primary Problems to Solve
+        - text: •
+        - strong [ref=e591]: "Ring-mesh efficiency:"
+        - text: the two internal meshes dominate losses, so their tooth geometry and surface finish matter far more than the lightly-loaded sun stage
+        - text: •
+        - strong [ref=e592]: "Planet-bearing drag:"
+        - text: the compound planets spin at ~2.67× carrier speed, so the planet supports are a major loss path — the metal design moves from printed bushings toward needle bearings on hardened, ground pins
+        - text: •
+        - strong [ref=e593]: "Load sharing:"
+        - text: three rigid planets are overconstrained, so I use a floating sun and a floating (zero-net-torque) carrier plus set-at-assembly planet timing to let the planets self-center and share load
+        - text: •
+        - strong [ref=e594]: "Backdrivability:"
+        - text: printed, rough meshes make the joint feel dead; low-contact-ratio, profile-shifted teeth and low-friction bearings are what make it transparent
+        - text: •
+        - strong [ref=e595]: "Manufacturing:"
+        - text: internal ring teeth can't be cleanly milled, so production rings are planned as wire-EDM hardened-steel inserts pressed into an aluminum housing
+        - strong [ref=e596]: What I Built
+        - text: • Designed a Wolfrom-style compound planetary gearbox targeting ~50:1 reduction
+        - text: • Modeled the full actuator stackup — sun gear, compound planets, fixed ring, output ring, carrier, bearings, shafts, and output hub
+        - text: • Iterated on output ring splitting, bolt access, bearing support, and axial spacing for cleaner assembly
+        - text: • Designed around real manufacturing constraints — FDM/SLA prototypes, CNC/waterjet options, press-fit bearings, dowel alignment, and low-profile fasteners
+        - text: • Built prototypes to evaluate gear meshing, packaging, assembly sequence, and mechanical fit
+        - strong [ref=e597]: Technical Details
+        - text: The gearbox uses a compact compound planetary layout where the motor drives the sun gear, one planet gear meshes with a fixed internal ring, and another planet gear drives the output ring. This Wolfrom-style architecture creates a high reduction ratio without stacking multiple conventional gearboxes. All three meshes share a single planet-axis center distance, which forces a fixed module ratio across the stages and makes the packaging tightly coupled.
+        - text: Key design constraints included gear clearance, bearing support, shaft alignment, output ring stiffness, fastener access, printability, and the future transition from 3D-printed prototypes to a metal/SLA hybrid version.
+        - strong [ref=e598]: Skills Used
+        - text: CAD, gearbox design, actuator design, Wolfrom geartrains, tolerance stackups, bearing selection, fastener packaging, FDM/SLA prototyping, CNC/DFM planning, robotic hardware integration, mechanical testing.
+        - strong [ref=e599]: Status
+        - text: Currently iterating on printed prototypes for kinematics, packaging, and assembly sequence while optimizing the design for a metal build. That means running gear macro-geometry optimization in KISSsoft (profile shifts and tip relief on the high-load ring meshes), and moving toward wire-EDM hardened-steel ring inserts, needle bearings on hardened pins, and a floating sun/carrier package before committing to a more robust metal/SLA-hybrid version.
+    - generic:
+      - button:
+        - img
