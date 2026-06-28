@@ -41,6 +41,12 @@ def ascii_clean(text):
     return re.sub(r"\s+", " ", text).strip()
 
 
+def dest_key(value):
+    value = ascii_clean(value).lower()
+    value = re.sub(r"[^a-z0-9]+", "-", value).strip("-")
+    return f"project-{value or 'page'}"
+
+
 def font(c, name="Helvetica", size=8, color=TEXT):
     c.setFont(name, size)
     c.setFillColor(color)
@@ -208,7 +214,7 @@ def pills(c, items, x, y, width, size=6.8):
     return y
 
 
-def page_header(c, page, section_name="Selected Projects"):
+def page_header(c, page, section_name="Project Portfolio"):
     c.setFillColor(BG)
     c.rect(0, 0, W, H, fill=1, stroke=0)
     font(c, "Helvetica", 6.8, MUTED)
@@ -222,6 +228,12 @@ def finish(c):
 
 
 def project_title(c, page, name, date, category, subtitle):
+    key = dest_key(name)
+    c.bookmarkPage(key)
+    try:
+        c.addOutlineEntry(ascii_clean(name), key, level=0, closed=False)
+    except ValueError:
+        pass
     page_header(c, page)
     y = title(c, name, M, H - 70, CONTENT_W, size=19.5)
     font(c, "Helvetica", 7.4, MUTED)
@@ -257,10 +269,12 @@ def cover(c):
     font(c, "Helvetica-Bold", 27, INK)
     c.drawString(M, H - 86, "Aadit Kannan")
     font(c, "Helvetica-Bold", 15, INK)
-    c.drawString(M, H - 120, "Selected Hardware + Software Projects")
-    text(c, "Mechanical design, robotics hardware, fabrication, electronics integration, research instrumentation, and software systems.", M, H - 146, CONTENT_W, size=9.2, leading=11.2)
+    c.drawString(M, H - 120, "Project Portfolio")
+    text(c, "This portfolio includes my hardware, electrical, and software projects, along with some of my physics and matsci work on semiconductor thin-films.", M, H - 146, 372, size=9.2, leading=11.2)
+    text(c, "Some of my projects are included here. For the full list, go to aaditkannan.com/projects.", M, H - 184, 372, size=8.2, leading=10.2, color=MUTED)
+    image(c, "photo.jpg", W - M - 92, H - 178, 92, 92, "", "cover")
 
-    contact_y = H - 198
+    contact_y = H - 232
     label(c, "Contact", M, contact_y)
     rows = [
         ("website", "aaditkannan.com", "https://aaditkannan.com"),
@@ -269,52 +283,52 @@ def cover(c):
         ("github", "github.com/aaditkannan", "https://github.com/aaditkannan"),
         ("linkedin", "linkedin.com/in/aaditkannan", "https://www.linkedin.com/in/aaditkannan"),
     ]
-    x_positions = [M, M + 180, M + 360]
+    x_positions = [M, M + 170, M + 340]
     y = contact_y - 22
     for i, (k, v, url) in enumerate(rows):
         x = x_positions[i % 3]
-        yy = y - 30 * (i // 3)
+        yy = y - 28 * (i // 3)
         font(c, "Helvetica-Bold", 6.2, MUTED)
         c.drawString(x, yy + 12, k.upper())
         font(c, "Helvetica", 8.1, INK)
         c.drawString(x, yy, v)
         c.linkURL(url, (x, yy - 3, x + 150, yy + 11), relative=0)
 
-    idx_y = H - 318
+    idx_y = H - 342
     label(c, "Portfolio Contents", M, idx_y)
     projects = [
-        "Wolfrom Robotic Actuator",
-        "Formula Electric 588V Accumulator",
-        "Ramesh Lab Thin Films",
-        "Nanosecond Pulse Generator",
-        "PLDTracker",
-        "Custom Toolbox Design",
-        "FIRST Robotics Hardware",
-        "Deja Vu - INTO THE DEEP",
-        "Deja Vu - CENTERSTAGE",
-        "Zenith - POWERPLAY",
-        "Inventry",
-        "Pear Volunteering",
-        "Leitmotif",
-        "Atlas SMR",
-        "Construction Acclimation",
-        "Beachsweep",
-        "Zenith - FREIGHT FRENZY",
-        "Serenity - FREIGHT FRENZY",
-        "Friendly Fires",
-        "Prototype O Flood",
+        ("Wolfrom Robotic Actuator", 2),
+        ("Formula Electric 588V Accumulator", 4),
+        ("Nanosecond Pulse Generator", 6),
+        ("Custom Toolbox Design + Manufacturing", 8),
+        ("FIRST Robotics Hardware", 9),
+        ("Deja Vu - INTO THE DEEP", 10),
+        ("Deja Vu - CENTERSTAGE", 11),
+        ("Zenith - POWERPLAY", 12),
+        ("Zenith - FREIGHT FRENZY", 13),
+        ("Serenity - FREIGHT FRENZY", 14),
+        ("Construction Acclimation", 15),
+        ("Friendly Fires", 16),
+        ("Ramesh Lab: Complex-Oxide Thin Films", 17),
+        ("PLDTracker (Ramesh Lab)", 18),
+        ("Inventry", 19),
+        ("Pear Volunteering", 20),
+        ("Leitmotif", 21),
+        ("Tools + Methods", 22),
     ]
     col_w = 244
-    for i, name in enumerate(projects):
-        col = 0 if i < 10 else 1
-        row = i if i < 10 else i - 10
+    split = 9
+    for i, (name, page_no) in enumerate(projects):
+        col = 0 if i < split else 1
+        row = i if i < split else i - split
         x = M + col * (col_w + 28)
-        yy = idx_y - 28 - row * 27
+        yy = idx_y - 28 - row * 28
         rule(c, x, yy + 10, x + col_w, yy + 10, SOFT)
         font(c, "Helvetica-Bold", 7.7, INK)
-        c.drawString(x, yy, f"{i + 1:02d}")
+        c.drawString(x, yy, f"{page_no:02d}")
         font(c, "Helvetica", 7.9, INK)
         c.drawString(x + 27, yy, name)
+        c.linkRect("", dest_key(name), (x, yy - 5, x + col_w, yy + 12), relative=0, thickness=0)
 
     image(c, "wolfrom-render-section.jpg", M, 74, 154, 88, "Actuator section render", "contain", bg=(255, 255, 255))
     image(c, "accumimg.png", M + 181, 74, 154, 88, "Accumulator attic CAD", "cover")
@@ -416,9 +430,9 @@ def formula_validation(c):
         c, 5, "Accumulator Hardware - Materials + Validation", "Sep 2025 - Present", "High-Voltage Packaging",
         "The accumulator attic is a packaging problem, a manufacturing problem, and a safety-review problem at the same time."
     )
-    image(c, "img2.png", M, 500, 248, 148, "Top-down attic CAD view used to check electronics layout and access.", "contain", bg=(255, 255, 255))
-    image(c, "gas.png", M + 268, 500, 248, 148, "Gasket compression sizing used for the weather-seal interface.", "contain", bg=(255, 255, 255))
-    image(c, "accumsa.png", M, 284, CONTENT_W, 154, "Detailed accumulator subassembly view for board, connector, and internal support packaging.", "contain", bg=(255, 255, 255))
+    image(c, "accumimg.png", M, 492, 248, 156, "Overall accumulator CAD context: attic, enclosure, service access, and internal packaging.", "contain", bg=(255, 255, 255))
+    image(c, "img2.png", M + 268, 492, 248, 156, "Top-down attic CAD view used to check electronics layout and access.", "contain", bg=(255, 255, 255))
+    image(c, "accumsa.png", M, 282, CONTENT_W, 154, "Detailed accumulator subassembly view for board, connector, and internal support packaging.", "contain", bg=(255, 255, 255))
     two_text_columns(
         c,
         "Manufacturing Plan",
@@ -438,9 +452,9 @@ def formula_validation(c):
     finish(c)
 
 
-def ramesh_lab(c):
+def ramesh_lab(c, page=6):
     project_title(
-        c, 6, "Ramesh Lab: Complex-Oxide Thin Films", "Jan 2026 - Present", "Research",
+        c, page, "Ramesh Lab: Complex-Oxide Thin Films", "Jan 2026 - Present", "Research",
         "Researching BiFeO3 and related complex-oxide thin films for faster, lower-power memory and logic beyond DRAM and CMOS."
     )
     image(c, "IMG_4508.JPG", M, 460, 160, 156, "Lab/growth workflow context.", "cover")
@@ -468,9 +482,9 @@ def ramesh_lab(c):
     finish(c)
 
 
-def pulse_system(c):
+def pulse_system(c, page=7):
     project_title(
-        c, 7, "Nanosecond Pulse Generator", "May 2026 - Present", "Research Hardware / PCB",
+        c, page, "Nanosecond Pulse Generator", "May 2026 - Present", "Research Hardware / PCB",
         "Nanosecond and microsecond pulse-generator board for BiFeO3 spin-transport and ferroelectric characterization with GaN switching, source-measure biasing, grounded coax/BNC I/O, and RP2040/Python triggering."
     )
     image(c, "ns-pulse-schematic-thumbnail.png", M, 392, CONTENT_W, 244, "Current nanosecond pulse-generator schematic. Shown as the main artifact because it is the current board revision.", "contain", bg=(250, 248, 243))
@@ -495,9 +509,9 @@ def pulse_system(c):
     finish(c)
 
 
-def pulse_board(c):
+def pulse_board(c, page=8):
     project_title(
-        c, 8, "Pulse Generator - Board + V1 Learning", "May 2026 - Present", "Research Hardware / PCB",
+        c, page, "Pulse Generator - Board + V1 Learning", "May 2026 - Present", "Research Hardware / PCB",
         "V1 microsecond hardware validated the basic bench workflow and exposed why the current board needs cleaner triggering, lab I/O, and grounding."
     )
     image(c, "pulse-v1-physical.jpg", M, 500, 220, 148, "V1 microsecond board during bench probing. Useful as a learning artifact, not the current ns revision.", "cover")
@@ -524,9 +538,9 @@ def pulse_board(c):
     finish(c)
 
 
-def pldtracker(c):
+def pldtracker(c, page=9):
     project_title(
-        c, 9, "PLDTracker (Ramesh Lab)", "Jan 2026 - Mar 2026", "Research Software",
+        c, page, "PLDTracker (Ramesh Lab)", "Jan 2026 - Mar 2026", "Research Software",
         "Experiment tracking and data-management system for PLD thin-film workflows, built to connect growth parameters, wafer position, characterization images, and lab documentation."
     )
     image(c, "Screenshot 2026-03-13 000052.png", M, 470, CONTENT_W, 168, "Dashboard and deposition data explorer for tracking thin-film growth records.", "contain", bg=(255, 255, 255))
@@ -551,9 +565,9 @@ def pldtracker(c):
     finish(c)
 
 
-def toolbox(c):
+def toolbox(c, page=10):
     project_title(
-        c, 10, "Custom Toolbox Design + Manufacturing", "May 2026 - Jun 2026", "Mechanical Design",
+        c, page, "Custom Toolbox Design + Manufacturing", "May 2026 - Jun 2026", "Mechanical Design",
         "Controlled CAD-to-drawings-to-fabrication exercise: model the assembly, define functional datums, create buildable drawings, fabricate parts, and inspect fit-up."
     )
     image(c, "toolbox-assembly-drawing.png", M, 488, 248, 150, "Assembly drawing defining lid, latch, hinge, body, and insert interfaces.", "contain", bg=(250, 248, 243))
@@ -579,9 +593,9 @@ def toolbox(c):
     finish(c)
 
 
-def first_overview(c):
+def first_overview(c, page=11):
     project_title(
-        c, 11, "FIRST Robotics Hardware", "Aug 2021 - Jun 2025", "Robotics Hardware / Controls",
+        c, page, "FIRST Robotics Hardware", "Aug 2021 - Jun 2025", "Robotics Hardware / Controls",
         "Four seasons of FTC hardware: 8 robots, 500+ part CAD assemblies, mechanism iteration under match constraints, Java controls, and three Robot Design Awards."
     )
     image(c, "newiamge.png", M, 478, 248, 158, "INTO THE DEEP robot CAD with drivetrain, active intake, transfer path, lift, and end effector.", "cover")
@@ -968,22 +982,37 @@ def tools_methods(c, page):
 def build():
     ensure_dirs()
     c = canvas.Canvas(str(OUT), pagesize=letter)
-    c.setTitle("Aadit Kannan - Selected Project Portfolio")
+    c.setTitle("Aadit Kannan - Project Portfolio")
     c.setAuthor("Aadit Kannan")
     cover(c)
     wolfrom_architecture(c)
     wolfrom_status(c)
     formula_packaging(c)
     formula_validation(c)
-    ramesh_lab(c)
-    pulse_system(c)
-    pulse_board(c)
-    pldtracker(c)
-    toolbox(c)
-    first_overview(c)
-    page = 12
-    for project in GENERIC_PROJECTS:
-        generic_project(c, page, project)
+    pulse_system(c, 6)
+    pulse_board(c, 7)
+    toolbox(c, 8)
+    first_overview(c, 9)
+    projects_by_title = {project["title"]: project for project in GENERIC_PROJECTS}
+    page = 10
+    ordered_project_titles = [
+        "Deja Vu - INTO THE DEEP",
+        "Deja Vu - CENTERSTAGE",
+        "Zenith - POWERPLAY",
+        "Zenith - FREIGHT FRENZY",
+        "Serenity - FREIGHT FRENZY",
+        "Construction Acclimation",
+        "Friendly Fires",
+    ]
+    for project_title_name in ordered_project_titles:
+        generic_project(c, page, projects_by_title[project_title_name])
+        page += 1
+    ramesh_lab(c, page)
+    page += 1
+    pldtracker(c, page)
+    page += 1
+    for project_title_name in ["Inventry", "Pear Volunteering", "Leitmotif"]:
+        generic_project(c, page, projects_by_title[project_title_name])
         page += 1
     tools_methods(c, page)
     c.save()
