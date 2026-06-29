@@ -214,7 +214,7 @@ def pills(c, items, x, y, width, size=6.8):
     return y
 
 
-def page_header(c, page, section_name="Project Portfolio"):
+def page_header(c, page, section_name="Selected Hardware Projects"):
     c.setFillColor(BG)
     c.rect(0, 0, W, H, fill=1, stroke=0)
     font(c, "Helvetica", 6.8, MUTED)
@@ -269,12 +269,11 @@ def cover(c):
     font(c, "Helvetica-Bold", 27, INK)
     c.drawString(M, H - 86, "Aadit Kannan")
     font(c, "Helvetica-Bold", 15, INK)
-    c.drawString(M, H - 120, "Project Portfolio (Shortened)")
-    text(c, "This portfolio includes my hardware, electrical, and software projects, along with some of my physics and matsci work on semiconductor thin-films.", M, H - 146, 372, size=9.2, leading=11.2)
-    text(c, "Some of my projects are included here. For the full list, go to aaditkannan.com/projects.", M, H - 184, 372, size=8.2, leading=10.2, color=MUTED)
-    image(c, "photo.jpg", W - M - 92, H - 178, 92, 92, "", "cover")
+    c.drawString(M, H - 120, "Selected Hardware Projects")
+    text(c, "Mechanical design, fabrication, electronics integration, and test.", M, H - 146, CONTENT_W, size=9.2, leading=11.2)
+    text(c, "Selected projects from aaditkannan.com. Full project archive: aaditkannan.com/projects.", M, H - 176, CONTENT_W, size=8.2, leading=10.2, color=MUTED)
 
-    contact_y = H - 232
+    contact_y = H - 222
     label(c, "Contact", M, contact_y)
     rows = [
         ("website", "aaditkannan.com", "https://aaditkannan.com"),
@@ -294,7 +293,7 @@ def cover(c):
         c.drawString(x, yy, v)
         c.linkURL(url, (x, yy - 3, x + 150, yy + 11), relative=0)
 
-    idx_y = H - 342
+    idx_y = H - 332
     label(c, "Portfolio Contents", M, idx_y)
     projects = [
         ("Wolfrom Architecture", 2),
@@ -352,7 +351,7 @@ def wolfrom_architecture(c):
         ],
         "Gearbox Notes",
         [
-            "Current tooth counts give 555/11, or about 50.45:1. A 125:1 variant is also under exploration.",
+            "Current tooth counts give 555/11, or about 50.45:1 reduction.",
             "The ratio split matters because excessive reduction in the ring differential raises friction losses quickly.",
             "Primary loss paths are ring-mesh friction, planet bearing drag, load sharing, and rough printed tooth surfaces.",
             "Backdrivability work is being handled through friction reduction, preload control, and bearing/mesh choices.",
@@ -369,7 +368,7 @@ def wolfrom_status(c):
         bookmark_label="Wolfrom Prototype + Next Revision"
     )
     image(c, "wolfrom-cover.jpg", M, 486, 248, 164, "Printed prototype used for gear mesh, bearing placement, and stack-height checks.", "cover")
-    image(c, "wolfrom-bench.jpg", M + 268, 486, 248, 164, "Bench assembly and fit-checking before re-timing the actuator by hand.", "cover")
+    image(c, "wolfrom-bench.jpg", M + 268, 486, 248, 164, "Bench assembly and fit-checking during gear timing and stackup validation.", "cover")
     image(c, "wolfrom-render-face.jpg", M, 286, 248, 144, "Top view: three compound planets, output ring, fastener pattern, and center sun.", "contain", bg=(255, 255, 255))
     image(c, "wolfrom-render-side.jpg", M + 268, 286, 248, 144, "Side view: plate stack, motor interface, standoffs, and axial package.", "contain", bg=(255, 255, 255))
     two_text_columns(
@@ -382,7 +381,7 @@ def wolfrom_status(c):
         ],
         "Next Revision",
         [
-            "Use KISSsoft to clean up macro-geometry, profile shifts, and tip relief.",
+            "Refine macro-geometry in KISSsoft, including profile shifts and tip relief.",
             "Prepare a metal/SLA revision with CNC aluminum structure, wire-EDM hardened-steel rings, hardened pins, and needle bearings.",
             "Planned dyno work: breakaway torque, backdrive feel, efficiency, and load behavior after the metal revision is built.",
         ],
@@ -421,7 +420,7 @@ def formula_packaging(c):
 def formula_validation(c):
     project_title(
         c, 5, "Formula Electric 588V Accumulator", "Sep 2025 - Present", "High-Voltage Packaging / Materials + Validation",
-        "Materials, manufacturing methods, and validation checks for turning the accumulator CAD into hardware that can pass inspection and survive competition use.",
+        "Materials, manufacturing methods, and validation checks for turning the accumulator CAD into hardware that can meet competition inspection and reliability requirements.",
         bookmark_label="Accumulator Materials + Validation"
     )
     image(c, "accumimg.png", M, 492, 248, 156, "Overall accumulator CAD context: attic, enclosure, service access, and internal packaging.", "contain", bg=(255, 255, 255))
@@ -432,14 +431,14 @@ def formula_validation(c):
         "Manufacturing Plan",
         [
             "Laser-cut aluminum panels, TIG welded structure, waterjet polycarbonate floor, and waterjet neoprene gasket.",
-            "Polycarbonate floor gives electrical isolation and visual inspection without tearing the pack apart.",
+            "Polycarbonate floor gives electrical isolation and visual inspection without disassembling the pack.",
             "Nomex 410 for dielectric strength, temperature margin, and flame resistance near HV components.",
         ],
         "Checks",
         [
             "FEA against 40g lateral, 40g longitudinal, and 20g vertical load cases.",
             "Checked gasket compression, water ingress, dielectric margin, service access, fastener access, and fan airflow together.",
-            "Target gates include 1500V AC dielectric testing and IP65-style water ingress testing before competition use.",
+            "Target gates include 1500V AC dielectric testing and IP65-style water ingress testing before event use.",
         ],
         y_top=232,
     )
@@ -479,7 +478,7 @@ def ramesh_lab(c, page=6):
 def pulse_system(c, page=7):
     project_title(
         c, page, "Nanosecond Pulse Generator", "May 2026 - Present", "Research Hardware / PCB",
-        "Board for fast electrical testing of BiFeO3 devices in Ramesh Lab. The current design is moving from a rough microsecond pulser toward cleaner ns/us triggering, grounded coax/BNC I/O, and repeatable scope/SMU measurements."
+        "Board for fast electrical testing of BiFeO3 devices in Ramesh Lab. The current design is moving from a first-generation microsecond pulser toward cleaner ns/us triggering, grounded coax/BNC I/O, and repeatable scope/SMU measurements."
     )
     image(c, "ns-pulse-schematic-thumbnail.png", M, 392, CONTENT_W, 244, "Current nanosecond pulse-generator schematic. Shown as the main artifact because it is the current board revision.", "contain", bg=(250, 248, 243))
     label(c, "Bench Interface", M, 332)
@@ -518,7 +517,7 @@ def pulse_board(c, page=8):
         "V1 Exposed",
         [
             "Clip-lead power and weak lab I/O made the first board awkward around real bench equipment.",
-            "Triggering needed to be tied into Python/RP2040 control, not treated as a loose pulse node.",
+            "Triggering needed to be tied into Python/RP2040 control, not treated as an isolated pulse node.",
             "LTspice transient work informed switching timing and V1 bring-up, while the current revision is documented through schematic/layout and bench validation artifacts.",
             "Grounding and connector strategy had to be designed into the instrument rather than left to bench improvisation.",
         ],
@@ -568,7 +567,7 @@ def toolbox(c, page=10):
     image(c, "toolbox-assembly-drawing.png", M, 488, 248, 150, "Assembly drawing defining lid, latch, hinge, body, and insert interfaces.", "contain", bg=(250, 248, 243))
     image(c, "toolbox-bottom-walls-drawing.png", M + 268, 488, 248, 150, "Part drawing with datum references and positional tolerance callouts.", "contain", bg=(250, 248, 243))
     image(c, "toolbox-prototype-closed.png", M, 292, 248, 136, "Prototype fit-up after fabrication with hinges, latches, handle, and fasteners.", "cover")
-    image(c, "toolbox-prototype-open.png", M + 268, 292, 248, 136, "Open prototype showing interior fit-up; final-version photos unavailable.", "cover")
+    image(c, "toolbox-prototype-open.png", M + 268, 292, 248, 136, "Open prototype showing interior fit-up, inserts, hinge clearance, and lid alignment.", "cover")
     two_text_columns(
         c,
         "Designed",
@@ -608,7 +607,7 @@ def first_overview(c, page=11):
         "Controls-Aware Design",
         [
             "Java TeleOp with field-centric mecanum, encoder PID loops, mechanism sequencing, driver feedback, and autonomous routines.",
-            "Hardware and driver code were tuned together because a mechanism that only works in CAD is not useful in a match.",
+            "Hardware and driver code were tuned together so mechanisms remained usable under match timing, driver-control, and service constraints.",
             "Mentored 30+ members in CAD, Java, mechanism iteration, and manufacturing workflow.",
         ],
         y_top=232,
@@ -977,7 +976,7 @@ def tools_methods(c, page):
 def build():
     ensure_dirs()
     c = canvas.Canvas(str(OUT), pagesize=letter)
-    c.setTitle("Aadit Kannan - Project Portfolio")
+    c.setTitle("Aadit Kannan - Selected Hardware Projects")
     c.setAuthor("Aadit Kannan")
     cover(c)
     wolfrom_architecture(c)
