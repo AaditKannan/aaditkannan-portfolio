@@ -564,10 +564,14 @@ def toolbox(c, page=10):
         c, page, "Custom Toolbox Design + Manufacturing", "Jan 2026 - May 2026", "Mechanical Design",
         "Mechanical design project centered on drawings, datums, tolerances, fabrication choices, and fit-up inspection for a laser-cut/FDM toolbox assembly."
     )
-    image(c, "toolbox-assembly-drawing.png", M, 488, 248, 150, "Assembly drawing defining lid, latch, hinge, body, and insert interfaces.", "contain", bg=(250, 248, 243))
-    image(c, "toolbox-bottom-walls-drawing.png", M + 268, 488, 248, 150, "Part drawing with datum references and positional tolerance callouts.", "contain", bg=(250, 248, 243))
-    image(c, "toolbox-prototype-closed.png", M, 292, 248, 136, "Prototype fit-up after fabrication with hinges, latches, handle, and fasteners.", "cover")
-    image(c, "toolbox-prototype-open.png", M + 268, 292, 248, 136, "Open prototype showing interior fit-up, inserts, hinge clearance, and lid alignment.", "cover")
+    image(c, "toolbox-assembly-drawing.png", M, 516, 248, 122, "Assembly drawing defining lid, latch, hinge, body, and insert interfaces.", "contain", bg=(250, 248, 243))
+    image(c, "toolbox-bottom-walls-drawing.png", M + 268, 516, 248, 122, "Bottom wall drawing with datums, critical dimensions, and positional tolerance callouts.", "contain", bg=(250, 248, 243))
+    thumb_w = 158
+    image(c, "toolbox-top-walls-drawing.png", M, 366, thumb_w, 94, "Top wall drawing for lid/body alignment.", "contain", bg=(250, 248, 243))
+    image(c, "toolbox-bottom-walls-rev-drawing.png", M + 179, 366, thumb_w, 94, "Revised bottom wall drawing with updated hole pattern control.", "contain", bg=(250, 248, 243))
+    image(c, "toolbox-gridfinity-base-drawing.png", M + 358, 366, thumb_w, 94, "Gridfinity insert drawing with pocket and fastener tolerances.", "contain", bg=(250, 248, 243))
+    image(c, "toolbox-prototype-closed.png", M, 238, 248, 82, "Closed prototype fit-up with hinges, latches, handle, and fasteners.", "cover")
+    image(c, "toolbox-prototype-open.png", M + 268, 238, 248, 82, "Open prototype showing interior fit-up, inserts, hinge clearance, and lid alignment.", "cover")
     two_text_columns(
         c,
         "Designed",
@@ -582,7 +586,7 @@ def toolbox(c, page=10):
             "Prototype used laser-cut plywood and FDM inserts; the engineering focus was drawing release, datum strategy, tolerancing, fabrication, and fit-up inspection.",
             "Prototype photos show the fabricated assembly used for hinge, latch, handle, fastener, and interior fit-up checks.",
         ],
-        y_top=236,
+        y_top=184,
     )
     finish(c)
 
