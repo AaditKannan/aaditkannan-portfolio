@@ -227,11 +227,11 @@ def finish(c):
     c.showPage()
 
 
-def project_title(c, page, name, date, category, subtitle):
-    key = dest_key(name)
+def project_title(c, page, name, date, category, subtitle, bookmark_label=None):
+    key = dest_key(bookmark_label or name)
     c.bookmarkPage(key)
     try:
-        c.addOutlineEntry(ascii_clean(name), key, level=0, closed=False)
+        c.addOutlineEntry(ascii_clean(bookmark_label or name), key, level=0, closed=False)
     except ValueError:
         pass
     page_header(c, page)
@@ -339,7 +339,7 @@ def cover(c):
 def wolfrom_architecture(c):
     y = project_title(
         c, 2, "Wolfrom Robotic Actuator", "Jun 2026 - Present", "Robotics Hardware",
-        "Compact compound planetary actuator for humanoid-scale joints, focused on high reduction, backdrivability, reflected inertia, and mechanical packaging."
+        "Compact Wolfrom-style actuator for humanoid-scale joints. The current build is about packaging a high-ratio gearbox into a small module and learning what has to change before the metal version."
     )
     img_y, img_h = 306, 310
     image(c, "wolfrom-render-section.jpg", M, img_y, CONTENT_W, img_h, "CAD section: driven sun, compound planets, fixed ring, output ring, bearing stack, and output interface.", "contain", bg=(255, 255, 255))
@@ -353,17 +353,17 @@ def wolfrom_architecture(c):
         c,
         "Designed",
         [
-            "Full actuator stackup: sun, compound planet pairs, fixed ring, output ring, carrier, bearings, shafts, and output hub.",
-            "One compact axial package instead of stacking multiple conventional planetary stages.",
-            "Split output ring, bolt access, dowel alignment, bearing support, and assembly timing strategy.",
-            "Printed prototype geometry first, with a metal revision path around CNC aluminum and wire-EDM ring gears.",
+            "Full stackup: sun, compound planets, fixed ring, output ring, carrier, bearings, shafts, and output hub.",
+            "One compact axial package instead of stacking multiple planetary stages.",
+            "Split output ring, bolt access, dowel alignment, bearing support, and assembly order.",
+            "Printed geometry first; metal revision planned around CNC aluminum structure and wire-EDM ring gears.",
         ],
-        "Technical Notes",
+        "Gearbox Notes",
         [
-            "Current tooth counts produce 555/11, or about 50.45:1 reduction; a 125:1 variant is in the same design family.",
-            "Ratio split moves more reduction into the sun/carrier stage and less into the lossy ring differential.",
-            "Main loss paths are ring-mesh friction, planet-bearing drag, load sharing, and rough printed tooth surfaces.",
-            "Backdrivability work focuses on reducing friction rather than pretending reflected rotor inertia disappears.",
+            "Current tooth counts give 555/11, about 50.45:1. I am also exploring a 125:1 variant.",
+            "The ratio split matters because too much reduction in the ring differential gets lossy fast.",
+            "Main things I am watching: ring mesh friction, planet bearing drag, load sharing, and rough printed teeth.",
+            "Backdrivability is being treated as a friction problem, not as a hand-wavy claim.",
         ],
         y_top=266,
     )
@@ -372,8 +372,9 @@ def wolfrom_architecture(c):
 
 def wolfrom_status(c):
     y = project_title(
-        c, 3, "Wolfrom Actuator - Prototype + Next Revision", "Jun 2026 - Present", "Robotics Hardware",
-        "Printed prototypes are being used for gear mesh, packaging, stack height, and assembly checks before committing to the metal build."
+        c, 3, "Wolfrom Robotic Actuator", "Jun 2026 - Present", "Robotics Hardware / Prototype + Next Revision",
+        "The printed parts are not meant to prove final performance. They are there to catch mesh, stack height, bearing, and assembly problems before I spend real money on the metal build.",
+        bookmark_label="Wolfrom Robotic Actuator - prototype"
     )
     image(c, "wolfrom-cover.jpg", M, 486, 248, 164, "Printed prototype used for gear mesh, bearing placement, and stack-height checks.", "cover")
     image(c, "wolfrom-bench.jpg", M + 268, 486, 248, 164, "Bench assembly and fit-checking before re-timing the actuator by hand.", "cover")
@@ -383,15 +384,15 @@ def wolfrom_status(c):
         c,
         "Current Prototype",
         [
-            "Built and fit-checked printed actuator hardware for meshing, assembly access, and stack alignment.",
-            "Working toward split-gear preloading for near-zero backlash; no final backlash claim yet.",
-            "Evaluating printed gears as geometry prototypes, not as final load-bearing actuator hardware.",
+            "Printed and fit-checked the actuator hardware for mesh, assembly access, and stack alignment.",
+            "Working on split-gear preload to reduce backlash; no final backlash number yet.",
+            "Treating printed gears as geometry prototypes, not load-rated actuator parts.",
         ],
         "Next Revision",
         [
-            "KISSsoft refinement for macro-geometry, profile shifts, and tip relief on the loaded ring meshes.",
-            "Metal version planned around CNC aluminum structure, wire-EDM hardened-steel rings, hardened pins, and needle bearings.",
-            "Dyno characterization planned for breakaway torque, backdrive feel, efficiency, and load behavior after the metal revision.",
+            "Use KISSsoft to clean up macro-geometry, profile shifts, and tip relief.",
+            "Move to CNC aluminum structure, wire-EDM hardened-steel rings, hardened pins, and needle bearings.",
+            "Test breakaway torque, backdrive feel, efficiency, and load behavior after the metal revision exists.",
         ],
         y_top=228,
     )
@@ -401,7 +402,7 @@ def wolfrom_status(c):
 def formula_packaging(c):
     project_title(
         c, 4, "Formula Electric 588V Accumulator", "Sep 2025 - Present", "High-Voltage Packaging",
-        "Designed and manufactured accumulator attic hardware for Berkeley Formula Electric: HV electronics packaging, enclosure design, busbar routing, waterproofing, insulation, cooling, and inspection access."
+        "Accumulator attic and enclosure work for Berkeley Formula Electric. The hard part is not one bracket; it is making HV electronics, busbars, insulation, cooling, water sealing, and service access all fit in the same small volume."
     )
     image(c, "accumimg.png", M, 372, CONTENT_W, 220, "588V accumulator CAD showing the HV electronics attic, fan wall, service access, and enclosure packaging.", "contain", bg=(255, 255, 255))
     image(c, "accumsa.png", M, 204, 248, 112, "Electronics attic layout: board, connector, busbar, and mechanical interface packaging.", "contain", bg=(255, 255, 255))
@@ -410,15 +411,15 @@ def formula_packaging(c):
         c,
         "Built",
         [
-            "Packaged the HV electronics attic, busbars, boards, fans, fasteners, and service interfaces inside the accumulator envelope.",
-            "Reduced attic mass by 18% while preserving insulation clearances, cooling paths, inspection access, and fastener access.",
-            "Designed around a 588V pack, waterproofing needs, high-dielectric insulation, and SES/ESF review material.",
+            "Packaged the HV attic: boards, busbars, fans, fasteners, service interfaces, and inspection access.",
+            "Cut attic mass by 18% while keeping clearances, cooling paths, and fastener access workable.",
+            "Designed around a 588V pack, water sealing, dielectric isolation, and SES/ESF review needs.",
         ],
         "Constraints",
         [
-            "Busbar routing for 80A peak discharge without turning the attic into an unserviceable wiring box.",
-            "FSAE structural load cases, high-voltage isolation, rain-test sealing, fan airflow, and board access all fight for the same volume.",
-            "Transparent/inspectable surfaces and removable interfaces mattered because serviceability is part of safety.",
+            "Busbar routing for 80A peak discharge without making the attic impossible to service.",
+            "FSAE load cases, HV isolation, rain-test sealing, airflow, and board access all compete for the same space.",
+            "Transparent/inspectable surfaces matter because serviceability is part of safety.",
         ],
         y_top=154,
     )
@@ -427,8 +428,9 @@ def formula_packaging(c):
 
 def formula_validation(c):
     project_title(
-        c, 5, "Accumulator Hardware - Materials + Validation", "Sep 2025 - Present", "High-Voltage Packaging",
-        "The accumulator attic is a packaging problem, a manufacturing problem, and a safety-review problem at the same time."
+        c, 5, "Formula Electric 588V Accumulator", "Sep 2025 - Present", "High-Voltage Packaging / Materials + Validation",
+        "This page is the less flashy side of the accumulator: materials, manufacturing methods, and the checks that make the CAD believable.",
+        bookmark_label="Formula Electric 588V Accumulator - validation"
     )
     image(c, "accumimg.png", M, 492, 248, 156, "Overall accumulator CAD context: attic, enclosure, service access, and internal packaging.", "contain", bg=(255, 255, 255))
     image(c, "img2.png", M + 268, 492, 248, 156, "Top-down attic CAD view used to check electronics layout and access.", "contain", bg=(255, 255, 255))
@@ -437,15 +439,15 @@ def formula_validation(c):
         c,
         "Manufacturing Plan",
         [
-            "Laser-cut aluminum panels, TIG welded structure, waterjet-cut polycarbonate floor, and waterjet-cut neoprene gasket.",
-            "Polycarbonate floor provides electrical isolation and visual inspection without disassembling the accumulator.",
-            "Nomex 410 insulation selected for dielectric strength, high temperature rating, and flame resistance near HV components.",
+            "Laser-cut aluminum panels, TIG welded structure, waterjet polycarbonate floor, and waterjet neoprene gasket.",
+            "Polycarbonate floor gives electrical isolation and visual inspection without tearing the pack apart.",
+            "Nomex 410 for dielectric strength, temperature margin, and flame resistance near HV components.",
         ],
         "Checks",
         [
-            "FEA against 40g lateral, 40g longitudinal, and 20g vertical load cases with yield margin.",
-            "Dielectric margin, gasket compression, water ingress, service access, fastener access, and cooling airflow reviewed together.",
-            "1500V AC dielectric test and IP65-style water ingress testing are the target validation gates before competition use.",
+            "FEA against 40g lateral, 40g longitudinal, and 20g vertical load cases.",
+            "Checked gasket compression, water ingress, dielectric margin, service access, fastener access, and fan airflow together.",
+            "Target gates include 1500V AC dielectric testing and IP65-style water ingress testing before competition use.",
         ],
         y_top=232,
     )
@@ -455,7 +457,7 @@ def formula_validation(c):
 def ramesh_lab(c, page=6):
     project_title(
         c, page, "Ramesh Lab: Complex-Oxide Thin Films", "Jan 2026 - Present", "Research",
-        "Researching BiFeO3 and related complex-oxide thin films for faster, lower-power memory and logic beyond DRAM and CMOS."
+        "Research context for my Ramesh Lab work: BiFeO3 and related complex-oxide thin films for memory/logic devices beyond conventional DRAM and CMOS."
     )
     image(c, "IMG_4508.JPG", M, 460, 160, 156, "Lab/growth workflow context.", "cover")
     image(c, "IMG_4507.JPG", M + 178, 460, 160, 156, "Thin-film process and sample handling context.", "cover")
@@ -464,28 +466,28 @@ def ramesh_lab(c, page=6):
         c,
         "Learning + Growth Work",
         [
-            "Reading Lines and Glass to build the physics base: polarization, domains, coercive fields, hysteresis, dielectric response, strain, and defects.",
-            "Learning supervised substrate prep, solvent cleaning, annealing, step-terrace control, PLD growth, and RHEED monitoring.",
-            "Practicing thin-film deposition workflow with Donald's guidance: oxygen pressure, plume shape, target/substrate geometry, and temperature stability.",
+            "Reading Lines and Glass for the physics base: polarization, domains, coercive fields, hysteresis, dielectric response, strain, and defects.",
+            "Learning substrate prep, solvent cleaning, annealing, step-terrace control, PLD growth, and RHEED monitoring.",
+            "Practicing the deposition workflow with Donald's guidance: oxygen pressure, plume shape, target/substrate geometry, and temperature stability.",
             "Connecting growth choices to AFM, XRD, PFM, and electrical characterization results.",
         ],
         "Connected Projects",
         [
-            "Nanosecond Pulse Generator: lab instrument for fast electrical characterization of oxide devices after fabrication.",
-            "PLDTracker: data-management tool linking deposition conditions to characterization data and lab documentation.",
-            "The point is the full research loop: grow films, track process parameters, then measure how the devices switch.",
+            "Nanosecond Pulse Generator: hardware for fast electrical characterization of oxide devices after fabrication.",
+            "PLDTracker: data tool linking deposition conditions to characterization data and lab documentation.",
+            "The larger loop is simple: grow films, track how they were grown, then measure how the devices switch.",
         ],
         y_top=394,
     )
     label(c, "Why It Matters", M, 136)
-    text(c, "Strain, interfaces, atomic stacking order, and oxygen vacancies can create switchable polarization, interfacial conduction, and coupled ferroic states that do not exist in a single bulk material. The work is about learning how process choices reshape device behavior.", M, 118, CONTENT_W, size=7.8, leading=9.8, max_lines=5)
+    text(c, "Strain, interfaces, atomic stacking order, and oxygen vacancies can create switching behavior that does not exist in a single bulk material. I am mainly trying to understand how process choices show up later in device behavior.", M, 118, CONTENT_W, size=7.8, leading=9.8, max_lines=5)
     finish(c)
 
 
 def pulse_system(c, page=7):
     project_title(
         c, page, "Nanosecond Pulse Generator", "May 2026 - Present", "Research Hardware / PCB",
-        "Nanosecond and microsecond pulse-generator board for BiFeO3 spin-transport and ferroelectric characterization with GaN switching, source-measure biasing, grounded coax/BNC I/O, and RP2040/Python triggering."
+        "Board for fast electrical testing of BiFeO3 devices in Ramesh Lab. The current design is moving from a rough microsecond pulser toward cleaner ns/us triggering, grounded coax/BNC I/O, and repeatable scope/SMU measurements."
     )
     image(c, "ns-pulse-schematic-thumbnail.png", M, 392, CONTENT_W, 244, "Current nanosecond pulse-generator schematic. Shown as the main artifact because it is the current board revision.", "contain", bg=(250, 248, 243))
     label(c, "Bench Interface", M, 332)
@@ -494,14 +496,14 @@ def pulse_system(c, page=7):
         c,
         "Designed",
         [
-            "Dual-range pulse architecture around current BFO testing near 30V, with future sweeps toward smaller voltage ranges.",
+            "Dual-range pulse architecture around current BFO testing near 30V, with future lower-voltage sweeps planned.",
             "GaN switching path, trigger/sync routing, grounded lab I/O, and source-measure bias interface.",
-            "Board organization around probe-station use, scope validation, dummy-load bring-up, and controlled pulse visibility.",
+            "Layout organized around probe-station use, dummy-load bring-up, and scope visibility.",
         ],
-        "Case-Specific Notes",
+        "Device-Side Notes",
         [
-            "The useful quantity is the voltage that actually lands across the BFO device, not just a nominal connector setting.",
-            "Current response mixes polarization switching, leakage, dielectric capacitance, and fixture parasitics, so timing and grounding matter.",
+            "What matters is the voltage that actually lands across the BFO device, not just the connector setting.",
+            "Measured current can mix polarization switching, leakage, dielectric capacitance, and fixture parasitics.",
             "No final rise-time, jitter, device result, or amplitude-stability claim yet; bring-up is still in progress.",
         ],
         y_top=270,
@@ -511,8 +513,9 @@ def pulse_system(c, page=7):
 
 def pulse_board(c, page=8):
     project_title(
-        c, page, "Pulse Generator - Board + V1 Learning", "May 2026 - Present", "Research Hardware / PCB",
-        "V1 microsecond hardware validated the basic bench workflow and exposed why the current board needs cleaner triggering, lab I/O, and grounding."
+        c, page, "Nanosecond Pulse Generator", "May 2026 - Present", "Research Hardware / Board + V1 Learning",
+        "V1 was useful because it showed what was annoying on the bench. The current board keeps the parts that worked and fixes the triggering, lab I/O, grounding, and measurement flow.",
+        bookmark_label="Nanosecond Pulse Generator - board learning"
     )
     image(c, "pulse-v1-physical.jpg", M, 500, 220, 148, "V1 microsecond board during bench probing. Useful as a learning artifact, not the current ns revision.", "cover")
     image(c, "pulse-v1-us-layout.png", M + 244, 500, 272, 148, "V1 PCB layout used to inspect trace routing, connector placement, and returns.", "contain", bg=(24, 25, 29))
@@ -522,16 +525,16 @@ def pulse_board(c, page=8):
         c,
         "V1 Exposed",
         [
-            "Clip-lead power and weak lab I/O made the first version awkward to use around real bench equipment.",
-            "Triggering needed to be integrated with Python/RP2040 control instead of treated as an isolated pulse node.",
-            "LTspice transient work was useful for V1 timing intuition, but the current PDF does not use the screenshot because it reads poorly.",
-            "Grounding and connector strategy had to be designed as part of the experiment, not left to bench improvisation.",
+            "Clip-lead power and weak lab I/O made the first board awkward around real bench equipment.",
+            "Triggering needed to be tied into Python/RP2040 control, not treated as a loose pulse node.",
+            "LTspice transient work helped with timing intuition, but the current PDF does not rely on the ugly screenshot.",
+            "Grounding and connector strategy had to be part of the instrument, not a last-minute bench hack.",
         ],
         "Current Revision Adds",
         [
-            "Nanosecond and microsecond paths in one cleaner instrument.",
+            "Nanosecond and microsecond paths in one cleaner board.",
             "Coax/BNC-style outputs, shared sync/trigger handling, source-measure biasing, and clearer return paths.",
-            "Validation plan: rails, trigger logic, dummy loads, switching behavior, then device-side fixture measurements.",
+            "Bring-up order: rails, trigger logic, dummy loads, switching behavior, then device-side fixture measurements.",
         ],
         y_top=270,
     )
@@ -541,7 +544,7 @@ def pulse_board(c, page=8):
 def pldtracker(c, page=9):
     project_title(
         c, page, "PLDTracker (Ramesh Lab)", "Jan 2026 - Mar 2026", "Research Software",
-        "Experiment tracking and data-management system for PLD thin-film workflows, built to connect growth parameters, wafer position, characterization images, and lab documentation."
+        "A lab tool for keeping PLD runs, wafer position, growth parameters, images, and slide-deck analysis from getting scattered across notes and folders."
     )
     image(c, "Screenshot 2026-03-13 000052.png", M, 470, CONTENT_W, 168, "Dashboard and deposition data explorer for tracking thin-film growth records.", "contain", bg=(255, 255, 255))
     image(c, "Screenshot 2026-03-13 000118.png", M, 284, 248, 126, "Filtering and data exploration interface.", "contain", bg=(255, 255, 255))
@@ -552,12 +555,12 @@ def pldtracker(c, page=9):
         [
             "Logs substrate, target material, temperature, oxygen pressure, laser fluence, deposition time, and wafer disk position.",
             "Links XRD scans, AFM/PFM domain images, slide-deck figures, and camera captures to specific runs.",
-            "Built a dashboard for filtering records and visualizing parameter trends with connected datapoints and fit lines.",
+            "Dashboard for filtering records and plotting parameter trends with connected datapoints and fit lines.",
         ],
         "Research Value",
         [
             "Replaces scattered notes, spreadsheets, screenshots, and slide decks with searchable experiment metadata.",
-            "Makes it easier to revisit whether growth-condition changes explain film-structure or device-property changes.",
+            "Makes it easier to ask whether a growth-condition change explains a film-structure or device-property change.",
             "Includes a SolidWorks camera mount path for substrate-position monitoring at the PLD chamber.",
         ],
         y_top=232,
@@ -568,7 +571,7 @@ def pldtracker(c, page=9):
 def toolbox(c, page=10):
     project_title(
         c, page, "Custom Toolbox Design + Manufacturing", "May 2026 - Jun 2026", "Mechanical Design",
-        "Controlled CAD-to-drawings-to-fabrication exercise: model the assembly, define functional datums, create buildable drawings, fabricate parts, and inspect fit-up."
+        "Toolbox project focused on the boring-but-important part of mechanical design: drawings, datums, tolerances, fabrication choices, and whether the thing actually fits after it is made."
     )
     image(c, "toolbox-assembly-drawing.png", M, 488, 248, 150, "Assembly drawing defining lid, latch, hinge, body, and insert interfaces.", "contain", bg=(250, 248, 243))
     image(c, "toolbox-bottom-walls-drawing.png", M + 268, 488, 248, 150, "Part drawing with datum references and positional tolerance callouts.", "contain", bg=(250, 248, 243))
@@ -579,13 +582,13 @@ def toolbox(c, page=10):
         "Designed",
         [
             "Production-style drawings using ASME Y14.5-2018 GD&T conventions.",
-            "Datum scheme, position tolerances, fastener clearances, bend/edge reliefs, hinge/latch interfaces, and lid closure.",
-            "Laser-cut plywood body with FDM/Gridfinity-style inserts and fastened joints visible in the prototype.",
+            "Datum scheme, position tolerances, fastener clearances, hinge/latch interfaces, and lid closure.",
+            "Laser-cut plywood body with FDM/Gridfinity-style inserts and visible fastened joints.",
         ],
         "Inspected",
         [
             "Fit-up checked with calipers, fasteners/gauge pins, squareness checks, lid closure, and hinge/latch alignment.",
-            "The value is drawing discipline and datum strategy, not pretending this was a metal production enclosure.",
+            "The useful part of this project is drawing discipline and datum strategy, not pretending the box is more advanced than it is.",
             "Prototype photos are included honestly because final-version photos are not available.",
         ],
         y_top=236,
@@ -606,15 +609,15 @@ def first_overview(c, page=11):
         c,
         "Built Across Seasons",
         [
-            "Mecanum drivetrains, active intakes, transfer paths, arms/lifts, claws/end effectors, hang mechanisms, and game-specific scoring systems.",
+            "Mecanum drivetrains, active intakes, transfer paths, arms/lifts, claws, end effectors, hang mechanisms, and scoring systems.",
             "FEA-informed custom aluminum and printed components for stress, deflection, and mechanism clearance.",
-            "Manufacturing through printed parts, laser-cut plates, CNC-machined aluminum, and shop-fabricated hardware.",
+            "Parts made through printing, laser-cut plates, CNC aluminum, and normal shop fabrication.",
         ],
         "Controls-Aware Design",
         [
             "Java TeleOp with field-centric mecanum, encoder PID loops, mechanism sequencing, driver feedback, and autonomous routines.",
-            "Hardware and driver code were tuned together so mechanisms were not only possible in CAD but usable under match pressure.",
-            "Mentored 30+ members in CAD and Java; team-building is secondary here, but it affected design execution.",
+            "Hardware and driver code were tuned together because a mechanism that only works in CAD is not useful in a match.",
+            "Mentored 30+ members in CAD and Java; this mattered because design quality depended on the build team actually understanding the robot.",
         ],
         y_top=232,
     )
@@ -651,7 +654,7 @@ GENERIC_PROJECTS = [
         "title": "Deja Vu - INTO THE DEEP",
         "date": "Aug 2024 - Jun 2025",
         "category": "FTC Robotics / Hardware Lead",
-        "subtitle": "500+ part CAD robot for sample pickup, basket scoring, specimen scoring, and endgame hang, designed under real match reliability constraints.",
+        "subtitle": "500+ part CAD robot for sample pickup, basket scoring, specimen scoring, and endgame hang. This was a full season of making mechanisms survive real driver practice and matches.",
         "images": [
             ("newiamge.png", "Full robot CAD with intake, transfer, lift, end effector, drivetrain, and hang packaging.", "cover"),
             ("intake.png", "High-iteration intake mechanism CAD.", "cover"),
@@ -676,7 +679,7 @@ GENERIC_PROJECTS = [
         "title": "Deja Vu - CENTERSTAGE",
         "date": "Aug 2023 - Jun 2024",
         "category": "FTC Robotics / Hardware Lead",
-        "subtitle": "Pixel-scoring robot for FTC CENTERSTAGE, focused on reliable dual-pixel handling, backdrop scoring, vision alignment, and driver-controlled mechanism sequencing.",
+        "subtitle": "CENTERSTAGE robot built around dual-pixel handling, backdrop scoring, vision alignment, and driver-controlled mechanism sequencing.",
         "images": [
             ("Deja_Vu_Bot_Assemble_Version_1_v4_v1112.png", "Full robot CAD assembly for CENTERSTAGE.", "cover"),
             ("dejapp.png", "Robot/app or subsystem reference from the season.", "contain", (255, 255, 255)),
@@ -692,7 +695,7 @@ GENERIC_PROJECTS = [
         "right": [
             "AprilTag-based autonomous alignment and camera-based pixel-position feedback.",
             "Java TeleOp with speed curves, arm presets, claw control, drone launcher arming, and intake/transfer coordination.",
-            "Qualified for NorCal regional championship with minimal mechanical failures during matches.",
+            "Qualified for NorCal regional championship with very few mechanical failures in matches.",
         ],
         "tools": ["SolidWorks", "Java", "FTC SDK", "AprilTags", "OpenCV", "PID Control", "Mecanum Kinematics"],
     },
@@ -700,7 +703,7 @@ GENERIC_PROJECTS = [
         "title": "Zenith - POWERPLAY",
         "date": "Aug 2022 - Jun 2023",
         "category": "FTC Robotics / Team Lead",
-        "subtitle": "Cone-stacking robot built around a fast linear lift, cone-centering claw, mecanum drive, and autonomous positioning.",
+        "subtitle": "POWERPLAY robot built around a fast linear lift, cone-centering claw, mecanum drive, and autonomous positioning.",
         "images": [
             ("zenithbottt.png", "POWERPLAY robot CAD with lift and cone-scoring mechanism.", "contain", (255, 255, 255)),
             ("zensim.png", "Mechanism/simulation reference for the season.", "cover"),
@@ -717,7 +720,7 @@ GENERIC_PROJECTS = [
         "right": [
             "Java TeleOp with mecanum kinematics, lift PID, and speed scaling modes.",
             "Autonomous used OpenCV signal-sleeve detection, dead-wheel odometry, and IMU heading correction.",
-            "ZenLender spreadsheet lending system started here and later evolved into Inventry.",
+            "The ZenLender parts spreadsheet started here and later turned into Inventry.",
         ],
         "tools": ["Onshape", "Java", "FTC SDK", "OpenCV", "Dead-Wheel Odometry", "PID Control", "String Rigging"],
     },
@@ -725,7 +728,7 @@ GENERIC_PROJECTS = [
         "title": "Inventry",
         "date": "Jun 2025 - Dec 2025",
         "category": "Robotics Software",
-        "subtitle": "Robotics-parts inventory, lending, and marketplace system built to reduce emergency shipping and scattered spreadsheet workflows for FTC teams.",
+        "subtitle": "Robotics-parts inventory and lending system for FTC teams. It came from the very real problem of teams needing parts faster than shipping can deliver them.",
         "images": [
             ("homepageinve.png", "Inventry landing/interface screenshot.", "contain", (255, 255, 255)),
             ("invends.png", "Inventory/product interface screenshot.", "contain", (255, 255, 255)),
@@ -748,7 +751,7 @@ GENERIC_PROJECTS = [
         "title": "Pear Volunteering",
         "date": "Aug 2023 - May 2025",
         "category": "Web Platform",
-        "subtitle": "Volunteer platform connecting 2000+ students, 20+ organizers, and administrators who needed verified hour logs.",
+        "subtitle": "Volunteer platform for students, organizers, and administrators who needed event signup and verified hour logs to stop living in spreadsheets.",
         "images": [
             ("pearpage.png", "Pear volunteer/event platform screenshot.", "contain", (255, 255, 255)),
             ("pearis.png", "Volunteer interface or organizer screen.", "contain", (255, 255, 255)),
@@ -765,7 +768,7 @@ GENERIC_PROJECTS = [
         "right": [
             "Wix Velo backend logic, custom JavaScript, webhook integrations, and role-based access.",
             "Async webhook queue for high-volume signup events that could fill 50+ spots quickly.",
-            "Privacy constraints: student contact data stayed protected and communication flowed through the platform.",
+            "Privacy constraint: student contact data stayed protected and communication flowed through the platform.",
         ],
         "tools": ["Wix Velo", "JavaScript", "Webhook Queues", "QR Check-In", "PDF Generation", "Role-Based Access", "Data Privacy"],
     },
@@ -773,7 +776,7 @@ GENERIC_PROJECTS = [
         "title": "Leitmotif",
         "date": "Mar 2026",
         "category": "Hackathon / Accessibility Software",
-        "subtitle": "YC x DeepMind hackathon winner: real-time generative music interface for visually impaired users, assigning musical motifs to people in a scene.",
+        "subtitle": "YC x DeepMind hackathon winner. Real-time generative music interface that assigns musical motifs to people in a scene.",
         "images": [
             ("Screenshot 2026-03-10 172428.png", "Leitmotif web/app interface screenshot.", "contain", (255, 255, 255)),
             ("IMG_0286.jpg", "Hackathon or demo context.", "cover"),
@@ -783,7 +786,7 @@ GENERIC_PROJECTS = [
         "left": [
             "Camera loop sends frames to Gemini vision, extracts scene/person state, then updates the music engine.",
             "Each person gets a persistent musical motif with entry and exit cues.",
-            "Crossfades emotional state changes over 4-6 seconds so scene changes do not sound abrupt.",
+            "Crossfades emotional-state changes over 4-6 seconds so scene updates do not sound abrupt.",
         ],
         "right_title": "Architecture",
         "right": [
@@ -822,7 +825,7 @@ GENERIC_PROJECTS = [
         "title": "Construction Acclimation",
         "date": "Oct 2022 - Apr 2023",
         "category": "Hardware / Data Logging",
-        "subtitle": "$47 concrete-curing temperature/humidity probe and dashboard prototype intended as a low-cost alternative to commercial construction acclimation devices.",
+        "subtitle": "$47 concrete-curing temperature/humidity probe and dashboard prototype. The goal was a cheaper way to log curing conditions and flag bad acclimation data.",
         "images": [
             ("IMG_0297.png", "Probe prototype hardware.", "cover"),
             ("IMG_0313.png", "Electronics/enclosure or dashboard context.", "cover"),
@@ -837,7 +840,7 @@ GENERIC_PROJECTS = [
         "right": [
             "Compared against a calibrated Humboldt H-4210 commercial unit for 14 days.",
             "Temperature deviation about +/-0.8C, humidity about +/-3.2%, and 4,028/4,032 readings captured.",
-            "Presented to City of Palo Alto officials; certification/liability/durability remained open issues.",
+            "Presented to City of Palo Alto officials; certification, liability, and durability were still open issues.",
         ],
         "tools": ["Arduino Nano", "DHT22", "DS18B20", "RTC", "MicroSD", "Chart.js", "PETG Enclosure"],
     },
@@ -870,7 +873,7 @@ GENERIC_PROJECTS = [
         "title": "Zenith - FREIGHT FRENZY",
         "date": "Aug 2021 - Jun 2022",
         "category": "FTC Robotics / First Season",
-        "subtitle": "First FTC season on Zenith #20424: learned CAD, manufacturing, basic Java control, and robot subsystem assembly through a freight-scoring robot.",
+        "subtitle": "First FTC season on Zenith #20424. This was where I learned CAD, basic manufacturing, Java control, and how robot subsystems actually go together.",
         "images": [
             ("haulrobot-removebg-preview.png", "Freight Frenzy robot image.", "contain", (255, 255, 255)),
             ("haulrobot.png", "Freight Frenzy robot CAD/build reference.", "contain", (255, 255, 255)),
@@ -893,7 +896,7 @@ GENERIC_PROJECTS = [
         "title": "Serenity - FREIGHT FRENZY",
         "date": "Aug 2021 - Jun 2022",
         "category": "FTC Robotics / Team Lead",
-        "subtitle": "Led a newer FTC team while also learning on Zenith, building team process and a reliable Freight Frenzy robot.",
+        "subtitle": "Led a newer FTC team while also learning on Zenith. The robot was simple, but the team-process lessons mattered.",
         "images": [
             ("View_recent_photos-removebg-preview.png", "Serenity robot/team visual asset from the website.", "contain", (255, 255, 255)),
         ],
@@ -915,7 +918,7 @@ GENERIC_PROJECTS = [
         "title": "Friendly Fires",
         "date": "Sep 2021 - Mar 2022",
         "category": "Sensor Hardware",
-        "subtitle": "Coal-seam fire detection prototype using temperature, gas, and alert sensors integrated into a low-cost safety device concept.",
+        "subtitle": "Early sensor-hardware project for coal-seam fire detection: temperature, gas sensing, alerts, and a low-cost device concept.",
         "images": [
             ("friendly-fires-prototype.jpeg", "Functional prototype electronics with sensors, power, microcontroller, and breadboard wiring.", "cover"),
         ],
