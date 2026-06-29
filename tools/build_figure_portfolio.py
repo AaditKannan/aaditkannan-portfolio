@@ -333,13 +333,7 @@ def wolfrom_architecture(c):
         bookmark_label="Wolfrom Architecture"
     )
     img_y, img_h = 306, 310
-    image(c, "wolfrom-render-section.jpg", M, img_y, CONTENT_W, img_h, "CAD section: driven sun, compound planets, fixed ring, output ring, bearing stack, and output interface.", "contain", bg=(255, 255, 255))
-    callout(c, "driven sun", M + 56, img_y + 270, M + 210, img_y + 168)
-    callout(c, "compound planets", M + 55, img_y + 215, M + 232, img_y + 145)
-    callout(c, "fixed ring", W - M - 34, img_y + 250, M + 365, img_y + 208, right=True)
-    callout(c, "output ring", W - M - 30, img_y + 205, M + 382, img_y + 165, right=True)
-    callout(c, "bearing stack", W - M - 32, img_y + 110, M + 362, img_y + 96, right=True)
-    callout(c, "output interface", M + 85, img_y + 33, M + 295, img_y + 55)
+    image(c, "wolfrom-render-section.jpg", M, img_y, CONTENT_W, img_h, "CAD section showing the compact axial stack: geartrain, ring structure, bearing support, output hub, and motor interface.", "contain", bg=(255, 255, 255))
     two_text_columns(
         c,
         "Designed",
