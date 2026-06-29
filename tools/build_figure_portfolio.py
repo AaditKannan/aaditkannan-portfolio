@@ -269,7 +269,7 @@ def cover(c):
     font(c, "Helvetica-Bold", 27, INK)
     c.drawString(M, H - 86, "Aadit Kannan")
     font(c, "Helvetica-Bold", 15, INK)
-    c.drawString(M, H - 120, "Project Portfolio")
+    c.drawString(M, H - 120, "Project Portfolio (Shortened)")
     text(c, "This portfolio includes my hardware, electrical, and software projects, along with some of my physics and matsci work on semiconductor thin-films.", M, H - 146, 372, size=9.2, leading=11.2)
     text(c, "Some of my projects are included here. For the full list, go to aaditkannan.com/projects.", M, H - 184, 372, size=8.2, leading=10.2, color=MUTED)
     image(c, "photo.jpg", W - M - 92, H - 178, 92, 92, "", "cover")
@@ -595,14 +595,14 @@ def first_overview(c, page=11):
     )
     image(c, "newiamge.png", M, 478, 248, 158, "INTO THE DEEP robot CAD with drivetrain, active intake, transfer path, lift, and end effector.", "cover")
     image(c, "Deja_Vu_Bot_Assemble_Version_1_v4_v1112.png", M + 268, 478, 248, 158, "CENTERSTAGE robot CAD assembly with pixel scoring mechanisms.", "cover")
-    image(c, "zenithbottt.png", M, 290, 248, 128, "POWERPLAY robot CAD with lift and cone manipulation systems.", "contain", bg=(255, 255, 255))
+    image(c, "zensim.png", M, 290, 248, 128, "FTC bracket FEA used to check stress paths around arm/hang loading and fastener interfaces.", "contain", bg=(255, 255, 255))
     image(c, "intake.png", M + 268, 290, 248, 128, "High-iteration intake subsystem CAD from Deja Vu INTO THE DEEP.", "cover")
     two_text_columns(
         c,
         "Built Across Seasons",
         [
             "Mecanum drivetrains, active intakes, transfer paths, arms/lifts, claws, end effectors, hang mechanisms, and scoring systems.",
-            "FEA-informed custom aluminum and printed components for stress, deflection, and mechanism clearance.",
+            "FEA on arm pivots, hang brackets, and custom aluminum/printed parts to check stress, safety factor, deflection, and fastener load paths.",
             "Parts made through printing, laser-cut plates, CNC aluminum, and normal shop fabrication.",
         ],
         "Controls-Aware Design",
