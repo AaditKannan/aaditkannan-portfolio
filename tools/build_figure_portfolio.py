@@ -297,27 +297,18 @@ def cover(c):
     idx_y = H - 342
     label(c, "Portfolio Contents", M, idx_y)
     projects = [
-        ("Wolfrom Robotic Actuator", 2),
+        ("Wolfrom Architecture", 2),
+        ("Wolfrom Prototype + Next Revision", 3),
         ("Formula Electric 588V Accumulator", 4),
+        ("Accumulator Materials + Validation", 5),
         ("Nanosecond Pulse Generator", 6),
+        ("Pulse Generator V1 Learning", 7),
         ("Custom Toolbox Design + Manufacturing", 8),
         ("FIRST Robotics Hardware", 9),
-        ("Deja Vu - INTO THE DEEP", 10),
-        ("Deja Vu - CENTERSTAGE", 11),
-        ("Zenith - POWERPLAY", 12),
-        ("Zenith - FREIGHT FRENZY", 13),
-        ("Serenity - FREIGHT FRENZY", 14),
-        ("Construction Acclimation", 15),
-        ("Friendly Fires", 16),
-        ("Ramesh Lab: Complex-Oxide Thin Films", 17),
-        ("PLDTracker (Ramesh Lab)", 18),
-        ("Inventry", 19),
-        ("Pear Volunteering", 20),
-        ("Leitmotif", 21),
-        ("Tools + Methods", 22),
+        ("Tools + Methods", 10),
     ]
     col_w = 244
-    split = 9
+    split = 5
     for i, (name, page_no) in enumerate(projects):
         col = 0 if i < split else 1
         row = i if i < split else i - split
@@ -338,8 +329,9 @@ def cover(c):
 
 def wolfrom_architecture(c):
     y = project_title(
-        c, 2, "Wolfrom Robotic Actuator", "Jun 2026 - Present", "Robotics Hardware",
-        "Compact Wolfrom-style actuator for humanoid-scale joints. The current build is about packaging a high-ratio gearbox into a small module and learning what has to change before the metal version."
+        c, 2, "Wolfrom Compound Planetary Actuator", "May 2026 - Present", "Robotics Hardware",
+        "Compact high-ratio actuator for humanoid-scale joints, built around a Wolfrom compound planetary gearbox. Current work focuses on gearbox packaging, bearing stackups, output ring design, and prototype validation.",
+        bookmark_label="Wolfrom Architecture"
     )
     img_y, img_h = 306, 310
     image(c, "wolfrom-render-section.jpg", M, img_y, CONTENT_W, img_h, "CAD section: driven sun, compound planets, fixed ring, output ring, bearing stack, and output interface.", "contain", bg=(255, 255, 255))
@@ -360,10 +352,10 @@ def wolfrom_architecture(c):
         ],
         "Gearbox Notes",
         [
-            "Current tooth counts give 555/11, about 50.45:1. I am also exploring a 125:1 variant.",
-            "The ratio split matters because too much reduction in the ring differential gets lossy fast.",
-            "Main things I am watching: ring mesh friction, planet bearing drag, load sharing, and rough printed teeth.",
-            "Backdrivability is being treated as a friction problem, not as a hand-wavy claim.",
+            "Current tooth counts give 555/11, or about 50.45:1. A 125:1 variant is also under exploration.",
+            "The ratio split matters because excessive reduction in the ring differential raises friction losses quickly.",
+            "Primary loss paths are ring-mesh friction, planet bearing drag, load sharing, and rough printed tooth surfaces.",
+            "Backdrivability work is being handled through friction reduction, preload control, and bearing/mesh choices.",
         ],
         y_top=266,
     )
@@ -372,9 +364,9 @@ def wolfrom_architecture(c):
 
 def wolfrom_status(c):
     y = project_title(
-        c, 3, "Wolfrom Robotic Actuator", "Jun 2026 - Present", "Robotics Hardware / Prototype + Next Revision",
-        "The printed parts are not meant to prove final performance. They are there to catch mesh, stack height, bearing, and assembly problems before I spend real money on the metal build.",
-        bookmark_label="Wolfrom Robotic Actuator - prototype"
+        c, 3, "Wolfrom Compound Planetary Actuator", "May 2026 - Present", "Robotics Hardware / Prototype + Next Revision",
+        "Printed prototypes are being used to de-risk mesh, stack height, bearing support, output-ring splitting, and assembly sequence before the planned metal revision.",
+        bookmark_label="Wolfrom Prototype + Next Revision"
     )
     image(c, "wolfrom-cover.jpg", M, 486, 248, 164, "Printed prototype used for gear mesh, bearing placement, and stack-height checks.", "cover")
     image(c, "wolfrom-bench.jpg", M + 268, 486, 248, 164, "Bench assembly and fit-checking before re-timing the actuator by hand.", "cover")
@@ -386,13 +378,13 @@ def wolfrom_status(c):
         [
             "Printed and fit-checked the actuator hardware for mesh, assembly access, and stack alignment.",
             "Working on split-gear preload to reduce backlash; no final backlash number yet.",
-            "Treating printed gears as geometry prototypes, not load-rated actuator parts.",
+            "Printed gears are being used for geometry and assembly validation, not final load-rated actuator performance.",
         ],
         "Next Revision",
         [
             "Use KISSsoft to clean up macro-geometry, profile shifts, and tip relief.",
-            "Move to CNC aluminum structure, wire-EDM hardened-steel rings, hardened pins, and needle bearings.",
-            "Test breakaway torque, backdrive feel, efficiency, and load behavior after the metal revision exists.",
+            "Prepare a metal/SLA revision with CNC aluminum structure, wire-EDM hardened-steel rings, hardened pins, and needle bearings.",
+            "Planned dyno work: breakaway torque, backdrive feel, efficiency, and load behavior after the metal revision is built.",
         ],
         y_top=228,
     )
@@ -402,7 +394,7 @@ def wolfrom_status(c):
 def formula_packaging(c):
     project_title(
         c, 4, "Formula Electric 588V Accumulator", "Sep 2025 - Present", "High-Voltage Packaging",
-        "Accumulator attic and enclosure work for Berkeley Formula Electric. The hard part is not one bracket; it is making HV electronics, busbars, insulation, cooling, water sealing, and service access all fit in the same small volume."
+        "Accumulator attic and enclosure work for Berkeley Formula Electric, integrating HV electronics, busbars, insulation, cooling, water sealing, and service access inside a constrained pack volume."
     )
     image(c, "accumimg.png", M, 372, CONTENT_W, 220, "588V accumulator CAD showing the HV electronics attic, fan wall, service access, and enclosure packaging.", "contain", bg=(255, 255, 255))
     image(c, "accumsa.png", M, 204, 248, 112, "Electronics attic layout: board, connector, busbar, and mechanical interface packaging.", "contain", bg=(255, 255, 255))
@@ -429,8 +421,8 @@ def formula_packaging(c):
 def formula_validation(c):
     project_title(
         c, 5, "Formula Electric 588V Accumulator", "Sep 2025 - Present", "High-Voltage Packaging / Materials + Validation",
-        "This page is the less flashy side of the accumulator: materials, manufacturing methods, and the checks that make the CAD believable.",
-        bookmark_label="Formula Electric 588V Accumulator - validation"
+        "Materials, manufacturing methods, and validation checks for turning the accumulator CAD into hardware that can pass inspection and survive competition use.",
+        bookmark_label="Accumulator Materials + Validation"
     )
     image(c, "accumimg.png", M, 492, 248, 156, "Overall accumulator CAD context: attic, enclosure, service access, and internal packaging.", "contain", bg=(255, 255, 255))
     image(c, "img2.png", M + 268, 492, 248, 156, "Top-down attic CAD view used to check electronics layout and access.", "contain", bg=(255, 255, 255))
@@ -514,8 +506,8 @@ def pulse_system(c, page=7):
 def pulse_board(c, page=8):
     project_title(
         c, page, "Nanosecond Pulse Generator", "May 2026 - Present", "Research Hardware / Board + V1 Learning",
-        "V1 was useful because it showed what was annoying on the bench. The current board keeps the parts that worked and fixes the triggering, lab I/O, grounding, and measurement flow.",
-        bookmark_label="Nanosecond Pulse Generator - board learning"
+        "V1 microsecond hardware established the initial bench workflow. The current revision carries that learning into cleaner triggering, lab I/O, grounding, and measurement flow.",
+        bookmark_label="Pulse Generator V1 Learning"
     )
     image(c, "pulse-v1-physical.jpg", M, 500, 220, 148, "V1 microsecond board during bench probing. Useful as a learning artifact, not the current ns revision.", "cover")
     image(c, "pulse-v1-us-layout.png", M + 244, 500, 272, 148, "V1 PCB layout used to inspect trace routing, connector placement, and returns.", "contain", bg=(24, 25, 29))
@@ -527,8 +519,8 @@ def pulse_board(c, page=8):
         [
             "Clip-lead power and weak lab I/O made the first board awkward around real bench equipment.",
             "Triggering needed to be tied into Python/RP2040 control, not treated as a loose pulse node.",
-            "LTspice transient work helped with timing intuition, but the current PDF does not rely on the ugly screenshot.",
-            "Grounding and connector strategy had to be part of the instrument, not a last-minute bench hack.",
+            "LTspice transient work informed switching timing and V1 bring-up, while the current revision is documented through schematic/layout and bench validation artifacts.",
+            "Grounding and connector strategy had to be designed into the instrument rather than left to bench improvisation.",
         ],
         "Current Revision Adds",
         [
@@ -570,8 +562,8 @@ def pldtracker(c, page=9):
 
 def toolbox(c, page=10):
     project_title(
-        c, page, "Custom Toolbox Design + Manufacturing", "May 2026 - Jun 2026", "Mechanical Design",
-        "Toolbox project focused on the boring-but-important part of mechanical design: drawings, datums, tolerances, fabrication choices, and whether the thing actually fits after it is made."
+        c, page, "Custom Toolbox Design + Manufacturing", "Jan 2026 - May 2026", "Mechanical Design",
+        "Mechanical design project centered on drawings, datums, tolerances, fabrication choices, and fit-up inspection for a laser-cut/FDM toolbox assembly."
     )
     image(c, "toolbox-assembly-drawing.png", M, 488, 248, 150, "Assembly drawing defining lid, latch, hinge, body, and insert interfaces.", "contain", bg=(250, 248, 243))
     image(c, "toolbox-bottom-walls-drawing.png", M + 268, 488, 248, 150, "Part drawing with datum references and positional tolerance callouts.", "contain", bg=(250, 248, 243))
@@ -588,8 +580,8 @@ def toolbox(c, page=10):
         "Inspected",
         [
             "Fit-up checked with calipers, fasteners/gauge pins, squareness checks, lid closure, and hinge/latch alignment.",
-            "The useful part of this project is drawing discipline and datum strategy, not pretending the box is more advanced than it is.",
-            "Prototype photos are included honestly because final-version photos are not available.",
+            "Prototype used laser-cut plywood and FDM inserts; the engineering focus was drawing release, datum strategy, tolerancing, fabrication, and fit-up inspection.",
+            "Prototype photos show the fabricated assembly used for hinge, latch, handle, fastener, and interior fit-up checks.",
         ],
         y_top=236,
     )
@@ -617,7 +609,7 @@ def first_overview(c, page=11):
         [
             "Java TeleOp with field-centric mecanum, encoder PID loops, mechanism sequencing, driver feedback, and autonomous routines.",
             "Hardware and driver code were tuned together because a mechanism that only works in CAD is not useful in a match.",
-            "Mentored 30+ members in CAD and Java; this mattered because design quality depended on the build team actually understanding the robot.",
+            "Mentored 30+ members in CAD, Java, mechanism iteration, and manufacturing workflow.",
         ],
         y_top=232,
     )
@@ -887,7 +879,7 @@ GENERIC_PROJECTS = [
         "right_title": "Software",
         "right": [
             "Java gamepad input handling, arm/intake motor control, encoder-based autonomous moves, and carousel timing.",
-            "Code was simple and hard-coded, but it established the foundation for later PID/state-machine work.",
+            "Implemented simple encoder-based autonomous routines and mechanism controls that became the foundation for later PID/state-machine work.",
             "Robot scored freight, delivered ducks, and parked successfully in matches.",
         ],
         "tools": ["Onshape", "Java", "FTC SDK", "Encoder Autonomous", "3D Printing", "Drill Press", "Bandsaw"],
@@ -996,28 +988,7 @@ def build():
     pulse_board(c, 7)
     toolbox(c, 8)
     first_overview(c, 9)
-    projects_by_title = {project["title"]: project for project in GENERIC_PROJECTS}
-    page = 10
-    ordered_project_titles = [
-        "Deja Vu - INTO THE DEEP",
-        "Deja Vu - CENTERSTAGE",
-        "Zenith - POWERPLAY",
-        "Zenith - FREIGHT FRENZY",
-        "Serenity - FREIGHT FRENZY",
-        "Construction Acclimation",
-        "Friendly Fires",
-    ]
-    for project_title_name in ordered_project_titles:
-        generic_project(c, page, projects_by_title[project_title_name])
-        page += 1
-    ramesh_lab(c, page)
-    page += 1
-    pldtracker(c, page)
-    page += 1
-    for project_title_name in ["Inventry", "Pear Volunteering", "Leitmotif"]:
-        generic_project(c, page, projects_by_title[project_title_name])
-        page += 1
-    tools_methods(c, page)
+    tools_methods(c, 10)
     c.save()
     print(OUT)
 
