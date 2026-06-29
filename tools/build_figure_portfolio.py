@@ -270,8 +270,7 @@ def cover(c):
     c.drawString(M, H - 86, "Aadit Kannan")
     font(c, "Helvetica-Bold", 15, INK)
     c.drawString(M, H - 120, "Selected Hardware Projects")
-    text(c, "Mechanical design, fabrication, electronics integration, and test.", M, H - 146, 372, size=9.2, leading=11.2)
-    text(c, "Selected projects from aaditkannan.com. Full project archive: aaditkannan.com/projects.", M, H - 176, 372, size=8.2, leading=10.2, color=MUTED)
+    text(c, "Actuators, HV accumulator hardware, PCB test instrumentation, GD&T/manufacturing, and robot mechanisms. Full portfolio at aaditkannan.com/projects.", M, H - 146, 372, size=9.2, leading=11.2)
     image(c, "photo.jpg", W - M - 92, H - 178, 92, 92, "", "cover")
 
     contact_y = H - 222
