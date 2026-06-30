@@ -297,7 +297,7 @@ def cover(c):
     label(c, "Portfolio Contents", M, idx_y)
     projects = [
         ("Wolfrom Architecture", 2),
-        ("Wolfrom Prototype + Next Revision", 3),
+        ("Wolfrom Prototype + Metal Revision", 3),
         ("Formula Electric 588V Accumulator", 4),
         ("Accumulator Materials + Validation", 5),
         ("Nanosecond Pulse Generator", 6),
@@ -329,26 +329,26 @@ def cover(c):
 def wolfrom_architecture(c):
     y = project_title(
         c, 2, "Wolfrom Compound Planetary Actuator", "May 2026 - Present", "Robotics Hardware",
-        "Compact high-ratio actuator for humanoid-scale joints, built around a Wolfrom compound planetary gearbox. Current work focuses on gearbox packaging, bearing stackups, output ring design, and prototype validation.",
+        "3-stage 50:1 compound Wolfrom actuator for backdrivable robotic joints, built around compact packaging, reduced circulating power losses, split-gear preloading, and prototype-to-metal validation.",
         bookmark_label="Wolfrom Architecture"
     )
     img_y, img_h = 306, 310
-    image(c, "wolfrom-render-section.jpg", M, img_y, CONTENT_W, img_h, "CAD section showing the compact axial stack: geartrain, ring structure, bearing support, output hub, and motor interface.", "contain", bg=(255, 255, 255))
+    image(c, "wolfrom-render-section.jpg", M, img_y, CONTENT_W, img_h, "CAD section showing the compact axial stack: pre-reduction stage, compound planets, fixed ring, output ring, bearing support, output hub, and motor interface.", "contain", bg=(255, 255, 255))
     two_text_columns(
         c,
         "Designed",
         [
-            "Full stackup: sun, compound planets, fixed ring, output ring, carrier, bearings, shafts, and output hub.",
-            "One compact axial package instead of stacking multiple planetary stages.",
-            "Split output ring, bolt access, dowel alignment, bearing support, and assembly order.",
-            "Printed geometry first; metal revision planned around CNC aluminum structure and wire-EDM ring gears.",
+            "Full actuator stackup: sun, compound planets, fixed ring, output ring, carrier, bearings, shafts, and output hub.",
+            "3-stage compound layout in one compact axial package instead of stacking multiple conventional planetary gearboxes.",
+            "Split output ring, bolt access, dowel alignment, bearing support, preload strategy, and assembly order.",
+            "Built FDM prototypes to validate meshing, stack height, bearing placement, and assembly before moving into metal hardware.",
         ],
         "Gearbox Notes",
         [
             "Current tooth counts give 555/11, or about 50.45:1 reduction.",
-            "The ratio split matters because excessive reduction in the ring differential raises friction losses quickly.",
+            "Maximized pre-reduction to reduce circulating power losses in the Wolfrom differential stage.",
+            "Targeting 80% efficiency and near-zero backlash through friction reduction, bearing/mesh choices, and split-gear preloading.",
             "Primary loss paths are ring-mesh friction, planet bearing drag, load sharing, and rough printed tooth surfaces.",
-            "Backdrivability work is being handled through friction reduction, preload control, and bearing/mesh choices.",
         ],
         y_top=266,
     )
@@ -357,9 +357,9 @@ def wolfrom_architecture(c):
 
 def wolfrom_status(c):
     y = project_title(
-        c, 3, "Wolfrom Compound Planetary Actuator", "May 2026 - Present", "Robotics Hardware / Prototype + Next Revision",
-        "Printed prototypes are being used to de-risk mesh, stack height, bearing support, output-ring splitting, and assembly sequence before the planned metal revision.",
-        bookmark_label="Wolfrom Prototype + Next Revision"
+        c, 3, "Wolfrom Compound Planetary Actuator", "May 2026 - Present", "Robotics Hardware / Prototype + Metal Revision",
+        "FDM prototypes are being used to validate meshing, stack height, bearing support, output-ring splitting, and assembly sequence while the CNC aluminum / wire-EDM revision and dyno setup are developed.",
+        bookmark_label="Wolfrom Prototype + Metal Revision"
     )
     image(c, "wolfrom-cover.jpg", M, 486, 248, 164, "Printed prototype used for gear mesh, bearing placement, and stack-height checks.", "cover")
     image(c, "wolfrom-bench.jpg", M + 268, 486, 248, 164, "Bench assembly and fit-checking during gear timing and stackup validation.", "cover")
@@ -369,15 +369,15 @@ def wolfrom_status(c):
         c,
         "Current Prototype",
         [
-            "Printed and fit-checked the actuator hardware for mesh, assembly access, and stack alignment.",
+            "Built and fit-checked FDM actuator prototypes for gear meshing, assembly access, and stack alignment.",
             "Working on split-gear preload to reduce backlash; no final backlash number yet.",
             "Printed gears are being used for geometry and assembly validation, not final load-rated actuator performance.",
         ],
-        "Next Revision",
+        "Metal Revision + Test",
         [
-            "Refine macro-geometry in KISSsoft, including profile shifts and tip relief.",
-            "Prepare a metal/SLA revision with CNC aluminum structure, wire-EDM hardened-steel rings, hardened pins, and needle bearings.",
-            "Planned dyno work: breakaway torque, backdrive feel, efficiency, and load behavior after the metal revision is built.",
+            "Simulating gear macro-geometry in KISSsoft, including profile shifts and tip relief.",
+            "Manufacturing CNC aluminum structure with wire-EDM ring gears for the next hardware revision.",
+            "Building dyno setup for torque, efficiency, breakaway torque, backdrive feel, and load-behavior testing.",
         ],
         y_top=228,
     )
@@ -402,7 +402,7 @@ def formula_packaging(c):
         ],
         "Constraints",
         [
-            "Busbar routing for 80A peak discharge without making the attic impossible to service.",
+            "Busbar material and package design for 80A peak discharge without making the attic impossible to service.",
             "FSAE load cases, HV isolation, rain-test sealing, airflow, and board access all compete for the same space.",
             "Transparent/inspectable surfaces matter because serviceability is part of safety.",
         ],
