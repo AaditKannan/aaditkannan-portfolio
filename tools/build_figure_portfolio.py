@@ -300,7 +300,7 @@ def cover(c):
         ("Wolfrom Prototype + Metal Revision", 3),
         ("Formula Electric 588V Accumulator", 4),
         ("Accumulator Materials + Validation", 5),
-        ("Nanosecond Pulse Generator", 6),
+        ("Nanosecond Spin Transport Pulse Generator Board", 6),
         ("Pulse Generator V1 Learning", 7),
         ("Custom Toolbox Design + Manufacturing", 8),
         ("FIRST Robotics Hardware", 9),
@@ -458,7 +458,7 @@ def ramesh_lab(c, page=6):
         ],
         "Connected Projects",
         [
-            "Nanosecond Pulse Generator: hardware for fast electrical characterization of oxide devices after fabrication.",
+            "Nanosecond Spin Transport Pulse Generator Board: hardware for fast electrical characterization of oxide devices after fabrication.",
             "PLDTracker: data tool linking deposition conditions to characterization data and lab documentation.",
             "The larger loop is simple: grow films, track how they were grown, then measure how the devices switch.",
         ],
@@ -471,7 +471,7 @@ def ramesh_lab(c, page=6):
 
 def pulse_system(c, page=7):
     project_title(
-        c, page, "Nanosecond Pulse Generator", "May 2026 - Present", "Research Hardware / PCB",
+        c, page, "Nanosecond Spin Transport Pulse Generator Board", "May 2026 - Present", "Research Hardware / PCB",
         "Board for fast electrical testing of BiFeO3 devices in Ramesh Lab. The current design is moving from a first-generation microsecond pulser toward cleaner ns/us triggering, grounded coax/BNC I/O, and repeatable scope/SMU measurements."
     )
     image(c, "ns-pulse-schematic-thumbnail.png", M, 392, CONTENT_W, 244, "Current nanosecond pulse-generator schematic. Shown as the main artifact because it is the current board revision.", "contain", bg=(250, 248, 243))
@@ -498,7 +498,7 @@ def pulse_system(c, page=7):
 
 def pulse_board(c, page=8):
     project_title(
-        c, page, "Nanosecond Pulse Generator", "May 2026 - Present", "Research Hardware / Board + V1 Learning",
+        c, page, "Nanosecond Spin Transport Pulse Generator Board", "May 2026 - Present", "Research Hardware / Board + V1 Learning",
         "V1 microsecond hardware established the initial bench workflow. The current revision carries that learning into cleaner triggering, lab I/O, grounding, and measurement flow.",
         bookmark_label="Pulse Generator V1 Learning"
     )
@@ -992,3 +992,4 @@ def build():
 
 if __name__ == "__main__":
     build()
+
