@@ -822,12 +822,13 @@
       <section id="about">
         <h2 class="section-label">About</h2>
         <div class="about-text">
-          <p>Mechanical engineering and EECS student at UC Berkeley interested in robotics, materials, and space. Currently:</p>
+          <p>Mechanical engineering and EECS student at UC Berkeley focused on hands-on electromechanical hardware, rapid prototyping, mechanical packaging, and research instrumentation. Experience spans semiconductor thin-film lab hardware, high-voltage accumulator packaging, CAD/FEA/GD&amp;T, materials selection, PCB/electronics integration, and prototype-to-test workflows.</p>
+          <p>Currently:</p>
           <ul class="about-currently">
-            <li>Designing the custom high-voltage 588V accumulator for <a href="/projects#formula-electric" class="about-highlight" data-preview="/assets/accumimg.png">Formula Electric at Berkeley</a></li>
-            <li>Researching complex-oxide thin films (BiFeO₃) for faster, lower-power memory and logic beyond DRAM and CMOS, in <a href="/projects#ramesh-lab" class="about-highlight" data-preview="/assets/Screenshot 2026-03-13 000052.png">Ramesh Lab</a></li>
-            <li>Developing a compact high-ratio <a href="/projects#wolfrom-actuator" class="about-highlight">Wolfrom gearbox</a> for humanoid joints, focused on backdrivability, reflected inertia, and efficiency at high gear ratios (50:1 and 125:1)</li>
-            <li>Reading <span class="about-book">Principles and Applications of Ferroelectric and Related Materials</span> (Lines &amp; Glass)</li>
+            <li>Designing nanosecond/microsecond pulse-generator hardware for semiconductor thin-film device characterization in <a href="/projects#ramesh-lab" class="about-highlight" data-preview="/assets/Screenshot 2026-03-13 000052.png">Ramesh Lab</a></li>
+            <li>Designing electromechanical packaging for the 588V accumulator on <a href="/projects#formula-electric" class="about-highlight" data-preview="/assets/accumimg.png">Formula Electric at Berkeley</a></li>
+            <li>Building a compact 50:1 <a href="/projects#wolfrom-actuator" class="about-highlight">Wolfrom compound planetary actuator</a> for robotic joints</li>
+            <li>Developing lab tools and workflows for PLD experiment tracking and thin-film characterization</li>
           </ul>
           <p><a href="/projects" class="about-link" style="text-decoration: underline; text-underline-offset: 3px;">View all projects &rarr;</a></p>
         </div>
@@ -844,11 +845,13 @@
           <div class="entry-body">
             <h3><a href="/projects#formula-electric" class="link-group">Accumulator Mech Engineer · Formula Electric at Berkeley <span class="arrow">&#8599;</span></a></h3>
             <div class="entry-desc">
-              <p>Designed and manufactured the attic casing for the 588V accumulator with waterproofing and high-dielectric-strength insulation, reducing attic mass by 18%.</p>
+              <p>Designed electromechanical packaging for 588V accumulator HV electronics, integrating busbars, insulation, waterproofing, fastener access, and serviceability inside a constrained enclosure; reduced mass by 18%.</p>
+              <p>Selected materials and manufacturing methods including laser-cut aluminum, waterjet polycarbonate, and Nomex insulation; specified busbar material/geometry for 80A peak discharge; supported SES/ESF safety review.</p>
             </div>
             <div class="skill-pills">
               <span class="skill-pill">SolidWorks/PDM</span>
-              <span class="skill-pill">CAM</span>
+              <span class="skill-pill">FEA</span>
+              <span class="skill-pill">Materials Selection</span>
               <span class="skill-pill">HV Systems</span>
               <span class="skill-pill">Manufacturing</span>
               <span class="skill-pill">DFMA</span>
@@ -861,17 +864,21 @@
           <div class="entry-body">
             <h3><a href="/projects#ramesh-lab" class="link-group">Undergraduate Researcher · Ramesh Lab <span class="arrow">&#8599;</span></a></h3>
             <div class="entry-desc">
-              <p>Researching complex-oxide thin films for faster, lower-power memory and logic beyond DRAM and CMOS. Designing a dual-range nanosecond/microsecond pulse generator for spin transport and ferroelectric characterization, including high-speed PCB layout, grounded coax/BNC test interfaces, Python-controlled triggering, and bench validation with oscilloscopes and source-measure equipment.</p>
+              <p>Designed dual-range nanosecond/microsecond pulse-generator hardware for semiconductor thin-film device characterization, integrating GaN switching, grounded coax/BNC I/O, source-measure biasing, RP2040/Python triggering, and bench validation workflows.</p>
+              <p>Completed supervised PLD growth runs of BiFeO₃ on semiconductor substrates and characterized films using X-ray diffraction and atomic force microscopy.</p>
+              <p>Built PLD tracking system with experiment logging, image capture, camera-assisted positioning, and data explorer to correlate growth parameters with XRD/AFM/PFM characterization.</p>
             </div>
             <div class="skill-pills">
               <span class="skill-pill">KiCad</span>
+              <span class="skill-pill">Altium</span>
+              <span class="skill-pill">LTspice</span>
+              <span class="skill-pill">LabVIEW</span>
+              <span class="skill-pill">RP2040</span>
               <span class="skill-pill">Python</span>
-              <span class="skill-pill">High-Speed PCB Design</span>
+              <span class="skill-pill">PLD</span>
+              <span class="skill-pill">XRD</span>
+              <span class="skill-pill">AFM</span>
               <span class="skill-pill">Pulse Electronics</span>
-              <span class="skill-pill">Oscilloscope Testing</span>
-              <span class="skill-pill">Coax/BNC Test Interfaces</span>
-              <span class="skill-pill">Thin Films</span>
-              <span class="skill-pill">Electrical Characterization</span>
             </div>
           </div>
           <div class="entry-date">Jan 2026 — Present</div>
@@ -882,12 +889,15 @@
             <h3><a href="/projects#dejavu-2024-25" class="link-group">Captain & Hardware Lead · Robotics (FIRST) <span class="arrow">&#8599;</span></a></h3>
             <p class="entry-role">Zenith #20424 · Deja Vu #13216 · Serenity #13215</p>
             <div class="entry-desc">
-              <p>Designed 8 robots in 500+ part Fusion360 assemblies, and used FEA to optimize custom aluminum/3D-printed components for stress, ultimately winning the Robot Design Award 3 times. Mentored 30+ members in Java and CAD, through hands-on worksessions. Raised over $5000 across 3 teams, launched a parts exchange program (<a href="/projects#inventry" class="link-group">Inventry</a>), and developed all 3 team websites.</p>
+              <p>Designed 8 robots across 500+ part CAD assemblies, using FEA to optimize custom aluminum and 3D-printed mechanisms for stress, stiffness, packaging, and weight; won the Robot Design Award 3 times.</p>
+              <p>Mentored 30+ members in CAD, Java, and fabrication through hands-on worksessions; led hardware development and team operations across multiple FTC teams.</p>
             </div>
             <div class="skill-pills">
-              <span class="skill-pill">Java</span>
+              <span class="skill-pill">Fusion 360</span>
               <span class="skill-pill">CAD/CAM/CAE</span>
-              <span class="skill-pill">Fusion360</span>
+              <span class="skill-pill">FEA</span>
+              <span class="skill-pill">Java</span>
+              <span class="skill-pill">Manufacturing</span>
               <span class="skill-pill">Leadership</span>
             </div>
           </div>
@@ -898,13 +908,12 @@
           <div class="entry-body">
             <h3><a href="/projects#pear-volunteering" class="link-group">Founder · Pear Volunteering <span class="arrow">&#8599;</span></a></h3>
             <div class="entry-desc">
-              <p>Developed app/website connecting 2000+ students, 20+ event organizers, and school admin. Built a secure webhook/CMS-integrated system for scalable data handling and encrypted communication (requires multiple security layers due to sensitive, FERPA-protected student data).</p>
+              <p>Built app/website connecting 2000+ students, 20+ event organizers, and school admin, with CMS-integrated workflows and secure communication for student volunteer coordination.</p>
             </div>
             <div class="skill-pills">
-              <span class="skill-pill">HTML/CSS/JS</span>
-              <span class="skill-pill">App Dev</span>
+              <span class="skill-pill">JavaScript</span>
               <span class="skill-pill">CMS</span>
-              <span class="skill-pill">APIs</span>
+              <span class="skill-pill">Workflow Design</span>
             </div>
           </div>
           <div class="entry-date">Aug 2023 — Aug 2025</div>
@@ -914,7 +923,7 @@
           <div class="entry-body">
             <h3><a href="https://www.svefoundation.org/programs/49ers-sli" target="_blank" rel="noopener noreferrer" class="link-group">SLC & Program Member · STEM Leadership Institute <span class="arrow">&#8599;</span></a></h3>
             <div class="entry-desc">
-              <p>Trained 120 middle school STEM students on Arduino and engineering design process for science fair projects (SLC). Designed mock competition and mentored 5 FIRST Lego League teams (SLC). Member of the 6-year selective program (SLI), committing 1800+ hours to projects, STEM sessions, and advanced coursework.</p>
+              <p>6-year selective STEM program with 1800+ hours of projects, fabrication, and mentoring. Trained 120 middle school students on Arduino and engineering design, mentored FIRST Lego League teams, and supported laser cutting, 3D printing, and CNC workflows.</p>
             </div>
             <div class="skill-pills">
               <span class="skill-pill">Arduino</span>
@@ -924,6 +933,24 @@
             </div>
           </div>
           <div class="entry-date">Aug 2019 — Aug 2025</div>
+        </div>
+
+        <div class="entry-card">
+          <div class="entry-body">
+            <h3><a href="/projects#leitmotif" class="link-group">Leitmotif · Y Combinator x Google DeepMind Hackathon Winner <span class="arrow">&#8599;</span></a></h3>
+            <div class="entry-desc">
+              <p>Built a real-time assistive audio system using Gemini vision and DeepMind Lyria with a Node.js/TypeScript and PostgreSQL backend; won the hackathon and earned $5k in GCP credits.</p>
+            </div>
+            <div class="skill-pills">
+              <span class="skill-pill">Node.js</span>
+              <span class="skill-pill">TypeScript</span>
+              <span class="skill-pill">PostgreSQL</span>
+              <span class="skill-pill">Gemini</span>
+              <span class="skill-pill">Lyria</span>
+              <span class="skill-pill">Supabase</span>
+            </div>
+          </div>
+          <div class="entry-date">Mar 2026</div>
         </div>
       </section>
 
@@ -935,7 +962,7 @@
           <div class="entry-body">
             <h3><a href="https://www.posha.com/" target="_blank" rel="noopener noreferrer" class="link-group">Mechanical Engineering Intern · Posha (Formerly Nymble) <span class="arrow">&#8599;</span></a></h3>
             <div class="entry-desc">
-              <p>Repaired 20+ customer cooking robots by troubleshooting electrical and mechanical systems.</p>
+              <p>Repaired 20+ customer cooking robots by troubleshooting electrical and mechanical failures, debugging subsystems, and validating repairs.</p>
             </div>
             <div class="skill-pills">
               <span class="skill-pill">Robotics</span>
@@ -944,19 +971,6 @@
             </div>
           </div>
           <div class="entry-date">Jun 2023 — Aug 2023</div>
-        </div>
-
-        <div class="entry-card">
-          <div class="entry-body">
-            <h3>Squash Coach · Bay Club</h3>
-            <div class="entry-desc">
-              <p>Coached 15+ students age 5-12 in tournament prep, designing drills and lessons.</p>
-            </div>
-            <div class="skill-pills">
-              <span class="skill-pill">Mentorship</span>
-            </div>
-          </div>
-          <div class="entry-date">Aug 2024 — Aug 2025</div>
         </div>
       </section>
 
@@ -967,9 +981,10 @@
         <div class="entry-card">
           <div class="entry-body">
             <h3>B.S. Mechanical Engineering, Minor in EECS · UC Berkeley</h3>
-            <p class="entry-role">Sophomore Standing</p>
+            <p class="entry-role">Junior Standing</p>
             <div class="entry-desc">
-              <p>Current Coursework: Engin 29, Multivariable Calculus, Physics 7B (E&M). Prior Coursework: Engin 7 (Python/Matlab), Chem 1A, Physics 7A. Activities: Formula Electric, Ramesh Lab.</p>
+              <p>Current Coursework: Discrete Math/Probability, Mechanical Behavior of Materials, Thermodynamics, Circuits/Devices.</p>
+              <p>Prior Coursework: Linear Algebra/Differential Equations, Calculus 1/2/3, Manufacturing/Design, Physics E&amp;M + Mechanics, Python/MATLAB, Chemistry.</p>
             </div>
           </div>
           <div class="entry-date">Expected May 2028</div>
@@ -980,32 +995,10 @@
             <h3>Santa Clara High School</h3>
             <p class="entry-role">4.5 W GPA</p>
             <div class="entry-desc">
-              <p>AP + DE: Calc BC, Linear Algebra, Physics C, Chemistry, CSP, Physics 1, Stats, Research, Macro.</p>
+              <p>STEM Leadership Institute, FIRST Tech Challenge, dual-enrollment math and physics coursework.</p>
             </div>
           </div>
           <div class="entry-date"></div>
-        </div>
-
-        <div class="entry-card">
-          <div class="entry-body">
-            <h3>Aerospace Engineering · New Mexico Institute of Technology</h3>
-            <p class="entry-role">Summer Courses</p>
-            <div class="entry-desc">
-              <p>Completed Drones course with Mostafa Hassanalian, utilizing simulation software like XFLR5 for aircraft optimization. Gained insights into drone and aircraft technology, including Professor Hassanalian's taxidermy bird drone research. Used simulation software to optimize aircraft builds and deepened understanding of essential drone and aircraft concepts.</p>
-            </div>
-          </div>
-          <div class="entry-date">Jun 2023 — Jul 2023</div>
-        </div>
-
-        <div class="entry-card">
-          <div class="entry-body">
-            <h3>Business Administration · University of Cambridge</h3>
-            <p class="entry-role">Summer Courses</p>
-            <div class="entry-desc">
-              <p>Courses: Business Management, Economics, Leadership, International Relations.</p>
-            </div>
-          </div>
-          <div class="entry-date">Jun 2022 — Aug 2022</div>
         </div>
       </section>
 
@@ -1017,7 +1010,7 @@
           <div class="entry-body">
             <h3>Mentor & Lab Assistant · 49ers STEM Leadership Institute</h3>
             <div class="entry-desc">
-              <p>Supported students with CO2 laser cutters, 3D printers, vinyl cutters, and CNC machines.</p>
+              <p>Supported student fabrication work with CO2 laser cutters, 3D printers, vinyl cutters, and CNC machines.</p>
             </div>
           </div>
           <div class="entry-date">Aug 2021 — Jun 2025</div>
@@ -1035,29 +1028,9 @@
 
         <div class="entry-card">
           <div class="entry-body">
-            <h3>Programming Tutor · Tulip Kids Afterschool</h3>
-            <div class="entry-desc">
-              <p>Tutored K-8 students in Python and Scratch. Designed hands-on lessons teaching basic circuit workings.</p>
-            </div>
-          </div>
-          <div class="entry-date">May 2019 — Jul 2022</div>
-        </div>
-
-        <div class="entry-card">
-          <div class="entry-body">
-            <h3>Lunch Server · California Scholarship Federation</h3>
-            <div class="entry-desc">
-              <p>Volunteered in the school cafeteria to serve lunch.</p>
-            </div>
-          </div>
-          <div class="entry-date">Aug 2023 — Jul 2025</div>
-        </div>
-
-        <div class="entry-card">
-          <div class="entry-body">
             <h3>Field Technical Advisor · FIRST Tech Challenge</h3>
             <div class="entry-desc">
-              <p>Technical support to teams and smooth operation of the robotics competition.</p>
+              <p>Provided field-side technical support for teams and helped keep robotics matches moving cleanly.</p>
             </div>
           </div>
           <div class="entry-date">Dec 2023 — Jan 2024</div>
@@ -1069,21 +1042,33 @@
         <h2 class="section-label">Skills</h2>
         <div class="skills-grid">
           <div>
-            <h4>Languages & Frameworks</h4>
+            <h4>CAD / Mechanical</h4>
             <ul>
-              <li>Python, Java, JavaScript/TypeScript, SQL, HTML/CSS, React, Next.js, Node.js, Tailwind</li>
+              <li>SolidWorks/PDM, Onshape, Fusion 360, Mechanical Drawings, GD&amp;T, DFM/DFA, FEA/ANSYS, Materials Selection, KISSsoft, MATLAB/Simulink</li>
             </ul>
           </div>
           <div>
-            <h4>Libraries & Tools</h4>
+            <h4>Electronics / Test</h4>
             <ul>
-              <li>Pandas, NumPy, Matplotlib, OpenCV, TensorFlow, PyTorch, Git, PostgreSQL, Supabase</li>
+              <li>KiCad, Altium, LTspice, LabVIEW, RP2040, Oscilloscope Testing, Source-Measure Equipment, Coax/BNC Test Interfaces, SMD Soldering</li>
             </ul>
           </div>
           <div>
-            <h4>Engineering & Design</h4>
+            <h4>Manufacturing</h4>
             <ul>
-              <li>Fusion360, Solidworks/PDM, FEA (ANSYS), GD&T, CAD/CAM/CAE, XFLR5, Machining</li>
+              <li>CNC, Laser Cutting, Waterjet, TIG Welding, FDM, SLA, Sheet Metal, Machining</li>
+            </ul>
+          </div>
+          <div>
+            <h4>Semiconductor / Lab</h4>
+            <ul>
+              <li>PLD, Thin-Film Characterization, XRD, AFM, PFM, Semiconductor Substrates, Electrical Characterization</li>
+            </ul>
+          </div>
+          <div>
+            <h4>Software</h4>
+            <ul>
+              <li>Python, Java, JavaScript/TypeScript, SQL, React, Next.js, Node.js, Git, PostgreSQL, Supabase</li>
             </ul>
           </div>
         </div>
