@@ -767,6 +767,7 @@
       max-width: 1100px;
       margin: 0 auto;
       padding: 140px 40px 100px;
+      min-width: 0;
     }
 
     .detail-header {
@@ -826,6 +827,7 @@
     /* Gallery */
     .detail-gallery {
       width: 100%;
+      min-width: 0;
     }
 
     .gallery-main {
@@ -839,6 +841,12 @@
       overflow: hidden;
       margin-bottom: 12px;
       position: relative;
+    }
+
+    #galleryMediaContainer {
+      width: 100%;
+      height: 100%;
+      min-width: 0;
     }
 
     .gallery-nav {
@@ -881,7 +889,12 @@
 
     .gallery-nav:hover svg { stroke: #fff; }
 
-    .gallery-main img {
+    .gallery-main img,
+    .gallery-main picture,
+    #galleryMediaContainer img,
+    #galleryMediaContainer picture,
+    #galleryMediaContainer video {
+      display: block;
       width: 100%;
       height: 100%;
       object-fit: contain;
@@ -1170,6 +1183,10 @@
       margin-bottom: 16px;
     }
 
+    .detail-sidebar {
+      min-width: 0;
+    }
+
     .detail-links {
       display: flex;
       flex-direction: column;
@@ -1189,6 +1206,8 @@
       font-size: 13px;
       font-family: 'JetBrains Mono', monospace;
       transition: all 0.2s;
+      min-width: 0;
+      overflow-wrap: anywhere;
     }
 
     .detail-link:hover {
@@ -1201,6 +1220,7 @@
       width: 16px;
       height: 16px;
       fill: currentColor;
+      flex: 0 0 16px;
     }
 
     .detail-link.unavailable-link {
@@ -1574,14 +1594,28 @@
 
       .gallery-main {
         aspect-ratio: 4/3;
+        width: 100%;
+        max-width: 100%;
       }
 
       .detail-inner {
         overflow-x: hidden;
+        width: 100%;
+        max-width: 100vw;
+        box-sizing: border-box;
       }
 
       .detail-top-row {
         gap: 24px;
+        min-width: 0;
+      }
+
+      .detail-gallery,
+      .detail-sidebar,
+      .detail-body,
+      .detail-description {
+        min-width: 0;
+        max-width: 100%;
       }
 
       .detail-link {
@@ -1589,23 +1623,46 @@
         box-sizing: border-box;
         font-size: 12px;
         padding: 10px 14px;
+        white-space: normal;
+      }
+
+      .detail-link .link-text {
+        min-width: 0;
+        overflow-wrap: anywhere;
       }
 
       .detail-tags {
         gap: 6px;
+        max-width: 100%;
       }
 
       .detail-tag {
         padding: 6px 12px;
         font-size: 11px;
+        max-width: 100%;
+        box-sizing: border-box;
+        overflow-wrap: anywhere;
+        white-space: normal;
       }
 
       .detail-description {
         font-size: 14px;
       }
 
+      .detail-description img,
+      .detail-description picture,
+      .detail-description video {
+        max-width: 100% !important;
+        height: auto !important;
+      }
+
+      .detail-description .katex-display {
+        max-width: 100%;
+      }
+
       .gallery-thumbs {
         gap: 6px;
+        max-width: 100%;
       }
 
       .gallery-thumb {
