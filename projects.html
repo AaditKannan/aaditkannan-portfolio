@@ -1232,6 +1232,8 @@
     #ns-layer-layout:checked ~ .board-layer-controls label[for="ns-layer-layout"],
     #ns-layer-top:checked ~ .board-layer-controls label[for="ns-layer-top"],
     #ns-layer-copper:checked ~ .board-layer-controls label[for="ns-layer-copper"],
+    #ns-layer-in1:checked ~ .board-layer-controls label[for="ns-layer-in1"],
+    #ns-layer-in2:checked ~ .board-layer-controls label[for="ns-layer-in2"],
     #ns-layer-silk:checked ~ .board-layer-controls label[for="ns-layer-silk"],
     #ns-layer-bottom:checked ~ .board-layer-controls label[for="ns-layer-bottom"] {
       border-color: var(--border-light);
@@ -1243,6 +1245,8 @@
     #ns-layer-layout:checked ~ .board-layer-stage .layer-layout,
     #ns-layer-top:checked ~ .board-layer-stage .layer-top,
     #ns-layer-copper:checked ~ .board-layer-stage .layer-copper,
+    #ns-layer-in1:checked ~ .board-layer-stage .layer-in1,
+    #ns-layer-in2:checked ~ .board-layer-stage .layer-in2,
     #ns-layer-silk:checked ~ .board-layer-stage .layer-silk,
     #ns-layer-bottom:checked ~ .board-layer-stage .layer-bottom {
       opacity: 1;
@@ -2099,25 +2103,31 @@
             <input type="radio" id="ns-layer-layout" name="ns-board-layer">
             <input type="radio" id="ns-layer-top" name="ns-board-layer">
             <input type="radio" id="ns-layer-copper" name="ns-board-layer">
+            <input type="radio" id="ns-layer-in1" name="ns-board-layer">
+            <input type="radio" id="ns-layer-in2" name="ns-board-layer">
             <input type="radio" id="ns-layer-silk" name="ns-board-layer">
             <input type="radio" id="ns-layer-bottom" name="ns-board-layer">
             <div class="board-layer-controls" aria-label="Nanosecond board layer viewer">
               <label for="ns-layer-render">3D render</label>
               <label for="ns-layer-layout">combined layout</label>
               <label for="ns-layer-top">top + silk</label>
-              <label for="ns-layer-copper">top copper</label>
+              <label for="ns-layer-copper">F.Cu</label>
+              <label for="ns-layer-in1">In1.Cu</label>
+              <label for="ns-layer-in2">In2.Cu</label>
               <label for="ns-layer-silk">silk only</label>
-              <label for="ns-layer-bottom">bottom</label>
+              <label for="ns-layer-bottom">B.Cu</label>
             </div>
             <div class="board-layer-stage">
               <img class="layer-render" src="/assets/ns-pulse-board-cover.png" alt="3D render of the nanosecond pulse generator board with BNC connectors, relays, RP2040 module, and terminal blocks">
               <img class="layer-layout" src="/assets/ns-pulse-board-layout.png" alt="KiCad combined layout view of the nanosecond pulse generator board">
               <img class="layer-top" src="/assets/ns-pulse-layer-top.svg" alt="Top-side board view with silkscreen and copper exported from the current KiCad layout">
               <img class="layer-copper" src="/assets/ns-pulse-layer-copper.svg" alt="Top copper routing layer exported from the current nanosecond pulse generator KiCad layout">
+              <img class="layer-in1" src="/assets/ns-pulse-layer-in1.svg" alt="Inner layer 1 copper plane exported from the current four-layer KiCad layout">
+              <img class="layer-in2" src="/assets/ns-pulse-layer-in2.svg" alt="Inner layer 2 copper plane exported from the current four-layer KiCad layout">
               <img class="layer-silk" src="/assets/ns-pulse-layer-silk.svg" alt="Front silkscreen layer exported from the current nanosecond pulse generator KiCad layout">
               <img class="layer-bottom" src="/assets/ns-pulse-layer-bottom.svg" alt="Bottom-side board layer exported from the current nanosecond pulse generator KiCad layout">
             </div>
-            <span class="board-layer-caption">Layer viewer for the current ns/µs pulse board: BNC/coax test interfaces across the top edge, relay-switched bias/dut paths, local driver power, RP2040 trigger control, and routed high-speed pulse/sync sections.</span>
+            <span class="board-layer-caption">Layer viewer for the current four-layer ns/µs pulse board: BNC/coax test interfaces across the top edge, relay-switched bias/dut paths, local driver power, RP2040 trigger control, inner copper layers, and routed high-speed pulse/sync sections.</span>
           </div>
           <strong>V1 Microsecond Prototype</strong><br><br>
           Before the nanosecond board, I built a first-pass microsecond pulse-generator prototype to test the basic source-measure pulse workflow. V1 used a one-shot timing stage, gate driver, MOSFET output stage, manual/external trigger path, and Keithley/source-measure interface.<br><br>
