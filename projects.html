@@ -1167,12 +1167,11 @@
     }
 
     .board-layer-viewer {
-      column-span: all;
       break-inside: avoid;
       -webkit-column-break-inside: avoid;
-      width: min(100%, 760px);
-      margin: 22px auto 28px;
-      padding: 14px;
+      width: 100%;
+      margin: 16px 0 22px;
+      padding: 10px;
       border: 1px solid var(--border);
       background: rgba(255,255,255,0.025);
     }
@@ -1184,8 +1183,8 @@
     .board-layer-controls {
       display: flex;
       flex-wrap: wrap;
-      gap: 8px;
-      margin-bottom: 14px;
+      gap: 6px;
+      margin-bottom: 10px;
     }
 
     .board-layer-viewer input {
@@ -1195,11 +1194,11 @@
     }
 
     .board-layer-controls label {
-      padding: 7px 11px;
+      padding: 6px 8px;
       border: 1px solid var(--border);
       color: var(--text-dim);
       font-family: 'JetBrains Mono', monospace;
-      font-size: 11px;
+      font-size: 10px;
       letter-spacing: 0.04em;
       text-transform: uppercase;
       cursor: pointer;
@@ -1215,7 +1214,7 @@
       position: relative;
       width: 100%;
       aspect-ratio: 16 / 11;
-      max-height: 420px;
+      max-height: 280px;
       overflow: hidden;
       border: 1px solid var(--border);
       background: #101116;
@@ -1237,7 +1236,7 @@
       margin-top: 10px;
       color: var(--text-dim);
       font-family: 'JetBrains Mono', monospace;
-      font-size: 11px;
+      font-size: 10px;
       line-height: 1.5;
       letter-spacing: 0.02em;
     }
