@@ -2666,7 +2666,8 @@
         const hasMultiple = project.images.length > 1;
         const isVideo = (src) => src.endsWith('.mp4') || src.endsWith('.webm');
       const webpSrc = (src) => src.replace(/\.(png|jpe?g)$/i, '.webp');
-      const hasWebpVariant = (src) => /\.(png|jpe?g)$/i.test(src);
+      const galleryWebpMissing = new Set(['/assets/pulse-v1-ltspice.png']);
+      const hasWebpVariant = (src) => /\.(png|jpe?g)$/i.test(src) && !galleryWebpMissing.has(src);
       const firstMedia = project.images[0];
 
       const renderMedia = (src, id) => {
