@@ -2551,7 +2551,8 @@
       }
 
       const webpSrc = (src) => src.replace(/\.(png|jpe?g)$/i, '.webp');
-      const hasWebpVariant = (src) => /\.(png|jpe?g)$/i.test(src);
+      const webpMissing = new Set(['/assets/pulse-v1-ltspice.png']);
+      const hasWebpVariant = (src) => /\.(png|jpe?g)$/i.test(src) && !webpMissing.has(src);
       const isVideoSrc = (src) => src.endsWith('.mp4') || src.endsWith('.webm');
       const gridThumb = (src, alt) => {
         if (isVideoSrc(src)) {
