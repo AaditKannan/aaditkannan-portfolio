@@ -1231,6 +1231,42 @@
       transition: opacity 0.18s ease;
     }
 
+    .board-layer-expand {
+      position: absolute;
+      right: 8px;
+      bottom: 8px;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 5px 7px;
+      border: 1px solid rgba(255,255,255,0.24);
+      background: rgba(12,13,18,0.78);
+      color: #fff;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px;
+      line-height: 1;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      text-decoration: none;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.18s ease, border-color 0.18s ease, background 0.18s ease;
+    }
+
+    .board-layer-expand:hover {
+      border-color: rgba(255,255,255,0.55);
+      background: rgba(12,13,18,0.95);
+    }
+
+    .board-layer-expand svg {
+      width: 12px;
+      height: 12px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.7;
+    }
+
     .board-layer-caption {
       display: block;
       margin-top: 10px;
@@ -1263,6 +1299,18 @@
     #ns-layer-silk:checked ~ .board-layer-stage .layer-silk,
     #ns-layer-bottom:checked ~ .board-layer-stage .layer-bottom {
       opacity: 1;
+    }
+
+    #ns-layer-render:checked ~ .board-layer-stage .expand-render,
+    #ns-layer-layout:checked ~ .board-layer-stage .expand-layout,
+    #ns-layer-top:checked ~ .board-layer-stage .expand-top,
+    #ns-layer-copper:checked ~ .board-layer-stage .expand-copper,
+    #ns-layer-in1:checked ~ .board-layer-stage .expand-in1,
+    #ns-layer-in2:checked ~ .board-layer-stage .expand-in2,
+    #ns-layer-silk:checked ~ .board-layer-stage .expand-silk,
+    #ns-layer-bottom:checked ~ .board-layer-stage .expand-bottom {
+      opacity: 1;
+      pointer-events: auto;
     }
 
     .detail-tags {
@@ -2134,6 +2182,14 @@
               <img class="layer-in2" src="/assets/ns-pulse-layer-in2.svg" alt="Inner layer 2 copper plane exported from the current four-layer KiCad layout">
               <img class="layer-silk" src="/assets/ns-pulse-layer-silk.svg" alt="Front silkscreen layer exported from the current nanosecond pulse generator KiCad layout">
               <img class="layer-bottom" src="/assets/ns-pulse-layer-bottom.svg" alt="Bottom-side board layer exported from the current nanosecond pulse generator KiCad layout">
+              <a class="board-layer-expand expand-render" href="/assets/ns-pulse-board-cover.png" target="_blank" rel="noopener" aria-label="Open 3D render full size"><svg viewBox="0 0 24 24"><path d="M8 3H3v5M16 3h5v5M8 21H3v-5M21 16v5h-5"/><path d="M3 3l7 7M21 3l-7 7M3 21l7-7M21 21l-7-7"/></svg><span>expand</span></a>
+              <a class="board-layer-expand expand-layout" href="/assets/ns-pulse-board-layout.png" target="_blank" rel="noopener" aria-label="Open combined KiCad layout full size"><svg viewBox="0 0 24 24"><path d="M8 3H3v5M16 3h5v5M8 21H3v-5M21 16v5h-5"/><path d="M3 3l7 7M21 3l-7 7M3 21l7-7M21 21l-7-7"/></svg><span>expand</span></a>
+              <a class="board-layer-expand expand-top" href="/assets/ns-pulse-layer-top.svg" target="_blank" rel="noopener" aria-label="Open top and silkscreen layer full size"><svg viewBox="0 0 24 24"><path d="M8 3H3v5M16 3h5v5M8 21H3v-5M21 16v5h-5"/><path d="M3 3l7 7M21 3l-7 7M3 21l7-7M21 21l-7-7"/></svg><span>expand</span></a>
+              <a class="board-layer-expand expand-copper" href="/assets/ns-pulse-layer-copper.svg" target="_blank" rel="noopener" aria-label="Open front copper layer full size"><svg viewBox="0 0 24 24"><path d="M8 3H3v5M16 3h5v5M8 21H3v-5M21 16v5h-5"/><path d="M3 3l7 7M21 3l-7 7M3 21l7-7M21 21l-7-7"/></svg><span>expand</span></a>
+              <a class="board-layer-expand expand-in1" href="/assets/ns-pulse-layer-in1.svg" target="_blank" rel="noopener" aria-label="Open inner layer 1 full size"><svg viewBox="0 0 24 24"><path d="M8 3H3v5M16 3h5v5M8 21H3v-5M21 16v5h-5"/><path d="M3 3l7 7M21 3l-7 7M3 21l7-7M21 21l-7-7"/></svg><span>expand</span></a>
+              <a class="board-layer-expand expand-in2" href="/assets/ns-pulse-layer-in2.svg" target="_blank" rel="noopener" aria-label="Open inner layer 2 full size"><svg viewBox="0 0 24 24"><path d="M8 3H3v5M16 3h5v5M8 21H3v-5M21 16v5h-5"/><path d="M3 3l7 7M21 3l-7 7M3 21l7-7M21 21l-7-7"/></svg><span>expand</span></a>
+              <a class="board-layer-expand expand-silk" href="/assets/ns-pulse-layer-silk.svg" target="_blank" rel="noopener" aria-label="Open silkscreen layer full size"><svg viewBox="0 0 24 24"><path d="M8 3H3v5M16 3h5v5M8 21H3v-5M21 16v5h-5"/><path d="M3 3l7 7M21 3l-7 7M3 21l7-7M21 21l-7-7"/></svg><span>expand</span></a>
+              <a class="board-layer-expand expand-bottom" href="/assets/ns-pulse-layer-bottom.svg" target="_blank" rel="noopener" aria-label="Open bottom layer full size"><svg viewBox="0 0 24 24"><path d="M8 3H3v5M16 3h5v5M8 21H3v-5M21 16v5h-5"/><path d="M3 3l7 7M21 3l-7 7M3 21l7-7M21 21l-7-7"/></svg><span>expand</span></a>
             </div>
             <span class="board-layer-caption">Layer viewer for the current four-layer ns/µs pulse board: BNC/coax test interfaces across the top edge, relay-switched bias/dut paths, local driver power, RP2040 trigger control, inner copper layers, and routed high-speed pulse/sync sections.</span>
           </div>
@@ -2142,6 +2198,8 @@
           <img src="/assets/pulse-v1-physical.jpg" alt="First microsecond pulse-generator board under oscilloscope probe during bench testing" style="display:block; max-width: 70%; margin: 18px auto; border-radius: 8px;"><br>
           <em style="opacity: 0.7; font-size: 0.9em;">V1 microsecond board during bench testing. It made the measurement workflow concrete, but also showed why the nanosecond version needed tighter layout and grounded coax/BNC interfaces.</em><br><br>
           The V1 board was useful design history, not validation for the current nanosecond board. It showed the limits of terminal-block-style connections, loose wiring, and microsecond-oriented timing when the actual research need moves toward faster pulse edges, cleaner synchronization, and smaller-voltage sweeps.<br><br>
+          <img src="/assets/pulse-v1-ltspice.png" alt="LTspice transient simulation for the first microsecond pulse-generator prototype" style="display:block; max-width: 100%; margin: 18px auto; border-radius: 8px;"><br>
+          <em style="opacity: 0.7; font-size: 0.9em;">LTspice transient work from V1. It helped sanity-check the switching timing and output behavior before bench testing, but the nanosecond board is being documented through the current KiCad layout and upcoming scope captures.</em><br><br>
           <strong>Bring-Up Plan</strong><br><br>
           I am bringing the board up in stages: verify rails and microcontroller trigger logic, simulate and scope the driver path, validate the GaN output into known dummy loads, then move toward device fixtures. The oscilloscope work is focused on what matters for BFO testing: delivered amplitude near the 30 V regime, timing jitter between trigger and sync, overshoot/ringing at the fixture, and whether lower-amplitude pulses remain distinguishable from noise and pickup.<br><br>
           <strong>Status</strong><br><br>
@@ -2154,7 +2212,8 @@
           '/assets/ns-pulse-board-cover.png',
           '/assets/ns-pulse-board-angle.png',
           '/assets/ns-pulse-board-layout.png',
-          '/assets/ns-pulse-schematic-thumbnail.png'
+          '/assets/ns-pulse-schematic-thumbnail.png',
+          '/assets/pulse-v1-ltspice.png'
         ]
       },
       {
