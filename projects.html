@@ -1154,6 +1154,100 @@
       margin-top: 0;
     }
 
+    .board-layer-viewer {
+      column-span: all;
+      break-inside: avoid;
+      -webkit-column-break-inside: avoid;
+      margin: 24px 0 30px;
+      padding: 16px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.025);
+    }
+
+    [data-theme="light"] .board-layer-viewer {
+      background: rgba(0,0,0,0.025);
+    }
+
+    .board-layer-controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    .board-layer-viewer input {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .board-layer-controls label {
+      padding: 7px 11px;
+      border: 1px solid var(--border);
+      color: var(--text-dim);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .board-layer-controls label:hover {
+      border-color: var(--border-light);
+      color: var(--text);
+    }
+
+    .board-layer-stage {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 11;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      background: #101116;
+    }
+
+    .board-layer-stage img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100% !important;
+      max-width: none !important;
+      object-fit: contain;
+      opacity: 0;
+      transition: opacity 0.18s ease;
+    }
+
+    .board-layer-caption {
+      display: block;
+      margin-top: 10px;
+      color: var(--text-dim);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      line-height: 1.5;
+      letter-spacing: 0.02em;
+    }
+
+    #ns-layer-render:checked ~ .board-layer-controls label[for="ns-layer-render"],
+    #ns-layer-layout:checked ~ .board-layer-controls label[for="ns-layer-layout"],
+    #ns-layer-top:checked ~ .board-layer-controls label[for="ns-layer-top"],
+    #ns-layer-copper:checked ~ .board-layer-controls label[for="ns-layer-copper"],
+    #ns-layer-silk:checked ~ .board-layer-controls label[for="ns-layer-silk"],
+    #ns-layer-bottom:checked ~ .board-layer-controls label[for="ns-layer-bottom"] {
+      border-color: var(--border-light);
+      color: var(--text);
+      background: rgba(255,255,255,0.06);
+    }
+
+    #ns-layer-render:checked ~ .board-layer-stage .layer-render,
+    #ns-layer-layout:checked ~ .board-layer-stage .layer-layout,
+    #ns-layer-top:checked ~ .board-layer-stage .layer-top,
+    #ns-layer-copper:checked ~ .board-layer-stage .layer-copper,
+    #ns-layer-silk:checked ~ .board-layer-stage .layer-silk,
+    #ns-layer-bottom:checked ~ .board-layer-stage .layer-bottom {
+      opacity: 1;
+    }
+
     .detail-tags {
       display: flex;
       flex-wrap: wrap;
@@ -1660,6 +1754,25 @@
         max-width: 100%;
       }
 
+      .board-layer-viewer {
+        padding: 12px;
+        margin: 20px 0 26px;
+      }
+
+      .board-layer-stage {
+        aspect-ratio: 1 / 1;
+      }
+
+      .board-layer-stage img {
+        max-width: none !important;
+        height: 100% !important;
+      }
+
+      .board-layer-controls label {
+        font-size: 10px;
+        padding: 6px 8px;
+      }
+
       .gallery-thumbs {
         gap: 6px;
         max-width: 100%;
@@ -1979,6 +2092,31 @@
           This is the reason for Python/JupyterLab analysis hooks and repeatable triggering. The board needs to make the pulse sequence, trigger timing, and captured waveform stable enough that later analysis can tell BFO switching apart from leakage and fixture capacitance.<br><br>
           <strong>Circuit Direction</strong><br><br>
           The current nanosecond board uses trigger conditioning into a GaN switching stage, with local driver power, range/control relays, shared external trigger, sync output, and Keithley/source-measure paths separated enough to bring up independently. LTspice is part of the design loop for checking timing and switching behavior before board bring-up; KiCad is the schematic/layout environment; Python, JupyterLab, and LabVIEW are the intended bench-control and analysis layer around the hardware.<br><br>
+          <div class="board-layer-viewer">
+            <input type="radio" id="ns-layer-render" name="ns-board-layer" checked>
+            <input type="radio" id="ns-layer-layout" name="ns-board-layer">
+            <input type="radio" id="ns-layer-top" name="ns-board-layer">
+            <input type="radio" id="ns-layer-copper" name="ns-board-layer">
+            <input type="radio" id="ns-layer-silk" name="ns-board-layer">
+            <input type="radio" id="ns-layer-bottom" name="ns-board-layer">
+            <div class="board-layer-controls" aria-label="Nanosecond board layer viewer">
+              <label for="ns-layer-render">3D render</label>
+              <label for="ns-layer-layout">combined layout</label>
+              <label for="ns-layer-top">top + silk</label>
+              <label for="ns-layer-copper">top copper</label>
+              <label for="ns-layer-silk">silk only</label>
+              <label for="ns-layer-bottom">bottom</label>
+            </div>
+            <div class="board-layer-stage">
+              <img class="layer-render" src="/assets/ns-pulse-board-cover.png" alt="3D render of the nanosecond pulse generator board with BNC connectors, relays, RP2040 module, and terminal blocks">
+              <img class="layer-layout" src="/assets/ns-pulse-board-layout.png" alt="KiCad combined layout view of the nanosecond pulse generator board">
+              <img class="layer-top" src="/assets/ns-pulse-layer-top.svg" alt="Top-side board view with silkscreen and copper exported from the current KiCad layout">
+              <img class="layer-copper" src="/assets/ns-pulse-layer-copper.svg" alt="Top copper routing layer exported from the current nanosecond pulse generator KiCad layout">
+              <img class="layer-silk" src="/assets/ns-pulse-layer-silk.svg" alt="Front silkscreen layer exported from the current nanosecond pulse generator KiCad layout">
+              <img class="layer-bottom" src="/assets/ns-pulse-layer-bottom.svg" alt="Bottom-side board layer exported from the current nanosecond pulse generator KiCad layout">
+            </div>
+            <span class="board-layer-caption">Layer viewer for the current ns/µs pulse board: BNC/coax test interfaces across the top edge, relay-switched bias/dut paths, local driver power, RP2040 trigger control, and routed high-speed pulse/sync sections.</span>
+          </div>
           <strong>V1 Microsecond Prototype</strong><br><br>
           Before the nanosecond board, I built a first-pass microsecond pulse-generator prototype to test the basic source-measure pulse workflow. V1 used a one-shot timing stage, gate driver, MOSFET output stage, manual/external trigger path, and Keithley/source-measure interface.<br><br>
           <img src="/assets/pulse-v1-physical.jpg" alt="First microsecond pulse-generator board under oscilloscope probe during bench testing" style="display:block; max-width: 70%; margin: 18px auto; border-radius: 8px;"><br>
@@ -1993,9 +2131,9 @@
         tags: ['KiCad', 'LTspice', 'RF PCB Layout', 'Python', 'LabVIEW', 'JupyterLab', 'Oscilloscope Bring-Up', 'RP2040', 'GaN FET Switching', 'Coax/BNC Interfaces'],
         links: [],
         images: [
+          '/assets/ns-pulse-board-cover.png',
+          '/assets/ns-pulse-board-angle.png',
           '/assets/ns-pulse-schematic-thumbnail.png',
-          '/assets/pulse-pcb-top.svg',
-          '/assets/pulse-pcb-copper.svg',
           '/assets/pulse-v1-physical.jpg',
           '/assets/pulse-v1-us-schematic.png',
           '/assets/pulse-v1-us-layout.png',
