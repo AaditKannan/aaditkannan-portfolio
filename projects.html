@@ -1249,8 +1249,8 @@
       letter-spacing: 0.04em;
       text-transform: uppercase;
       text-decoration: none;
-      opacity: 0;
-      pointer-events: none;
+      cursor: pointer;
+      opacity: 1;
       transition: opacity 0.18s ease, border-color 0.18s ease, background 0.18s ease;
     }
 
@@ -1290,6 +1290,12 @@
       background: rgba(255,255,255,0.06);
     }
 
+    .board-layer-lightbox .board-layer-controls label.is-active {
+      border-color: var(--border-light);
+      color: var(--text);
+      background: rgba(255,255,255,0.06);
+    }
+
     #ns-layer-render:checked ~ .board-layer-stage .layer-render,
     #ns-layer-layout:checked ~ .board-layer-stage .layer-layout,
     #ns-layer-top:checked ~ .board-layer-stage .layer-top,
@@ -1301,16 +1307,74 @@
       opacity: 1;
     }
 
-    #ns-layer-render:checked ~ .board-layer-stage .expand-render,
-    #ns-layer-layout:checked ~ .board-layer-stage .expand-layout,
-    #ns-layer-top:checked ~ .board-layer-stage .expand-top,
-    #ns-layer-copper:checked ~ .board-layer-stage .expand-copper,
-    #ns-layer-in1:checked ~ .board-layer-stage .expand-in1,
-    #ns-layer-in2:checked ~ .board-layer-stage .expand-in2,
-    #ns-layer-silk:checked ~ .board-layer-stage .expand-silk,
-    #ns-layer-bottom:checked ~ .board-layer-stage .expand-bottom {
-      opacity: 1;
-      pointer-events: auto;
+    .board-layer-lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 5000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 32px;
+      background: rgba(4,5,8,0.82);
+      backdrop-filter: blur(14px);
+    }
+
+    .board-layer-lightbox.active {
+      display: flex;
+    }
+
+    .board-layer-lightbox-panel {
+      position: relative;
+      width: min(94vw, 1320px);
+      max-height: 92vh;
+      padding: 18px;
+      overflow: auto;
+      border: 1px solid rgba(255,255,255,0.18);
+      background: rgba(14,15,20,0.96);
+      box-shadow: 0 28px 80px rgba(0,0,0,0.38);
+    }
+
+    .board-layer-lightbox-close {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      z-index: 4;
+      width: 34px;
+      height: 34px;
+      border: 1px solid rgba(255,255,255,0.22);
+      background: rgba(0,0,0,0.4);
+      color: #fff;
+      font-size: 22px;
+      line-height: 1;
+      cursor: pointer;
+    }
+
+    .board-layer-lightbox .board-layer-viewer {
+      width: 100%;
+      margin: 0;
+      padding: 0;
+      border: 0;
+      background: transparent;
+    }
+
+    .board-layer-lightbox .board-layer-controls {
+      padding-right: 48px;
+      margin-bottom: 14px;
+    }
+
+    .board-layer-lightbox .board-layer-stage {
+      max-height: none;
+      height: min(72vh, 820px);
+      aspect-ratio: auto;
+    }
+
+    .board-layer-lightbox .board-layer-caption {
+      max-width: 980px;
+      font-size: 11px;
+    }
+
+    .board-layer-lightbox .board-layer-expand {
+      display: none;
     }
 
     .detail-tags {
@@ -2182,14 +2246,7 @@
               <img class="layer-in2" src="/assets/ns-pulse-layer-in2.svg" alt="Inner layer 2 copper plane exported from the current four-layer KiCad layout">
               <img class="layer-silk" src="/assets/ns-pulse-layer-silk.svg" alt="Front silkscreen layer exported from the current nanosecond pulse generator KiCad layout">
               <img class="layer-bottom" src="/assets/ns-pulse-layer-bottom.svg" alt="Bottom-side board layer exported from the current nanosecond pulse generator KiCad layout">
-              <a class="board-layer-expand expand-render" href="/assets/ns-pulse-board-cover.png" target="_blank" rel="noopener" aria-label="Open 3D render full size"><svg viewBox="0 0 24 24"><path d="M8 3H3v5M16 3h5v5M8 21H3v-5M21 16v5h-5"/><path d="M3 3l7 7M21 3l-7 7M3 21l7-7M21 21l-7-7"/></svg><span>expand</span></a>
-              <a class="board-layer-expand expand-layout" href="/assets/ns-pulse-board-layout.png" target="_blank" rel="noopener" aria-label="Open combined KiCad layout full size"><svg viewBox="0 0 24 24"><path d="M8 3H3v5M16 3h5v5M8 21H3v-5M21 16v5h-5"/><path d="M3 3l7 7M21 3l-7 7M3 21l7-7M21 21l-7-7"/></svg><span>expand</span></a>
-              <a class="board-layer-expand expand-top" href="/assets/ns-pulse-layer-top.svg" target="_blank" rel="noopener" aria-label="Open top and silkscreen layer full size"><svg viewBox="0 0 24 24"><path d="M8 3H3v5M16 3h5v5M8 21H3v-5M21 16v5h-5"/><path d="M3 3l7 7M21 3l-7 7M3 21l7-7M21 21l-7-7"/></svg><span>expand</span></a>
-              <a class="board-layer-expand expand-copper" href="/assets/ns-pulse-layer-copper.svg" target="_blank" rel="noopener" aria-label="Open front copper layer full size"><svg viewBox="0 0 24 24"><path d="M8 3H3v5M16 3h5v5M8 21H3v-5M21 16v5h-5"/><path d="M3 3l7 7M21 3l-7 7M3 21l7-7M21 21l-7-7"/></svg><span>expand</span></a>
-              <a class="board-layer-expand expand-in1" href="/assets/ns-pulse-layer-in1.svg" target="_blank" rel="noopener" aria-label="Open inner layer 1 full size"><svg viewBox="0 0 24 24"><path d="M8 3H3v5M16 3h5v5M8 21H3v-5M21 16v5h-5"/><path d="M3 3l7 7M21 3l-7 7M3 21l7-7M21 21l-7-7"/></svg><span>expand</span></a>
-              <a class="board-layer-expand expand-in2" href="/assets/ns-pulse-layer-in2.svg" target="_blank" rel="noopener" aria-label="Open inner layer 2 full size"><svg viewBox="0 0 24 24"><path d="M8 3H3v5M16 3h5v5M8 21H3v-5M21 16v5h-5"/><path d="M3 3l7 7M21 3l-7 7M3 21l7-7M21 21l-7-7"/></svg><span>expand</span></a>
-              <a class="board-layer-expand expand-silk" href="/assets/ns-pulse-layer-silk.svg" target="_blank" rel="noopener" aria-label="Open silkscreen layer full size"><svg viewBox="0 0 24 24"><path d="M8 3H3v5M16 3h5v5M8 21H3v-5M21 16v5h-5"/><path d="M3 3l7 7M21 3l-7 7M3 21l7-7M21 21l-7-7"/></svg><span>expand</span></a>
-              <a class="board-layer-expand expand-bottom" href="/assets/ns-pulse-layer-bottom.svg" target="_blank" rel="noopener" aria-label="Open bottom layer full size"><svg viewBox="0 0 24 24"><path d="M8 3H3v5M16 3h5v5M8 21H3v-5M21 16v5h-5"/><path d="M3 3l7 7M21 3l-7 7M3 21l7-7M21 21l-7-7"/></svg><span>expand</span></a>
+              <button class="board-layer-expand" type="button" data-board-lightbox-open aria-label="Expand board layer viewer"><svg viewBox="0 0 24 24"><path d="M8 3H3v5M16 3h5v5M8 21H3v-5M21 16v5h-5"/><path d="M3 3l7 7M21 3l-7 7M3 21l7-7M21 21l-7-7"/></svg><span>expand</span></button>
             </div>
             <span class="board-layer-caption">Layer viewer for the current four-layer ns/µs pulse board: BNC/coax test interfaces across the top edge, relay-switched bias/dut paths, local driver power, RP2040 trigger control, inner copper layers, and routed high-speed pulse/sync sections.</span>
           </div>
@@ -2757,6 +2814,7 @@
       document.getElementById('detailDescription').innerHTML = project.description;
       document.getElementById('detailTags').innerHTML = '';
       initializeProjectPreviews();
+      initializeBoardLayerLightbox();
 
       // Render LaTeX math with KaTeX. Retry if the deferred auto-render script
       // hasn't loaded yet (happens when deep-linking straight to a project URL).
@@ -2856,6 +2914,84 @@
           preview.style.left = left + 'px';
           preview.style.top = top + 'px';
         });
+      });
+    }
+
+    function initializeBoardLayerLightbox() {
+      const viewer = document.querySelector('.board-layer-viewer');
+      const trigger = document.querySelector('[data-board-lightbox-open]');
+      if (!viewer || !trigger) return;
+
+      const closeExisting = () => {
+        const existing = document.querySelector('.board-layer-lightbox');
+        if (existing) existing.remove();
+        document.body.style.overflow = '';
+      };
+
+      trigger.addEventListener('click', () => {
+        closeExisting();
+
+        const selected = viewer.querySelector('input[name="ns-board-layer"]:checked');
+        const clone = viewer.cloneNode(true);
+        const cloneSuffix = 'expanded-' + Date.now();
+        const controls = clone.querySelector('.board-layer-controls');
+        const expandButton = clone.querySelector('[data-board-lightbox-open]');
+        if (expandButton) expandButton.remove();
+
+        clone.querySelectorAll('input[type="radio"]').forEach((input) => {
+          const oldId = input.id;
+          const newId = oldId + '-' + cloneSuffix;
+          input.dataset.layerBase = oldId.replace('ns-layer-', '');
+          input.name = 'ns-board-layer-' + cloneSuffix;
+          input.id = newId;
+          input.checked = selected && oldId === selected.id;
+          const label = controls ? controls.querySelector(`label[for="${oldId}"]`) : null;
+          if (label) label.setAttribute('for', newId);
+        });
+
+        const syncCloneLayer = () => {
+          const activeInput = clone.querySelector(`input[name="ns-board-layer-${cloneSuffix}"]:checked`);
+          const activeLayer = activeInput ? activeInput.dataset.layerBase : 'render';
+          clone.querySelectorAll('.board-layer-stage img').forEach((img) => {
+            img.style.opacity = img.classList.contains('layer-' + activeLayer) ? '1' : '0';
+          });
+          clone.querySelectorAll('.board-layer-controls label').forEach((label) => {
+            label.classList.toggle('is-active', activeInput && label.getAttribute('for') === activeInput.id);
+          });
+        };
+
+        clone.querySelectorAll('input[type="radio"]').forEach((input) => {
+          input.addEventListener('change', syncCloneLayer);
+        });
+        syncCloneLayer();
+
+        const overlay = document.createElement('div');
+        overlay.className = 'board-layer-lightbox active';
+        overlay.innerHTML = `
+          <div class="board-layer-lightbox-panel" role="dialog" aria-modal="true" aria-label="Expanded nanosecond board layer viewer">
+            <button class="board-layer-lightbox-close" type="button" aria-label="Close expanded board viewer">&times;</button>
+          </div>
+        `;
+        overlay.querySelector('.board-layer-lightbox-panel').appendChild(clone);
+        document.body.appendChild(overlay);
+        document.body.style.overflow = 'hidden';
+
+        let escapeHandler;
+        const close = () => {
+          document.removeEventListener('keydown', escapeHandler);
+          closeExisting();
+        };
+        overlay.querySelector('.board-layer-lightbox-close').addEventListener('click', close);
+        overlay.addEventListener('click', (event) => {
+          if (event.target === overlay) close();
+        });
+
+        escapeHandler = (event) => {
+          if (event.key === 'Escape') {
+            close();
+          }
+        };
+        document.addEventListener('keydown', escapeHandler);
       });
     }
 
