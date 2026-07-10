@@ -1170,8 +1170,9 @@
       column-span: all;
       break-inside: avoid;
       -webkit-column-break-inside: avoid;
-      margin: 24px 0 30px;
-      padding: 16px;
+      width: min(100%, 760px);
+      margin: 22px auto 28px;
+      padding: 14px;
       border: 1px solid var(--border);
       background: rgba(255,255,255,0.025);
     }
@@ -1214,6 +1215,7 @@
       position: relative;
       width: 100%;
       aspect-ratio: 16 / 11;
+      max-height: 420px;
       overflow: hidden;
       border: 1px solid var(--border);
       background: #101116;
@@ -1771,12 +1773,14 @@
       }
 
       .board-layer-viewer {
-        padding: 12px;
-        margin: 20px 0 26px;
+        width: 100%;
+        padding: 10px;
+        margin: 18px 0 24px;
       }
 
       .board-layer-stage {
         aspect-ratio: 1 / 1;
+        max-height: 360px;
       }
 
       .board-layer-stage img {
@@ -2154,8 +2158,6 @@
           KiCad, LTspice, RF PCB layout, GaN switching, coax/BNC lab interfaces, oscilloscope bring-up, Python, JupyterLab, LabVIEW, RP2040/microcontroller triggering, source-measure integration, and thin-film electrical characterization.`,
         tags: ['KiCad', 'LTspice', 'RF PCB Layout', 'Python', 'LabVIEW', 'JupyterLab', 'Oscilloscope Bring-Up', 'RP2040', 'GaN FET Switching', 'Coax/BNC Interfaces'],
         links: [],
-        model: '/assets/ns-pulse-board-assembly.glb',
-        modelPoster: '/assets/ns-pulse-board-cover.png',
         images: [
           '/assets/ns-pulse-board-cover.png',
           '/assets/ns-pulse-board-angle.png',
