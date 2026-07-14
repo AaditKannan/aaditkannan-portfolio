@@ -735,16 +735,7 @@
     .project-card.active-card {
       position: relative;
       z-index: 100;
-      grid-column: span 2 !important;
       border-color: var(--border-light);
-    }
-
-    .project-card.active-card .project-image {
-      aspect-ratio: 2/1;
-    }
-
-    .project-card.active-card .project-content {
-      display: none;
     }
 
     /* Detail content - same layout as main page */
@@ -776,7 +767,7 @@
     }
 
     .detail-inner {
-      max-width: 1100px;
+      max-width: 1200px;
       margin: 0 auto;
       padding: 140px 40px 100px;
       min-width: 0;
@@ -3004,8 +2995,10 @@
       const project = projects[index];
       const titleStart = isDetailOpen ? detailTitle.textContent : 'Projects';
 
-      // Update detail content
-      updateDetailView(project);
+      // Set the lightweight header first so the transition can begin immediately.
+      detailContent.dataset.projectId = project.id;
+      document.getElementById('detailCategory').textContent = project.category.toUpperCase();
+      document.getElementById('detailDate').textContent = (project.active ? '● ' : '') + project.date;
       detailTitle.textContent = titleStart;
 
       document.querySelectorAll('.project-card.active-card').forEach(card => {
@@ -3019,24 +3012,25 @@
       detailContent.classList.remove('closing');
       detailContent.classList.remove('visible');
 
-      // Give every project one committed pre-animation frame before revealing
-      // the detail content. Heavier pages can otherwise skip the same fade/slide
-      // transition that lighter project pages visibly show.
-      detailContent.offsetHeight;
+      // Commit the opacity start state, then reveal before building heavy media/body content.
+      getComputedStyle(detailContent).opacity;
       isDetailOpen = true;
-      requestAnimationFrame(() => {
+      detailContent.classList.add('visible');
+      scrambleText(detailTitle, project.title, 420);
+
+      // Gallery, rich copy, and interactive viewers are populated after the
+      // first transition frame; they enter later through the existing section delays.
+      requestAnimationFrame(() => requestAnimationFrame(() => {
         if (currentProjectIndex === index && isDetailOpen) {
-          detailContent.classList.add('visible');
-          scrambleText(detailTitle, project.title, 420);
+          updateDetailView(project);
         }
-      });
+      }));
 
       // Update URL hash
       if (pushHistory) history.pushState(null, '', '#' + projectId);
 
       // Scroll to top
       detailContent.scrollTop = 0;
-      window.scrollTo(0, 0);
     }
 
     // Close detail view
