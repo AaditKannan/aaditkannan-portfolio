@@ -28,13 +28,6 @@
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
   <script type="module" src="https://cdn.jsdelivr.net/npm/@google/model-viewer@3.5.0/dist/model-viewer.min.js"></script>
   <style>
-    @view-transition { navigation: auto; }
-    ::view-transition-old(root),
-    ::view-transition-new(root) {
-      animation-duration: 320ms;
-      animation-timing-function: cubic-bezier(0.22, 0.61, 0.36, 1);
-    }
-
     * {
       margin: 0;
       padding: 0;
@@ -2025,6 +2018,8 @@
 
 
   </style>
+  <link rel="stylesheet" href="/page-transitions.css">
+  <script src="/page-transitions.js"></script>
 </head>
 <body>
   <div class="cursor-glow" id="cursorGlow"></div>

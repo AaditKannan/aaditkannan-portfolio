@@ -36,13 +36,6 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    @view-transition { navigation: auto; }
-    ::view-transition-old(root),
-    ::view-transition-new(root) {
-      animation-duration: 320ms;
-      animation-timing-function: cubic-bezier(0.22, 0.61, 0.36, 1);
-    }
-
     :root {
       --font-heading: 'JetBrains Mono', monospace;
       --font-body: 'Inter', system-ui, -apple-system, sans-serif;
@@ -360,6 +353,8 @@
       .video-title { font-size: 11px; }
     }
   </style>
+  <link rel="stylesheet" href="/page-transitions.css">
+  <script src="/page-transitions.js"></script>
 </head>
 <body>
   <!-- Cursor Glow -->

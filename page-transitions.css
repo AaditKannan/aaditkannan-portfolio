@@ -1,0 +1,38 @@
+.nav-bar {
+  position: fixed;
+}
+
+html.site-leaving body > :not(.nav-bar):not(script):not(style) {
+  opacity: 0;
+  transform: translateY(-3px);
+  transition:
+    opacity 145ms ease-in,
+    transform 145ms ease-in;
+  pointer-events: none;
+}
+
+@keyframes site-page-in {
+  from {
+    opacity: 0;
+    transform: translateY(3px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+html.site-entering body > :not(.nav-bar):not(script):not(style) {
+  animation: site-page-in 180ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html.site-leaving body > :not(.nav-bar):not(script):not(style),
+  html.site-entering body > :not(.nav-bar):not(script):not(style) {
+    opacity: 1;
+    transform: none;
+    animation: none;
+    transition: none;
+  }
+}
