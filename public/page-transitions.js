@@ -2,6 +2,8 @@
   const root = document.documentElement;
   const storageKey = 'aadit-site-transition';
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const exitDuration = 70;
+  const enterDuration = 140;
 
   root.dataset.siteTransitions = 'ready';
 
@@ -9,7 +11,7 @@
     if (sessionStorage.getItem(storageKey) === '1') {
       sessionStorage.removeItem(storageKey);
       root.classList.add('site-entering');
-      window.setTimeout(() => root.classList.remove('site-entering'), 220);
+      window.setTimeout(() => root.classList.remove('site-entering'), enterDuration);
     }
   } catch {
     // Navigation still works when storage is unavailable.
@@ -65,11 +67,13 @@
       // The destination can still animate its own initial render.
     }
 
+    root.classList.remove('site-entering');
     root.classList.add('site-leaving');
-    window.setTimeout(() => window.location.assign(destination.href), 145);
+    window.setTimeout(() => window.location.assign(destination.href), exitDuration);
   }, true);
 
   window.addEventListener('pageshow', () => {
     root.classList.remove('site-leaving');
+    root.classList.remove('site-entering');
   });
 })();
