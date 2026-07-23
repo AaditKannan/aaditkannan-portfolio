@@ -1150,6 +1150,275 @@
       margin-top: 0;
     }
 
+    .engineering-validation {
+      column-span: all;
+      width: 100%;
+      margin: 48px 0 36px;
+      padding-top: 32px;
+      border-top: 1px solid var(--border-light);
+      color: var(--text);
+      opacity: 1;
+    }
+
+    .validation-header {
+      max-width: 780px;
+      margin-bottom: 24px;
+    }
+
+    .validation-kicker {
+      margin-bottom: 8px;
+      color: var(--text-muted);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    .engineering-validation h3,
+    .engineering-validation h4 {
+      margin: 0;
+      color: var(--text);
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      letter-spacing: 0;
+    }
+
+    .engineering-validation h3 {
+      font-size: 26px;
+      line-height: 1.2;
+    }
+
+    .engineering-validation h4 {
+      margin-top: 32px;
+      font-size: 17px;
+      line-height: 1.35;
+    }
+
+    .validation-header p,
+    .validation-copy {
+      margin: 8px 0 0;
+      color: var(--text-dim);
+      line-height: 1.65;
+    }
+
+    .validation-metrics {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      margin: 22px 0 32px;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .validation-metric {
+      min-width: 0;
+      padding: 16px 18px;
+      border-right: 1px solid var(--border);
+    }
+
+    .validation-metric:first-child {
+      padding-left: 0;
+    }
+
+    .validation-metric:last-child {
+      padding-right: 0;
+      border-right: 0;
+    }
+
+    .validation-metric b {
+      display: block;
+      color: var(--text);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 20px;
+      font-weight: 600;
+      line-height: 1.2;
+      letter-spacing: 0;
+    }
+
+    .validation-metric span {
+      display: block;
+      margin-top: 5px;
+      color: var(--text-muted);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px;
+      line-height: 1.4;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .validation-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+      margin: 18px 0 26px;
+    }
+
+    .validation-figure {
+      min-width: 0;
+      margin: 0;
+      break-inside: avoid;
+    }
+
+    .validation-figure picture {
+      display: block;
+      width: 100%;
+    }
+
+    .validation-figure img {
+      display: block;
+      width: 100%;
+      height: auto;
+      max-height: 420px;
+      object-fit: contain;
+      object-position: center;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+    }
+
+    .validation-figure--wide {
+      max-width: 820px;
+      margin: 20px auto 28px;
+    }
+
+    .validation-figure--wide img {
+      max-height: 470px;
+    }
+
+    .validation-figure figcaption {
+      margin-top: 8px;
+      color: var(--text-muted);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      line-height: 1.55;
+      letter-spacing: 0.01em;
+    }
+
+    .mesh-sensitivity-wrap,
+    .kisssoft-results-wrap {
+      max-width: 760px;
+      margin: 18px 0 30px;
+      overflow-x: auto;
+    }
+
+    .validation-table {
+      width: 100%;
+      min-width: 520px;
+      border-collapse: collapse;
+      color: var(--text-dim);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      line-height: 1.45;
+    }
+
+    .validation-table th,
+    .validation-table td {
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--border);
+      text-align: left;
+      white-space: nowrap;
+    }
+
+    .validation-table th {
+      color: var(--text-muted);
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .validation-table td:first-child {
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    .validation-callout {
+      max-width: 840px;
+      margin: 24px 0 34px;
+      padding: 4px 0 4px 18px;
+      border-left: 2px solid var(--text);
+      color: var(--text);
+      font-size: 17px;
+      font-weight: 500;
+      line-height: 1.55;
+    }
+
+    .validation-note {
+      max-width: 820px;
+      margin: 14px 0 26px;
+      color: var(--text-dim);
+      font-size: 13px;
+      line-height: 1.65;
+    }
+
+    @media (max-width: 768px) {
+      .engineering-validation {
+        margin-top: 36px;
+        padding-top: 26px;
+      }
+
+      .engineering-validation h3 {
+        font-size: 22px;
+      }
+
+      .validation-metrics {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .validation-metric {
+        padding: 14px 12px;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .validation-metric:nth-child(2) {
+        padding-right: 0;
+        border-right: 0;
+      }
+
+      .validation-metric:nth-child(3) {
+        padding-left: 0;
+        border-bottom: 0;
+      }
+
+      .validation-metric:nth-child(4) {
+        padding-right: 0;
+        border-right: 0;
+        border-bottom: 0;
+      }
+
+      .validation-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+
+      .validation-figure img,
+      .validation-figure--wide img {
+        max-height: none;
+      }
+
+      .mesh-sensitivity-wrap,
+      .kisssoft-results-wrap {
+        width: 100%;
+        max-width: 100%;
+      }
+
+      .validation-table {
+        min-width: 0;
+        table-layout: fixed;
+        font-size: 9px;
+      }
+
+      .validation-table th,
+      .validation-table td {
+        padding: 8px 6px;
+        white-space: normal;
+        overflow-wrap: anywhere;
+      }
+
+      .validation-callout {
+        font-size: 15px;
+      }
+    }
+
     .board-layer-viewer {
       break-inside: avoid;
       -webkit-column-break-inside: avoid;
@@ -2129,6 +2398,148 @@
   </div>
 
   <script>
+    const wolfromValidationSection = `
+      <section class="engineering-validation" aria-labelledby="wolfrom-structural-validation">
+        <header class="validation-header">
+          <div class="validation-kicker">Simulation / redesign</div>
+          <h3 id="wolfrom-structural-validation">Structural Validation</h3>
+          <p>I used the hand load case to check the integrated steel Ra ring and stationary housing before cutting the next revision.</p>
+        </header>
+
+        <div class="validation-metrics" aria-label="Wolfrom structural validation summary">
+          <div class="validation-metric"><b>50 N·m</b><span>Peak output torque</span></div>
+          <div class="validation-metric"><b>500 N</b><span>Radial bearing load</span></div>
+          <div class="validation-metric"><b>5.34 MPa</b><span>Peak von Mises stress</span></div>
+          <div class="validation-metric"><b>≈35%</b><span>Whole-part mass reduction</span></div>
+        </div>
+
+        <h4>Load Case</h4>
+        <p class="validation-copy">The arm model set a <b>30 N·m continuous</b> design torque and a <b>50 N·m peak</b>. The ANSYS case combines that torque reaction through the fixed Ra ring with a 500 N radial bearing load and a 50 N·m overturning moment from a 100 mm arm.</p>
+        <div class="validation-grid">
+          <figure class="validation-figure">
+            <picture>
+              <source srcset="/assets/wolfrom-hand-calcs.webp" type="image/webp">
+              <img src="/assets/wolfrom-hand-calcs.png" alt="Wolfrom actuator hand calculations establishing 30 newton-meter continuous and 50 newton-meter peak output torque" width="892" height="838" loading="lazy" decoding="async">
+            </picture>
+            <figcaption>Hand load case: gravity, angular acceleration, and a hard-stop event set the continuous and peak design torques.</figcaption>
+          </figure>
+          <figure class="validation-figure">
+            <picture>
+              <source srcset="/assets/wolfrom-ansys-load-case.webp" type="image/webp">
+              <img src="/assets/wolfrom-ansys-load-case.png" alt="ANSYS boundary conditions and combined actuator housing load case" width="1229" height="669" loading="lazy" decoding="async">
+            </picture>
+            <figcaption>Final simplified BC model: fixed cylindrical mounting interfaces, frictionless lower mating face, distributed Ra torque, and loads applied through the output bearing seat.</figcaption>
+          </figure>
+        </div>
+
+        <h4>Static Structural</h4>
+        <p class="validation-copy">This preliminary model uses <b>Structural Steel</b> for the integrated ring and housing. Under the combined peak case, the refined solution returned 5.34 MPa peak stress and 1.069 µm maximum deformation.</p>
+        <div class="validation-grid">
+          <figure class="validation-figure">
+            <picture>
+              <source srcset="/assets/wolfrom-ansys-stress.webp" type="image/webp">
+              <img src="/assets/wolfrom-ansys-stress.png" alt="ANSYS equivalent von Mises stress result for the Wolfrom stationary housing" width="2048" height="855" loading="lazy" decoding="async">
+            </picture>
+            <figcaption><b>5.34 MPa</b> peak equivalent stress in the refined combined-load solution.</figcaption>
+          </figure>
+          <figure class="validation-figure">
+            <picture>
+              <source srcset="/assets/wolfrom-ansys-deformation.webp" type="image/webp">
+              <img src="/assets/wolfrom-ansys-deformation.png" alt="ANSYS total deformation result for the Wolfrom stationary housing" width="2158" height="896" loading="lazy" decoding="async">
+            </picture>
+            <figcaption><b>1.069 µm</b> maximum total deformation in the same load case.</figcaption>
+          </figure>
+        </div>
+
+        <div class="mesh-sensitivity-wrap">
+          <table class="validation-table">
+            <thead>
+              <tr><th>Mesh sensitivity</th><th>Coarser</th><th>Refined</th><th>Change</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Peak stress</td><td>5.62 MPa</td><td>5.34 MPa</td><td>≈5.1%</td></tr>
+              <tr><td>Max deformation</td><td>1.066 µm</td><td>1.069 µm</td><td>≈0.3%</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h4>Topology Optimization</h4>
+        <p class="validation-copy">I ran density-based topology optimization with minimum compliance, a 50% mass response target in the design region, and a 3 mm minimum member size. Ra teeth and support, the bearing seat, mounting holes, bolt regions, and mating faces stayed non-optimizable.</p>
+        <div class="validation-grid">
+          <figure class="validation-figure">
+            <picture>
+              <source srcset="/assets/wolfrom-ansys-topology-setup.webp" type="image/webp">
+              <img src="/assets/wolfrom-ansys-topology-setup.png" alt="ANSYS topology optimization setup with preserved actuator housing interfaces" width="2048" height="845" loading="lazy" decoding="async">
+            </picture>
+            <figcaption>Preserved interfaces keep the gear, bearing, mounting, bolt, and mating geometry usable.</figcaption>
+          </figure>
+          <figure class="validation-figure">
+            <picture>
+              <source srcset="/assets/wolfrom-ansys-topology-result.webp" type="image/webp">
+              <img src="/assets/wolfrom-ansys-topology-result.png" alt="ANSYS topology density result for the Wolfrom stationary ring housing" width="2048" height="852" loading="lazy" decoding="async">
+            </picture>
+            <figcaption>Whole-part mass moved from <b>153.4 g</b> to <b>99.6 g</b>, about a 35% reduction.</figcaption>
+          </figure>
+        </div>
+
+        <blockquote class="validation-callout">Topology optimization was more useful as a load-path study than as final geometry. The thick outer wall contributed little; circumferential structure around the gear, bearing, and mounts did the work.</blockquote>
+
+        <figure class="validation-figure validation-figure--wide">
+          <picture>
+            <source srcset="/assets/wolfrom-manufacturable-redesign.webp" type="image/webp">
+            <img src="/assets/wolfrom-manufacturable-redesign.png" alt="Manufacturable Wolfrom housing redesign with a thin shell, structural rings, and simple ribs" width="1202" height="692" loading="lazy" decoding="async">
+          </picture>
+          <figcaption>Manufacturable translation: thin exterior shell, preserved structural rings, simple ribs, and unchanged Ra, bearing, bolt, and mating interfaces.</figcaption>
+        </figure>
+
+        <header class="validation-header">
+          <div class="validation-kicker">Gear analysis</div>
+          <h3>KISSsoft Gear-Pair Check</h3>
+          <p>The stock simple-planetary template does not represent this compound Wolfrom cleanly, so I configured the evaluated gear pair manually and checked the mesh over a full rotation.</p>
+        </header>
+
+        <div class="kisssoft-results-wrap">
+          <table class="validation-table">
+            <thead>
+              <tr><th>Output</th><th>Gear 1</th><th>Gear 2</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>System reduction</td><td colspan="2">555/11 = 50.45:1</td></tr>
+              <tr><td>Contact ratio ε<sub>α</sub> / ε<sub>β</sub> / ε<sub>γ</sub></td><td colspan="2">1.913 / 0.000 / 1.913</td></tr>
+              <tr><td>Root safety S<sub>F</sub></td><td>1.258</td><td>1.340</td></tr>
+              <tr><td>Flank safety S<sub>H</sub></td><td>1.217</td><td>1.384</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <figure class="validation-figure validation-figure--wide">
+          <picture>
+            <source srcset="/assets/wolfrom-kisssoft-results.webp" type="image/webp">
+            <img src="/assets/wolfrom-kisssoft-results.png" alt="KISSsoft result table showing contact ratio and root and flank safety factors for the evaluated gear pair" width="890" height="248" loading="lazy" decoding="async">
+          </picture>
+          <figcaption>Reported pair-level outputs: 1.913 / 0.000 / 1.913 transverse, overlap, and total contact ratio; 1.258 / 1.340 root safety; and 1.217 / 1.384 flank safety.</figcaption>
+        </figure>
+
+        <div class="validation-grid">
+          <figure class="validation-figure">
+            <picture>
+              <source srcset="/assets/wolfrom-kisssoft-sliding.webp" type="image/webp">
+              <img src="/assets/wolfrom-kisssoft-sliding.png" alt="KISSsoft specific sliding plot for the evaluated gear pair" width="494" height="260" loading="lazy" decoding="async">
+            </picture>
+            <figcaption>Specific sliding across the evaluated mesh cycle.</figcaption>
+          </figure>
+          <figure class="validation-figure">
+            <picture>
+              <source srcset="/assets/wolfrom-kisssoft-contact-stiffness.webp" type="image/webp">
+              <img src="/assets/wolfrom-kisssoft-contact-stiffness.png" alt="KISSsoft single-contact and mesh stiffness plot for the evaluated gear pair" width="494" height="260" loading="lazy" decoding="async">
+            </picture>
+            <figcaption>Single-contact and total mesh stiffness across rotation.</figcaption>
+          </figure>
+        </div>
+
+        <p class="validation-note">These are outputs for the evaluated pair shown, not a system-level efficiency result or final gearbox validation. Final backlash, torque, backdrive, and efficiency measurements wait on the metal actuator and dyno.</p>
+      </section>`;
+
     // Projects data
     const projects = [
       {
@@ -2138,17 +2549,17 @@
         filterCategory: 'hardware',
         years: [2026],
         period: 'college',
-        date: 'Jun 2026 — Present',
+        date: 'May 2026 — Present',
         active: true,
         featured: true,
         displayOrder: 1,
         excerpt: 'Wolfrom compound planetary actuator for humanoid joints, targeting about 50:1 reduction with custom geartrain geometry, bearing stackups, output ring design, and prototype validation.',
         description: `A high-ratio Wolfrom compound planetary actuator for humanoid-scale joints. I'm building it around the three things gearboxes this small are usually bad at: backdrivability, low reflected inertia, and real efficiency at high reduction.<br><br><strong>Overview</strong><br><br>Humanoid robots need joints that are small, put out a lot of torque, and can still feel what they touch. That last part is the hard one. Most small high-ratio gearboxes are basically one way: you can drive the output from the motor, but you can't easily push the motor backward from the output, so the joint feels dead and can't do force control. I'm designing a Wolfrom compound planetary actuator that targets about 50:1 reduction in a compact package while staying efficient enough to actually backdrive.<br><br>The layout is a driven sun, three compound planet stacks, a fixed internal ring, and an output internal ring. The small tooth-count difference between the two ring meshes is where the high reduction comes from, while the first stage handles as much pre-reduction as possible so the differential stage is not doing all the ugly work.<br><br><strong>Ratio Split</strong><br><br>The current tooth counts are S=33, Ps=57, Pa=27, Pb=25, Ra=72, and Rb=75. That set resolves to <b>555/11 = 50.45:1</b>, so the actuator gets the useful range of a two-stage gearbox in one compact axial stack. That number matters mechanically: it sets motor speed, output torque range, reflected inertia, and how aggressive the ring differential has to be.<br><br><img src="/assets/wolfrom-render-face.jpg" alt="CAD front view of the Wolfrom gearbox showing the sun gear, three compound planets, and the ring gears" style="display:block; max-width: 56%; margin: 18px auto; border-radius: 8px;"><br><em style="opacity: 0.7; font-size: 0.9em;">CAD front view: the sun in the center driving three compound planets, with the fixed and output ring gears around them.</em><br><br><strong>What I Am Optimizing</strong><br><br>At 50:1, reflected inertia is not something I can hand-wave away. The real design fight is friction: rough teeth, bearing drag, poor load sharing, and the circulating power inside the Wolfrom differential all make the joint feel less transparent. I am targeting about 80% efficiency and near-zero backlash, but those are targets for the metal revision and dyno, not final measured claims yet.<br><br>The important design move is how I split the ratio. A textbook Wolfrom dumps almost all of its reduction into the high-loss ring differential, which is exactly why circulating power blows up. I pushed more of the reduction into the first sun stage, then used KISSsoft to work through gear macro-geometry, profile shifts, and tip relief on the high-load ring meshes instead of just accepting the first tooth count that fit in CAD. For the current split, the latent-power ratio is around <b>17.6</b>, which is why tiny losses in the internal ring meshes matter so much.<br><br><strong>Primary Problems to Solve</strong><br><br>• <b>Ring-mesh efficiency:</b> the two internal ring meshes carry almost all the load and cause almost all the friction, so their tooth shape and surface finish matter far more than the sun gear.<br>• <b>Planet-bearing drag:</b> the compound planets spin faster than the carrier, so their bearings are a big loss path. The metal version moves from printed bushings to needle bearings on hardened, ground pins.<br>• <b>Load sharing:</b> three planets are over-constrained, so I am using a floating sun/carrier strategy and gear timing during assembly so all three planets actually share load.<br>• <b>Backlash:</b> the split output ring is there so I can preload the mesh instead of pretending printed gear clearance is representative of the final actuator.<br>• <b>Manufacturing:</b> internal ring teeth can't be cleanly milled, so the next revision uses CNC aluminum structure with wire-EDM hardened-steel rings.<br><br><strong>What I Built</strong><br><br>• Designed the full Wolfrom compound planetary gearbox targeting about 50:1 reduction.<br>• Modeled the whole actuator stack in Onshape: sun, compound planets, fixed ring, output ring, carrier, bearings, shafts, and output hub.<br>• Iterated on splitting the output ring, bolt access, bearing support, dowel alignment, and axial spacing so the actuator can actually be assembled and torn down.<br>• Built FDM prototypes to check gear meshing, stack height, bearing placement, output-ring splitting, and assembly sequence before moving into metal hardware.<br><br><strong>Technical Details</strong><br><br>The motor drives the sun, one planet gear meshes the fixed inner ring, and the other planet gear drives the output ring, both on the same compound planet. All three meshes share one planet-axis center distance, which forces the module ratio across the stages into roughly 1 : 2 : 1.8, so every stage is sized to its own teeth on the same circle. The output-ring mesh is both the highest loaded and the finest pitch, so it gets the widest face and, in the metal build, the hardest steel.<br><br><img src="/assets/wolfrom-render-section.jpg" alt="CAD cutaway section of the Wolfrom actuator showing the sun gear, compound planet stacks, fixed inner ring, and output ring" style="max-width: 100%; margin: 20px 0; border-radius: 8px;"><br><em style="opacity: 0.7; font-size: 0.9em;">CAD cutaway: the sun drives the compound planets, which mesh the fixed inner ring with one gear and the output ring with the other, all in one axial package.</em><br><br>The current prototype runs on a goBILDA gearmotor for bench testing, with the whole gearbox built as a stack of plates (motor mount, carrier cheeks, fixed ring, output ring) tied together by standoffs and dowels for repeated teardown, gear timing, and stackup validation.<br><br><img src="/assets/wolfrom-render-side.jpg" alt="Side view of the Wolfrom actuator as a stack of plates mounted on the goBILDA motor" style="display:block; max-width: 88%; margin: 18px auto; border-radius: 8px;"><br><em style="opacity: 0.7; font-size: 0.9em;">The actuator as a stack of plates on the goBILDA motor: motor mount, carrier, and the fixed and output rings, set by standoffs and dowels.</em><br><br><strong>Integrated Packaging Revision</strong><br><br>The current CAD revision moves from the open plate-stack prototype toward a self-contained joint module. I packaged the Wolfrom reduction above the motor, supported the output around a large bearing, and kept the motor driver/control PCB and cable exit inside the lower housing instead of treating the electronics as a separate box.<br><br>The section view is how I check the full axial stack at once: motor-to-sun coupling, compound planet and ring placement, bearing support, output interface, fastener access, wiring clearance, and whether the gearbox, motor, and electronics can be assembled in a realistic order. This is still a packaging and manufacturing revision in progress, not a validated production actuator.<br><br><picture><source srcset="/assets/wolfrom-integrated-section.webp" type="image/webp"><img src="/assets/wolfrom-integrated-section.png" alt="Sectioned CAD view of the integrated Wolfrom actuator showing the gearbox, output support, motor, electronics, housing, and cable exit" loading="lazy" decoding="async" style="display:block; max-width: 82%; margin: 20px auto; border-radius: 8px;"></picture><br><em style="opacity: 0.7; font-size: 0.9em;">Current integrated CAD cutaway: output support and Wolfrom geartrain above the motor, with the control electronics packaged inside the lower housing.</em><br><br><strong>Status</strong><br><br>Right now I'm iterating on printed prototypes for the kinematics, packaging, and assembly while manufacturing the CNC aluminum / wire-EDM revision and building the dyno. Bench testing is planned one variable at a time: contact patterns to confirm all three planets share load, breakaway and backdrive measurements to see how transparent the joint feels, then torque and efficiency sweeps against the design targets.`,
-        tags: ['Onshape', 'KISSsoft', 'Planetary Gear Design', 'Tolerance Stackups', 'Bearing Selection', 'FDM/SLA Prototyping', 'DFM'],
+        tags: ['Onshape', 'ANSYS Mechanical', 'KISSsoft', 'Static Structural FEA', 'Topology Optimization', 'Planetary Gear Design', 'Tolerance Stackups', 'DFM'],
         links: [],
         model: '/assets/wolfrom-gearbox.glb',
         modelPoster: '/assets/wolfrom-render-iso.jpg',
-        images: ['/assets/wolfrom-cover.jpg', '/assets/wolfrom-integrated-cad.png', '/assets/wolfrom-integrated-section.png', '/assets/wolfrom-render-iso.jpg', '/assets/wolfrom-render-face.jpg', '/assets/wolfrom-render-section.jpg', '/assets/wolfrom-render-side.jpg', '/assets/wolfrom-stand.jpg', '/assets/wolfrom-spin.mp4', '/assets/wolfrom-bench.jpg']
+        images: ['/assets/wolfrom-cover.jpg', '/assets/wolfrom-integrated-cad.png', '/assets/wolfrom-integrated-section.png', '/assets/wolfrom-ansys-stress.png', '/assets/wolfrom-ansys-topology-result.png', '/assets/wolfrom-manufacturable-redesign.png', '/assets/wolfrom-kisssoft-results.png', '/assets/wolfrom-render-iso.jpg', '/assets/wolfrom-render-face.jpg', '/assets/wolfrom-render-section.jpg', '/assets/wolfrom-render-side.jpg', '/assets/wolfrom-stand.jpg', '/assets/wolfrom-spin.mp4', '/assets/wolfrom-bench.jpg']
       },
       {
         id: 'formula-electric',
@@ -2811,7 +3222,10 @@
       }
 
       // Description (tags moved to sidebar)
-      document.getElementById('detailDescription').innerHTML = project.description;
+      const descriptionHtml = project.id === 'wolfrom-actuator'
+        ? project.description.replace('<strong>Status</strong>', `${wolfromValidationSection}<strong>Status</strong>`)
+        : project.description;
+      document.getElementById('detailDescription').innerHTML = descriptionHtml;
       document.getElementById('detailTags').innerHTML = '';
       initializeProjectPreviews();
       initializeBoardLayerLightbox();
