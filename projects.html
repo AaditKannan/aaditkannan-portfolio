@@ -1210,6 +1210,16 @@
       border-radius: 4px;
     }
 
+    .detail-description picture,
+    .detail-description picture img {
+      break-inside: avoid;
+      -webkit-column-break-inside: avoid;
+    }
+
+    .detail-description picture img {
+      height: auto;
+    }
+
     .project-inline-grid figcaption,
     .project-disclosure figcaption {
       margin-top: 7px;
@@ -2258,10 +2268,10 @@ const wolfromDescription = `
   For the integrated Structural Steel Ra ring and housing, I checked a combined peak case with <b>50 N·m</b> torque reaction, <b>500 N</b> radial bearing load, and <b>50 N·m</b> overturning moment. The refined solution returned <b>5.34 MPa</b> peak von Mises stress and <b>1.069 µm</b> maximum deformation. Topology optimization then showed that the thick outer wall contributed little compared with the circumferential gear, bearing, and mounting structure.<br><br>
 
   <picture>
-    <source srcset="/assets/wolfrom-manufacturable-redesign.webp" type="image/webp">
-    <img src="/assets/wolfrom-manufacturable-redesign.png" alt="Manufacturable Wolfrom housing redesign with a thin outer shell, structural rings, and simple ribs" width="1202" height="692" loading="lazy" decoding="async" style="display:block; max-width:100%; margin:20px 0; border-radius:8px;">
+    <source srcset="/assets/wolfrom-ansys-stress.webp" type="image/webp">
+    <img src="/assets/wolfrom-ansys-stress.png" alt="ANSYS equivalent von Mises stress result for the integrated Wolfrom housing load case" width="2048" height="855" loading="lazy" decoding="async" style="display:block; max-width:100%; margin:20px 0; border-radius:8px;">
   </picture>
-  <br><em style="opacity:0.7; font-size:0.9em;">Manufacturable redesign: thin shell, preserved structural rings, simple ribs, and unchanged gear, bearing, bolt, and mating interfaces.</em><br><br>
+  <br><em style="opacity:0.7; font-size:0.9em;">Refined-mesh ANSYS result for the combined peak load case: 5.34 MPa maximum equivalent stress.</em><br><br>
 
   <details class="project-disclosure">
     <summary>Load case and hand calculations</summary>
