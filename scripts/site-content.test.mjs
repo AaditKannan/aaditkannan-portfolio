@@ -76,11 +76,13 @@ assert.match(resume, /href="\/assets\/AaditKannanJulyResume\.pdf"/, 'Resume PDF 
 assert.doesNotMatch(resume, /<section id="projects">|data-section="projects"|>\s*Projects\s*<span class="nav-cursor">/, 'Resume should not include a separate Projects section or sidebar item');
 assert.doesNotMatch(resume, />Current Projects</, 'Resume should not use the Current Projects section label');
 assert.doesNotMatch(resume, /current-projects|>\s*Current\s*</, 'Resume navigation should not use Current Projects wording or anchors');
-const technicalExperience = resume.match(/<section id="technical-experience">([\s\S]*?)<section id="work-experience">/);
-assert.ok(technicalExperience, 'Resume should include Technical Experience before Work Experience');
+assert.doesNotMatch(resume, /<section id="work-experience">|data-section="work-experience"|>\s*Work\s*</, 'Resume should not include a separate Work section or sidebar item');
+const technicalExperience = resume.match(/<section id="technical-experience">([\s\S]*?)<section id="education">/);
+assert.ok(technicalExperience, 'Resume should include Technical Experience before Education');
 const firstTechnicalHeading = technicalExperience[1].match(/<h3>[\s\S]*?<\/h3>/);
 assert.ok(firstTechnicalHeading, 'Technical Experience should include at least one entry');
 assert.match(firstTechnicalHeading[0], /Undergraduate Researcher/, 'Undergraduate Researcher should be first in Technical Experience');
+assert.match(technicalExperience[1], /Mechanical Engineering Intern · Posha/, 'Posha should be listed inside Technical Experience');
 assert.ok(existsSync(join(root, 'public', 'assets', 'AaditKannanJulyResume.pdf')), 'July resume PDF should exist in public assets');
 assert.equal(existsSync(join(root, 'connect.html')), false, 'Connect page should be removed');
 assert.doesNotMatch(readPage('vite.config.js'), /connect\.html/, 'Vite build entries should not include connect.html');
