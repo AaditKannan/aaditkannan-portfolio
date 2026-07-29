@@ -39,6 +39,7 @@ assert.match(
 );
 
 const resume = readPage('resume.html');
+const projects = readPage('projects.html');
 assert.match(resume, /href="\/assets\/AaditKannanJulyResume\.pdf"/, 'Resume PDF link should use July PDF');
 assert.ok(existsSync(join(root, 'public', 'assets', 'AaditKannanJulyResume.pdf')), 'July resume PDF should exist in public assets');
 assert.equal(existsSync(join(root, 'connect.html')), false, 'Connect page should be removed');
@@ -55,3 +56,7 @@ for (const page of ['resume.html', 'projects.html', 'footage.html']) {
   assert.match(html, /<html lang="en" data-theme="light">/, `${page} should default to light theme`);
   assert.match(html, /if \(saved === 'dark'\) document\.documentElement\.removeAttribute\('data-theme'\);/, `${page} should honor an explicit saved dark theme`);
 }
+
+assert.match(projects, /main\s*{[\s\S]*max-width:\s*1520px/, 'Projects index should use the wider desktop container');
+assert.match(projects, /\.projects-grid\s*{[\s\S]*grid-template-columns:\s*repeat\(3,\s*minmax\(0,\s*1fr\)\)/, 'Projects grid columns should expand inside the wider container');
+assert.match(projects, /\.detail-inner\s*{[\s\S]*max-width:\s*1520px/, 'Project detail view should use the wider desktop container');
