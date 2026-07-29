@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { existsSync, readFileSync } from 'node:fs';
+import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 
 const root = process.cwd();
@@ -40,6 +40,37 @@ assert.match(
 
 const resume = readPage('resume.html');
 const projects = readPage('projects.html');
+const deployableSource = [
+  home,
+  resume,
+  projects,
+  readPage('footage.html'),
+  readPage('vite.config.js'),
+  readPage('vercel.json'),
+].join('\n');
+
+assert.doesNotMatch(deployableSource, /\+?1?\s*\(?734\)?[\s)-]*546[\s-]*0380/, 'Deployable site source should not expose the phone number');
+assert.doesNotMatch(deployableSource, /aaditkannan@berkeley\.edu/i, 'Deployable site source should not expose the raw Berkeley email address');
+assert.doesNotMatch(deployableSource, /mailto:/i, 'Deployable site source should not include raw mailto links');
+assert.match(home, /aaditkannan\[at\]berkeley\[dot\]edu/, 'Home footer should show the obfuscated Berkeley email');
+const publicPdfAssets = readdirSync(join(root, 'public', 'assets')).filter((file) => file.endsWith('.pdf'));
+const staleResumePdfAssets = [
+  'AaditKannan_v33.pdf',
+  'AaditKannanResumeJune.pdf',
+  'KannanAaditResumeFebruary.pdf',
+  'KannanAaditResumeJanuary.pdf',
+  'KannanAaditResumeMarch13.pdf',
+  'Kannan_Aadit_Resume_March.pdf',
+  'NewResume.pdf',
+];
+for (const file of staleResumePdfAssets) {
+  assert.equal(existsSync(join(root, 'public', 'assets', file)), false, `${file} should not be published`);
+}
+for (const file of publicPdfAssets) {
+  const contents = readFileSync(join(root, 'public', 'assets', file)).toString('latin1');
+  assert.doesNotMatch(contents, /aaditkannan@berkeley\.edu/i, `${file} should not include the raw Berkeley email bytes`);
+  assert.doesNotMatch(contents, /mailto:/i, `${file} should not include raw mailto link bytes`);
+}
 assert.match(resume, /href="\/assets\/AaditKannanJulyResume\.pdf"/, 'Resume PDF link should use July PDF');
 assert.ok(existsSync(join(root, 'public', 'assets', 'AaditKannanJulyResume.pdf')), 'July resume PDF should exist in public assets');
 assert.equal(existsSync(join(root, 'connect.html')), false, 'Connect page should be removed');
