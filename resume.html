@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
   <!-- RB2B Tracking -->
   <script>!function(key) {if (window.reb2b) return;window.reb2b = {loaded: true};var s = document.createElement("script");s.async = true;s.src = "https://ddwl4m2hdecbv.cloudfront.net/b/" + key + "/" + key + ".js.gz";document.getElementsByTagName("script")[0].parentNode.insertBefore(s, document.getElementsByTagName("script")[0]);}("0OV0VHYEV56Z");</script>
@@ -36,6 +36,13 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
+    @view-transition { navigation: auto; }
+    ::view-transition-old(root),
+    ::view-transition-new(root) {
+      animation-duration: 320ms;
+      animation-timing-function: cubic-bezier(0.22, 0.61, 0.36, 1);
+    }
+
     :root {
       --font-heading: 'JetBrains Mono', monospace;
       --font-body: 'Inter', system-ui, -apple-system, sans-serif;
@@ -204,11 +211,11 @@
 
     /* ---- Two-Column Layout ---- */
     .layout {
-      max-width: 1280px;
+      max-width: 1520px;
       margin: 0 auto;
       display: flex;
       min-height: 100vh;
-      padding: 0 48px;
+      padding: 0 clamp(40px, 5vw, 76px);
       padding-top: 80px;
     }
 
@@ -216,9 +223,9 @@
     .sidebar {
       position: sticky;
       top: 80px;
-      width: 48%;
+      width: 34%;
       max-height: calc(100vh - 80px);
-      padding: 20px 48px 24px 0;
+      padding: 20px clamp(36px, 4vw, 64px) 24px 0;
       display: flex;
       flex-direction: column;
       flex-shrink: 0;
@@ -368,7 +375,7 @@
 
     /* ---- Right Content ---- */
     .content {
-      width: 52%;
+      width: 66%;
       padding: 16px 0 96px 0;
     }
 
@@ -753,8 +760,6 @@
       .skills-grid { grid-template-columns: 1fr; gap: 24px; }
     }
   </style>
-  <link rel="stylesheet" href="/page-transitions.css">
-  <script src="/page-transitions.js"></script>
 </head>
 <body>
   <!-- Cursor Glow -->
@@ -765,7 +770,7 @@
     <a href="/" class="nav-link">HOME</a>
     <a href="/resume" class="nav-link active">RESUME</a>
     <a href="/projects" class="nav-link">PROJECTS</a>
-    <a href="/connect" class="nav-link">CONNECT</a>
+    <a href="/footage" class="nav-link">FOOTAGE</a>
     <button class="theme-toggle" id="themeToggle" aria-label="Toggle light mode">
       <svg class="icon-moon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
       <svg class="icon-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
@@ -783,7 +788,6 @@
         <nav class="sidebar-nav" id="sidebarNav">
           <a href="#about" data-section="about"><span class="nav-prefix">&gt;</span> About <span class="nav-cursor">|</span></a>
           <a href="#technical-experience" data-section="technical-experience"><span class="nav-prefix">&gt;</span> Technical <span class="nav-cursor">|</span></a>
-          <a href="#work-experience" data-section="work-experience"><span class="nav-prefix">&gt;</span> Work <span class="nav-cursor">|</span></a>
           <a href="#education" data-section="education"><span class="nav-prefix">&gt;</span> Education <span class="nav-cursor">|</span></a>
           <a href="#volunteering" data-section="volunteering"><span class="nav-prefix">&gt;</span> <span class="full-text">Volunteering</span><span class="short-text">Volunteer</span> <span class="nav-cursor">|</span></a>
           <a href="#skills" data-section="skills"><span class="nav-prefix">&gt;</span> Skills <span class="nav-cursor">|</span></a>
@@ -802,7 +806,7 @@
         </a>
         <!-- Resume PDF -->
         <div class="resume-pdf-wrapper">
-          <a href="/assets/AaditKannanResumeJune.pdf" target="_blank" rel="noopener noreferrer" aria-label="Resume PDF">
+          <a href="/assets/AaditKannanJulyResume.pdf" target="_blank" rel="noopener noreferrer" aria-label="Resume PDF">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm-1 2l5 5h-5V4zM6 20V4h5v7h7v9H6zm2-4h8v1.5H8V16zm0-3h8v1.5H8V13z"/></svg>
           </a>
           <span class="pdf-typing-text" id="pdfTypingText"><span class="typing-cursor"></span></span>
@@ -817,13 +821,13 @@
       <section id="about">
         <h2 class="section-label">About</h2>
         <div class="about-text">
-          <p>Mechanical engineering and EECS student at UC Berkeley interested in robotics, materials, and space.</p>
+          <p>Mechanical engineering and EECS student at UC Berkeley focused on hands-on electromechanical hardware, rapid prototyping, mechanical packaging, and research instrumentation. Experience spans semiconductor thin-film lab hardware, high-voltage accumulator packaging, CAD/FEA/GD&amp;T, materials selection, PCB/electronics integration, and prototype-to-test workflows.</p>
           <p>Currently:</p>
           <ul class="about-currently">
-            <li>Designing the 588V accumulator hardware for <a href="/projects#formula-electric" class="about-highlight" data-preview="/assets/accumimg.png">Formula Electric at Berkeley</a></li>
-            <li>Researching BiFeO₃ complex-oxide thin films for beyond-CMOS memory and logic in <a href="/projects#ramesh-lab" class="about-highlight" data-preview="/assets/IMG_4508.JPG">Ramesh Lab</a></li>
-            <li>Building a compact high-ratio <a href="/projects#wolfrom-actuator" class="about-highlight" data-preview="/assets/wolfrom-render-face.jpg">Wolfrom gearbox</a> for humanoid joints, focused on backdrivability, reflected inertia, and efficient 50:1+ reductions</li>
-            <li>Reading Lines and Glass's <em>Principles and Applications of Ferroelectric and Related Materials</em></li>
+            <li>Designing nanosecond/microsecond pulse-generator hardware for semiconductor thin-film device characterization in <a href="/projects#ramesh-lab" class="about-highlight" data-preview="/assets/Screenshot 2026-03-13 000052.png">Ramesh Lab</a></li>
+            <li>Designing electromechanical packaging for the 588V accumulator on <a href="/projects#formula-electric" class="about-highlight" data-preview="/assets/accumimg.png">Formula Electric at Berkeley</a></li>
+            <li>Building a compact 50:1 <a href="/projects#wolfrom-actuator" class="about-highlight">Wolfrom compound planetary actuator</a> for robotic joints</li>
+            <li>Developing lab tools and workflows for PLD experiment tracking and thin-film characterization</li>
           </ul>
           <p><a href="/projects" class="about-link" style="text-decoration: underline; text-underline-offset: 3px;">View all projects &rarr;</a></p>
         </div>
@@ -835,25 +839,6 @@
       <!-- Technical Experience -->
       <section id="technical-experience">
         <h2 class="section-label">Technical Experience</h2>
-
-        <div class="entry-card">
-          <div class="entry-body">
-            <h3><a href="/projects#formula-electric" class="link-group">Accumulator Mech Engineer · Formula Electric at Berkeley <span class="arrow">&#8599;</span></a></h3>
-            <div class="entry-desc">
-              <p>Designed electromechanical packaging for 588V accumulator HV electronics, integrating busbars, insulation, waterproofing, fastener access, and serviceability inside a constrained enclosure; reduced mass by 18%.</p>
-              <p>Selected materials and manufacturing methods including laser-cut aluminum, waterjet polycarbonate, and Nomex insulation; specified busbar material/geometry for 80A peak discharge; supported SES/ESF safety review.</p>
-            </div>
-            <div class="skill-pills">
-              <span class="skill-pill">SolidWorks/PDM</span>
-              <span class="skill-pill">FEA</span>
-              <span class="skill-pill">Materials Selection</span>
-              <span class="skill-pill">HV Systems</span>
-              <span class="skill-pill">Manufacturing</span>
-              <span class="skill-pill">DFMA</span>
-            </div>
-          </div>
-          <div class="entry-date">Sep 2025 — Present</div>
-        </div>
 
         <div class="entry-card">
           <div class="entry-body">
@@ -877,6 +862,25 @@
             </div>
           </div>
           <div class="entry-date">Jan 2026 — Present</div>
+        </div>
+
+        <div class="entry-card">
+          <div class="entry-body">
+            <h3><a href="/projects#formula-electric" class="link-group">Accumulator Mech Engineer · Formula Electric at Berkeley <span class="arrow">&#8599;</span></a></h3>
+            <div class="entry-desc">
+              <p>Designed electromechanical packaging for 588V accumulator HV electronics, integrating busbars, insulation, waterproofing, fastener access, and serviceability inside a constrained enclosure; reduced mass by 18%.</p>
+              <p>Selected materials and manufacturing methods including laser-cut aluminum, waterjet polycarbonate, and Nomex insulation; specified busbar material/geometry for 80A peak discharge; supported SES/ESF safety review.</p>
+            </div>
+            <div class="skill-pills">
+              <span class="skill-pill">SolidWorks/PDM</span>
+              <span class="skill-pill">FEA</span>
+              <span class="skill-pill">Materials Selection</span>
+              <span class="skill-pill">HV Systems</span>
+              <span class="skill-pill">Manufacturing</span>
+              <span class="skill-pill">DFMA</span>
+            </div>
+          </div>
+          <div class="entry-date">Sep 2025 — Present</div>
         </div>
 
         <div class="entry-card">
@@ -947,29 +951,6 @@
           </div>
           <div class="entry-date">Mar 2026</div>
         </div>
-      </section>
-
-      <!-- Work Experience -->
-      <section id="work-experience">
-        <h2 class="section-label">Work Experience</h2>
-
-        <div class="entry-card">
-          <div class="entry-body">
-            <h3><a href="/projects#ramesh-lab" class="link-group">Undergraduate Researcher · Ramesh Lab <span class="arrow">&#8599;</span></a></h3>
-            <div class="entry-desc">
-              <p>Research position focused on complex-oxide thin-film experiments, pulse-generator instrumentation, PLD growth workflows, and XRD/AFM characterization support.</p>
-            </div>
-            <div class="skill-pills">
-              <span class="skill-pill">Research Hardware</span>
-              <span class="skill-pill">Thin Films</span>
-              <span class="skill-pill">PLD</span>
-              <span class="skill-pill">XRD</span>
-              <span class="skill-pill">AFM</span>
-            </div>
-          </div>
-          <div class="entry-date">Jan 2026 — Present</div>
-        </div>
-
         <div class="entry-card">
           <div class="entry-body">
             <h3><a href="https://www.posha.com/" target="_blank" rel="noopener noreferrer" class="link-group">Mechanical Engineering Intern · Posha (Formerly Nymble) <span class="arrow">&#8599;</span></a></h3>
@@ -1183,7 +1164,7 @@
     (function() {
       const toggle = document.getElementById('themeToggle');
       const saved = localStorage.getItem('theme');
-      if (saved === 'light') document.documentElement.setAttribute('data-theme', 'light');
+      if (saved === 'dark') document.documentElement.removeAttribute('data-theme');
       toggle.addEventListener('click', () => {
         document.documentElement.classList.add('theme-transition');
         const isLight = document.documentElement.getAttribute('data-theme') === 'light';

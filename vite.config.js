@@ -12,7 +12,6 @@ export default defineConfig({
             input: {
                 main: './index.html',
                 resume: './resume.html',
-                connect: './connect.html',
                 footage: './footage.html',
                 projects: './projects.html',
                 fieldStationToolbox: './field-station-toolbox.html',
