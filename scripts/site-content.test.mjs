@@ -24,6 +24,9 @@ for (const page of navPages) {
 }
 
 const home = readPage('index.html');
+const homeIntro = 'Aadit Kannan - MechE/EECS student at UC Berkeley interested in robotics, semiconductors, and space.';
+assert.match(home, new RegExp(homeIntro.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')), 'Home metadata should use the requested MechE/EECS intro');
+assert.doesNotMatch(home, /Robotics, materials science, and space|materials science/i, 'Home identity copy should say semiconductors instead of materials science');
 assert.match(
   home,
   /\.footage-credit\s*{[\s\S]*font-size:\s*clamp\(13px,\s*1vw,\s*16px\)/,
