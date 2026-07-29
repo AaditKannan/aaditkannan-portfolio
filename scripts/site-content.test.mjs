@@ -41,3 +41,14 @@ assert.ok(existsSync(join(root, 'public', 'assets', 'AaditKannanJulyResume.pdf')
 assert.equal(existsSync(join(root, 'connect.html')), false, 'Connect page should be removed');
 assert.doesNotMatch(readPage('vite.config.js'), /connect\.html/, 'Vite build entries should not include connect.html');
 assert.doesNotMatch(readPage('vercel.json'), /connect\.html/, 'Vercel routes should not include connect.html');
+
+assert.match(resume, /<html lang="en" data-theme="light">/, 'Resume should default to light theme before JavaScript runs');
+assert.match(resume, /\.layout\s*{[\s\S]*max-width:\s*1520px/, 'Resume desktop layout should use a wider container');
+assert.match(resume, /\.sidebar\s*{[\s\S]*width:\s*34%/, 'Resume sidebar should use less desktop width');
+assert.match(resume, /\.content\s*{[\s\S]*width:\s*66%/, 'Resume content should use more desktop width');
+
+for (const page of ['resume.html', 'projects.html', 'footage.html']) {
+  const html = readPage(page);
+  assert.match(html, /<html lang="en" data-theme="light">/, `${page} should default to light theme`);
+  assert.match(html, /if \(saved === 'dark'\) document\.documentElement\.removeAttribute\('data-theme'\);/, `${page} should honor an explicit saved dark theme`);
+}

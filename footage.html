@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
   <!-- RB2B Tracking -->
   <script>!function(key) {if (window.reb2b) return;window.reb2b = {loaded: true};var s = document.createElement("script");s.async = true;s.src = "https://ddwl4m2hdecbv.cloudfront.net/b/" + key + "/" + key + ".js.gz";document.getElementsByTagName("script")[0].parentNode.insertBefore(s, document.getElementsByTagName("script")[0]);}("0OV0VHYEV56Z");</script>
@@ -465,7 +465,7 @@
     (function() {
       const toggle = document.getElementById('themeToggle');
       const saved = localStorage.getItem('theme');
-      if (saved === 'light') document.documentElement.setAttribute('data-theme', 'light');
+      if (saved === 'dark') document.documentElement.removeAttribute('data-theme');
       toggle.addEventListener('click', () => {
         document.documentElement.classList.add('theme-transition');
         const isLight = document.documentElement.getAttribute('data-theme') === 'light';
