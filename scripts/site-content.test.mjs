@@ -19,7 +19,7 @@ const navPages = ['index.html', 'resume.html', 'projects.html', 'footage.html'];
 for (const page of navPages) {
   const nav = topNav(readPage(page));
   assert.match(nav, /href="\/footage"[^>]*>\s*FOOTAGE\s*<\/a>/, `${page} should include Footage in top nav`);
-  assert.match(nav, /href="\/resume"[^>]*>\s*WORK\s*<\/a>/, `${page} should label resume/work page as Work`);
+  assert.match(nav, /href="\/resume"[^>]*>\s*RESUME\s*<\/a>/, `${page} should label the resume page as Resume`);
   assert.doesNotMatch(nav, /href="\/connect"|>\s*CONNECT\s*<\/a>/, `${page} should not include Connect in top nav`);
 }
 
