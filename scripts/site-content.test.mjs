@@ -24,9 +24,9 @@ for (const page of navPages) {
 }
 
 const home = readPage('index.html');
-const homeIntro = 'Aadit Kannan - MechE/EECS student at UC Berkeley.';
+const homeIntro = 'Aadit Kannan - MechE/EECS student at UC Berkeley interested in robotics, semiconductors, and space.';
 assert.match(home, new RegExp(homeIntro.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')), 'Home metadata should use the requested MechE/EECS intro');
-assert.doesNotMatch(home, /ROBOTICS\s*\/\s*SEMICONDUCTORS\s*\/\s*SPACE|robotics,\s*semiconductors,\s*and\s*space/i, 'Home page should not show the robotics/semiconductors/space interests line');
+assert.doesNotMatch(home, /ROBOTICS\s*\/\s*SEMICONDUCTORS\s*\/\s*SPACE/, 'Home page should not show the robotics/semiconductors/space interests line');
 assert.doesNotMatch(home, /class="home-interests"/, 'Home page should not render an interests line under the subtitle');
 assert.match(
   home,
