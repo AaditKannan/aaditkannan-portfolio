@@ -49,6 +49,8 @@ const deployableSource = [
   readPage('vite.config.js'),
   readPage('vercel.json'),
 ].join('\n');
+const numberedRobotMentions = deployableSource.match(/\b\d+\+?(?:\s+[A-Za-z-]+){0,3}\s+robots\b/g) ?? [];
+assert.deepEqual(numberedRobotMentions, ['5 robots'], 'The only numbered robot count across the deployable site should be 5 robots');
 
 assert.doesNotMatch(deployableSource, /\+?1?\s*\(?734\)?[\s)-]*546[\s-]*0380/, 'Deployable site source should not expose the phone number');
 assert.doesNotMatch(deployableSource, /aaditkannan@berkeley\.edu/i, 'Deployable site source should not expose the raw Berkeley email address');
@@ -77,11 +79,18 @@ assert.doesNotMatch(resume, /<section id="projects">|data-section="projects"|>\s
 assert.doesNotMatch(resume, />Current Projects</, 'Resume should not use the Current Projects section label');
 assert.doesNotMatch(resume, /current-projects|>\s*Current\s*</, 'Resume navigation should not use Current Projects wording or anchors');
 assert.doesNotMatch(resume, /<section id="work-experience">|data-section="work-experience"|>\s*Work\s*</, 'Resume should not include a separate Work section or sidebar item');
+assert.match(resume, /Mechanical engineering and EECS student at UC Berkeley interested in robotics, semiconductors, and space\./, 'Resume About intro should use the restored concise wording with semiconductors');
+assert.doesNotMatch(resume, /focused on hands-on electromechanical hardware|Developing lab tools and workflows/, 'Resume About section should not use the newer lab-tools description');
+assert.match(resume, /Designed 5 robots across 500\+ part CAD assemblies/, 'Resume robotics entry should use the requested 5 robots count');
+assert.doesNotMatch(resume, /Designed 8 robots across/, 'Resume robotics entry should not use the old 8 robots count');
 const technicalExperience = resume.match(/<section id="technical-experience">([\s\S]*?)<section id="education">/);
 assert.ok(technicalExperience, 'Resume should include Technical Experience before Education');
 const firstTechnicalHeading = technicalExperience[1].match(/<h3>[\s\S]*?<\/h3>/);
 assert.ok(firstTechnicalHeading, 'Technical Experience should include at least one entry');
 assert.match(firstTechnicalHeading[0], /Undergraduate Researcher/, 'Undergraduate Researcher should be first in Technical Experience');
+const undergraduateResearcher = technicalExperience[1].match(/Undergraduate Researcher[\s\S]*?<div class="entry-date">Jan 2026/);
+assert.ok(undergraduateResearcher, 'Technical Experience should include the Undergraduate Researcher entry');
+assert.doesNotMatch(undergraduateResearcher[0], /Altium/, 'Undergraduate Researcher skill pills should not include Altium');
 assert.match(technicalExperience[1], /Mechanical Engineering Intern · Posha/, 'Posha should be listed inside Technical Experience');
 assert.ok(existsSync(join(root, 'public', 'assets', 'AaditKannanJulyResume.pdf')), 'July resume PDF should exist in public assets');
 assert.equal(existsSync(join(root, 'connect.html')), false, 'Connect page should be removed');
