@@ -24,9 +24,10 @@ for (const page of navPages) {
 }
 
 const home = readPage('index.html');
-const homeIntro = 'Aadit Kannan - MechE/EECS student at UC Berkeley interested in robotics, semiconductors, and space.';
+const homeIntro = 'Aadit Kannan - MechE/EECS student at UC Berkeley.';
 assert.match(home, new RegExp(homeIntro.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')), 'Home metadata should use the requested MechE/EECS intro');
-assert.doesNotMatch(home, /Robotics, materials science, and space|materials science/i, 'Home identity copy should say semiconductors instead of materials science');
+assert.doesNotMatch(home, /ROBOTICS\s*\/\s*SEMICONDUCTORS\s*\/\s*SPACE|robotics,\s*semiconductors,\s*and\s*space/i, 'Home page should not show the robotics/semiconductors/space interests line');
+assert.doesNotMatch(home, /class="home-interests"/, 'Home page should not render an interests line under the subtitle');
 assert.match(
   home,
   /\.footage-credit\s*{[\s\S]*font-size:\s*clamp\(13px,\s*1vw,\s*16px\)/,
@@ -72,6 +73,9 @@ for (const file of publicPdfAssets) {
   assert.doesNotMatch(contents, /mailto:/i, `${file} should not include raw mailto link bytes`);
 }
 assert.match(resume, /href="\/assets\/AaditKannanJulyResume\.pdf"/, 'Resume PDF link should use July PDF');
+assert.match(resume, /<h2 class="section-label">Projects<\/h2>/, 'Resume should label the project section as Projects');
+assert.doesNotMatch(resume, />Current Projects</, 'Resume should not use the Current Projects section label');
+assert.doesNotMatch(resume, /current-projects|>\s*Current\s*</, 'Resume navigation should not use Current Projects wording or anchors');
 assert.ok(existsSync(join(root, 'public', 'assets', 'AaditKannanJulyResume.pdf')), 'July resume PDF should exist in public assets');
 assert.equal(existsSync(join(root, 'connect.html')), false, 'Connect page should be removed');
 assert.doesNotMatch(readPage('vite.config.js'), /connect\.html/, 'Vite build entries should not include connect.html');
