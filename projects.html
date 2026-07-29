@@ -28,13 +28,6 @@
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
   <script type="module" src="https://cdn.jsdelivr.net/npm/@google/model-viewer@3.5.0/dist/model-viewer.min.js"></script>
   <style>
-    @view-transition { navigation: auto; }
-    ::view-transition-old(root),
-    ::view-transition-new(root) {
-      animation-duration: 320ms;
-      animation-timing-function: cubic-bezier(0.22, 0.61, 0.36, 1);
-    }
-
     * {
       margin: 0;
       padding: 0;
@@ -545,6 +538,18 @@
       object-position: center center;
     }
 
+    .detail-content[data-project-id="ns-us-pulse-generator"] .gallery-main {
+      aspect-ratio: 5 / 3;
+      background: #b8b7cf;
+    }
+
+    .detail-content[data-project-id="ns-us-pulse-generator"] .gallery-main img,
+    .detail-content[data-project-id="ns-us-pulse-generator"] .gallery-main picture,
+    .detail-content[data-project-id="ns-us-pulse-generator"] #galleryMediaContainer img,
+    .detail-content[data-project-id="ns-us-pulse-generator"] #galleryMediaContainer picture {
+      background: #b8b7cf;
+    }
+
     .project-card[data-id="pldtracker"] .project-image img {
       object-fit: cover;
       object-position: center center;
@@ -723,16 +728,7 @@
     .project-card.active-card {
       position: relative;
       z-index: 100;
-      grid-column: span 2 !important;
       border-color: var(--border-light);
-    }
-
-    .project-card.active-card .project-image {
-      aspect-ratio: 2/1;
-    }
-
-    .project-card.active-card .project-content {
-      display: none;
     }
 
     /* Detail content - same layout as main page */
@@ -764,9 +760,10 @@
     }
 
     .detail-inner {
-      max-width: 1100px;
+      max-width: 1200px;
       margin: 0 auto;
       padding: 140px 40px 100px;
+      min-width: 0;
     }
 
     .detail-header {
@@ -826,6 +823,7 @@
     /* Gallery */
     .detail-gallery {
       width: 100%;
+      min-width: 0;
     }
 
     .gallery-main {
@@ -839,6 +837,12 @@
       overflow: hidden;
       margin-bottom: 12px;
       position: relative;
+    }
+
+    #galleryMediaContainer {
+      width: 100%;
+      height: 100%;
+      min-width: 0;
     }
 
     .gallery-nav {
@@ -881,7 +885,12 @@
 
     .gallery-nav:hover svg { stroke: #fff; }
 
-    .gallery-main img {
+    .gallery-main img,
+    .gallery-main picture,
+    #galleryMediaContainer img,
+    #galleryMediaContainer picture,
+    #galleryMediaContainer video {
+      display: block;
       width: 100%;
       height: 100%;
       object-fit: contain;
@@ -1141,6 +1150,306 @@
       margin-top: 0;
     }
 
+    .project-disclosure {
+      margin: 14px 0;
+      padding: 0;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      break-inside: avoid;
+      -webkit-column-break-inside: avoid;
+    }
+
+    .project-disclosure + .project-disclosure {
+      margin-top: -15px;
+      border-top: 0;
+    }
+
+    .project-disclosure summary {
+      padding: 12px 0;
+      color: var(--text);
+      font: inherit;
+      font-weight: 600;
+      cursor: pointer;
+      list-style-position: outside;
+    }
+
+    .project-disclosure[open] {
+      break-inside: auto;
+      -webkit-column-break-inside: auto;
+    }
+
+    .project-disclosure[open] summary {
+      margin-bottom: 4px;
+    }
+
+    .project-disclosure-content {
+      padding: 0 0 14px;
+    }
+
+    .project-inline-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin: 18px 0;
+      break-inside: avoid;
+      -webkit-column-break-inside: avoid;
+    }
+
+    .project-inline-grid figure {
+      min-width: 0;
+      margin: 0;
+    }
+
+    .project-inline-grid img,
+    .project-disclosure img {
+      display: block;
+      width: 100%;
+      height: auto;
+      object-fit: contain;
+      background: #fff;
+      border-radius: 4px;
+    }
+
+    .project-inline-grid figcaption,
+    .project-disclosure figcaption {
+      margin-top: 7px;
+      color: var(--text-muted);
+      font-size: 0.82em;
+      font-style: italic;
+      line-height: 1.5;
+    }
+
+    .project-result-list {
+      margin: 10px 0 14px;
+      padding-left: 18px;
+    }
+
+    .project-result-list li {
+      margin: 5px 0;
+    }
+
+    @media (max-width: 768px) {
+      .project-inline-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .project-disclosure,
+      .project-disclosure-content {
+        max-width: 100%;
+      }
+    }
+
+    .board-layer-viewer {
+      break-inside: avoid;
+      -webkit-column-break-inside: avoid;
+      width: 100%;
+      margin: 16px 0 22px;
+      padding: 10px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.025);
+    }
+
+    [data-theme="light"] .board-layer-viewer {
+      background: rgba(0,0,0,0.025);
+    }
+
+    .board-layer-controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 10px;
+    }
+
+    .board-layer-viewer input {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .board-layer-controls label {
+      padding: 6px 8px;
+      border: 1px solid var(--border);
+      color: var(--text-dim);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .board-layer-controls label:hover {
+      border-color: var(--border-light);
+      color: var(--text);
+    }
+
+    .board-layer-stage {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 11;
+      max-height: 280px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      background: #101116;
+    }
+
+    .board-layer-stage img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100% !important;
+      max-width: none !important;
+      object-fit: contain;
+      opacity: 0;
+      transition: opacity 0.18s ease;
+    }
+
+    .board-layer-expand {
+      position: absolute;
+      right: 8px;
+      bottom: 8px;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 5px 7px;
+      border: 1px solid rgba(255,255,255,0.24);
+      background: rgba(12,13,18,0.78);
+      color: #fff;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px;
+      line-height: 1;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      text-decoration: none;
+      cursor: pointer;
+      opacity: 1;
+      transition: opacity 0.18s ease, border-color 0.18s ease, background 0.18s ease;
+    }
+
+    .board-layer-expand:hover {
+      border-color: rgba(255,255,255,0.55);
+      background: rgba(12,13,18,0.95);
+    }
+
+    .board-layer-expand svg {
+      width: 12px;
+      height: 12px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.7;
+    }
+
+    .board-layer-caption {
+      display: block;
+      margin-top: 10px;
+      color: var(--text-dim);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      line-height: 1.5;
+      letter-spacing: 0.02em;
+    }
+
+    #ns-layer-render:checked ~ .board-layer-controls label[for="ns-layer-render"],
+    #ns-layer-layout:checked ~ .board-layer-controls label[for="ns-layer-layout"],
+    #ns-layer-top:checked ~ .board-layer-controls label[for="ns-layer-top"],
+    #ns-layer-copper:checked ~ .board-layer-controls label[for="ns-layer-copper"],
+    #ns-layer-in1:checked ~ .board-layer-controls label[for="ns-layer-in1"],
+    #ns-layer-in2:checked ~ .board-layer-controls label[for="ns-layer-in2"],
+    #ns-layer-silk:checked ~ .board-layer-controls label[for="ns-layer-silk"],
+    #ns-layer-bottom:checked ~ .board-layer-controls label[for="ns-layer-bottom"] {
+      border-color: var(--border-light);
+      color: var(--text);
+      background: rgba(255,255,255,0.06);
+    }
+
+    .board-layer-lightbox .board-layer-controls label.is-active {
+      border-color: var(--border-light);
+      color: var(--text);
+      background: rgba(255,255,255,0.06);
+    }
+
+    #ns-layer-render:checked ~ .board-layer-stage .layer-render,
+    #ns-layer-layout:checked ~ .board-layer-stage .layer-layout,
+    #ns-layer-top:checked ~ .board-layer-stage .layer-top,
+    #ns-layer-copper:checked ~ .board-layer-stage .layer-copper,
+    #ns-layer-in1:checked ~ .board-layer-stage .layer-in1,
+    #ns-layer-in2:checked ~ .board-layer-stage .layer-in2,
+    #ns-layer-silk:checked ~ .board-layer-stage .layer-silk,
+    #ns-layer-bottom:checked ~ .board-layer-stage .layer-bottom {
+      opacity: 1;
+    }
+
+    .board-layer-lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 5000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 32px;
+      background: rgba(4,5,8,0.82);
+      backdrop-filter: blur(14px);
+    }
+
+    .board-layer-lightbox.active {
+      display: flex;
+    }
+
+    .board-layer-lightbox-panel {
+      position: relative;
+      width: min(94vw, 1320px);
+      max-height: 92vh;
+      padding: 18px;
+      overflow: auto;
+      border: 1px solid rgba(255,255,255,0.18);
+      background: rgba(14,15,20,0.96);
+      box-shadow: 0 28px 80px rgba(0,0,0,0.38);
+    }
+
+    .board-layer-lightbox-close {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      z-index: 4;
+      width: 34px;
+      height: 34px;
+      border: 1px solid rgba(255,255,255,0.22);
+      background: rgba(0,0,0,0.4);
+      color: #fff;
+      font-size: 22px;
+      line-height: 1;
+      cursor: pointer;
+    }
+
+    .board-layer-lightbox .board-layer-viewer {
+      width: 100%;
+      margin: 0;
+      padding: 0;
+      border: 0;
+      background: transparent;
+    }
+
+    .board-layer-lightbox .board-layer-controls {
+      padding-right: 48px;
+      margin-bottom: 14px;
+    }
+
+    .board-layer-lightbox .board-layer-stage {
+      max-height: none;
+      height: min(72vh, 820px);
+      aspect-ratio: auto;
+    }
+
+    .board-layer-lightbox .board-layer-caption {
+      max-width: 980px;
+      font-size: 11px;
+    }
+
+    .board-layer-lightbox .board-layer-expand {
+      display: none;
+    }
+
     .detail-tags {
       display: flex;
       flex-wrap: wrap;
@@ -1170,6 +1479,10 @@
       margin-bottom: 16px;
     }
 
+    .detail-sidebar {
+      min-width: 0;
+    }
+
     .detail-links {
       display: flex;
       flex-direction: column;
@@ -1189,6 +1502,8 @@
       font-size: 13px;
       font-family: 'JetBrains Mono', monospace;
       transition: all 0.2s;
+      min-width: 0;
+      overflow-wrap: anywhere;
     }
 
     .detail-link:hover {
@@ -1201,6 +1516,7 @@
       width: 16px;
       height: 16px;
       fill: currentColor;
+      flex: 0 0 16px;
     }
 
     .detail-link.unavailable-link {
@@ -1312,6 +1628,17 @@
 
     [data-theme="light"] .gallery-main img {
       background: #f0ede9;
+    }
+
+    .detail-content[data-project-id="wolfrom-actuator"] .gallery-main,
+    .detail-content[data-project-id="wolfrom-actuator"] #galleryMediaContainer,
+    .detail-content[data-project-id="wolfrom-actuator"] #galleryMediaContainer picture,
+    .detail-content[data-project-id="wolfrom-actuator"] #galleryMediaContainer img {
+      background: #fff;
+    }
+
+    .detail-content[data-project-id="wolfrom-actuator"] #galleryMediaContainer img {
+      object-position: center center;
     }
 
     .detail-content.visible .detail-close {
@@ -1574,14 +1901,28 @@
 
       .gallery-main {
         aspect-ratio: 4/3;
+        width: 100%;
+        max-width: 100%;
       }
 
       .detail-inner {
         overflow-x: hidden;
+        width: 100%;
+        max-width: 100vw;
+        box-sizing: border-box;
       }
 
       .detail-top-row {
         gap: 24px;
+        min-width: 0;
+      }
+
+      .detail-gallery,
+      .detail-sidebar,
+      .detail-body,
+      .detail-description {
+        min-width: 0;
+        max-width: 100%;
       }
 
       .detail-link {
@@ -1589,23 +1930,67 @@
         box-sizing: border-box;
         font-size: 12px;
         padding: 10px 14px;
+        white-space: normal;
+      }
+
+      .detail-link .link-text {
+        min-width: 0;
+        overflow-wrap: anywhere;
       }
 
       .detail-tags {
         gap: 6px;
+        max-width: 100%;
       }
 
       .detail-tag {
         padding: 6px 12px;
         font-size: 11px;
+        max-width: 100%;
+        box-sizing: border-box;
+        overflow-wrap: anywhere;
+        white-space: normal;
       }
 
       .detail-description {
         font-size: 14px;
       }
 
+      .detail-description img,
+      .detail-description picture,
+      .detail-description video {
+        max-width: 100% !important;
+        height: auto !important;
+      }
+
+      .detail-description .katex-display {
+        max-width: 100%;
+      }
+
+      .board-layer-viewer {
+        width: 100%;
+        padding: 10px;
+        margin: 18px 0 24px;
+      }
+
+      .board-layer-stage {
+        aspect-ratio: 1 / 1;
+        max-height: 360px;
+      }
+
+      .board-layer-stage img {
+        max-width: none !important;
+        height: 100% !important;
+      }
+
+      .board-layer-controls label {
+        font-size: 10px;
+        padding: 6px 8px;
+      }
+
       .gallery-thumbs {
         gap: 6px;
+        max-width: 100%;
       }
 
       .gallery-thumb {
@@ -1733,15 +2118,17 @@
 
 
   </style>
+  <link rel="stylesheet" href="/page-transitions.css">
+  <script src="/page-transitions.js"></script>
 </head>
 <body>
   <div class="cursor-glow" id="cursorGlow"></div>
 
   <nav class="nav-bar">
     <a href="/" class="nav-link">HOME</a>
-    <a href="/resume" class="nav-link">RESUME</a>
+    <a href="/resume" class="nav-link">WORK</a>
     <a href="/projects" class="nav-link active">PROJECTS</a>
-    <a href="/connect" class="nav-link">CONNECT</a>
+    <a href="/footage" class="nav-link">FOOTAGE</a>
     <button class="theme-toggle" id="themeToggle" aria-label="Toggle light mode">
       <svg class="icon-moon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
       <svg class="icon-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
@@ -1831,6 +2218,95 @@
   </div>
 
   <script>
+    const wolfromDescription = `
+  <strong>Overview</strong><br><br>
+  I am designing a compact Wolfrom compound planetary actuator for humanoid-scale joints. The current geartrain uses a driven sun, three compound planets at 120°, a fixed Ra ring integrated into the housing, and an Rb output ring. Tooth counts S=33, Ps=57, Pa=27, Pb=25, Ra=72, and Rb=75 give <b>555/11 = 50.45:1</b> reduction.<br><br>
+
+  The design target is <b>50 N·m peak</b> and <b>30 N·m continuous</b> output torque. I pushed more reduction into the sun stage to reduce circulating power in the Wolfrom differential, then packaged the gearbox, output bearing, motor, electronics, and cable exit as one joint module. Efficiency, backlash, and backdrive performance are still targets for the metal revision and dyno, not measured final claims.<br><br>
+
+  <picture>
+    <source srcset="/assets/wolfrom-integrated-section.webp" type="image/webp">
+    <img src="/assets/wolfrom-integrated-section.png" alt="Integrated Wolfrom actuator cutaway showing the output support, compound geartrain, motor, electronics, and cable exit" width="1633" height="1376" loading="lazy" decoding="async" style="display:block; max-width:82%; margin:20px auto; border-radius:8px;">
+  </picture>
+  <br><em style="opacity:0.7; font-size:0.9em;">Current integrated package: Wolfrom reduction and output support above the motor, with control electronics inside the lower housing.</em><br><br>
+
+  <strong>Prototype Iteration</strong><br><br>
+  I built FDM versions before committing the housing and ring interfaces to metal. The printed hardware exposed gear-mesh clearance, stack-height, bearing-placement, gear-timing, fastener-access, and split-ring assembly problems while those changes were still cheap. The prototypes are geometry and assembly checks, not load-rated actuator validation.<br><br>
+
+  <div class="project-inline-grid">
+    <figure>
+      <img src="/assets/wolfrom-stand.jpg" alt="Assembled FDM Wolfrom actuator prototype on its test stand" loading="lazy" decoding="async">
+      <figcaption>Assembled prototype used for stack-height, output-ring, and access checks.</figcaption>
+    </figure>
+    <figure>
+      <img src="/assets/wolfrom-bench.jpg" alt="Wolfrom prototype open on the bench during gear timing and assembly checks" loading="lazy" decoding="async">
+      <figcaption>Bench fit-check during gear timing and repeated teardown.</figcaption>
+    </figure>
+  </div>
+
+  <details class="project-disclosure">
+    <summary>Prototype details</summary>
+    <div class="project-disclosure-content">
+      The first test article used a goBILDA gearmotor and a plate stack tied together with standoffs and dowels. I used it to check whether all three compound planets could be timed and assembled, whether the split output ring remained accessible, and whether bearings and fasteners could be removed without taking the whole actuator apart.<br><br>
+      <img src="/assets/wolfrom-render-side.jpg" alt="Side CAD view of the earlier plate-stack Wolfrom prototype" loading="lazy" decoding="async">
+    </div>
+  </details>
+
+  <strong>Simulation and Redesign</strong><br><br>
+  For the integrated Structural Steel Ra ring and housing, I checked a combined peak case with <b>50 N·m</b> torque reaction, <b>500 N</b> radial bearing load, and <b>50 N·m</b> overturning moment. The refined solution returned <b>5.34 MPa</b> peak von Mises stress and <b>1.069 µm</b> maximum deformation. Topology optimization then showed that the thick outer wall contributed little compared with the circumferential gear, bearing, and mounting structure.<br><br>
+
+  <picture>
+    <source srcset="/assets/wolfrom-manufacturable-redesign.webp" type="image/webp">
+    <img src="/assets/wolfrom-manufacturable-redesign.png" alt="Manufacturable Wolfrom housing redesign with a thin outer shell, structural rings, and simple ribs" width="1202" height="692" loading="lazy" decoding="async" style="display:block; max-width:100%; margin:20px 0; border-radius:8px;">
+  </picture>
+  <br><em style="opacity:0.7; font-size:0.9em;">Manufacturable redesign: thin shell, preserved structural rings, simple ribs, and unchanged gear, bearing, bolt, and mating interfaces.</em><br><br>
+
+  <details class="project-disclosure">
+    <summary>Load case and hand calculations</summary>
+    <div class="project-disclosure-content">
+      Gravity and acceleration produced a <b>28.1 N·m</b> calculated continuous case, rounded to the 30 N·m design target. A 50 N hard-stop event at the load arm produced about <b>50.3 N·m</b>, setting the 50 N·m peak case.
+      <div class="project-inline-grid">
+        <figure><img src="/assets/wolfrom-hand-calcs.png" alt="Actuator hand calculations for continuous and peak output torque" width="892" height="838" loading="lazy" decoding="async"><figcaption>Arm load model and final design basis.</figcaption></figure>
+        <figure><img src="/assets/wolfrom-ansys-load-case.png" alt="ANSYS combined load case and boundary conditions" width="1229" height="669" loading="lazy" decoding="async"><figcaption>Fixed mounting interfaces, frictionless lower face, and loads applied through Ra and the output bearing seat.</figcaption></figure>
+      </div>
+    </div>
+  </details>
+
+  <details class="project-disclosure">
+    <summary>Static structural and mesh sensitivity</summary>
+    <div class="project-disclosure-content">
+      The preliminary integrated housing model used Structural Steel. Refining the mesh changed peak stress from <b>5.62 to 5.34 MPa</b>, about 5.1%, while deformation changed from <b>1.066 to 1.069 µm</b>, about 0.3%. I treat this as mesh sensitivity, not rigorous convergence.
+      <div class="project-inline-grid">
+        <figure><img src="/assets/wolfrom-ansys-stress.png" alt="ANSYS equivalent von Mises stress result" width="2048" height="855" loading="lazy" decoding="async"><figcaption>5.34 MPa peak equivalent stress.</figcaption></figure>
+        <figure><img src="/assets/wolfrom-ansys-deformation.png" alt="ANSYS total deformation result" width="2158" height="896" loading="lazy" decoding="async"><figcaption>1.069 µm maximum deformation.</figcaption></figure>
+      </div>
+    </div>
+  </details>
+
+  <details class="project-disclosure">
+    <summary>Topology optimization</summary>
+    <div class="project-disclosure-content">
+      I used density-based topology optimization with minimum compliance, a 50% mass response target, and a 3 mm minimum member size. Ra teeth and support, the bearing seat, mounting geometry, bolt regions, and mating faces stayed fixed. Whole-part mass moved from <b>153.4 g to 99.6 g</b>, about 35%. I used the result as a load-path study, then replaced the organic output with the shelled and ribbed housing shown above.
+      <div class="project-inline-grid">
+        <figure><img src="/assets/wolfrom-ansys-topology-setup.png" alt="Topology optimization preserved and design regions" width="2048" height="845" loading="lazy" decoding="async"><figcaption>Preserved functional interfaces.</figcaption></figure>
+        <figure><img src="/assets/wolfrom-ansys-topology-result.png" alt="ANSYS topology density result" width="2048" height="852" loading="lazy" decoding="async"><figcaption>Density result used to identify the useful load paths.</figcaption></figure>
+      </div>
+    </div>
+  </details>
+
+  <details class="project-disclosure">
+    <summary>KISSsoft gear analysis</summary>
+    <div class="project-disclosure-content">
+      The stock simple-planetary template does not cleanly represent the compound Wolfrom, so I configured the evaluated pair manually. The reported pair-level outputs were <b>1.913 / 0.000 / 1.913</b> transverse, overlap, and total contact ratio; <b>1.258 / 1.340</b> root safety; and <b>1.217 / 1.384</b> flank safety. These are not a system-level efficiency result or final gearbox validation.
+      <div class="project-inline-grid">
+        <figure><img src="/assets/wolfrom-kisssoft-results.png" alt="KISSsoft contact ratio and safety result table" width="890" height="248" loading="lazy" decoding="async"><figcaption>Pair-level contact and safety outputs.</figcaption></figure>
+        <figure><img src="/assets/wolfrom-kisssoft-contact-stiffness.png" alt="KISSsoft contact and mesh stiffness plot" width="494" height="260" loading="lazy" decoding="async"><figcaption>Single-contact and total mesh stiffness over rotation.</figcaption></figure>
+      </div>
+    </div>
+  </details>
+
+  <strong>Status</strong><br><br>
+  I am manufacturing the CNC aluminum structure and wire-EDM ring gears while building the dyno. The test sequence will start with contact patterns and load sharing, then measure breakaway torque, backdrive feel, output torque, and efficiency. No final backlash, torque, backdrive, or efficiency result is claimed yet.`;
     // Projects data
     const projects = [
       {
@@ -1840,16 +2316,17 @@
         filterCategory: 'hardware',
         years: [2026],
         period: 'college',
-        date: 'Jun 2026 — Present',
+        date: 'May 2026 — Present',
         active: true,
         featured: true,
+        displayOrder: 1,
         excerpt: 'Wolfrom compound planetary actuator for humanoid joints, targeting about 50:1 reduction with custom geartrain geometry, bearing stackups, output ring design, and prototype validation.',
-        description: `A high-ratio Wolfrom compound planetary actuator for humanoid-scale joints. I'm building it around the three things gearboxes this small are usually bad at: backdrivability, low reflected inertia, and real efficiency at high reduction.<br><br><strong>Overview</strong><br><br>Humanoid robots need joints that are small, put out a lot of torque, and can still feel what they touch. That last part is the hard one. Most small high-ratio gearboxes are basically one way: you can drive the output from the motor, but you can't easily push the motor backward from the output, so the joint feels dead and can't do force control. I'm designing a Wolfrom compound planetary actuator that targets about 50:1 reduction in a compact package while staying efficient enough to actually backdrive.<br><br>The layout: the motor drives a sun gear, and each compound planet carries two gears, one meshing a fixed inner ring and the other driving the output ring. The small difference between those two ring meshes is where the big reduction comes from.<br><br><strong>Gear Ratio</strong><br><br>The reduction is the product of a sun-to-carrier stage and a carrier-to-output-ring stage:<br><br>$$i = i_0 \\cdot i_W = \\left(1 + \\frac{Z_{Ps}}{Z_{S}}\\cdot\\frac{Z_{Ra}}{Z_{Pa}}\\right)\\!\\cdot\\frac{S_3}{S_3 - S_2}$$<br>With my tooth counts (S=33, Ps=57, Pa=27, Pb=25, Ra=72, Rb=75) it comes out exactly to<br><br>$$i = \\frac{555}{11} \\approx 50.45 : 1$$<br>so one stage does what would normally take two stacked planetary gearboxes.<br><br><img src="/assets/wolfrom-render-face.jpg" alt="CAD front view of the Wolfrom gearbox showing the sun gear, three compound planets, and the ring gears" style="display:block; max-width: 56%; margin: 18px auto; border-radius: 8px;"><br><em style="opacity: 0.7; font-size: 0.9em;">CAD front view: the sun in the center driving three compound planets, with the fixed and output ring gears around them.</em><br><br><strong>Reflected Inertia</strong><br><br>A gearbox multiplies torque by the ratio N, but it also multiplies the rotor inertia the output feels by N squared:<br><br>$$J_{\\text{out}} = N^2 \\, J_{\\text{motor}}, \\qquad N \\approx 50 \\;\\Rightarrow\\; N^2 \\approx 2500$$<br>At 50:1 the joint feels about 2500 times the motor's rotor inertia. You can't design that away, it comes with the ratio. So the only way to keep the joint quick and backdrivable is to attack the part you can control, which is friction. Low friction is what stops all that reflected mass from turning into a joint that feels locked.<br><br><strong>Efficiency, and Why It Matters Most</strong><br><br>Wolfrom gearboxes are famous for being small and famous for being inefficient. The reason is circulating power. The high ratio comes from the small difference between two almost equal ring meshes, so far more power spins around inside the gearbox than ever comes out the other side, and that extra power turns into friction. I track it with the latent power ratio:<br><br>$$\\text{LPR} = \\left(1 - \\frac{2}{i_0}\\right) + (2\\,i_W - 1) \\approx 17.6$$<br>An LPR around 17.6 means roughly 0.1% of friction in one ring mesh costs about 1.7 points of overall efficiency. My target is about 80%, which would put a single-stage 50:1 actuator in a useful range for torque-dense, backdrivable joints.<br><br><strong>Why This One Is Different</strong><br><br>The important design move is how I split the ratio. A textbook Wolfrom dumps almost all of its reduction into the high-loss ring differential, which is exactly why circulating power blows up. I re-split it so more of the reduction happens in the first sun stage and less in the ring differential. Lower circulating power is the biggest lever on both efficiency and backdrivability, so the whole design is built around that constraint.<br><br><strong>Primary Problems to Solve</strong><br><br>• <b>Ring-mesh efficiency:</b> the two internal ring meshes carry almost all the load and cause almost all the friction, so their tooth shape and surface finish matter far more than the sun gear.<br>• <b>Planet-bearing drag:</b> the compound planets spin at about 2.67x carrier speed, so their bearings are a big loss path. The metal version moves from printed bushings to needle bearings on hardened, ground pins.<br>• <b>Load sharing:</b> three planets are over-constrained, so I float the sun and the carrier and time the planets at assembly so all three actually share the load.<br>• <b>Backdrivability:</b> rough printed teeth make the joint feel dead, so I use profile-shifted, low-friction gears and low-drag bearings to keep it transparent.<br>• <b>Manufacturing:</b> internal ring teeth can't be cleanly milled, so the production rings are planned as wire-EDM hardened steel pressed into an aluminum housing.<br><br><strong>What I Built</strong><br><br>• Designed the full Wolfrom compound planetary gearbox targeting about 50:1 reduction.<br>• Modeled the whole actuator stack: sun, compound planets, fixed ring, output ring, carrier, bearings, shafts, and output hub.<br>• Iterated on splitting the output ring, bolt access, bearing support, and axial spacing so it actually goes together.<br>• Designed around real manufacturing: FDM and SLA prototypes now, CNC and waterjet later, press-fit bearings, dowel alignment, low-profile fasteners.<br>• Built printed prototypes to check gear meshing, packaging, the assembly sequence, and fit.<br><br><strong>Technical Details</strong><br><br>The motor drives the sun, one planet gear meshes the fixed inner ring, and the other planet gear drives the output ring, both on the same compound planet. All three meshes share one planet-axis center distance, which forces the module ratio across the stages into roughly 1 : 2 : 1.8, so every stage is sized to its own teeth on the same circle. The output-ring mesh is both the highest loaded and the finest pitch, so it gets the widest face and, in the metal build, the hardest steel.<br><br><img src="/assets/wolfrom-render-section.jpg" alt="CAD cutaway section of the Wolfrom actuator showing the sun gear, compound planet stacks, fixed inner ring, and output ring" style="max-width: 100%; margin: 20px 0; border-radius: 8px;"><br><em style="opacity: 0.7; font-size: 0.9em;">CAD cutaway: the sun drives the compound planets, which mesh the fixed inner ring with one gear and the output ring with the other, all in one axial package.</em><br><br>The current prototype runs on a goBILDA gearmotor for bench testing, with the whole gearbox built as a stack of plates (motor mount, carrier cheeks, fixed ring, output ring) tied together by standoffs and dowels for repeated teardown, gear timing, and stackup validation.<br><br><img src="/assets/wolfrom-render-side.jpg" alt="Side view of the Wolfrom actuator as a stack of plates mounted on the goBILDA motor" style="display:block; max-width: 88%; margin: 18px auto; border-radius: 8px;"><br><em style="opacity: 0.7; font-size: 0.9em;">The actuator as a stack of plates on the goBILDA motor: motor mount, carrier, and the fixed and output rings, set by standoffs and dowels.</em><br><br><strong>Skills Used</strong><br><br>CAD, gearbox design, actuator design, Wolfrom geartrains, KISSsoft gear optimization, tolerance stackups, bearing selection, fastener packaging, FDM and SLA prototyping, CNC and DFM planning, robotic hardware integration, mechanical testing.<br><br><strong>Status</strong><br><br>Right now I'm iterating on printed prototypes for the kinematics, packaging, and assembly while optimizing the design for a metal build. That means running the gear macro-geometry in KISSsoft (profile shifts and tip relief on the high-load ring meshes), and preparing a CNC aluminum version with wire-EDM hardened-steel rings, needle bearings on hardened pins, and a floating sun and carrier. Bench testing follows a one-variable-at-a-time plan: contact patterns to confirm all three planets share load, breakaway and backdrive measurements to see how transparent the joint feels, and a planned efficiency sweep against the 80% target.`,
-        tags: ['Onshape', 'KISSsoft', 'Planetary Gear Design', 'Tolerance Stackups', 'Bearing Selection', 'FDM/SLA Prototyping', 'DFM'],
+        description: wolfromDescription,
+        tags: ['Onshape', 'ANSYS Mechanical', 'KISSsoft', 'Static Structural FEA', 'Topology Optimization', 'Planetary Gear Design', 'Tolerance Stackups', 'DFM'],
         links: [],
         model: '/assets/wolfrom-gearbox.glb',
         modelPoster: '/assets/wolfrom-render-iso.jpg',
-        images: ['/assets/wolfrom-cover.jpg', '/assets/wolfrom-render-iso.jpg', '/assets/wolfrom-render-face.jpg', '/assets/wolfrom-render-section.jpg', '/assets/wolfrom-render-side.jpg', '/assets/wolfrom-stand.jpg', '/assets/wolfrom-spin.mp4', '/assets/wolfrom-bench.jpg']
+        images: ['/assets/wolfrom-cover.jpg', '/assets/wolfrom-integrated-cad.png', '/assets/wolfrom-integrated-section.png', '/assets/wolfrom-ansys-stress.png', '/assets/wolfrom-ansys-topology-result.png', '/assets/wolfrom-manufacturable-redesign.png', '/assets/wolfrom-kisssoft-results.png', '/assets/wolfrom-render-iso.jpg', '/assets/wolfrom-render-face.jpg', '/assets/wolfrom-render-section.jpg', '/assets/wolfrom-render-side.jpg', '/assets/wolfrom-stand.jpg', '/assets/wolfrom-spin.mp4', '/assets/wolfrom-bench.jpg']
       },
       {
         id: 'formula-electric',
@@ -1862,15 +2339,18 @@
         active: true,
         featured: false,
         excerpt: 'High-voltage battery system for Berkeley\'s Formula Electric racing team.',
-        description: `<strong>The Accumulator</strong><br><br>I work on the Accumulator subteam at Formula Electric at Berkeley, designing and manufacturing the attic casing for our 588V lithium-ion battery pack. The pack's energy is governed by:<br><br>$$E_{\\text{pack}} = N_{\\text{parallel}} \\times \\int_0^Q V(q)\\,dq$$<br>where V(q) is cell voltage as a function of charge depleted. At 588V, a mistake means serious injury. I once accidentally shorted two segment busbars together and watched the cells heat up alarmingly fast. Nobody was hurt, but it changed how I approach every decision on this system.<br><br><strong>My Role: The Attic</strong><br><br>The casing must withstand FSAE crash loads (40g lateral, 40g longitudinal, 20g vertical), maintain dielectric strength at 588V, pass a rain test, and dissipate cell heat. I run FEA checking Von Mises stress everywhere:<br><br>$$\\sigma_{\\text{vm}} = \\sqrt{\\sigma_1^2 - \\sigma_1 \\sigma_2 + \\sigma_2^2}$$<br>Everything must stay below yield with a 1.5x safety factor. I reduced attic mass by 18% while meeting all structural and dielectric requirements. I chose 6061-T6 aluminum because after TIG welding and post-weld heat treatment (530°C solutionize, quench, age at 175°C for 8 hours), it recovers ~70% of base yield strength. 7075 does not recover from welding, steel is too heavy, and carbon fiber has conductivity concerns near HV components.<br><br><strong>Floor and Sealing</strong><br><br>The floor uses 6mm polycarbonate for electrical isolation:<br><br>$$V_{\\text{breakdown}} = 15\\,\\text{kV/mm} \\times 6\\,\\text{mm} = 90\\,\\text{kV}$$<br>That gives enormous margin over 588V, plus it is transparent for visual inspection without disassembly. Waterproofing uses a 3mm neoprene gasket (50A durometer) at 20-30% compression, with aluminum standoffs preventing over-compression. I chose neoprene over silicone for petroleum resistance near the powertrain.<br><br><img src="/assets/gas.png" alt="Gasket compression equation" style="max-width: 100%; margin: 20px 0; border-radius: 8px;"><br><br><strong>Insulation and Thermal</strong><br><br>All internal surfaces near HV components are lined with Nomex 410 (18 kV/mm dielectric, rated to 220°C, UL 94 V-0 fire resistance). For thermal management, the wall conductive resistance is low at 3mm 6061 (k ≈ 167 W/m·K), so the real bottleneck is convection off the outer surface, which is why we focused on optimizing airflow around the casing.<br><br><strong>Manufacturing</strong><br><br>Panels are laser-cut on a FabLight fiber laser, TIG welded, then heat-treated. The polycarbonate floor and neoprene gasket are waterjet cut. Before approval, the casing passes a 1500V AC dielectric test, IP65 water ingress test, 40g structural simulation, and perimeter gasket compression checks. Looking forward to competing in Michigan.`,
+        description: `<strong>The Accumulator</strong><br><br>I work on the Accumulator subteam at Formula Electric at Berkeley, designing and manufacturing the attic casing for our 588V lithium-ion battery pack. At 588V, packaging is not just packaging. It decides whether the system can be inspected, serviced, sealed, cooled, and handled without turning every maintenance step into a high-voltage risk.<br><br>I once accidentally shorted two segment busbars together and watched the cells heat up alarmingly fast. Nobody was hurt, but it changed how I approach every decision on this system: assume stored energy is real, make inspection easy, and do not hide risky interfaces behind pretty CAD.<br><br><strong>My Role: The Attic</strong><br><br>The casing has to survive FSAE crash loading, maintain dielectric isolation, pass water-ingress checks, and stay serviceable around the busbars, sensing, and HV electronics. I used SolidWorks and SolidWorks PDM for the packaging work, then ran FEA to check stress and deflection under the required 40g lateral, 40g longitudinal, and 20g vertical load cases with the team safety factors baked into the design review.<br><br>The attic mass came down by 18% while keeping the structural and dielectric requirements intact. Material choice was part of that trade: 6061-T6 aluminum gave us a workable balance between weight, weldability, heat treatment, and shop reality. 7075 was stronger on paper but not a good welded structure, steel was heavy, and carbon fiber introduced conductivity concerns near HV components.<br><br><strong>Electrical Packaging</strong><br><br>The attic geometry has to follow the real HV hardware. I use the physical contactor, current-sensor, busbar, connector, and low-voltage harness layout to check copper clearances, wire bend space, inspection access, and whether the casing can be opened without disturbing every electrical interface.<br><br><picture><source srcset="/assets/formula-e-hv-hardware.webp" type="image/webp"><img src="/assets/formula-e-hv-hardware.jpg" alt="Formula Electric high-voltage hardware with copper busbars, contactors, current sensing, connectors, and low-voltage harnessing" loading="lazy" decoding="async" style="display:block; max-width: 72%; margin: 20px auto; border-radius: 8px;"></picture><br><em style="opacity: 0.7; font-size: 0.9em;">HV hardware used to check busbar paths, sensor placement, connector access, and harness routing against the casing package.</em><br><br><strong>Floor and Sealing</strong><br><br>The floor uses 6 mm polycarbonate because it gives electrical isolation, impact resistance, and visual inspection access without disassembling the pack; at roughly 15 kV/mm dielectric strength, the material choice has huge margin over the 588V pack voltage. Waterproofing uses a 3 mm neoprene gasket at controlled compression, with aluminum standoffs preventing over-compression around the perimeter. I chose neoprene over silicone because petroleum resistance matters near the powertrain and paddock environment.<br><br><img src="/assets/accumimg.png" alt="Formula Electric accumulator attic CAD and casing packaging context" style="max-width: 100%; margin: 20px 0; border-radius: 8px;"><br><em style="opacity: 0.7; font-size: 0.9em;">Accumulator attic packaging: casing geometry, service access, busbar clearance, and gasket path all have to work together.</em><br><br><strong>Insulation and Thermal</strong><br><br>All internal surfaces near HV components are lined with Nomex 410 for dielectric and flame resistance. The thermal work is less about pretending the aluminum wall is the bottleneck and more about making sure the casing does not trap heat or block airflow where the pack actually needs it. The serviceability constraint is always there too: if the design makes inspection miserable, it will fail in the shop even if the simulation is clean.<br><br><strong>Manufacturing</strong><br><br>Panels are laser-cut on a FabLight fiber laser, TIG welded, then heat-treated. The polycarbonate floor and neoprene gasket are waterjet cut.<br><br><picture><source srcset="/assets/formula-e-attic-fabrication.webp" type="image/webp"><img src="/assets/formula-e-attic-fabrication.jpg" alt="Formula Electric accumulator attic panel clamped on a fabrication table during fit-up and hardware clearance work" loading="lazy" decoding="async" style="display:block; max-width: 66%; margin: 20px auto; border-radius: 8px;"></picture><br><em style="opacity: 0.7; font-size: 0.9em;">Panel fit-up and hardware-clearance work on the clamped attic assembly before final integration.</em><br><br>Before approval, the casing goes through dielectric testing, water-ingress checks, structural simulation review, and gasket compression inspection. The work is a mix of CAD, FEA, GD&T, HV packaging, material choice, and manufacturing planning, all pointed at one goal: a pack that can survive competition and still be worked on by humans.`,
         tags: ['SolidWorks', 'SolidWorks PDM', 'FEA', 'GD&T', 'High-Voltage Packaging', 'Laser Cutting', 'Waterjet', 'TIG Welding'],
         links: [{ url: 'https://ev.berkeley.edu/', label: 'Team Website' }],
         images: [
           '/assets/accumimg.png',
+          '/assets/formula-e-attic-fabrication.jpg',
+          '/assets/formula-e-hv-hardware.jpg',
           '/assets/img1.png',
           '/assets/img2.png',
           '/assets/img3.png',
-          '/assets/accumsa.png'
+          '/assets/accumsa.png',
+          '/assets/formula-e-accumulator-interior.jpg'
         ]
       },
       {
@@ -1903,47 +2383,72 @@
         date: 'May 2026 — Present',
         active: true,
         featured: false,
+        displayOrder: 2,
         excerpt: 'Nanosecond pulse-generator PCB for BiFeO3 spin-transport and ferroelectric characterization, with GaN switching, grounded coax/BNC I/O, source-measure biasing, and RP2040/Python triggering.',
         description: `
           <strong>Overview</strong><br><br>
           I am designing a nanosecond pulse-generator board in Ramesh Lab for electrical characterization of BiFeO<sub>3</sub> and related complex-oxide thin-film devices. The board is meant to support spin-transport and ferroelectric testing where the sample needs a clean voltage pulse while the rest of the bench setup handles biasing, synchronization, and measurement.<br><br>
           Current BFO testing is generally around a 30 V pulse range, with the next goal being controlled sweeps down to smaller voltages. The board is therefore not just a generic fast pulser; it is an experiment interface for applying known voltage stress to oxide devices while preserving timing, bias state, and measurement visibility.<br><br>
           <strong>Experiment Target</strong><br><br>
-          The useful voltage is the voltage that actually lands across the BFO device, not the nominal setting at the connector. I am treating the pulse as a bounded experiment waveform:<br><br>
-          $$V_{\\text{BFO}}(t) = V_{\\text{bias}} + A_{\\text{pulse}}p(t), \\qquad A_{\\text{pulse}} \\leq 30\\,\\text{V initially}$$<br>
-          where \\(p(t)\\) is the measured pulse shape at the fixture or device-side test point. The engineering problem is making \\(p(t)\\) repeatable enough that voltage sweeps mean something physically, especially as the amplitude moves below the current 30 V test range.<br><br>
-          <strong>What The Current Means</strong><br><br>
-          For ferroelectric characterization, the measured current is a mixture of the signal I care about and the things the fixture/device adds. Written as current density:<br><br>
-          $$J_{\\text{meas}}(t)=\\frac{I_{\\text{meas}}(t)}{A}=\\frac{dP_{\\text{BFO}}}{dt}+\\sigma_{\\text{leak}}E_{\\text{BFO}}(t)+\\epsilon_0\\epsilon_r\\frac{dE_{\\text{BFO}}}{dt}+J_{\\text{transport}}(t)$$<br>
-          The board layout and measurement flow are built around separating those pieces: switching current, leakage, capacitive displacement current, and the transport response. That is why the design emphasizes grounded coax/BNC interfaces, oscilloscope sync, known dummy loads, and source-measure compatibility instead of only making a pulse appear somewhere on a schematic.<br><br>
-          <strong>Extracting A Useful Measurement</strong><br><br>
-          One target measurement is switched polarization after subtracting a non-switching baseline. In practice, that means comparing pulse captures rather than trusting a single transient:<br><br>
-          $$\\Delta P_{\\text{sw}} \\approx \\frac{1}{A}\\int_{t_1}^{t_2}\\left(I_{\\text{switch}}(t)-I_{\\text{baseline}}(t)\\right)dt$$<br>
-          This is the reason for Python/JupyterLab analysis hooks and repeatable triggering. The board needs to make the pulse sequence, trigger timing, and captured waveform stable enough that later analysis can tell BFO switching apart from leakage and fixture capacitance.<br><br>
-          <strong>Circuit Direction</strong><br><br>
-          The current nanosecond board uses trigger conditioning into a GaN switching stage, with local driver power, range/control relays, shared external trigger, sync output, and Keithley/source-measure paths separated enough to bring up independently. LTspice is part of the design loop for checking timing and switching behavior before board bring-up; KiCad is the schematic/layout environment; Python, JupyterLab, and LabVIEW are the intended bench-control and analysis layer around the hardware.<br><br>
+          The useful voltage is the voltage that actually lands across the BFO device, not the nominal setting at the connector. Current testing is generally around 30 V, and the next goal is controlled sweeps down to smaller voltages where fixture pickup, leakage, timing jitter, and ringing start to matter more. That is why I am treating the board as an experiment interface, not just a fast-switching demo circuit.<br><br>
+          <strong>Measurement Problem</strong><br><br>
+          For ferroelectric and spin-transport characterization, the captured current is a pileup of useful signal plus leakage, displacement current, fixture capacitance, and whatever the test setup adds. The board layout and measurement flow are built around separating those pieces as much as possible: grounded coax/BNC interfaces, a sync output for the scope, known dummy loads, relay-selected bias paths, and source-measure compatibility instead of loose wires into a mystery pulse node.<br><br>
+          <strong>Design Loop</strong><br><br>
+          I use KiCad for the schematic and four-layer PCB layout, with the top edge organized around BNC/coax test interfaces and the sensitive switching/control sections kept readable for bring-up. LTspice is in the loop before hardware bring-up to sanity-check switching timing, driver behavior, and load assumptions. The RP2040 handles trigger control, while Python, JupyterLab, and LabVIEW are the bench-control and analysis layer I want around the board once scope captures and source-measure data start coming in.<br><br>
+          The current nanosecond board uses trigger conditioning into a GaN switching stage, with local driver power, range/control relays, shared external trigger, sync output, and Keithley/source-measure paths separated enough to bring up independently. The point is repeatability: if the pulse sequence and captured waveform are stable, then later analysis can actually distinguish BFO switching behavior from leakage and fixture effects.<br><br>
+          <div class="board-layer-viewer">
+            <input type="radio" id="ns-layer-render" name="ns-board-layer" checked>
+            <input type="radio" id="ns-layer-layout" name="ns-board-layer">
+            <input type="radio" id="ns-layer-top" name="ns-board-layer">
+            <input type="radio" id="ns-layer-copper" name="ns-board-layer">
+            <input type="radio" id="ns-layer-in1" name="ns-board-layer">
+            <input type="radio" id="ns-layer-in2" name="ns-board-layer">
+            <input type="radio" id="ns-layer-silk" name="ns-board-layer">
+            <input type="radio" id="ns-layer-bottom" name="ns-board-layer">
+            <div class="board-layer-controls" aria-label="Nanosecond board layer viewer">
+              <label for="ns-layer-render">3D render</label>
+              <label for="ns-layer-layout">combined layout</label>
+              <label for="ns-layer-top">top + silk</label>
+              <label for="ns-layer-copper">F.Cu</label>
+              <label for="ns-layer-in1">In1.Cu</label>
+              <label for="ns-layer-in2">In2.Cu</label>
+              <label for="ns-layer-silk">silk only</label>
+              <label for="ns-layer-bottom">B.Cu</label>
+            </div>
+            <div class="board-layer-stage">
+              <img class="layer-render" src="/assets/ns-pulse-board-cover.png" alt="3D render of the nanosecond pulse generator board with BNC connectors, relays, RP2040 module, and terminal blocks">
+              <img class="layer-layout" src="/assets/ns-pulse-board-layout.png" alt="KiCad combined layout view of the nanosecond pulse generator board">
+              <img class="layer-top" src="/assets/ns-pulse-layer-top.svg" alt="Top-side board view with silkscreen and copper exported from the current KiCad layout">
+              <img class="layer-copper" src="/assets/ns-pulse-layer-copper.svg" alt="Top copper routing layer exported from the current nanosecond pulse generator KiCad layout">
+              <img class="layer-in1" src="/assets/ns-pulse-layer-in1.svg" alt="Inner layer 1 copper plane exported from the current four-layer KiCad layout">
+              <img class="layer-in2" src="/assets/ns-pulse-layer-in2.svg" alt="Inner layer 2 copper plane exported from the current four-layer KiCad layout">
+              <img class="layer-silk" src="/assets/ns-pulse-layer-silk.svg" alt="Front silkscreen layer exported from the current nanosecond pulse generator KiCad layout">
+              <img class="layer-bottom" src="/assets/ns-pulse-layer-bottom.svg" alt="Bottom-side board layer exported from the current nanosecond pulse generator KiCad layout">
+              <button class="board-layer-expand" type="button" data-board-lightbox-open aria-label="Expand board layer viewer"><svg viewBox="0 0 24 24"><path d="M8 3H3v5M16 3h5v5M8 21H3v-5M21 16v5h-5"/><path d="M3 3l7 7M21 3l-7 7M3 21l7-7M21 21l-7-7"/></svg><span>expand</span></button>
+            </div>
+            <span class="board-layer-caption">Layer viewer for the current four-layer ns/µs pulse board: BNC/coax test interfaces across the top edge, relay-switched bias/dut paths, local driver power, RP2040 trigger control, inner copper layers, and routed high-speed pulse/sync sections.</span>
+          </div>
           <strong>V1 Microsecond Prototype</strong><br><br>
           Before the nanosecond board, I built a first-pass microsecond pulse-generator prototype to test the basic source-measure pulse workflow. V1 used a one-shot timing stage, gate driver, MOSFET output stage, manual/external trigger path, and Keithley/source-measure interface.<br><br>
           <img src="/assets/pulse-v1-physical.jpg" alt="First microsecond pulse-generator board under oscilloscope probe during bench testing" style="display:block; max-width: 70%; margin: 18px auto; border-radius: 8px;"><br>
           <em style="opacity: 0.7; font-size: 0.9em;">V1 microsecond board during bench testing. It made the measurement workflow concrete, but also showed why the nanosecond version needed tighter layout and grounded coax/BNC interfaces.</em><br><br>
           The V1 board was useful design history, not validation for the current nanosecond board. It showed the limits of terminal-block-style connections, loose wiring, and microsecond-oriented timing when the actual research need moves toward faster pulse edges, cleaner synchronization, and smaller-voltage sweeps.<br><br>
+          <img src="/assets/pulse-v1-ltspice.png" alt="LTspice transient simulation for the first microsecond pulse-generator prototype" style="display:block; max-width: 100%; margin: 18px auto; border-radius: 8px;"><br>
+          <em style="opacity: 0.7; font-size: 0.9em;">LTspice transient work from V1. It helped sanity-check the switching timing and output behavior before bench testing, but the nanosecond board is being documented through the current KiCad layout and upcoming scope captures.</em><br><br>
           <strong>Bring-Up Plan</strong><br><br>
           I am bringing the board up in stages: verify rails and microcontroller trigger logic, simulate and scope the driver path, validate the GaN output into known dummy loads, then move toward device fixtures. The oscilloscope work is focused on what matters for BFO testing: delivered amplitude near the 30 V regime, timing jitter between trigger and sync, overshoot/ringing at the fixture, and whether lower-amplitude pulses remain distinguishable from noise and pickup.<br><br>
           <strong>Status</strong><br><br>
           The nanosecond board is currently in schematic/layout and validation planning. I am not claiming final measured rise time, amplitude stability, timing jitter, or device results here; the next real milestone is bench characterization with oscilloscope captures and known loads before fragile thin-film devices are connected.<br><br>
-          <strong>Skills Used</strong><br><br>
-          KiCad, LTspice, RF PCB layout, GaN switching, coax/BNC lab interfaces, oscilloscope bring-up, Python, JupyterLab, LabVIEW, RP2040/microcontroller triggering, source-measure integration, and thin-film electrical characterization.`,
+          <strong>Tools In The Workflow</strong><br><br>
+          KiCad is where I am doing the schematic/layout work, LTspice is being used to check switching and timing assumptions before the board is powered, and oscilloscope bring-up will validate the GaN output into known loads before any fragile thin-film device is connected. Python/JupyterLab/LabVIEW sit on the other side of that: trigger repeatability, capture organization, and later analysis of BFO pulse-response data.`,
         tags: ['KiCad', 'LTspice', 'RF PCB Layout', 'Python', 'LabVIEW', 'JupyterLab', 'Oscilloscope Bring-Up', 'RP2040', 'GaN FET Switching', 'Coax/BNC Interfaces'],
         links: [],
         images: [
+          '/assets/ns-pulse-board-cover.png',
+          '/assets/ns-pulse-board-angle.png',
+          '/assets/ns-pulse-board-layout.png',
           '/assets/ns-pulse-schematic-thumbnail.png',
-          '/assets/pulse-pcb-top.svg',
-          '/assets/pulse-pcb-copper.svg',
-          '/assets/pulse-v1-physical.jpg',
-          '/assets/pulse-v1-us-schematic.png',
-          '/assets/pulse-v1-us-layout.png',
-          '/assets/pulse-v1-ltspice.png',
-          '/assets/pulse-v1-us-render.png'
+          '/assets/pulse-v1-ltspice.png'
         ]
       },
       {
@@ -1981,7 +2486,7 @@
         active: false,
         featured: false,
         excerpt: 'Experiment tracking and data-management system for PLD thin-film workflows, linking growth parameters, wafer position, characterization data, and lab documentation.',
-        description: `<strong>Overview</strong><br><br>PLDTracker is a custom experiment tracking and data-management system I built for the lab's pulsed laser deposition setup. The goal was to replace scattered notes, slide decks, screenshots, and spreadsheets with a searchable dataset that connects how a film was grown with how it later characterized.<br><br><strong>What It Tracks</strong><br><br>The system logs each deposition run's substrate, target material, temperature, oxygen pressure, laser fluence, deposition time, and wafer disk position. It stores and links characterization data such as XRD scans and AFM/PFM domain images to specific runs, so researchers can correlate growth parameters with resulting film structure and properties.<br><br><strong>Data Explorer</strong><br><br>I built a dashboard-style data explorer for filtering deposition records and visualizing parameter trends with line-of-best-fit and connected datapoint plots. The point was not just storing data, but making it easier to see whether a change in growth conditions might explain changes in characterization results.<br><br><strong>Image and Document Pipeline</strong><br><br>A camera integration module monitors substrate positioning during deposition, with image capture tied to each run. I also built a PDF slide-deck parser that extracts and indexes analysis images from lab presentations, including AFM, PFM, and XRD figures, then helps associate them with the correct deposition records.<br><br><strong>Why It Matters</strong><br><br>Thin-film growth is sensitive to small process changes. Oxygen vacancy concentration, substrate temperature, plume shape, and interface quality can all reshape domain structures, mobility, leakage, or coercive fields. PLDTracker was built to make those relationships easier to document and revisit across experiments.<br><br><strong>Skills Used</strong><br><br>Python, Pandas, data modeling, dashboard development, computer vision, image processing, PDF parsing, experiment tracking, thin-film research workflows, and SolidWorks CAD for a PLD chamber camera mount.`,
+        description: `<strong>Overview</strong><br><br>PLDTracker is a custom experiment tracking and data-management system I built for the lab's pulsed laser deposition setup. The goal was to replace scattered notes, slide decks, screenshots, and spreadsheets with a searchable dataset that connects how a film was grown with how it later characterized.<br><br><strong>What It Tracks</strong><br><br>The system logs each deposition run's substrate, target material, temperature, oxygen pressure, laser fluence, deposition time, and wafer disk position. It stores and links characterization data such as XRD scans and AFM/PFM domain images to specific runs, so researchers can correlate growth parameters with resulting film structure and properties.<br><br><strong>Data Explorer</strong><br><br>I used Python and Pandas to clean deposition records into a structure that could actually be filtered and compared. The dashboard lets researchers move through runs, filter by growth parameters, and plot connected datapoints or trend lines when they want to check whether a process change is showing up in characterization results.<br><br><strong>Image and Document Pipeline</strong><br><br>The camera module was built to tie substrate-position images to the deposition run instead of leaving them as loose screenshots. I also wrote a PDF slide-deck parser that pulls AFM, PFM, and XRD figures out of lab presentations and helps associate them with the correct deposition records. OpenCV/image-processing work came in where the system needed to organize camera captures and make image data easier to search later.<br><br><strong>Why It Matters</strong><br><br>Thin-film growth is sensitive to small process changes. Oxygen vacancy concentration, substrate temperature, plume shape, and interface quality can all reshape domain structures, mobility, leakage, or coercive fields. PLDTracker was built to make those relationships easier to document and revisit across experiments instead of relying on memory and scattered files.<br><br><strong>Hardware Tie-In</strong><br><br>I also CAD-modeled a SolidWorks camera mount for the PLD chamber so the tracking workflow was not purely software. That part of the project was a good reminder that lab software gets much more useful when it matches how the hardware is actually used during growth.`,
         tags: ['Python', 'Pandas', 'OpenCV', 'PDF Parsing', 'Data Visualization', 'Experiment Metadata Modeling', 'SolidWorks'],
         links: [{ label: 'Ramesh Lab Hub', url: '#ramesh-lab' }],
         images: ['/assets/Screenshot 2026-03-13 000052.png', '/assets/Screenshot 2026-03-13 000118.png', '/assets/Screenshot 2026-03-13 000132.png', '/assets/Screenshot 2026-03-13 000202.png', '/assets/Screenshot 2026-03-13 000143.png', '/assets/Screenshot 2026-03-13 000538.png']
@@ -1997,7 +2502,7 @@
         active: false,
         featured: false,
         excerpt: 'Interactive tool for evaluating nuclear reactor site feasibility + research paper.',
-        description: `<strong>The Research</strong><br><br>My AP Research capstone, turned interactive tool. Rural America pays ~25% more for electricity than urban areas and relies on aging infrastructure. I investigated whether hybrid Small Modular Reactor + solar systems could address this inequity. Solar costs dropped 89% since 2010 but cannot generate at night; SMRs provide 24/7 low-carbon baseload. Together they balance each other out. Almost all existing SMR research focuses on urban implementation, which left a clear gap for rural applications.<br><br><strong>The Tool</strong><br><br>Atlas SMR is an interactive web platform pulling data from the NRC, EIA, and USGS seismic databases. It displays 89 operating reactors, 13 shutdown facilities, and 119 candidate sites scored by a weighted algorithm. Users scrub a timeline from 2010 to 2050 to see reactor status shift with license expirations. Each candidate site's viability score:<br><br>$$S = w_1\\!\\left(1 - \\frac{P}{P_{\\max}}\\right) + w_2\\!\\left(1 - \\frac{D_s}{D_{\\max}}\\right) + w_3\\!\\left(\\frac{W}{W_{\\max}}\\right) + w_4\\!\\left(\\frac{G}{G_{\\max}}\\right)$$<br>where P is population in the 10-mile NRC emergency zone, Dₛ is distance to nearest seismic fault, W is cooling water proximity, and G is grid interconnection capacity. Default weights (0.30/0.25/0.25/0.20) are calibrated against historical NRC approvals, but users can adjust them and watch candidate rankings shift.<br><br><strong>Scenario Builder</strong><br><br>Users configure 50-300 MWe per module, 1-12 modules per site, and deployment year. For hybrid systems, annual energy:<br><br>$$E_{\\text{annual}} = C_{\\text{smr}} \\cdot 8760 \\cdot CF_{\\text{smr}} + C_{\\text{solar}} \\cdot 8760 \\cdot CF_{\\text{solar}} \\cdot (1 - \\text{curtailment})$$<br>In solar-rich regions like Navajo Nation, larger solar arrays reduce SMR daytime load. In cloudier areas like Nome, Alaska, the system leans on SMR output. My analysis showed a properly configured hybrid could meet ~24% of rural energy needs, with clear scalability beyond that.<br><br><strong>Limitations</strong><br><br>SMR cost estimates still lack large-scale U.S. operational data. Nuclear stigma is real. This tool is a prototype visualization, not a policy instrument -- actual site selection requires Environmental Impact Statements and full NRC licensing far beyond what a scoring algorithm captures.`,
+        description: `<strong>The Research</strong><br><br>My AP Research capstone, turned interactive tool. Rural America pays ~25% more for electricity than urban areas and relies on aging infrastructure. I investigated whether hybrid Small Modular Reactor + solar systems could address this inequity. Solar costs dropped 89% since 2010 but cannot generate at night; SMRs provide 24/7 low-carbon baseload. Together they balance each other out. Almost all existing SMR research focuses on urban implementation, which left a clear gap for rural applications.<br><br><strong>The Tool</strong><br><br>Atlas SMR is an interactive web platform pulling data from the NRC, EIA, and USGS seismic databases. It displays 89 operating reactors, 13 shutdown facilities, and 119 candidate sites scored by a weighted algorithm. The scoring model weighs population inside the NRC emergency planning zone, seismic-fault proximity, cooling-water access, and grid interconnection capacity. Users can change the weights and immediately see candidate rankings shift instead of treating the map as a fixed answer.<br><br><strong>Scenario Builder</strong><br><br>Users configure 50-300 MWe per module, 1-12 modules per site, and deployment year. For hybrid systems, the tool compares SMR baseload against solar capacity factor and curtailment assumptions. In solar-rich regions like Navajo Nation, larger solar arrays reduce SMR daytime load. In cloudier areas like Nome, Alaska, the system leans on SMR output. My analysis showed a properly configured hybrid could meet ~24% of rural energy needs, with clear scalability beyond that.<br><br><strong>Limitations</strong><br><br>SMR cost estimates still lack large-scale U.S. operational data. Nuclear stigma is real. This tool is a prototype visualization, not a policy instrument -- actual site selection requires Environmental Impact Statements and full NRC licensing far beyond what a scoring algorithm captures.`,
         tags: ['Web Dev', 'GIS', 'Energy', 'Data Viz', 'Nuclear', 'Policy Research', 'AP Research'],
         links: [
           { label: 'Live Site', url: 'https://atlas-smr.vercel.app/' },
@@ -2016,7 +2521,7 @@
         active: false,
         featured: false,
         excerpt: 'YC x DeepMind hackathon winner. Real-time generative music for the visually impaired.',
-        description: `<strong>YC x DeepMind Hackathon Winner</strong><br><br>Built at the YC x Google DeepMind hackathon in San Francisco. Leitmotif generates adaptive, real-time background music for visually impaired users. A webcam watches the scene, and every person who enters gets assigned a unique musical motif -- a short melodic signature that weaves into an evolving soundtrack reflecting the room's mood. When someone leaves, their motif plays back inverted as a farewell cue. The whole system is designed to give spatial awareness through sound alone, no screen needed.<br><br><strong>The Pipeline</strong><br><br>Everything runs in a continuous loop. A webcam frame gets captured and base64-encoded, then sent to Gemini 2.5 Flash for vision analysis (who is visible, what the scene feels like). That scene data goes to the Music Engine, which pulls each person's stored motif from Supabase (PostgreSQL). A prompt builder constructs a Lyria-compatible music prompt, Gemini refines it with tempo, key, and instrumentation decisions, and the Google Lyria RealTime API generates PCM audio streamed directly to speakers. The cycle repeats on every new frame.<br><br>Crossfading between emotional states uses a 4-6 second blend window. Without smooth transitions, mood shifts sounded jarring -- like someone changing the radio station mid-song. The crossfade duration is a tradeoff: too short and the transitions feel abrupt, too long and the system feels unresponsive to actual scene changes.<br><br><strong>The Motif System</strong><br><br>Each person's musical signature is a structured JSON object: note count, interval patterns, rhythm sequences, melodic contours, and character descriptors. On entry, the motif plays once as a bright solo phrase over a ducked background. On exit, the motif plays descending and inverted. This gives users a learnable, consistent association between people and sounds.<br><br>Motif management enforces musical rules to prevent overlaps. If two people enter within a short window, the system queues motifs rather than layering them, since simultaneous melodic lines become indistinguishable -- which defeats the purpose. The prompt builder also handles key compatibility so motifs do not clash harmonically with the background:<br><br>$$\\text{consonance}(f_1, f_2) = \\frac{\\gcd(f_1, f_2)}{\\min(f_1, f_2)}$$<br>where simple frequency ratios (octave 2:1, fifth 3:2, fourth 4:3) produce the most consonant intervals. The system biases motif assignments toward intervals that sit well against common background keys.<br><br><strong>Architecture</strong><br><br>Two servers. The Music Engine (port 3001) handles real-time scene orchestration, adaptive prompt generation, entry/exit transitions, and crossfading. The Camera Server (port 3002) runs Gemini vision analysis on webcam frames and auto-forwards results. We split them because vision analysis and music generation have very different latency profiles, and decoupling lets each run at its own pace without blocking the other.<br><br>Backend is Node.js with TypeScript, native HTTP server, Gemini 2.5 Flash for vision + orchestration, Lyria RealTime for generative music, Supabase for persistence. The React Native companion app (iOS/Android) has four screens (Monitor, Contacts, Visualizer, Settings) for real-time entity tracking and motif management. Web mockup built with React, Vite, and Tailwind.`,
+        description: `<strong>YC x DeepMind Hackathon Winner</strong><br><br>Built at the YC x Google DeepMind hackathon in San Francisco. Leitmotif generates adaptive, real-time background music for visually impaired users. A webcam watches the scene, and every person who enters gets assigned a unique musical motif -- a short melodic signature that weaves into an evolving soundtrack reflecting the room's mood. When someone leaves, their motif plays back inverted as a farewell cue. The whole system is designed to give spatial awareness through sound alone, no screen needed.<br><br><strong>The Pipeline</strong><br><br>Everything runs in a continuous loop. A webcam frame gets captured and base64-encoded, then sent to Gemini 2.5 Flash for vision analysis: who is visible, what the room feels like, and what changed since the last frame. That scene data goes to the Music Engine, which pulls each person's stored motif from Supabase/PostgreSQL. A prompt builder turns the scene state into a Lyria-compatible music prompt, Gemini refines the tempo/key/instrumentation choices, and the Google Lyria RealTime API streams PCM audio directly to speakers.<br><br>Crossfading between emotional states uses a 4-6 second blend window. Without smooth transitions, mood shifts sounded jarring -- like someone changing the radio station mid-song. The crossfade duration is a tradeoff: too short and the transitions feel abrupt, too long and the system feels unresponsive to actual scene changes.<br><br><strong>The Motif System</strong><br><br>Each person's musical signature is stored as structured JSON: note count, interval patterns, rhythm sequences, melodic contours, and character descriptors. On entry, the motif plays once as a bright solo phrase over a ducked background. On exit, the motif plays descending and inverted. That gives users a learnable association between people and sounds instead of a generic notification beep.<br><br>Motif management enforces musical rules in code. If two people enter within a short window, the system queues motifs rather than layering them, because simultaneous melodic lines become indistinguishable. The prompt builder also keeps motifs compatible with the current background key and mood so the accessibility cue stays clear instead of turning into noise.<br><br><strong>Architecture</strong><br><br>Two servers. The Music Engine (port 3001) handles real-time scene orchestration, adaptive prompt generation, entry/exit transitions, and crossfading. The Camera Server (port 3002) runs Gemini vision analysis on webcam frames and auto-forwards results. We split them because vision analysis and music generation have very different latency profiles, and decoupling lets each run at its own pace without blocking the other.<br><br>Backend is Node.js with TypeScript, native HTTP server, Gemini 2.5 Flash for vision + orchestration, Lyria RealTime for generative music, Supabase for persistence. The React Native companion app has Monitor, Contacts, Visualizer, and Settings screens for real-time entity tracking and motif management. The web mockup was built with React, Vite, and Tailwind so we could demo the interaction quickly during the hackathon.`,
         tags: ['TypeScript', 'Node.js', 'React Native', 'Gemini API', 'Lyria Realtime', 'Supabase', 'Computer Vision'],
         links: [{ label: 'Live Site', url: 'https://leitmotif-flame.vercel.app/' }, { label: 'GitHub', url: 'https://github.com/AaditKannan/leitmotif' }],
         images: ['/assets/IMG_0286.jpg', '/assets/Screenshot 2026-03-10 172428.png', '/assets/IMG_4613.jpeg']
@@ -2064,7 +2569,7 @@
         active: false,
         featured: false,
         excerpt: 'Team Lead for FTC #20424. Built cone-stacking robot with custom lift.',
-        description: `<strong>The Lift</strong><br><br>POWERPLAY (2022-23 FTC): stack cones on junctions of varying heights. My second year in FTC, first as Team Lead for Zenith #20424. The core mechanism was a linear lift needing 30+ inches of travel, full extension under 1.5 seconds, carrying ~200g. We used continuous rigging with dyneema string and a high-RPM motor. Lift speed depends on spool geometry:<br><br>$$v_{\\text{lift}} = \\frac{\\omega_{\\text{motor}} \\cdot d_{\\text{spool}} \\cdot \\pi}{2G}$$<br>But the motor also needs enough torque to accelerate the carriage without stalling:<br><br>$$\\tau_{\\text{motor}} = \\frac{(m_{\\text{carriage}} \\cdot g + m_{\\text{carriage}} \\cdot a_{\\text{desired}}) \\cdot d_{\\text{spool}}}{2 \\cdot G \\cdot \\eta}$$<br>where $\\eta$ is drivetrain efficiency (~0.85 for string-on-spool). Getting the gear ratio right meant balancing these two equations: too aggressive and the motor stalls under load, too conservative and you lose cycle time.<br><br><strong>Cone Manipulation</strong><br><br>The claw went through three versions. V1 (simple pinch) dropped cones during fast lift moves because acceleration pulled them loose. V2 added spring-loaded compliance but was inconsistent with cone orientation. The breakthrough was V3: internal centering guides that funnel the cone into position before gripping. The claw needed to actively center the cone, not just grab it.<br><br><strong>Software</strong><br><br>I wrote both TeleOp and autonomous in Java. TeleOp had mecanum kinematics, lift PID control, and speed scaling modes. Autonomous used OpenCV color thresholding for signal sleeve detection, dead wheel odometry, and IMU heading correction to fight encoder drift over the 30-second period.<br><br><strong>ZenLender</strong><br><br>I noticed teams scrambling for parts before competitions with $50+ overnight shipping on $15 parts. I built ZenLender, a basic spreadsheet system for lending parts between teams. Primitive, but the concept eventually evolved into Inventry. During one match, our lift string snapped mid-cycle because we had not inspected it for wear. Preventive maintenance matters as much as good design.<br><br><em style="opacity: 0.7; font-size: 0.9em;">Note: Team Zenith #20424 has since dissolved.</em>`,
+        description: `<strong>The Lift</strong><br><br>POWERPLAY (2022-23 FTC): stack cones on junctions of varying heights. My second year in FTC, first as Team Lead for Zenith #20424. The core mechanism was a linear lift needing 30+ inches of travel, full extension under 1.5 seconds, and enough stiffness to place cones without the whole robot feeling delayed.<br><br>We used continuous rigging with dyneema string and a high-RPM motor. The design work was less about writing a lift equation on a page and more about iterating the actual spool diameter, gear ratio, string path, carriage weight, and acceleration until the lift was fast without stalling. Onshape was where I worked through the packaging and travel, then the robot itself became the test: if the lift could not hit junction height repeatably under driver timing, the ratio was wrong no matter how good it sounded.<br><br><strong>Cone Manipulation</strong><br><br>The claw went through three versions. V1 was a simple pinch claw and dropped cones during fast lift moves. V2 added spring-loaded compliance but still cared too much about cone orientation. The breakthrough was V3: internal centering guides that funnel the cone into position before gripping. The claw needed to actively center the cone, not just grab it.<br><br><strong>Software</strong><br><br>I wrote both TeleOp and autonomous in Java using the FTC SDK. TeleOp had mecanum kinematics, lift PID control, and speed scaling modes. Autonomous used OpenCV color thresholding for signal sleeve detection, dead-wheel odometry, and IMU heading correction to fight encoder drift over the 30-second period.<br><br><strong>ZenLender</strong><br><br>I noticed teams scrambling for parts before competitions with $50+ overnight shipping on $15 parts. I built ZenLender, a basic spreadsheet system for lending parts between teams. Primitive, but the concept eventually evolved into Inventry. During one match, our lift string snapped mid-cycle because we had not inspected it for wear. Preventive maintenance matters as much as good design.<br><br><em style="opacity: 0.7; font-size: 0.9em;">Note: Team Zenith #20424 has since dissolved.</em>`,
         tags: ['Onshape', 'Java', 'FTC SDK', 'OpenCV', 'Dead-Wheel Odometry', 'PID Control', 'String Rigging'],
         links: [{ label: 'Team Website', url: 'https://zenithftc.wixsite.com/zenithftc' }],
         images: ['/assets/zenithnot-removebg-preview.png', '/assets/zenithbottt.png', '/assets/IMG_0537.png', '/assets/IMG_0691-ezgif.com-video-to-gif-converter.mp4', '/assets/zensim.png', '/assets/zensim22.png']
@@ -2112,7 +2617,7 @@
         active: false,
         featured: false,
         excerpt: 'Low-cost probe alternative to save $118M in city spending.',
-        description: `<strong>The Problem</strong><br><br>Palo Alto projected $118 million over the next decade on construction acclimation probes -- devices that track temperature and humidity during concrete curing. These commercial units cost $500-2,000 each, and regulations require multiple per site. That seemed absurd for what is essentially temperature and humidity logging. Concrete cures through an exothermic hydration reaction, and the maturity method models strength gain:<br><br>$$M(t) = \\sum (T_a - T_0) \\cdot \\Delta t$$<br>where $T_a$ is average concrete temperature, T₀ is the datum temperature (-10°C), and Δt is the time interval. Building codes require continuous documentation that curing conditions stayed within range.<br><br><strong>The Prototype</strong><br><br>I built a $47 probe: Arduino Nano, DHT22 (±0.5°C temp, ±2-5% humidity), DS18B20 for redundancy, MicroSD logging every 5 minutes, RTC for accurate timestamps, and a 3.7V LiPo battery. PETG enclosure with two 30mm fans for airflow. Tested alongside a calibrated Humboldt H-4210 ($1,200 commercial unit) for 14 days: temperature deviation ±0.8°C, humidity ±3.2%, 4,028 of 4,032 readings captured (99.7% reliability). Well within building code thresholds.<br><br><code>Arduino Nano clone............$8<br>DHT22 sensor...................$6<br>DS18B20 sensor.................$4<br>MicroSD module.................$5<br>RTC module.....................$3<br>LiPo battery...................$12<br>3D printed enclosure...........$5<br>Fans and misc wiring...........$4<br>---------------------------------<br>Total: $47</code><br><br><strong>Dashboard and Presentation</strong><br><br>I built a client-side web dashboard (vanilla JS + Chart.js) for uploading SD card CSVs, graphing conditions over time, flagging out-of-range periods, and generating PDF reports for inspectors. In April 2023, I presented to City of Palo Alto construction officials. They were interested in the cost savings but raised valid concerns about calibration certification, liability, and durability. One official mentioned they would consider a pilot if the probe could be formally certified.<br><br>This was a proof of concept -- no wireless transmission, no weatherproofing, 10-day battery life. But an 85-96% cost reduction over commercial alternatives suggests the approach has legs.`,
+        description: `<strong>The Problem</strong><br><br>Palo Alto projected $118 million over the next decade on construction acclimation probes -- devices that track temperature and humidity during concrete curing. These commercial units cost $500-2,000 each, and regulations require multiple per site. That seemed absurd for what is essentially temperature and humidity logging. Concrete curing still needs continuous documentation, though, because temperature history affects strength gain and inspectors need records instead of guesses.<br><br><strong>The Prototype</strong><br><br>I built a $47 probe: Arduino Nano, DHT22 (±0.5°C temp, ±2-5% humidity), DS18B20 for redundancy, MicroSD logging every 5 minutes, RTC for accurate timestamps, and a 3.7V LiPo battery. The PETG enclosure used two 30 mm fans for airflow so the sensor was not just reading a stagnant pocket inside a plastic box. I tested it alongside a calibrated Humboldt H-4210 ($1,200 commercial unit) for 14 days: temperature deviation ±0.8°C, humidity ±3.2%, 4,028 of 4,032 readings captured (99.7% reliability).<br><br><code>Arduino Nano clone............$8<br>DHT22 sensor...................$6<br>DS18B20 sensor.................$4<br>MicroSD module.................$5<br>RTC module.....................$3<br>LiPo battery...................$12<br>3D printed enclosure...........$5<br>Fans and misc wiring...........$4<br>---------------------------------<br>Total: $47</code><br><br><strong>Dashboard and Presentation</strong><br><br>I built a client-side web dashboard with vanilla JS and Chart.js for uploading SD card CSVs, graphing curing conditions over time, flagging out-of-range periods, and generating PDF reports for inspectors. In April 2023, I presented to City of Palo Alto construction officials. They were interested in the cost savings but raised valid concerns about calibration certification, liability, and durability. One official mentioned they would consider a pilot if the probe could be formally certified.<br><br>This was a proof of concept -- no wireless transmission, no weatherproofing, 10-day battery life. But an 85-96% cost reduction over commercial alternatives suggests the approach has legs.`,
         tags: ['Arduino Nano', 'DHT22', 'DS18B20', 'RTC Logging', 'MicroSD Data Logging', 'Chart.js', 'PETG Enclosure Design'],
         links: [],
         images: ['/assets/IMG_0297.png', '/assets/IMG_0313.png']
@@ -2194,7 +2699,7 @@
         active: false,
         featured: false,
         excerpt: 'Low-cost flood detection for Jakarta, Indonesia.',
-        description: `<strong>The Context</strong><br><br>Jakarta sinks up to 25 cm per year from groundwater extraction. Combined with rising sea levels and monsoon rains, flooding kills dozens and displaces hundreds of thousands. Existing warning systems are expensive and concentrated in wealthy areas. Informal settlements along riverbanks -- where the most vulnerable live -- often get no warning at all. I started this during COVID, wondering if low-cost IoT sensors could fill that gap.<br><br><strong>The Device</strong><br><br>An ultrasonic distance sensor mounted above water. As water rises, measured distance decreases. When it crosses a threshold, an alert fires:<br><br>$$\\text{Water level} = \\text{Sensor height} - \\text{Measured distance}$$$$\\text{Alert threshold} = \\text{Historical flood level} + \\text{Safety margin}$$<br><br>The sensor connects to an ESP32 communicating via cellular to a central server that aggregates data from multiple sensors and sends SMS alerts (chosen because it works on basic phones without internet). Powered by a 5W solar panel and lithium battery with 3+ days autonomy without sun. The prototype demonstrated centimeter-level water measurement, cellular connectivity, solar charging, and alert triggering -- tested in a bathtub in California, not actual flood conditions.<br><br><strong>Recognition and Limitations</strong><br><br>The project received a Certificate of Achievement from the American Society of Civil Engineers (ASCE). But I want to be honest: I never deployed sensors in Jakarta, I do not speak Indonesian, and single-point measurements may not represent actual flood risk. Real deployment would require local partners, maintained infrastructure, and field validation. This was my first time thinking about technology in a global context, and it taught me that a working prototype is just the beginning.`,
+        description: `<strong>The Context</strong><br><br>Jakarta sinks up to 25 cm per year from groundwater extraction. Combined with rising sea levels and monsoon rains, flooding kills dozens and displaces hundreds of thousands. Existing warning systems are expensive and concentrated in wealthy areas. Informal settlements along riverbanks -- where the most vulnerable live -- often get no warning at all. I started this during COVID, wondering if low-cost IoT sensors could fill that gap.<br><br><strong>The Device</strong><br><br>The prototype used an ultrasonic distance sensor mounted above water. As water rises, measured distance decreases, so the ESP32 firmware compares the reading against a calibrated local threshold and triggers an alert when the level gets too close to flood conditions. The cellular link sends readings to a central server, which can aggregate multiple sensors and send SMS alerts because basic phones matter more than a polished app in this context.<br><br>Power came from a 5 W solar panel and lithium battery with 3+ days of autonomy without sun. The prototype demonstrated centimeter-level water measurement, cellular connectivity, solar charging, and alert triggering -- tested in a bathtub in California, not actual flood conditions.<br><br><strong>Recognition and Limitations</strong><br><br>The project received a Certificate of Achievement from the American Society of Civil Engineers (ASCE). But I want to be honest: I never deployed sensors in Jakarta, I do not speak Indonesian, and single-point measurements may not represent actual flood risk. Real deployment would require local partners, maintained infrastructure, and field validation. This was my first time thinking about technology in a global context, and it taught me that a working prototype is just the beginning.`,
         tags: ['ESP32', 'Ultrasonic Sensing', 'Solar Charging', 'Cellular SMS', 'Water-Level Thresholding', 'LiPo Power Management'],
         links: [],
         images: []
@@ -2264,6 +2769,9 @@
       }).sort((a, b) => {
         // Active projects first, then preserve array order
         if (a.active !== b.active) return a.active ? -1 : 1;
+        if ((a.displayOrder || 999) !== (b.displayOrder || 999)) {
+          return (a.displayOrder || 999) - (b.displayOrder || 999);
+        }
         return projects.indexOf(a) - projects.indexOf(b);
       });
     }
@@ -2278,7 +2786,8 @@
       }
 
       const webpSrc = (src) => src.replace(/\.(png|jpe?g)$/i, '.webp');
-      const hasWebpVariant = (src) => /\.(png|jpe?g)$/i.test(src);
+      const webpMissing = new Set(['/assets/pulse-v1-ltspice.png']);
+      const hasWebpVariant = (src) => /\.(png|jpe?g)$/i.test(src) && !webpMissing.has(src);
       const isVideoSrc = (src) => src.endsWith('.mp4') || src.endsWith('.webm');
       const gridThumb = (src, alt) => {
         if (isVideoSrc(src)) {
@@ -2392,7 +2901,8 @@
         const hasMultiple = project.images.length > 1;
         const isVideo = (src) => src.endsWith('.mp4') || src.endsWith('.webm');
       const webpSrc = (src) => src.replace(/\.(png|jpe?g)$/i, '.webp');
-      const hasWebpVariant = (src) => /\.(png|jpe?g)$/i.test(src);
+      const galleryWebpMissing = new Set(['/assets/pulse-v1-ltspice.png']);
+      const hasWebpVariant = (src) => /\.(png|jpe?g)$/i.test(src) && !galleryWebpMissing.has(src);
       const firstMedia = project.images[0];
 
       const renderMedia = (src, id) => {
@@ -2479,9 +2989,13 @@
       }
 
       // Description (tags moved to sidebar)
-      document.getElementById('detailDescription').innerHTML = project.description;
+      const descriptionHtml = project.id === 'wolfrom-actuator'
+        ? project.description.replace('<strong>Status</strong>', `${wolfromValidationSection}<strong>Status</strong>`)
+        : project.description;
+      document.getElementById('detailDescription').innerHTML = descriptionHtml;
       document.getElementById('detailTags').innerHTML = '';
       initializeProjectPreviews();
+      initializeBoardLayerLightbox();
 
       // Render LaTeX math with KaTeX. Retry if the deferred auto-render script
       // hasn't loaded yet (happens when deep-linking straight to a project URL).
@@ -2584,6 +3098,84 @@
       });
     }
 
+    function initializeBoardLayerLightbox() {
+      const viewer = document.querySelector('.board-layer-viewer');
+      const trigger = document.querySelector('[data-board-lightbox-open]');
+      if (!viewer || !trigger) return;
+
+      const closeExisting = () => {
+        const existing = document.querySelector('.board-layer-lightbox');
+        if (existing) existing.remove();
+        document.body.style.overflow = '';
+      };
+
+      trigger.addEventListener('click', () => {
+        closeExisting();
+
+        const selected = viewer.querySelector('input[name="ns-board-layer"]:checked');
+        const clone = viewer.cloneNode(true);
+        const cloneSuffix = 'expanded-' + Date.now();
+        const controls = clone.querySelector('.board-layer-controls');
+        const expandButton = clone.querySelector('[data-board-lightbox-open]');
+        if (expandButton) expandButton.remove();
+
+        clone.querySelectorAll('input[type="radio"]').forEach((input) => {
+          const oldId = input.id;
+          const newId = oldId + '-' + cloneSuffix;
+          input.dataset.layerBase = oldId.replace('ns-layer-', '');
+          input.name = 'ns-board-layer-' + cloneSuffix;
+          input.id = newId;
+          input.checked = selected && oldId === selected.id;
+          const label = controls ? controls.querySelector(`label[for="${oldId}"]`) : null;
+          if (label) label.setAttribute('for', newId);
+        });
+
+        const syncCloneLayer = () => {
+          const activeInput = clone.querySelector(`input[name="ns-board-layer-${cloneSuffix}"]:checked`);
+          const activeLayer = activeInput ? activeInput.dataset.layerBase : 'render';
+          clone.querySelectorAll('.board-layer-stage img').forEach((img) => {
+            img.style.opacity = img.classList.contains('layer-' + activeLayer) ? '1' : '0';
+          });
+          clone.querySelectorAll('.board-layer-controls label').forEach((label) => {
+            label.classList.toggle('is-active', activeInput && label.getAttribute('for') === activeInput.id);
+          });
+        };
+
+        clone.querySelectorAll('input[type="radio"]').forEach((input) => {
+          input.addEventListener('change', syncCloneLayer);
+        });
+        syncCloneLayer();
+
+        const overlay = document.createElement('div');
+        overlay.className = 'board-layer-lightbox active';
+        overlay.innerHTML = `
+          <div class="board-layer-lightbox-panel" role="dialog" aria-modal="true" aria-label="Expanded nanosecond board layer viewer">
+            <button class="board-layer-lightbox-close" type="button" aria-label="Close expanded board viewer">&times;</button>
+          </div>
+        `;
+        overlay.querySelector('.board-layer-lightbox-panel').appendChild(clone);
+        document.body.appendChild(overlay);
+        document.body.style.overflow = 'hidden';
+
+        let escapeHandler;
+        const close = () => {
+          document.removeEventListener('keydown', escapeHandler);
+          closeExisting();
+        };
+        overlay.querySelector('.board-layer-lightbox-close').addEventListener('click', close);
+        overlay.addEventListener('click', (event) => {
+          if (event.target === overlay) close();
+        });
+
+        escapeHandler = (event) => {
+          if (event.key === 'Escape') {
+            close();
+          }
+        };
+        document.addEventListener('keydown', escapeHandler);
+      });
+    }
+
     // Open detail view
     function openDetail(projectId, pushHistory = true) {
       const index = projects.findIndex(p => p.id === projectId);
@@ -2593,8 +3185,10 @@
       const project = projects[index];
       const titleStart = isDetailOpen ? detailTitle.textContent : 'Projects';
 
-      // Update detail content
-      updateDetailView(project);
+      // Set the lightweight header first so the transition can begin immediately.
+      detailContent.dataset.projectId = project.id;
+      document.getElementById('detailCategory').textContent = project.category.toUpperCase();
+      document.getElementById('detailDate').textContent = (project.active ? '● ' : '') + project.date;
       detailTitle.textContent = titleStart;
 
       document.querySelectorAll('.project-card.active-card').forEach(card => {
@@ -2608,24 +3202,25 @@
       detailContent.classList.remove('closing');
       detailContent.classList.remove('visible');
 
-      // Give every project one committed pre-animation frame before revealing
-      // the detail content. Heavier pages can otherwise skip the same fade/slide
-      // transition that lighter project pages visibly show.
-      detailContent.offsetHeight;
+      // Commit the opacity start state, then reveal before building heavy media/body content.
+      getComputedStyle(detailContent).opacity;
       isDetailOpen = true;
-      requestAnimationFrame(() => {
+      detailContent.classList.add('visible');
+      scrambleText(detailTitle, project.title, 420);
+
+      // Gallery, rich copy, and interactive viewers are populated after the
+      // first transition frame; they enter later through the existing section delays.
+      requestAnimationFrame(() => requestAnimationFrame(() => {
         if (currentProjectIndex === index && isDetailOpen) {
-          detailContent.classList.add('visible');
-          scrambleText(detailTitle, project.title, 420);
+          updateDetailView(project);
         }
-      });
+      }));
 
       // Update URL hash
       if (pushHistory) history.pushState(null, '', '#' + projectId);
 
       // Scroll to top
       detailContent.scrollTop = 0;
-      window.scrollTo(0, 0);
     }
 
     // Close detail view

@@ -9,10 +9,6 @@
       "destination": "/resume.html"
     },
     {
-      "source": "/connect",
-      "destination": "/connect.html"
-    },
-    {
       "source": "/footage",
       "destination": "/footage.html"
     },

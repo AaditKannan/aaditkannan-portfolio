@@ -1,0 +1,47 @@
+html::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  background: var(--bg, #000);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+html.site-leaving::after {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 70ms ease-out;
+}
+
+@keyframes site-cover-out {
+  from {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+html.site-entering::after {
+  animation: site-cover-out 120ms ease-out both;
+}
+
+html.site-leaving .nav-bar,
+html.site-entering .nav-bar {
+  z-index: 10001;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html.site-leaving::after,
+  html.site-entering::after {
+    opacity: 0;
+    visibility: hidden;
+    animation: none;
+    transition: none;
+  }
+}
