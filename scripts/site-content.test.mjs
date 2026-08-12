@@ -135,7 +135,7 @@ for (const page of ['resume.html', 'projects.html', 'footage.html']) {
 assert.match(projects, /main\s*{[\s\S]*max-width:\s*1520px/, 'Projects index should use the wider desktop container');
 assert.match(projects, /\.projects-grid\s*{[\s\S]*grid-template-columns:\s*repeat\(3,\s*minmax\(0,\s*1fr\)\)/, 'Projects grid columns should expand inside the wider container');
 assert.match(projects, /\.detail-inner\s*{[\s\S]*max-width:\s*1520px/, 'Project detail view should use the wider desktop container');
-assert.match(projects, /title: 'Wolfrom Compound Actuator'/, 'Wolfrom project title should omit Planetary');
+assert.match(projects, /title: 'Wolfrom Humanoid Joint Actuator'/, 'Wolfrom project title should describe its humanoid robotics application');
 assert.doesNotMatch(projects, /title: 'Wolfrom Compound Planetary Actuator'/, 'Wolfrom project should not use the old title');
 
 const pulseGenerator = projects.match(/id: 'ns-us-pulse-generator'([\s\S]*?)id: 'field-station-toolbox'/);
