@@ -146,6 +146,14 @@ for (const image of [
 ]) {
   assert.match(pulseGeneratorSource, new RegExp(image.replace('.', '\\.')), `Pulse-generator detail should use ${image}`);
 }
+const pulseGallery = pulseGeneratorSource.match(/images: \[([^\]]*)\]/);
+assert.ok(pulseGallery, 'Pulse-generator project should include a gallery');
+const pulseGalleryImages = [...pulseGallery[1].matchAll(/'([^']+)'/g)].map((match) => match[1]);
+assert.deepEqual(
+  pulseGalleryImages.slice(0, 2),
+  ['/assets/pulse-v1-board.jpeg', '/assets/pulse-v1-enclosure.jpeg'],
+  'Pulse-generator gallery should use the populated-board photo as its cover and the enclosure photo second'
+);
 assert.doesNotMatch(
   pulseGeneratorSource,
   /<strong>(Experiment Target|Measurement Problem|Design Loop|Bring-Up Plan|Tools In The Workflow)<\/strong>/,
