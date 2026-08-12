@@ -41,14 +41,34 @@ assert.match(
 
 const resume = readPage('resume.html');
 const projects = readPage('projects.html');
+const footage = readPage('footage.html');
 const deployableSource = [
   home,
   resume,
   projects,
-  readPage('footage.html'),
+  footage,
   readPage('vite.config.js'),
   readPage('vercel.json'),
 ].join('\n');
+
+for (const [page, html] of Object.entries({ 'index.html': home, 'resume.html': resume, 'projects.html': projects, 'footage.html': footage })) {
+  assert.match(html, /href="\/image-lightbox\.css"/, `${page} should load the shared image lightbox styles`);
+  assert.match(html, /src="\/image-lightbox\.js"/, `${page} should load the shared image lightbox behavior`);
+}
+assert.ok(existsSync(join(root, 'image-lightbox.css')), 'Shared image lightbox stylesheet should exist');
+assert.ok(existsSync(join(root, 'image-lightbox.js')), 'Shared image lightbox script should exist');
+const imageLightbox = readPage('image-lightbox.js');
+assert.match(imageLightbox, /role.*dialog|setAttribute\(['"]role['"],\s*['"]dialog['"]\)/s, 'Image lightbox should expose dialog semantics');
+assert.match(imageLightbox, /aria-modal/, 'Image lightbox should be modal for assistive technology');
+assert.match(imageLightbox, /Escape/, 'Image lightbox should close with Escape');
+assert.match(imageLightbox, /ArrowLeft/, 'Image lightbox should support previous-image keyboard navigation');
+assert.match(imageLightbox, /ArrowRight/, 'Image lightbox should support next-image keyboard navigation');
+assert.match(imageLightbox, /MutationObserver/, 'Image lightbox should discover dynamically rendered project images');
+assert.match(imageLightbox, /data-lightbox-ignore/, 'Image lightbox should honor explicit image exclusions');
+assert.match(home, /class="bg-poster"[^>]*data-lightbox-ignore/, 'Home background poster should not open in the lightbox');
+assert.match(resume, /id="aboutPreviewImg"[^>]*data-lightbox-ignore/, 'Resume hover preview should not open in the lightbox');
+assert.match(projects, /id="projectHoverPreviewImg"[^>]*data-lightbox-ignore/, 'Project hover preview should not open in the lightbox');
+assert.match(projects, /class="gallery-thumb[^>]*data-lightbox-ignore/, 'Project gallery thumbnails should not open duplicate lightboxes');
 const numberedRobotMentions = deployableSource.match(/\b\d+\+?(?:\s+[A-Za-z-]+){0,3}\s+robots\b/g) ?? [];
 assert.deepEqual(numberedRobotMentions, ['5 robots'], 'The only numbered robot count across the deployable site should be 5 robots');
 
@@ -124,25 +144,33 @@ assert.deepEqual(
   'Pulse-generator Skills should contain recruiter-readable software and transferable competencies'
 );
 const pulseDisclosures = pulseGeneratorSource.match(/<details class="project-disclosure">/g) ?? [];
-assert.equal(pulseDisclosures.length, 3, 'Pulse-generator detail should use exactly three optional disclosures');
-assert.match(pulseGeneratorSource, /<summary>Architecture Validation — V1 Board<\/summary>/, 'Pulse-generator detail should include the V1 architecture disclosure');
-assert.match(pulseGeneratorSource, /<summary>Testing \+ Key Design Lesson<\/summary>/, 'Pulse-generator detail should include the testing lesson disclosure');
-assert.match(pulseGeneratorSource, /<summary>Revision 2<\/summary>/, 'Pulse-generator detail should include the Revision 2 disclosure');
+assert.equal(pulseDisclosures.length, 1, 'Pulse-generator detail should reserve one disclosure for the earlier prototype');
+assert.match(pulseGeneratorSource, /<summary>Earlier Microsecond Prototype<\/summary>/, 'Pulse-generator detail should include the earlier prototype disclosure');
+assert.doesNotMatch(pulseGeneratorSource, /<summary>(Architecture Validation — V1 Board|Testing \+ Key Design Lesson|Revision 2)<\/summary>/, 'Current technical work should remain visible without opening a disclosure');
+for (const heading of ['Overview', 'Experiment Target', 'Measurement Problem', 'V1 Architecture', 'Design Loop', 'Testing + Key Design Lesson', 'Revision 2', 'Current Stage']) {
+  assert.match(pulseGeneratorSource, new RegExp(`<strong>${heading.replace('+', '\\+')}<\\/strong>`), `Pulse-generator detail should visibly include ${heading}`);
+}
 assert.match(pulseGeneratorSource, /<strong>Current Stage<\/strong>/, 'Pulse-generator detail should end with a visible Current Stage section');
-assert.match(
-  pulseGeneratorSource,
-  /<figure class="project-feature-figure">[\s\S]*pulse-v1-enclosure\.jpeg[\s\S]*<figcaption>V1 pulse-generator hardware during bench characterization\.<\/figcaption>[\s\S]*<\/figure>/,
-  'Pulse-generator lead image and caption should stay together in the two-column detail layout'
-);
+assert.match(pulseGeneratorSource, /class="board-layer-viewer"/, 'Pulse-generator detail should restore the interactive board-layer viewer');
+for (const boardLayer of ['render', 'layout', 'top', 'copper', 'in1', 'in2', 'silk', 'bottom']) {
+  assert.match(pulseGeneratorSource, new RegExp(`id="ns-layer-${boardLayer}"`), `Board viewer should include the ${boardLayer} state`);
+}
 for (const keyNumber of [/30 V/, /100 ns/, /1 ns-class/]) {
   assert.match(pulseGeneratorSource, keyNumber, `Pulse-generator detail should retain ${keyNumber.source}`);
 }
 for (const image of [
+  'ns-pulse-schematic-thumbnail.png',
+  'ns-pulse-board-layout.png',
+  'ns-pulse-board-angle.png',
   'pulse-v1-enclosure.jpeg',
   'pulse-v1-board.jpeg',
   'pulse-v1-bench.jpeg',
   'pulse-r2-cad-front.png',
   'pulse-r2-cad-rear.png',
+  'pulse-v1-us-schematic.png',
+  'pulse-v1-us-layout.png',
+  'pulse-v1-us-render.png',
+  'pulse-v1-ltspice.png',
 ]) {
   assert.match(pulseGeneratorSource, new RegExp(image.replace('.', '\\.')), `Pulse-generator detail should use ${image}`);
 }
@@ -151,11 +179,6 @@ assert.ok(pulseGallery, 'Pulse-generator project should include a gallery');
 const pulseGalleryImages = [...pulseGallery[1].matchAll(/'([^']+)'/g)].map((match) => match[1]);
 assert.deepEqual(
   pulseGalleryImages.slice(0, 2),
-  ['/assets/pulse-v1-board.jpeg', '/assets/pulse-v1-enclosure.jpeg'],
-  'Pulse-generator gallery should use the populated-board photo as its cover and the enclosure photo second'
-);
-assert.doesNotMatch(
-  pulseGeneratorSource,
-  /<strong>(Experiment Target|Measurement Problem|Design Loop|Bring-Up Plan|Tools In The Workflow)<\/strong>/,
-  'Pulse-generator detail should not retain report-style section headings'
+  ['/assets/pulse-v1-cover.jpg', '/assets/pulse-v1-board.jpeg'],
+  'Pulse-generator gallery should use the new landscape photo as its cover and the populated-board photo second'
 );

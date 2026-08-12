@@ -760,6 +760,8 @@
       .skills-grid { grid-template-columns: 1fr; gap: 24px; }
     }
   </style>
+  <link rel="stylesheet" href="/image-lightbox.css">
+  <script type="module" src="/image-lightbox.js"></script>
 </head>
 <body>
   <!-- Cursor Glow -->
@@ -834,7 +836,7 @@
       </section>
 
       <!-- Hover Preview -->
-      <div class="about-preview" id="aboutPreview"><img id="aboutPreviewImg" src="" alt=""></div>
+      <div class="about-preview" id="aboutPreview"><img id="aboutPreviewImg" src="" alt="" data-lightbox-ignore></div>
 
       <!-- Technical Experience -->
       <section id="technical-experience">
