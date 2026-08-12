@@ -543,19 +543,71 @@
       background: #171717;
     }
 
-    .detail-content[data-project-id="ns-us-pulse-generator"] .gallery-main img,
-    .detail-content[data-project-id="ns-us-pulse-generator"] .gallery-main picture,
-    .detail-content[data-project-id="ns-us-pulse-generator"] #galleryMediaContainer img,
-    .detail-content[data-project-id="ns-us-pulse-generator"] #galleryMediaContainer picture {
+    .gallery-media-frame {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
+    }
+
+    .detail-content[data-project-id="ns-us-pulse-generator"] .gallery-media-photo,
+    .detail-content[data-project-id="ns-us-pulse-generator"] .gallery-media-photo picture,
+    .detail-content[data-project-id="ns-us-pulse-generator"] .gallery-media-photo img {
       background: #171717;
     }
 
-    [data-theme="light"] .detail-content[data-project-id="ns-us-pulse-generator"] .gallery-main,
-    [data-theme="light"] .detail-content[data-project-id="ns-us-pulse-generator"] .gallery-main img,
-    [data-theme="light"] .detail-content[data-project-id="ns-us-pulse-generator"] .gallery-main picture,
-    [data-theme="light"] .detail-content[data-project-id="ns-us-pulse-generator"] #galleryMediaContainer img,
-    [data-theme="light"] .detail-content[data-project-id="ns-us-pulse-generator"] #galleryMediaContainer picture {
-      background: #e9e7e2;
+    .detail-content[data-project-id="ns-us-pulse-generator"] #galleryMediaContainer .gallery-media-photo img {
+      object-fit: cover;
+      object-position: center center;
+    }
+
+    .detail-content[data-project-id="ns-us-pulse-generator"] .gallery-media-technical,
+    .detail-content[data-project-id="ns-us-pulse-generator"] .gallery-media-technical picture,
+    .detail-content[data-project-id="ns-us-pulse-generator"] .gallery-media-technical img {
+      background: #fff;
+    }
+
+    .detail-content[data-project-id="ns-us-pulse-generator"] #galleryMediaContainer .gallery-media-technical img {
+      object-fit: contain;
+      object-position: center center;
+    }
+
+    .detail-content[data-project-id="ns-us-pulse-generator"] #galleryMediaContainer .gallery-canvas-light,
+    .detail-content[data-project-id="ns-us-pulse-generator"] #galleryMediaContainer .gallery-canvas-light picture,
+    .detail-content[data-project-id="ns-us-pulse-generator"] #galleryMediaContainer .gallery-canvas-light img {
+      background: #f5f4ef;
+    }
+
+    .detail-content[data-project-id="ns-us-pulse-generator"] #galleryMediaContainer .gallery-canvas-dark,
+    .detail-content[data-project-id="ns-us-pulse-generator"] #galleryMediaContainer .gallery-canvas-dark picture,
+    .detail-content[data-project-id="ns-us-pulse-generator"] #galleryMediaContainer .gallery-canvas-dark img {
+      background: #001023;
+    }
+
+    .detail-content[data-project-id="ns-us-pulse-generator"] #galleryMediaContainer .gallery-canvas-render,
+    .detail-content[data-project-id="ns-us-pulse-generator"] #galleryMediaContainer .gallery-canvas-render picture,
+    .detail-content[data-project-id="ns-us-pulse-generator"] #galleryMediaContainer .gallery-canvas-render img {
+      background: #b6b6d1;
+    }
+
+    .detail-content[data-project-id="ns-us-pulse-generator"] .gallery-thumb.gallery-media-technical img {
+      object-fit: contain;
+    }
+
+    .detail-content[data-project-id="ns-us-pulse-generator"] .gallery-thumb.gallery-canvas-light,
+    .detail-content[data-project-id="ns-us-pulse-generator"] .gallery-thumb.gallery-canvas-light img {
+      background: #f5f4ef;
+    }
+
+    .detail-content[data-project-id="ns-us-pulse-generator"] .gallery-thumb.gallery-canvas-dark,
+    .detail-content[data-project-id="ns-us-pulse-generator"] .gallery-thumb.gallery-canvas-dark img {
+      background: #001023;
+    }
+
+    .detail-content[data-project-id="ns-us-pulse-generator"] .gallery-thumb.gallery-canvas-render,
+    .detail-content[data-project-id="ns-us-pulse-generator"] .gallery-thumb.gallery-canvas-render img {
+      background: #b6b6d1;
     }
 
     .project-card[data-id="pldtracker"] .project-image img {
@@ -1110,8 +1162,20 @@
     }
 
     .detail-content[data-project-id="ns-us-pulse-generator"] .detail-description {
-      columns: 1;
-      max-width: 1280px;
+      columns: 2;
+      column-gap: 48px;
+      max-width: none;
+    }
+
+    .detail-content[data-project-id="ns-us-pulse-generator"] .pulse-full-span {
+      column-span: all;
+      width: 100%;
+      break-inside: avoid;
+      -webkit-column-break-inside: avoid;
+    }
+
+    .detail-content[data-project-id="ns-us-pulse-generator"] .project-disclosure {
+      column-span: all;
     }
 
     .detail-content[data-project-id="ns-us-pulse-generator"] .board-layer-stage {
@@ -1845,6 +1909,10 @@
       .detail-description {
         columns: 1;
       }
+
+      .detail-content[data-project-id="ns-us-pulse-generator"] .detail-description {
+        columns: 1;
+      }
     }
 
     @media (max-width: 600px) {
@@ -2452,7 +2520,7 @@ const wolfromDescription = `
           <strong>V1 Architecture</strong><br><br>
           V1 includes separate fast and microsecond signal paths, RP2040-based digital triggering, relay-selected routing, local driver power, a GaN pulldown stage, and dedicated connections for Keithley HI/LO, DUT, external trigger, and oscilloscope synchronization. The Keithley establishes device bias; the fast stage creates the pulse transition; and the scope observes the response at the experiment interfaces.<br><br>
           The board was deliberately flexible enough to bring up each subsystem independently. Power, controller logic, trigger conditioning, gate drive, switching, bias routing, and sync could be checked in stages rather than debugging the entire signal chain at once.<br><br>
-          <div class="project-inline-grid">
+          <div class="project-inline-grid pulse-full-span">
             <figure>
               <picture><source srcset="/assets/ns-pulse-schematic-thumbnail.webp" type="image/webp"><img src="/assets/ns-pulse-schematic-thumbnail.png" alt="KiCad schematic for the V1 nanosecond and microsecond pulse-generator board" loading="lazy" decoding="async"></picture>
               <figcaption>V1 schematic covering control, relay routing, gate drive, GaN switching, bias, and measurement interfaces.</figcaption>
@@ -2466,7 +2534,7 @@ const wolfromDescription = `
           <strong>Design Loop</strong><br><br>
           I used KiCad for schematic capture and the four-layer layout, LTspice to check switching and timing assumptions, and staged oscilloscope bring-up to compare simulation assumptions against assembled hardware. Python and LabVIEW support trigger control, capture organization, and repeatable bench measurements.<br><br>
           Layout work focused on keeping the switching loop compact, giving the fast path a direct return plane, separating noisy control and relay routing from the measurement path, and placing the grounded coaxial interfaces where cables could connect without long flying leads. The viewer below exposes the actual board render, combined layout, copper planes, silkscreen, and bottom routing rather than reducing the design to one screenshot.<br><br>
-          <div class="board-layer-viewer" data-lightbox-ignore>
+          <div class="board-layer-viewer pulse-full-span" data-lightbox-ignore>
             <input type="radio" id="ns-layer-render" name="ns-board-layer" checked>
             <input type="radio" id="ns-layer-layout" name="ns-board-layer">
             <input type="radio" id="ns-layer-top" name="ns-board-layer">
@@ -2499,7 +2567,7 @@ const wolfromDescription = `
             <span class="board-layer-caption">Eight-state viewer for the V1 four-layer board: 3D assembly, combined layout, top view, F.Cu, both inner copper layers, silkscreen, and bottom routing. Use expand for the dedicated full-screen viewer.</span>
           </div>
 
-          <div class="project-inline-grid">
+          <div class="project-inline-grid pulse-full-span">
             <figure>
               <picture><source srcset="/assets/ns-pulse-board-angle.webp" type="image/webp"><img src="/assets/ns-pulse-board-angle.png" alt="Angled 3D render of the pulse-generator PCB and enclosure" loading="lazy" decoding="async"></picture>
               <figcaption>Mechanical and connector-access review before assembly.</figcaption>
@@ -2512,7 +2580,7 @@ const wolfromDescription = `
 
           <strong>Physical Implementation</strong><br><br>
           I assembled and reworked the PCB, integrated it into a custom enclosure, and wired the power, controls, and external connectors for bench use. The clear lid keeps the board inspectable during bring-up, while the BNC interfaces provide grounded, repeatable connections to the source-measure unit, DUT fixture, trigger, and oscilloscope.<br><br>
-          <figure class="project-feature-figure">
+          <figure class="project-feature-figure pulse-full-span">
             <picture><source srcset="/assets/pulse-v1-enclosure.webp" type="image/webp"><img src="/assets/pulse-v1-enclosure.jpeg" alt="Assembled V1 pulse-generator hardware inside its clear-topped enclosure" width="2706" height="3096" loading="lazy" decoding="async" style="max-width:min(100%,760px); margin:0 auto; border-radius:4px;"></picture>
             <figcaption>Assembled V1 instrument before full bench characterization.</figcaption>
           </figure>
@@ -2521,7 +2589,7 @@ const wolfromDescription = `
           I characterized V1 with a Keithley source-measure unit, known dummy loads, and a Tektronix oscilloscope measuring both DUT terminals. The board demonstrated programmable operation through <b>30 V</b>, from the microsecond range into the hundreds of nanoseconds. The shortest repeatable controller commands reached approximately the <b>100 ns scale</b> in the current setup.<br><br>
           The important limitation appeared as pulses became shorter. The GaN stage actively creates the first transition, but after it turns off the output node returns through the DUT and surrounding bias network instead of being actively driven back. The delivered pulse width and return edge therefore depend on device and fixture capacitance.<br><br>
           That result was more useful than simply confirming that the switch worked: it identified a system-level limit that layout optimization alone would not fix. Revision 2 now starts from active control of both pulse edges.
-          <figure class="project-feature-figure">
+          <figure class="project-feature-figure pulse-full-span">
             <picture><source srcset="/assets/pulse-v1-bench.webp" type="image/webp"><img src="/assets/pulse-v1-bench.jpeg" alt="Pulse generator connected to Keithley and Tektronix instruments during bench characterization" width="4284" height="5712" loading="lazy" decoding="async" style="max-width:min(100%,760px); margin:0 auto; border-radius:4px;"></picture>
             <figcaption>Bench characterization with source-measure biasing and oscilloscope capture at both DUT terminals.</figcaption>
           </figure>
@@ -2529,11 +2597,19 @@ const wolfromDescription = `
           <strong>Revision 2</strong><br><br>
           Revision 2 is a clean-sheet high-speed pulser rather than a cosmetic update to V1. The new architecture removes relay-selected nanosecond/microsecond paths and mechanical pulse-width controls in favor of one optimized signal path, fully digital experiment control, and dedicated Keithley HI/LO and DUT interfaces.<br><br>
           Its largest electrical change is active control of <b>both output transitions</b>, reducing the influence of DUT capacitance on delivered pulse width. The switching path will remain on the top layer directly above a continuous ground plane to minimize return-loop area and parasitic inductance.<br><br>
-          The design goal is <b>30 V</b> operation with a <b>1 ns-class minimum pulse target</b>, single-shot and repetitive control, and a cleaner automated-experiment interface. That 1 ns-class figure is a Revision 2 target, <b>not a measured result from V1</b>; dedicated high-speed timing circuitry will be required rather than relying on the RP2040 alone.
-          <div class="project-inline-grid">
-            <figure><picture><source srcset="/assets/pulse-r2-cad-front.webp" type="image/webp"><img src="/assets/pulse-r2-cad-front.png" alt="Revision 2 enclosure CAD showing front controls and the populated pulse-generator PCB" width="1251" height="916" loading="lazy" decoding="async"></picture><figcaption>Revision 2 package from the control side.</figcaption></figure>
-            <figure><picture><source srcset="/assets/pulse-r2-cad-rear.webp" type="image/webp"><img src="/assets/pulse-r2-cad-rear.png" alt="Revision 2 enclosure CAD showing five coaxial interfaces and internal board layout" width="1276" height="865" loading="lazy" decoding="async"></picture><figcaption>Dedicated coaxial interfaces and a cleaner internal signal path.</figcaption></figure>
-          </div>
+          The design goal is <b>30 V</b> operation with a <b>1 ns-class minimum pulse target</b>, single-shot and repetitive control, and a cleaner automated-experiment interface. That 1 ns-class figure is a Revision 2 target, <b>not a measured result from V1</b>; dedicated high-speed timing circuitry will be required rather than relying on the RP2040 alone.<br><br>
+
+          <details class="project-disclosure">
+            <summary>Revision 2 Architecture and Packaging</summary>
+            <div class="project-disclosure-content">
+              Revision 2 removes the relay-selected dual-path architecture and mechanical timing controls so the signal path can be shorter, easier to model, and more repeatable. Dedicated Keithley HI/LO, DUT, trigger, and sync interfaces keep the bench wiring explicit, while the fast switching section stays on the top layer over a continuous ground plane.<br><br>
+              The enclosure package is being redesigned around connector access and a direct internal path instead of fitting the new electronics into the V1 control layout. These CAD views show the intended control-side access and the dedicated coaxial measurement interfaces.
+              <div class="project-inline-grid pulse-full-span">
+                <figure><picture><source srcset="/assets/pulse-r2-cad-front.webp" type="image/webp"><img src="/assets/pulse-r2-cad-front.png" alt="Revision 2 enclosure CAD showing front controls and the populated pulse-generator PCB" width="1251" height="916" loading="lazy" decoding="async"></picture><figcaption>Revision 2 package from the control side.</figcaption></figure>
+                <figure><picture><source srcset="/assets/pulse-r2-cad-rear.webp" type="image/webp"><img src="/assets/pulse-r2-cad-rear.png" alt="Revision 2 enclosure CAD showing five coaxial interfaces and internal board layout" width="1276" height="865" loading="lazy" decoding="async"></picture><figcaption>Dedicated coaxial interfaces and a cleaner internal signal path.</figcaption></figure>
+              </div>
+            </div>
+          </details>
 
           <details class="project-disclosure">
             <summary>Earlier Microsecond Prototype</summary>
@@ -2557,11 +2633,11 @@ const wolfromDescription = `
         links: [],
         images: [
           '/assets/pulse-v1-cover.jpg',
-          '/assets/pulse-v1-board.jpeg',
-          '/assets/pulse-v1-enclosure.jpeg',
+          '/assets/ns-pulse-schematic-thumbnail.png',
+          '/assets/ns-pulse-board-layout.png',
+          '/assets/ns-pulse-board-angle.png',
           '/assets/pulse-v1-bench.jpeg',
-          '/assets/pulse-r2-cad-front.png',
-          '/assets/pulse-r2-cad-rear.png'
+          '/assets/pulse-r2-cad-front.png'
         ]
       },
       {
@@ -3016,19 +3092,31 @@ const wolfromDescription = `
       const webpSrc = (src) => src.replace(/\.(png|jpe?g)$/i, '.webp');
       const galleryWebpMissing = new Set(['/assets/pulse-v1-ltspice.png']);
       const hasWebpVariant = (src) => /\.(png|jpe?g)$/i.test(src) && !galleryWebpMissing.has(src);
+      const pulseGalleryPhotoAssets = new Set(['/assets/pulse-v1-cover.jpg', '/assets/pulse-v1-bench.jpeg']);
+      const galleryCanvasClass = (src) => {
+        if (project.id !== 'ns-us-pulse-generator') return '';
+        if (src === '/assets/ns-pulse-board-layout.png') return 'gallery-canvas-dark';
+        if (src === '/assets/ns-pulse-board-angle.png') return 'gallery-canvas-render';
+        if (!pulseGalleryPhotoAssets.has(src)) return 'gallery-canvas-light';
+        return '';
+      };
+      const galleryMediaClass = (src) => project.id === 'ns-us-pulse-generator'
+        ? `${pulseGalleryPhotoAssets.has(src) ? 'gallery-media-photo' : 'gallery-media-technical'} ${galleryCanvasClass(src)}`.trim()
+        : '';
       const firstMedia = project.images[0];
 
       const renderMedia = (src, id) => {
         if (isVideo(src)) {
           return `<video src="${src}" id="${id}" autoplay loop muted playsinline style="width:100%;height:100%;object-fit:contain;"></video>`;
         }
+        const mediaClass = galleryMediaClass(src);
         if (!hasWebpVariant(src)) {
-          return `<img src="${src}" alt="${project.title}" id="${id}" loading="lazy" decoding="async">`;
+          return `<div class="gallery-media-frame ${mediaClass}"><img src="${src}" alt="${project.title}" id="${id}" loading="lazy" decoding="async"></div>`;
         }
-        return `<picture>
+        return `<div class="gallery-media-frame ${mediaClass}"><picture>
           <source srcset="${webpSrc(src)}" type="image/webp">
           <img src="${src}" alt="${project.title}" id="${id}" loading="lazy" decoding="async">
-          </picture>`;
+          </picture></div>`;
         };
 
         const renderThumb = (src, i) => {
@@ -3040,7 +3128,7 @@ const wolfromDescription = `
               </div>
             </div>`;
           }
-          return `<div class="gallery-thumb${i === 0 ? ' active' : ''}" data-index="${i}" data-lightbox-ignore>
+          return `<div class="gallery-thumb${i === 0 ? ' active' : ''} ${galleryMediaClass(src)}" data-index="${i}" data-lightbox-ignore>
             ${hasWebpVariant(src)
               ? `<picture><source srcset="${webpSrc(src)}" type="image/webp"><img src="${src}" alt="Thumbnail ${i + 1}" loading="lazy" decoding="async"></picture>`
               : `<img src="${src}" alt="Thumbnail ${i + 1}" loading="lazy" decoding="async">`}

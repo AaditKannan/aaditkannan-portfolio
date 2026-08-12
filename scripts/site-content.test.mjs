@@ -63,6 +63,8 @@ assert.match(imageLightbox, /aria-modal/, 'Image lightbox should be modal for as
 assert.match(imageLightbox, /Escape/, 'Image lightbox should close with Escape');
 assert.match(imageLightbox, /ArrowLeft/, 'Image lightbox should support previous-image keyboard navigation');
 assert.match(imageLightbox, /ArrowRight/, 'Image lightbox should support next-image keyboard navigation');
+assert.match(imageLightbox, /event\.stopImmediatePropagation\(\)/, 'Image lightbox keyboard handling should not leak Escape into the project-detail view');
+assert.match(imageLightbox, /document\.addEventListener\('keydown',[\s\S]*?\},\s*true\);/, 'Image lightbox keyboard handling should run in the capture phase');
 assert.match(imageLightbox, /MutationObserver/, 'Image lightbox should discover dynamically rendered project images');
 assert.match(imageLightbox, /data-lightbox-ignore/, 'Image lightbox should honor explicit image exclusions');
 assert.match(home, /class="bg-poster"[^>]*data-lightbox-ignore/, 'Home background poster should not open in the lightbox');
@@ -144,14 +146,15 @@ assert.deepEqual(
   'Pulse-generator Skills should contain recruiter-readable software and transferable competencies'
 );
 const pulseDisclosures = pulseGeneratorSource.match(/<details class="project-disclosure">/g) ?? [];
-assert.equal(pulseDisclosures.length, 1, 'Pulse-generator detail should reserve one disclosure for the earlier prototype');
+assert.equal(pulseDisclosures.length, 2, 'Pulse-generator detail should use two relevant secondary-detail disclosures');
+assert.match(pulseGeneratorSource, /<summary>Revision 2 Architecture and Packaging<\/summary>/, 'Pulse-generator detail should include the Revision 2 packaging disclosure');
 assert.match(pulseGeneratorSource, /<summary>Earlier Microsecond Prototype<\/summary>/, 'Pulse-generator detail should include the earlier prototype disclosure');
-assert.doesNotMatch(pulseGeneratorSource, /<summary>(Architecture Validation — V1 Board|Testing \+ Key Design Lesson|Revision 2)<\/summary>/, 'Current technical work should remain visible without opening a disclosure');
+assert.doesNotMatch(pulseGeneratorSource, /<summary>(Architecture Validation — V1 Board|Testing \+ Key Design Lesson|Revision 2)<\/summary>/, 'Core V1 technical work should remain visible without opening a disclosure');
 for (const heading of ['Overview', 'Experiment Target', 'Measurement Problem', 'V1 Architecture', 'Design Loop', 'Testing + Key Design Lesson', 'Revision 2', 'Current Stage']) {
   assert.match(pulseGeneratorSource, new RegExp(`<strong>${heading.replace('+', '\\+')}<\\/strong>`), `Pulse-generator detail should visibly include ${heading}`);
 }
 assert.match(pulseGeneratorSource, /<strong>Current Stage<\/strong>/, 'Pulse-generator detail should end with a visible Current Stage section');
-assert.match(pulseGeneratorSource, /class="board-layer-viewer"/, 'Pulse-generator detail should restore the interactive board-layer viewer');
+assert.match(pulseGeneratorSource, /class="board-layer-viewer pulse-full-span"/, 'Pulse-generator detail should restore the interactive board-layer viewer');
 for (const boardLayer of ['render', 'layout', 'top', 'copper', 'in1', 'in2', 'silk', 'bottom']) {
   assert.match(pulseGeneratorSource, new RegExp(`id="ns-layer-${boardLayer}"`), `Board viewer should include the ${boardLayer} state`);
 }
@@ -178,7 +181,29 @@ const pulseGallery = pulseGeneratorSource.match(/images: \[([^\]]*)\]/);
 assert.ok(pulseGallery, 'Pulse-generator project should include a gallery');
 const pulseGalleryImages = [...pulseGallery[1].matchAll(/'([^']+)'/g)].map((match) => match[1]);
 assert.deepEqual(
-  pulseGalleryImages.slice(0, 2),
-  ['/assets/pulse-v1-cover.jpg', '/assets/pulse-v1-board.jpeg'],
-  'Pulse-generator gallery should use the new landscape photo as its cover and the populated-board photo second'
+  pulseGalleryImages,
+  [
+    '/assets/pulse-v1-cover.jpg',
+    '/assets/ns-pulse-schematic-thumbnail.png',
+    '/assets/ns-pulse-board-layout.png',
+    '/assets/ns-pulse-board-angle.png',
+    '/assets/pulse-v1-bench.jpeg',
+    '/assets/pulse-r2-cad-front.png',
+  ],
+  'Pulse-generator gallery should use six distinct physical and technical views'
 );
+const pulseDescriptionRule = projects.match(/\.detail-content\[data-project-id="ns-us-pulse-generator"\] \.detail-description\s*{([^}]*)}/);
+assert.ok(pulseDescriptionRule, 'Projects should define a pulse-generator desktop description rule');
+assert.match(pulseDescriptionRule[1], /columns:\s*2/, 'Pulse-generator desktop detail should retain two text columns');
+assert.doesNotMatch(pulseDescriptionRule[1], /columns:\s*1[;\s]/, 'Pulse-generator desktop detail should not be forced into one column');
+assert.match(projects, /\.pulse-full-span\s*{[\s\S]*?column-span:\s*all/, 'Wide pulse evidence should span both text columns');
+assert.match(pulseGeneratorSource, /class="project-inline-grid pulse-full-span"/, 'Pulse-generator detail should mark technical media grids as full-span evidence');
+assert.match(pulseGeneratorSource, /class="board-layer-viewer pulse-full-span"/, 'Pulse-generator board viewer should span both columns');
+assert.match(projects, /gallery-media-photo[\s\S]*?object-fit:\s*cover/, 'Pulse photographs should fill the gallery frame without bars');
+assert.match(projects, /#galleryMediaContainer \.gallery-media-photo img\s*{[\s\S]*?object-fit:\s*cover/, 'Pulse photo fitting should outrank the generic gallery-media selector');
+assert.match(projects, /gallery-media-technical[\s\S]*?object-fit:\s*contain/, 'Pulse technical media should remain uncropped in the gallery');
+assert.match(projects, /pulseGalleryPhotoAssets/, 'Gallery renderer should classify pulse photographs separately from technical media');
+assert.match(projects, /galleryCanvasClass/, 'Gallery renderer should assign source-matched canvases to technical media');
+for (const canvasClass of ['gallery-canvas-light', 'gallery-canvas-dark', 'gallery-canvas-render']) {
+  assert.match(projects, new RegExp(`#galleryMediaContainer \\.${canvasClass}[\\s\\S]*?background:`), `Pulse gallery should style the ${canvasClass} canvas`);
+}

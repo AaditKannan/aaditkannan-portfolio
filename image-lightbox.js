@@ -172,14 +172,25 @@
     if (overlay.hidden) {
       if ((event.key === 'Enter' || event.key === ' ') && event.target instanceof HTMLImageElement && isEligible(event.target)) {
         event.preventDefault();
+        event.stopImmediatePropagation();
         open(event.target);
       }
       return;
     }
 
-    if (event.key === 'Escape') close();
-    if (event.key === 'ArrowLeft') move(-1);
-    if (event.key === 'ArrowRight') move(1);
+    event.stopImmediatePropagation();
+    if (event.key === 'Escape') {
+      event.preventDefault();
+      close();
+    }
+    if (event.key === 'ArrowLeft') {
+      event.preventDefault();
+      move(-1);
+    }
+    if (event.key === 'ArrowRight') {
+      event.preventDefault();
+      move(1);
+    }
     if (event.key === 'Tab') {
       const controls = [...overlay.querySelectorAll('button:not([hidden])')];
       const first = controls[0];
@@ -192,7 +203,7 @@
         first.focus();
       }
     }
-  });
+  }, true);
 
   closeButton.addEventListener('click', close);
   previousButton.addEventListener('click', () => move(-1));
