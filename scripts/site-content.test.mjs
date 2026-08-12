@@ -67,6 +67,7 @@ assert.match(imageLightbox, /event\.stopImmediatePropagation\(\)/, 'Image lightb
 assert.match(imageLightbox, /document\.addEventListener\('keydown',[\s\S]*?\},\s*true\);/, 'Image lightbox keyboard handling should run in the capture phase');
 assert.match(imageLightbox, /MutationObserver/, 'Image lightbox should discover dynamically rendered project images');
 assert.match(imageLightbox, /data-lightbox-ignore/, 'Image lightbox should honor explicit image exclusions');
+assert.match(imageLightbox, /IGNORE_SELECTOR[^\n]*\.project-card/, 'Project-card images should navigate to project details instead of opening the lightbox');
 assert.match(home, /class="bg-poster"[^>]*data-lightbox-ignore/, 'Home background poster should not open in the lightbox');
 assert.match(resume, /id="aboutPreviewImg"[^>]*data-lightbox-ignore/, 'Resume hover preview should not open in the lightbox');
 assert.match(projects, /id="projectHoverPreviewImg"[^>]*data-lightbox-ignore/, 'Project hover preview should not open in the lightbox');

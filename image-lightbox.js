@@ -1,7 +1,7 @@
 (() => {
   'use strict';
 
-  const IGNORE_SELECTOR = '[data-lightbox-ignore], .board-layer-viewer, .board-layer-lightbox, .gallery-thumb, .about-preview, .project-hover-preview';
+  const IGNORE_SELECTOR = '[data-lightbox-ignore], .project-card, .board-layer-viewer, .board-layer-lightbox, .gallery-thumb, .about-preview, .project-hover-preview';
   let activeItems = [];
   let activeIndex = 0;
   let previousFocus = null;
