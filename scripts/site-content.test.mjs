@@ -143,7 +143,7 @@ const pulseSkillTags = pulseGeneratorSource.match(/tags: \[([^\]]*)\]/);
 assert.ok(pulseSkillTags, 'Pulse-generator project should include Skills tags');
 assert.deepEqual(
   [...pulseSkillTags[1].matchAll(/'([^']+)'/g)].map((match) => match[1]),
-  ['KiCad', 'LTspice', 'Python', 'LabVIEW', 'PCB Design', 'PCB Layout', 'Circuit Design', 'Embedded Systems', 'RP2040', 'SMD Soldering', 'PCB Rework', 'Hardware Debugging', 'Oscilloscope Testing'],
+  ['KiCad', 'LTspice', 'Python', 'LabVIEW', 'PCB Design', 'PCB Layout', 'Circuit Design', 'Circuit Simulation', 'Embedded Systems', 'RP2040', 'SMD Soldering', 'Test Automation', 'Oscilloscope Testing'],
   'Pulse-generator Skills should contain recruiter-readable software and transferable competencies'
 );
 assert.match(pulseGeneratorSource, /title: 'Spin Transport Pulse Generator PCB'/, 'Pulse-generator project should use the concise PCB title');
