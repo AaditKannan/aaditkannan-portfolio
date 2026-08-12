@@ -33,6 +33,12 @@ Images use descriptive alternative text, short captions, lazy decoding below the
 - Clearly distinguish demonstrated V1 performance from Revision 2 targets.
 - Keep the existing project title, category, dates, filters, and Ramesh Lab relationship.
 
+## Recruiter-Facing Skills
+
+The project sidebar should list recognizable software and transferable engineering competencies rather than project activities or hardware nouns. Use exactly: `KiCad`, `LTspice`, `Python`, `LabVIEW`, `PCB Design`, `Embedded Systems`, `SMD Soldering`, and `Oscilloscope Testing`.
+
+Do not label `GaN Switching`, `Keithley SMU`, `Coax/BNC Interfaces`, `Enclosure Design`, or `bring-up` as skills. Those details can remain in the project narrative where they explain the engineering work.
+
 ## Verification
 
-Extend `scripts/site-content.test.mjs` to assert the three disclosure labels, the visible Current Stage section, the three retained performance numbers, the absence of superseded report-style headings, and references to all five supplied images. Run the content test and production build, then visually verify the deep-linked project detail on desktop and mobile.
+Extend `scripts/site-content.test.mjs` to assert the three disclosure labels, the visible Current Stage section, the three retained performance numbers, the absence of superseded report-style headings, references to all five supplied images, and the recruiter-facing skill set. Run the content test and production build, then visually verify the deep-linked project detail on desktop and mobile.

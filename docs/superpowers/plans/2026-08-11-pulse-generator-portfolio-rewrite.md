@@ -15,6 +15,7 @@
 - Keep 30 V, approximately 100 ns-scale, and 1 ns-class as the only major performance numbers.
 - Do not claim that V1 achieved the Revision 2 target.
 - Match the existing Wolfrom disclosure and inline-image styling.
+- Use only recruiter-readable software and transferable competencies in the project Skills chips.
 - Keep unrelated project entries and user-owned untracked files unchanged.
 
 ---
@@ -137,5 +138,49 @@ Run:
 ```powershell
 git add -- projects.html scripts/site-content.test.mjs docs/superpowers/specs/2026-08-11-pulse-generator-portfolio-rewrite-design.md docs/superpowers/plans/2026-08-11-pulse-generator-portfolio-rewrite.md public/assets/pulse-v1-enclosure.jpeg public/assets/pulse-v1-enclosure.webp public/assets/pulse-v1-board.jpeg public/assets/pulse-v1-board.webp public/assets/pulse-v1-bench.jpeg public/assets/pulse-v1-bench.webp public/assets/pulse-r2-cad-front.png public/assets/pulse-r2-cad-front.webp public/assets/pulse-r2-cad-rear.png public/assets/pulse-r2-cad-rear.webp
 git commit -m "Rewrite pulse generator project story"
+git push origin main
+```
+
+### Task 5: Refine recruiter-facing skill tags
+
+**Files:**
+- Modify: `scripts/site-content.test.mjs`
+- Modify: `projects.html`
+
+**Interfaces:**
+- Consumes: the `tags` array for project id `ns-us-pulse-generator`.
+- Produces: recruiter-readable Skills chips in the rendered project sidebar.
+
+- [ ] **Step 1: Write the failing skills assertion**
+
+Scope the existing pulse-generator source fixture to its `tags` array and assert the exact list `KiCad`, `LTspice`, `Python`, `LabVIEW`, `PCB Design`, `Embedded Systems`, `SMD Soldering`, and `Oscilloscope Testing`.
+
+- [ ] **Step 2: Run the content test and verify the expected failure**
+
+Run: `node scripts/site-content.test.mjs`
+
+Expected: FAIL because the current tags include project activities such as `GaN Switching` and omit several approved recruiter-facing skills.
+
+- [ ] **Step 3: Replace the project tags**
+
+Set the pulse-generator `tags` array to:
+
+```javascript
+['KiCad', 'LTspice', 'Python', 'LabVIEW', 'PCB Design', 'Embedded Systems', 'SMD Soldering', 'Oscilloscope Testing']
+```
+
+- [ ] **Step 4: Run verification**
+
+Run: `node scripts/site-content.test.mjs`
+
+Run: `npm run build`
+
+Expected: both commands exit 0.
+
+- [ ] **Step 5: Commit and push**
+
+```powershell
+git add -- projects.html scripts/site-content.test.mjs docs/superpowers/specs/2026-08-11-pulse-generator-portfolio-rewrite-design.md docs/superpowers/plans/2026-08-11-pulse-generator-portfolio-rewrite.md
+git commit -m "Refine pulse generator skill tags"
 git push origin main
 ```
