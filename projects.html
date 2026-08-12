@@ -539,15 +539,23 @@
     }
 
     .detail-content[data-project-id="ns-us-pulse-generator"] .gallery-main {
-      aspect-ratio: 5 / 3;
-      background: #b8b7cf;
+      aspect-ratio: 4 / 3;
+      background: #171717;
     }
 
     .detail-content[data-project-id="ns-us-pulse-generator"] .gallery-main img,
     .detail-content[data-project-id="ns-us-pulse-generator"] .gallery-main picture,
     .detail-content[data-project-id="ns-us-pulse-generator"] #galleryMediaContainer img,
     .detail-content[data-project-id="ns-us-pulse-generator"] #galleryMediaContainer picture {
-      background: #b8b7cf;
+      background: #171717;
+    }
+
+    [data-theme="light"] .detail-content[data-project-id="ns-us-pulse-generator"] .gallery-main,
+    [data-theme="light"] .detail-content[data-project-id="ns-us-pulse-generator"] .gallery-main img,
+    [data-theme="light"] .detail-content[data-project-id="ns-us-pulse-generator"] .gallery-main picture,
+    [data-theme="light"] .detail-content[data-project-id="ns-us-pulse-generator"] #galleryMediaContainer img,
+    [data-theme="light"] .detail-content[data-project-id="ns-us-pulse-generator"] #galleryMediaContainer picture {
+      background: #e9e7e2;
     }
 
     .project-card[data-id="pldtracker"] .project-image img {
@@ -1198,6 +1206,26 @@
     .project-inline-grid figure {
       min-width: 0;
       margin: 0;
+    }
+
+    .project-feature-figure {
+      margin: 20px 0 24px;
+      text-align: center;
+      break-inside: avoid;
+      -webkit-column-break-inside: avoid;
+    }
+
+    .project-feature-figure picture,
+    .project-feature-figure img {
+      display: block;
+    }
+
+    .project-feature-figure figcaption {
+      margin-top: 8px;
+      color: var(--text-muted);
+      font-size: 0.82em;
+      font-style: italic;
+      line-height: 1.5;
     }
 
     .project-inline-grid img,
@@ -2396,71 +2424,86 @@ const wolfromDescription = `
         active: true,
         featured: false,
         displayOrder: 2,
-        excerpt: 'Nanosecond pulse-generator PCB for BiFeO3 spin-transport and ferroelectric characterization, with GaN switching, grounded coax/BNC I/O, source-measure biasing, and RP2040/Python triggering.',
+        excerpt: 'Custom high-voltage pulse-generator PCB for complex-oxide device research, validated through 30 V before a clean-sheet high-speed redesign.',
         description: `
           <strong>Overview</strong><br><br>
-          I am designing a nanosecond pulse-generator board in Ramesh Lab for electrical characterization of BiFeO<sub>3</sub> and related complex-oxide thin-film devices. The board is meant to support spin-transport and ferroelectric testing where the sample needs a clean voltage pulse while the rest of the bench setup handles biasing, synchronization, and measurement.<br><br>
-          Current BFO testing is generally around a 30 V pulse range, with the next goal being controlled sweeps down to smaller voltages. The board is therefore not just a generic fast pulser; it is an experiment interface for applying known voltage stress to oxide devices while preserving timing, bias state, and measurement visibility.<br><br>
-          <strong>Experiment Target</strong><br><br>
-          The useful voltage is the voltage that actually lands across the BFO device, not the nominal setting at the connector. Current testing is generally around 30 V, and the next goal is controlled sweeps down to smaller voltages where fixture pickup, leakage, timing jitter, and ringing start to matter more. That is why I am treating the board as an experiment interface, not just a fast-switching demo circuit.<br><br>
-          <strong>Measurement Problem</strong><br><br>
-          For ferroelectric and spin-transport characterization, the captured current is a pileup of useful signal plus leakage, displacement current, fixture capacitance, and whatever the test setup adds. The board layout and measurement flow are built around separating those pieces as much as possible: grounded coax/BNC interfaces, a sync output for the scope, known dummy loads, relay-selected bias paths, and source-measure compatibility instead of loose wires into a mystery pulse node.<br><br>
-          <strong>Design Loop</strong><br><br>
-          I use KiCad for the schematic and four-layer PCB layout, with the top edge organized around BNC/coax test interfaces and the sensitive switching/control sections kept readable for bring-up. LTspice is in the loop before hardware bring-up to sanity-check switching timing, driver behavior, and load assumptions. The RP2040 handles trigger control, while Python, JupyterLab, and LabVIEW are the bench-control and analysis layer I want around the board once scope captures and source-measure data start coming in.<br><br>
-          The current nanosecond board uses trigger conditioning into a GaN switching stage, with local driver power, range/control relays, shared external trigger, sync output, and Keithley/source-measure paths separated enough to bring up independently. The point is repeatability: if the pulse sequence and captured waveform are stable, then later analysis can actually distinguish BFO switching behavior from leakage and fixture effects.<br><br>
-          <div class="board-layer-viewer">
-            <input type="radio" id="ns-layer-render" name="ns-board-layer" checked>
-            <input type="radio" id="ns-layer-layout" name="ns-board-layer">
-            <input type="radio" id="ns-layer-top" name="ns-board-layer">
-            <input type="radio" id="ns-layer-copper" name="ns-board-layer">
-            <input type="radio" id="ns-layer-in1" name="ns-board-layer">
-            <input type="radio" id="ns-layer-in2" name="ns-board-layer">
-            <input type="radio" id="ns-layer-silk" name="ns-board-layer">
-            <input type="radio" id="ns-layer-bottom" name="ns-board-layer">
-            <div class="board-layer-controls" aria-label="Nanosecond board layer viewer">
-              <label for="ns-layer-render">3D render</label>
-              <label for="ns-layer-layout">combined layout</label>
-              <label for="ns-layer-top">top + silk</label>
-              <label for="ns-layer-copper">F.Cu</label>
-              <label for="ns-layer-in1">In1.Cu</label>
-              <label for="ns-layer-in2">In2.Cu</label>
-              <label for="ns-layer-silk">silk only</label>
-              <label for="ns-layer-bottom">B.Cu</label>
+          I am developing a custom pulse generator in Ramesh Lab for fast electrical characterization of BiFeO<sub>3</sub> and related complex-oxide devices.<br><br>
+          The first revision combines an RP2040 controller, high-speed gate drive, GaN switching, external Keithley biasing, and coaxial DUT interfaces on a custom four-layer PCB. I designed V1 primarily to validate the switching and measurement architecture before committing to a more aggressive high-speed revision.<br><br>
+          The assembled board has now been bench tested through <b>30 V</b> and into the <b>sub-microsecond regime</b> with programmable digital triggering.<br><br>
+          The most useful result from V1 was not simply that the GaN switch worked. Oscilloscope characterization showed that the output stage actively generated one pulse edge, while the DUT and output network influenced the return edge. That load dependence is now the main architectural change driving Revision 2.<br><br>
+
+          <figure class="project-feature-figure">
+            <picture>
+              <source srcset="/assets/pulse-v1-enclosure.webp" type="image/webp">
+              <img src="/assets/pulse-v1-enclosure.jpeg" alt="Assembled V1 pulse-generator hardware inside its clear-topped enclosure" width="2706" height="3096" loading="lazy" decoding="async" style="max-width:78%; margin:0 auto; border-radius:4px;">
+            </picture>
+            <figcaption>V1 pulse-generator hardware during bench characterization.</figcaption>
+          </figure>
+
+          <details class="project-disclosure">
+            <summary>Architecture Validation — V1 Board</summary>
+            <div class="project-disclosure-content">
+              V1 was intentionally built as a flexible architecture-validation board. It combined separate nanosecond and microsecond signal paths, relay-selected routing, external source-measure biasing, and an RP2040-controlled GaN switching stage.<br><br>
+              The fast path uses a high-speed gate driver and GaN FET to pull the DUT switching node rapidly toward ground while the Keithley establishes the device bias. Shared BNC interfaces made it possible to characterize the complete signal path using known loads before connecting thin-film devices.<br><br>
+              The board successfully validated the major building blocks: digital triggering, gate drive, GaN switching, external bias integration, DUT routing, and oscilloscope synchronization. That was enough to determine what should remain and what should disappear in the next revision.
+              <figure>
+                <picture>
+                  <source srcset="/assets/pulse-v1-board.webp" type="image/webp">
+                  <img src="/assets/pulse-v1-board.jpeg" alt="Populated V1 pulse-generator PCB installed inside its enclosure" width="2803" height="2889" loading="lazy" decoding="async">
+                </picture>
+                <figcaption>Populated V1 board with RP2040 control, relay routing, GaN switching, and coaxial interfaces.</figcaption>
+              </figure>
             </div>
-            <div class="board-layer-stage">
-              <img class="layer-render" src="/assets/ns-pulse-board-cover.png" alt="3D render of the nanosecond pulse generator board with BNC connectors, relays, RP2040 module, and terminal blocks">
-              <img class="layer-layout" src="/assets/ns-pulse-board-layout.png" alt="KiCad combined layout view of the nanosecond pulse generator board">
-              <img class="layer-top" src="/assets/ns-pulse-layer-top.svg" alt="Top-side board view with silkscreen and copper exported from the current KiCad layout">
-              <img class="layer-copper" src="/assets/ns-pulse-layer-copper.svg" alt="Top copper routing layer exported from the current nanosecond pulse generator KiCad layout">
-              <img class="layer-in1" src="/assets/ns-pulse-layer-in1.svg" alt="Inner layer 1 copper plane exported from the current four-layer KiCad layout">
-              <img class="layer-in2" src="/assets/ns-pulse-layer-in2.svg" alt="Inner layer 2 copper plane exported from the current four-layer KiCad layout">
-              <img class="layer-silk" src="/assets/ns-pulse-layer-silk.svg" alt="Front silkscreen layer exported from the current nanosecond pulse generator KiCad layout">
-              <img class="layer-bottom" src="/assets/ns-pulse-layer-bottom.svg" alt="Bottom-side board layer exported from the current nanosecond pulse generator KiCad layout">
-              <button class="board-layer-expand" type="button" data-board-lightbox-open aria-label="Expand board layer viewer"><svg viewBox="0 0 24 24"><path d="M8 3H3v5M16 3h5v5M8 21H3v-5M21 16v5h-5"/><path d="M3 3l7 7M21 3l-7 7M3 21l7-7M21 21l-7-7"/></svg><span>expand</span></button>
+          </details>
+
+          <details class="project-disclosure">
+            <summary>Testing + Key Design Lesson</summary>
+            <div class="project-disclosure-content">
+              I characterized V1 using a Keithley source-measure unit, known dummy loads, and a Tektronix oscilloscope measuring both DUT terminals.<br><br>
+              The board demonstrated operation through <b>30 V</b>, including programmable pulses from the microsecond range down into the <b>hundreds of nanoseconds</b>. The shortest repeatable controller commands reached approximately the <b>100 ns scale</b> in the current setup.<br><br>
+              The important limitation appeared as the pulses became shorter. The GaN stage actively creates the first transition, but when it turns off the output node returns through the DUT and surrounding bias network instead of being actively driven back. That makes the delivered waveform increasingly dependent on device and fixture capacitance.<br><br>
+              This measurement changed the Revision 2 architecture: instead of optimizing the same single-ended pulldown stage further, the next design will actively define <b>both pulse edges</b>.
+              <figure>
+                <picture>
+                  <source srcset="/assets/pulse-v1-bench.webp" type="image/webp">
+                  <img src="/assets/pulse-v1-bench.jpeg" alt="V1 pulse generator connected to Keithley and Tektronix instruments during bench characterization" width="4284" height="5712" loading="lazy" decoding="async">
+                </picture>
+                <figcaption>Bench characterization with source-measure biasing and oscilloscope capture at both DUT terminals.</figcaption>
+              </figure>
             </div>
-            <span class="board-layer-caption">Layer viewer for the current four-layer ns/µs pulse board: BNC/coax test interfaces across the top edge, relay-switched bias/dut paths, local driver power, RP2040 trigger control, inner copper layers, and routed high-speed pulse/sync sections.</span>
-          </div>
-          <strong>V1 Microsecond Prototype</strong><br><br>
-          Before the nanosecond board, I built a first-pass microsecond pulse-generator prototype to test the basic source-measure pulse workflow. V1 used a one-shot timing stage, gate driver, MOSFET output stage, manual/external trigger path, and Keithley/source-measure interface.<br><br>
-          <img src="/assets/pulse-v1-physical.jpg" alt="First microsecond pulse-generator board under oscilloscope probe during bench testing" style="display:block; max-width: 70%; margin: 18px auto; border-radius: 8px;"><br>
-          <em style="opacity: 0.7; font-size: 0.9em;">V1 microsecond board during bench testing. It made the measurement workflow concrete, but also showed why the nanosecond version needed tighter layout and grounded coax/BNC interfaces.</em><br><br>
-          The V1 board was useful design history, not validation for the current nanosecond board. It showed the limits of terminal-block-style connections, loose wiring, and microsecond-oriented timing when the actual research need moves toward faster pulse edges, cleaner synchronization, and smaller-voltage sweeps.<br><br>
-          <img src="/assets/pulse-v1-ltspice.png" alt="LTspice transient simulation for the first microsecond pulse-generator prototype" style="display:block; max-width: 100%; margin: 18px auto; border-radius: 8px;"><br>
-          <em style="opacity: 0.7; font-size: 0.9em;">LTspice transient work from V1. It helped sanity-check the switching timing and output behavior before bench testing, but the nanosecond board is being documented through the current KiCad layout and upcoming scope captures.</em><br><br>
-          <strong>Bring-Up Plan</strong><br><br>
-          I am bringing the board up in stages: verify rails and microcontroller trigger logic, simulate and scope the driver path, validate the GaN output into known dummy loads, then move toward device fixtures. The oscilloscope work is focused on what matters for BFO testing: delivered amplitude near the 30 V regime, timing jitter between trigger and sync, overshoot/ringing at the fixture, and whether lower-amplitude pulses remain distinguishable from noise and pickup.<br><br>
-          <strong>Status</strong><br><br>
-          The nanosecond board is currently in schematic/layout and validation planning. I am not claiming final measured rise time, amplitude stability, timing jitter, or device results here; the next real milestone is bench characterization with oscilloscope captures and known loads before fragile thin-film devices are connected.<br><br>
-          <strong>Tools In The Workflow</strong><br><br>
-          KiCad is where I am doing the schematic/layout work, LTspice is being used to check switching and timing assumptions before the board is powered, and oscilloscope bring-up will validate the GaN output into known loads before any fragile thin-film device is connected. Python/JupyterLab/LabVIEW sit on the other side of that: trigger repeatability, capture organization, and later analysis of BFO pulse-response data.`,
-        tags: ['KiCad', 'LTspice', 'RF PCB Layout', 'Python', 'LabVIEW', 'JupyterLab', 'Oscilloscope Bring-Up', 'RP2040', 'GaN FET Switching', 'Coax/BNC Interfaces'],
+          </details>
+
+          <details class="project-disclosure">
+            <summary>Revision 2</summary>
+            <div class="project-disclosure-content">
+              Revision 2 has been approved and is being treated as a clean-sheet high-speed pulser rather than an incremental update to V1.<br><br>
+              The new architecture removes the relay-selected nanosecond/microsecond paths and mechanical pulse-width controls. Pulse timing will be entirely digital, with dedicated Keithley HI/LO and DUT interfaces and a single optimized high-speed signal path.<br><br>
+              The largest electrical change is active control of <b>both output transitions</b>, reducing the influence of DUT capacitance on pulse width. The fast switching path will stay on the top layer directly above a <b>continuous ground plane</b>, minimizing return-loop area and parasitic inductance.<br><br>
+              The design target for Revision 2 is <b>30 V</b> operation with a <b>1 ns-class minimum pulse</b>, single-shot and repetitive control, and a cleaner interface for automated experiments. The RP2040 will remain the experiment controller, while the actual 1 ns timing will be handled by dedicated high-speed circuitry rather than relying on the microcontroller alone.
+              <div class="project-inline-grid">
+                <figure>
+                  <picture><source srcset="/assets/pulse-r2-cad-front.webp" type="image/webp"><img src="/assets/pulse-r2-cad-front.png" alt="Revision 2 enclosure CAD showing the front controls and populated pulse-generator PCB" width="1251" height="916" loading="lazy" decoding="async"></picture>
+                  <figcaption>Revision 2 enclosure and board package from the control side.</figcaption>
+                </figure>
+                <figure>
+                  <picture><source srcset="/assets/pulse-r2-cad-rear.webp" type="image/webp"><img src="/assets/pulse-r2-cad-rear.png" alt="Revision 2 enclosure CAD showing five coaxial interfaces and the internal board layout" width="1276" height="865" loading="lazy" decoding="async"></picture>
+                  <figcaption>Dedicated coaxial interfaces and the cleaner internal signal path.</figcaption>
+                </figure>
+              </div>
+            </div>
+          </details>
+
+          <strong>Current Stage</strong><br><br>
+          V1 is now physically assembled and bench characterized, and it has completed its main job as an architecture-validation platform. It demonstrated programmable fast switching through <b>30 V</b> and revealed the output-recovery behavior that limits very short pulses.<br><br>
+          I am now using those measurements to design Revision 2 around active two-edge switching, fully digital timing, dedicated measurement interfaces, and a much more deliberate high-speed PCB stackup. The next step is simulation and architecture selection before laying out the new board.`,
+        tags: ['KiCad', 'High-Speed PCB Design', 'RP2040', 'GaN Switching', 'Oscilloscope Characterization', 'Keithley SMU', 'Coax/BNC Interfaces', 'Enclosure Design'],
         links: [],
         images: [
-          '/assets/ns-pulse-board-cover.png',
-          '/assets/ns-pulse-board-angle.png',
-          '/assets/ns-pulse-board-layout.png',
-          '/assets/ns-pulse-schematic-thumbnail.png',
-          '/assets/pulse-v1-ltspice.png'
+          '/assets/pulse-v1-enclosure.jpeg',
+          '/assets/pulse-v1-board.jpeg',
+          '/assets/pulse-v1-bench.jpeg',
+          '/assets/pulse-r2-cad-front.png',
+          '/assets/pulse-r2-cad-rear.png'
         ]
       },
       {

@@ -112,3 +112,35 @@ for (const page of ['resume.html', 'projects.html', 'footage.html']) {
 assert.match(projects, /main\s*{[\s\S]*max-width:\s*1520px/, 'Projects index should use the wider desktop container');
 assert.match(projects, /\.projects-grid\s*{[\s\S]*grid-template-columns:\s*repeat\(3,\s*minmax\(0,\s*1fr\)\)/, 'Projects grid columns should expand inside the wider container');
 assert.match(projects, /\.detail-inner\s*{[\s\S]*max-width:\s*1520px/, 'Project detail view should use the wider desktop container');
+
+const pulseGenerator = projects.match(/id: 'ns-us-pulse-generator'([\s\S]*?)id: 'field-station-toolbox'/);
+assert.ok(pulseGenerator, 'Projects should include the pulse-generator entry');
+const pulseGeneratorSource = pulseGenerator[1];
+const pulseDisclosures = pulseGeneratorSource.match(/<details class="project-disclosure">/g) ?? [];
+assert.equal(pulseDisclosures.length, 3, 'Pulse-generator detail should use exactly three optional disclosures');
+assert.match(pulseGeneratorSource, /<summary>Architecture Validation — V1 Board<\/summary>/, 'Pulse-generator detail should include the V1 architecture disclosure');
+assert.match(pulseGeneratorSource, /<summary>Testing \+ Key Design Lesson<\/summary>/, 'Pulse-generator detail should include the testing lesson disclosure');
+assert.match(pulseGeneratorSource, /<summary>Revision 2<\/summary>/, 'Pulse-generator detail should include the Revision 2 disclosure');
+assert.match(pulseGeneratorSource, /<strong>Current Stage<\/strong>/, 'Pulse-generator detail should end with a visible Current Stage section');
+assert.match(
+  pulseGeneratorSource,
+  /<figure class="project-feature-figure">[\s\S]*pulse-v1-enclosure\.jpeg[\s\S]*<figcaption>V1 pulse-generator hardware during bench characterization\.<\/figcaption>[\s\S]*<\/figure>/,
+  'Pulse-generator lead image and caption should stay together in the two-column detail layout'
+);
+for (const keyNumber of [/30 V/, /100 ns/, /1 ns-class/]) {
+  assert.match(pulseGeneratorSource, keyNumber, `Pulse-generator detail should retain ${keyNumber.source}`);
+}
+for (const image of [
+  'pulse-v1-enclosure.jpeg',
+  'pulse-v1-board.jpeg',
+  'pulse-v1-bench.jpeg',
+  'pulse-r2-cad-front.png',
+  'pulse-r2-cad-rear.png',
+]) {
+  assert.match(pulseGeneratorSource, new RegExp(image.replace('.', '\\.')), `Pulse-generator detail should use ${image}`);
+}
+assert.doesNotMatch(
+  pulseGeneratorSource,
+  /<strong>(Experiment Target|Measurement Problem|Design Loop|Bring-Up Plan|Tools In The Workflow)<\/strong>/,
+  'Pulse-generator detail should not retain report-style section headings'
+);
