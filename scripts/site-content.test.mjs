@@ -116,6 +116,13 @@ assert.match(projects, /\.detail-inner\s*{[\s\S]*max-width:\s*1520px/, 'Project 
 const pulseGenerator = projects.match(/id: 'ns-us-pulse-generator'([\s\S]*?)id: 'field-station-toolbox'/);
 assert.ok(pulseGenerator, 'Projects should include the pulse-generator entry');
 const pulseGeneratorSource = pulseGenerator[1];
+const pulseSkillTags = pulseGeneratorSource.match(/tags: \[([^\]]*)\]/);
+assert.ok(pulseSkillTags, 'Pulse-generator project should include Skills tags');
+assert.deepEqual(
+  [...pulseSkillTags[1].matchAll(/'([^']+)'/g)].map((match) => match[1]),
+  ['KiCad', 'LTspice', 'Python', 'LabVIEW', 'PCB Design', 'Embedded Systems', 'SMD Soldering', 'Oscilloscope Testing'],
+  'Pulse-generator Skills should contain recruiter-readable software and transferable competencies'
+);
 const pulseDisclosures = pulseGeneratorSource.match(/<details class="project-disclosure">/g) ?? [];
 assert.equal(pulseDisclosures.length, 3, 'Pulse-generator detail should use exactly three optional disclosures');
 assert.match(pulseGeneratorSource, /<summary>Architecture Validation — V1 Board<\/summary>/, 'Pulse-generator detail should include the V1 architecture disclosure');
