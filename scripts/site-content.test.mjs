@@ -143,9 +143,12 @@ const pulseSkillTags = pulseGeneratorSource.match(/tags: \[([^\]]*)\]/);
 assert.ok(pulseSkillTags, 'Pulse-generator project should include Skills tags');
 assert.deepEqual(
   [...pulseSkillTags[1].matchAll(/'([^']+)'/g)].map((match) => match[1]),
-  ['KiCad', 'LTspice', 'Python', 'LabVIEW', 'PCB Design', 'Embedded Systems', 'SMD Soldering', 'Oscilloscope Testing'],
+  ['KiCad', 'LTspice', 'Python', 'LabVIEW', 'PCB Design', 'PCB Layout', 'Circuit Design', 'Embedded Systems', 'RP2040', 'SMD Soldering', 'PCB Rework', 'Hardware Debugging', 'Oscilloscope Testing'],
   'Pulse-generator Skills should contain recruiter-readable software and transferable competencies'
 );
+assert.match(pulseGeneratorSource, /title: 'Nanosecond Spin Transport Pulse Generator PCB'/, 'Pulse-generator project title should use PCB');
+assert.doesNotMatch(projects, /Nanosecond Spin Transport Pulse Generator Board/, 'Live project copy should not use the old Board title');
+assert.match(readPage('ns-us-pulse-generator.html'), /Nanosecond Spin Transport Pulse Generator PCB/, 'Pulse-generator redirect page should use the PCB title');
 const pulseDisclosures = pulseGeneratorSource.match(/<details class="project-disclosure">/g) ?? [];
 assert.equal(pulseDisclosures.length, 2, 'Pulse-generator detail should use two relevant secondary-detail disclosures');
 assert.match(pulseGeneratorSource, /<summary>Next Revision Architecture and Packaging<\/summary>/, 'Pulse-generator detail should include the next-revision packaging disclosure');
