@@ -169,6 +169,9 @@ for (const boardLayer of ['render', 'layout', 'top', 'copper', 'in1', 'in2', 'si
 for (const keyNumber of [/30 V/, /100 ns/, /1 ns-class/]) {
   assert.match(pulseGeneratorSource, keyNumber, `Pulse-generator detail should retain ${keyNumber.source}`);
 }
+for (const experimentTarget of [/0–30 V/, /1 ns to 1 ms/, /tens of pF/, /MΩ-scale/, /50 Ω/, /1 kHz/, /100 kHz/, /500 MHz/, /1 GHz/]) {
+  assert.match(pulseGeneratorSource, experimentTarget, `Pulse-generator Experiment Target should include ${experimentTarget.source}`);
+}
 for (const image of [
   'ns-pulse-schematic-thumbnail.png',
   'ns-pulse-board-layout.png',
