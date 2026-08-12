@@ -147,14 +147,16 @@ assert.deepEqual(
 );
 const pulseDisclosures = pulseGeneratorSource.match(/<details class="project-disclosure">/g) ?? [];
 assert.equal(pulseDisclosures.length, 2, 'Pulse-generator detail should use two relevant secondary-detail disclosures');
-assert.match(pulseGeneratorSource, /<summary>Revision 2 Architecture and Packaging<\/summary>/, 'Pulse-generator detail should include the Revision 2 packaging disclosure');
+assert.match(pulseGeneratorSource, /<summary>Next Revision Architecture and Packaging<\/summary>/, 'Pulse-generator detail should include the next-revision packaging disclosure');
 assert.match(pulseGeneratorSource, /<summary>Earlier Microsecond Prototype<\/summary>/, 'Pulse-generator detail should include the earlier prototype disclosure');
-assert.doesNotMatch(pulseGeneratorSource, /<summary>(Architecture Validation — V1 Board|Testing \+ Key Design Lesson|Revision 2)<\/summary>/, 'Core V1 technical work should remain visible without opening a disclosure');
-for (const heading of ['Overview', 'Experiment Target', 'Measurement Problem', 'V1 Architecture', 'Design Loop', 'Testing + Key Design Lesson', 'Revision 2', 'Current Stage']) {
+assert.doesNotMatch(pulseGeneratorSource, /<summary>(Architecture Validation — V1 Board|Testing \+ Key Design Lesson|Revision 2)<\/summary>/, 'Core V2 technical work should remain visible without opening a disclosure');
+for (const heading of ['Overview', 'Experiment Target', 'Measurement Problem', 'V2 Architecture', 'Design Loop', 'Testing + Key Design Lesson', 'Next Revision', 'Current Stage']) {
   assert.match(pulseGeneratorSource, new RegExp(`<strong>${heading.replace('+', '\\+')}<\\/strong>`), `Pulse-generator detail should visibly include ${heading}`);
 }
 assert.match(pulseGeneratorSource, /<strong>Current Stage<\/strong>/, 'Pulse-generator detail should end with a visible Current Stage section');
-assert.match(pulseGeneratorSource, /class="board-layer-viewer pulse-full-span"/, 'Pulse-generator detail should restore the interactive board-layer viewer');
+assert.match(pulseGeneratorSource, /This assembled four-layer instrument is <b>V2<\/b>/, 'Pulse-generator detail should identify the current instrument as V2');
+assert.match(pulseGeneratorSource, /V1 was the earlier microsecond-only pulse-generator prototype/, 'Pulse-generator detail should identify V1 as the earlier microsecond-only board');
+assert.match(pulseGeneratorSource, /class="board-layer-viewer"/, 'Pulse-generator detail should retain the interactive board-layer viewer');
 for (const boardLayer of ['render', 'layout', 'top', 'copper', 'in1', 'in2', 'silk', 'bottom']) {
   assert.match(pulseGeneratorSource, new RegExp(`id="ns-layer-${boardLayer}"`), `Board viewer should include the ${boardLayer} state`);
 }
@@ -184,21 +186,23 @@ assert.deepEqual(
   pulseGalleryImages,
   [
     '/assets/pulse-v1-cover.jpg',
-    '/assets/ns-pulse-schematic-thumbnail.png',
     '/assets/ns-pulse-board-layout.png',
     '/assets/ns-pulse-board-angle.png',
+    '/assets/ns-pulse-schematic-thumbnail.png',
     '/assets/pulse-v1-bench.jpeg',
     '/assets/pulse-r2-cad-front.png',
   ],
-  'Pulse-generator gallery should use six distinct physical and technical views'
+  'Pulse-generator gallery should show cover, layout, render, schematic, bench, then next-revision CAD'
 );
 const pulseDescriptionRule = projects.match(/\.detail-content\[data-project-id="ns-us-pulse-generator"\] \.detail-description\s*{([^}]*)}/);
 assert.ok(pulseDescriptionRule, 'Projects should define a pulse-generator desktop description rule');
 assert.match(pulseDescriptionRule[1], /columns:\s*2/, 'Pulse-generator desktop detail should retain two text columns');
 assert.doesNotMatch(pulseDescriptionRule[1], /columns:\s*1[;\s]/, 'Pulse-generator desktop detail should not be forced into one column');
-assert.match(projects, /\.pulse-full-span\s*{[\s\S]*?column-span:\s*all/, 'Wide pulse evidence should span both text columns');
-assert.match(pulseGeneratorSource, /class="project-inline-grid pulse-full-span"/, 'Pulse-generator detail should mark technical media grids as full-span evidence');
-assert.match(pulseGeneratorSource, /class="board-layer-viewer pulse-full-span"/, 'Pulse-generator board viewer should span both columns');
+assert.doesNotMatch(projects, /\.pulse-full-span\s*{/, 'Pulse-generator media should not escape the reading columns');
+assert.doesNotMatch(pulseGeneratorSource, /pulse-full-span/, 'Every pulse-generator block should stay within a reading column');
+assert.match(projects, /data-project-id="ns-us-pulse-generator"\] \.project-inline-grid\s*{[\s\S]*?grid-template-columns:\s*1fr/, 'Pulse technical media grids should stack within their reading column');
+assert.match(projects, /data-project-id="ns-us-pulse-generator"\] \.board-layer-stage\s*{[\s\S]*?max-height:\s*420px/, 'Pulse board viewer should remain bounded on desktop');
+assert.match(projects, /data-project-id="ns-us-pulse-generator"\] :is\(\.project-inline-grid, \.project-feature-figure, \.project-disclosure\) img\s*{[\s\S]*?max-height:\s*560px/, 'Pulse body and disclosure images should remain bounded inside their columns');
 assert.match(projects, /gallery-media-photo[\s\S]*?object-fit:\s*cover/, 'Pulse photographs should fill the gallery frame without bars');
 assert.match(projects, /#galleryMediaContainer \.gallery-media-photo img\s*{[\s\S]*?object-fit:\s*cover/, 'Pulse photo fitting should outrank the generic gallery-media selector');
 assert.match(projects, /gallery-media-technical[\s\S]*?object-fit:\s*contain/, 'Pulse technical media should remain uncropped in the gallery');
