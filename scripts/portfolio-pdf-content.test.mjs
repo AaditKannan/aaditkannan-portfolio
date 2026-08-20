@@ -27,6 +27,11 @@ assert.doesNotMatch(
 );
 assert.doesNotMatch(
   generator,
+  /anneal(?:ing)?|\bRHEED\b/i,
+  'Portfolio generator should not mention annealing or RHEED'
+);
+assert.doesNotMatch(
+  generator,
   /Nanosecond Spin Transport Pulse Generator Board|Spin Transport Pulse Generator PCB/,
   'Portfolio generator should not use the old spin transport title'
 );
