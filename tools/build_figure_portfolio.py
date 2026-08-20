@@ -278,7 +278,7 @@ def cover(c):
     rows = [
         ("website", "aaditkannan.com", "https://aaditkannan.com"),
         ("projects", "aaditkannan.com/projects", "https://aaditkannan.com/projects"),
-        ("email", "aaditkannan@berkeley.edu", "mailto:aaditkannan@berkeley.edu"),
+        ("email", "aaditkannan[at]berkeley[dot]edu", "https://aaditkannan.com"),
         ("github", "github.com/aaditkannan", "https://github.com/aaditkannan"),
         ("linkedin", "linkedin.com/in/aaditkannan", "https://www.linkedin.com/in/aaditkannan"),
     ]
@@ -300,7 +300,7 @@ def cover(c):
         ("Wolfrom Prototype + Metal Revision", 3),
         ("Formula Electric 588V Accumulator", 4),
         ("Accumulator Materials + Validation", 5),
-        ("Nanosecond Spin Transport Pulse Generator Board", 6),
+        ("HV Nanosecond Pulse Generator PCB", 6),
         ("Pulse Generator V1 Learning", 7),
         ("Custom Toolbox Design + Manufacturing", 8),
         ("FIRST Robotics Hardware", 9),
@@ -454,11 +454,11 @@ def ramesh_lab(c, page=6):
             "Reading Lines and Glass for the physics base: polarization, domains, coercive fields, hysteresis, dielectric response, strain, and defects.",
             "Learning substrate prep, solvent cleaning, annealing, step-terrace control, PLD growth, and RHEED monitoring.",
             "Practicing the deposition workflow with Donald's guidance: oxygen pressure, plume shape, target/substrate geometry, and temperature stability.",
-            "Connecting growth choices to AFM, XRD, PFM, and electrical characterization results.",
+            "Connecting growth choices to post-growth film and electrical characterization results.",
         ],
         "Connected Projects",
         [
-            "Nanosecond Spin Transport Pulse Generator Board: hardware for fast electrical characterization of oxide devices after fabrication.",
+            "HV Nanosecond Pulse Generator PCB: hardware for fast electrical characterization of oxide devices after fabrication.",
             "PLDTracker: data tool linking deposition conditions to characterization data and lab documentation.",
             "The larger loop is simple: grow films, track how they were grown, then measure how the devices switch.",
         ],
@@ -471,7 +471,7 @@ def ramesh_lab(c, page=6):
 
 def pulse_system(c, page=7):
     project_title(
-        c, page, "Nanosecond Spin Transport Pulse Generator Board", "May 2026 - Present", "Research Hardware / PCB",
+        c, page, "HV Nanosecond Pulse Generator PCB", "May 2026 - Present", "Research Hardware / PCB",
         "Board for fast electrical testing of BiFeO3 devices in Ramesh Lab. The current design is moving from a first-generation microsecond pulser toward cleaner ns/us triggering, grounded coax/BNC I/O, and repeatable scope/SMU measurements."
     )
     image(c, "ns-pulse-schematic-thumbnail.png", M, 392, CONTENT_W, 244, "Current nanosecond pulse-generator schematic. Shown as the main artifact because it is the current board revision.", "contain", bg=(250, 248, 243))
@@ -498,7 +498,7 @@ def pulse_system(c, page=7):
 
 def pulse_board(c, page=8):
     project_title(
-        c, page, "Nanosecond Spin Transport Pulse Generator Board", "May 2026 - Present", "Research Hardware / Board + V1 Learning",
+        c, page, "HV Nanosecond Pulse Generator PCB", "May 2026 - Present", "Research Hardware / Board + V1 Learning",
         "V1 microsecond hardware established the initial bench workflow. The current revision carries that learning into cleaner triggering, lab I/O, grounding, and measurement flow.",
         bookmark_label="Pulse Generator V1 Learning"
     )
@@ -539,7 +539,7 @@ def pldtracker(c, page=9):
         "Implemented",
         [
             "Logs substrate, target material, temperature, oxygen pressure, laser fluence, deposition time, and wafer disk position.",
-            "Links XRD scans, AFM/PFM domain images, slide-deck figures, and camera captures to specific runs.",
+            "Links characterization figures, slide-deck figures, and camera captures to specific runs.",
             "Dashboard for filtering records and plotting parameter trends with connected datapoints and fit lines.",
         ],
         "Research Value",

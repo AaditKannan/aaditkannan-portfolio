@@ -75,6 +75,10 @@ assert.match(projects, /class="gallery-thumb[^>]*data-lightbox-ignore/, 'Project
 const numberedRobotMentions = deployableSource.match(/\b\d+\+?(?:\s+[A-Za-z-]+){0,3}\s+robots\b/g) ?? [];
 assert.deepEqual(numberedRobotMentions, ['5 robots'], 'The only numbered robot count across the deployable site should be 5 robots');
 
+assert.doesNotMatch(deployableSource, /x[- ]?ray diffraction|xrd/i, 'Deployable site source should not mention XRD or x-ray diffraction');
+assert.doesNotMatch(deployableSource, /<span class="skill-pill">\s*(AFM|PFM|XRD)\s*<\/span>/i, 'Resume skill pills should not list AFM, PFM, or XRD');
+assert.doesNotMatch(deployableSource, /tags:\s*\[[^\]]*['"](AFM|PFM|XRD)['"]/i, 'Project tags should not list AFM, PFM, or XRD as skills');
+assert.doesNotMatch(deployableSource, /Thin-Film Characterization,\s*(XRD|AFM|PFM)/i, 'Resume technical skills should not list AFM, PFM, or XRD');
 assert.doesNotMatch(deployableSource, /\+?1?\s*\(?734\)?[\s)-]*546[\s-]*0380/, 'Deployable site source should not expose the phone number');
 assert.doesNotMatch(deployableSource, /aaditkannan@berkeley\.edu/i, 'Deployable site source should not expose the raw Berkeley email address');
 assert.doesNotMatch(deployableSource, /mailto:/i, 'Deployable site source should not include raw mailto links');
@@ -110,7 +114,11 @@ const technicalExperience = resume.match(/<section id="technical-experience">([\
 assert.ok(technicalExperience, 'Resume should include Technical Experience before Education');
 const firstTechnicalHeading = technicalExperience[1].match(/<h3>[\s\S]*?<\/h3>/);
 assert.ok(firstTechnicalHeading, 'Technical Experience should include at least one entry');
-assert.match(firstTechnicalHeading[0], /Undergraduate Researcher/, 'Undergraduate Researcher should be first in Technical Experience');
+assert.match(firstTechnicalHeading[0], /Formula Electric at Berkeley/, 'Formula Electric should be first in Technical Experience');
+assert.ok(
+  technicalExperience[1].indexOf('Formula Electric at Berkeley') < technicalExperience[1].indexOf('Ramesh Lab'),
+  'Formula Electric should appear above Ramesh Lab in Technical Experience'
+);
 const undergraduateResearcher = technicalExperience[1].match(/Undergraduate Researcher[\s\S]*?<div class="entry-date">Jan 2026/);
 assert.ok(undergraduateResearcher, 'Technical Experience should include the Undergraduate Researcher entry');
 assert.doesNotMatch(undergraduateResearcher[0], /Altium/, 'Undergraduate Researcher skill pills should not include Altium');
@@ -148,9 +156,10 @@ assert.deepEqual(
   ['KiCad', 'LTspice', 'Python', 'LabVIEW', 'PCB Design', 'PCB Layout', 'Circuit Design', 'Circuit Simulation', 'Embedded Systems', 'RP2040', 'SMD Soldering', 'Test Automation', 'Oscilloscope Testing'],
   'Pulse-generator Skills should contain recruiter-readable software and transferable competencies'
 );
-assert.match(pulseGeneratorSource, /title: 'Spin Transport Pulse Generator PCB'/, 'Pulse-generator project should use the concise PCB title');
+assert.match(pulseGeneratorSource, /title: 'HV Nanosecond Pulse Generator PCB'/, 'Pulse-generator project should use the high-voltage nanosecond PCB title');
+assert.doesNotMatch(projects, /Nanosecond Spin Transport Pulse Generator Board|Spin Transport Pulse Generator PCB/, 'Live project copy should not use the old spin transport title');
 assert.doesNotMatch(projects, /Nanosecond Spin Transport Pulse Generator (?:Board|PCB)/, 'Live project copy should not use the overlong title');
-assert.match(readPage('ns-us-pulse-generator.html'), /Spin Transport Pulse Generator PCB/, 'Pulse-generator redirect page should use the concise PCB title');
+assert.match(readPage('ns-us-pulse-generator.html'), /HV Nanosecond Pulse Generator PCB/, 'Pulse-generator redirect page should use the high-voltage nanosecond PCB title');
 const pulseDisclosures = pulseGeneratorSource.match(/<details class="project-disclosure">/g) ?? [];
 assert.equal(pulseDisclosures.length, 2, 'Pulse-generator detail should use two relevant secondary-detail disclosures');
 assert.match(pulseGeneratorSource, /<summary>Next Revision Architecture and Packaging<\/summary>/, 'Pulse-generator detail should include the next-revision packaging disclosure');
