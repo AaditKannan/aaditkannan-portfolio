@@ -603,7 +603,7 @@ body::-webkit-scrollbar {
   body {
     -webkit-overflow-scrolling: touch;
     scroll-snap-type: none;
-    overflow-x: clip !important; /* clip instead of hidden — hidden breaks position:sticky */
+    overflow-x: clip !important; /* hidden breaks position:sticky */
   }
 
   /* ========== CONSISTENT MOBILE NAV ACROSS ALL PAGES ========== */

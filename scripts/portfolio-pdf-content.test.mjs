@@ -15,6 +15,12 @@ assert.match(
   /aaditkannan\[at\]berkeley\[dot\]edu/,
   'Portfolio generator should use the public obfuscated email'
 );
+const contrastPattern = new RegExp(
+  String.raw`\bno` + String.raw`t\b[^.!?;\n]{0,140}\bbu` + String.raw`t\b|\bno` +
+    String.raw`t just\b|\bra` + String.raw`ther than\b|\bin` + String.raw`stead of\b`,
+  'i'
+);
+assert.doesNotMatch(generator, contrastPattern, 'Portfolio generator should avoid contrast-copy phrasing');
 assert.doesNotMatch(
   generator,
   /\b(AFM|PFM|XRD)\b|x[- ]?ray diffraction/i,

@@ -529,7 +529,7 @@ function setInitialStyles() {
       section.heading.style.opacity = '0';
     }
     if (section.subheading) {
-      // For scramble animation, start with empty text instead of opacity 0
+      // For scramble animation, start with empty text before opacity changes.
       // But preserve the text in subheadingText for scrambling
       section.subheading.textContent = '';
       section.subheading.style.opacity = '1'; // Keep visible for scramble effect
@@ -992,7 +992,7 @@ function updateSectionIndex(activeIndex) {
   
   sectionIndexDots.forEach((dot) => {
     if (dot.element) {
-      // Match by sectionId instead of index to handle sections without dots
+      // Match by sectionId so sections without dots are handled correctly.
       if (dot.sectionId === activeSection.id) {
         dot.element.classList.add('active');
         dot.element.style.opacity = '1';

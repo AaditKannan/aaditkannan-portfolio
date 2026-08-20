@@ -323,37 +323,13 @@
       50% { opacity: 0; }
     }
 
-    /* ---- Resume PDF typing tooltip ---- */
-    .resume-pdf-wrapper {
-      position: relative;
-      display: flex;
-      align-items: center;
-    }
-
-    .pdf-typing-text {
-      position: absolute;
-      left: calc(100% + 10px);
-      top: 50%;
-      transform: translateY(-50%);
-      font-family: var(--font-heading);
-      font-size: 12px;
-      color: var(--text-muted);
-      white-space: nowrap;
-      display: flex;
-      align-items: center;
-    }
-
-    .pdf-typing-text .typing-cursor {
-      display: none;
-    }
-
     /* ---- Social Icons ---- */
     .social-icons {
       display: flex;
       align-items: center;
       justify-content: space-between;
       margin-top: 20px;
-      width: 215px;
+      width: 142px;
     }
 
     .social-icons a {
@@ -747,8 +723,6 @@
         margin-right: -12px;
       }
 
-      .pdf-typing-text { display: none; }
-
       .entry-card {
         grid-template-columns: 1fr; gap: 4px;
         padding: 16px 12px; margin: 0 -12px;
@@ -806,13 +780,6 @@
         <a href="https://x.com/aadit_kannan" target="_blank" rel="noopener noreferrer" aria-label="X">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
         </a>
-        <!-- Resume PDF -->
-        <div class="resume-pdf-wrapper">
-          <a href="/assets/AaditKannanJulyResume.pdf" target="_blank" rel="noopener noreferrer" aria-label="Resume PDF">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm-1 2l5 5h-5V4zM6 20V4h5v7h7v9H6zm2-4h8v1.5H8V16zm0-3h8v1.5H8V13z"/></svg>
-          </a>
-          <span class="pdf-typing-text" id="pdfTypingText"><span class="typing-cursor"></span></span>
-        </div>
       </div>
     </header>
 
@@ -1109,36 +1076,6 @@
 
       window.addEventListener('scroll', updateActiveNav, { passive: true });
       updateActiveNav();
-    })();
-
-    // ---- Resume PDF typing animation ----
-    (function() {
-      const el = document.getElementById('pdfTypingText');
-      if (!el || window.innerWidth < 769) return;
-
-      const text = '\u2190 Resume PDF';
-      let charIndex = 0;
-      let textNode = document.createTextNode('');
-      el.insertBefore(textNode, el.firstChild);
-
-      function typeChar() {
-        if (charIndex < text.length) {
-          textNode.textContent += text[charIndex];
-          charIndex++;
-          setTimeout(typeChar, 60 + Math.random() * 40);
-        } else {
-          setTimeout(deleteChar, 3000);
-        }
-      }
-
-      function deleteChar() {
-        if (textNode.textContent.length > 0) {
-          textNode.textContent = textNode.textContent.slice(0, -1);
-          setTimeout(deleteChar, 30 + Math.random() * 20);
-        }
-      }
-
-      setTimeout(typeChar, 1200);
     })();
 
     // ---- Theme Toggle ----

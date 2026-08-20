@@ -339,7 +339,7 @@ def wolfrom_architecture(c):
         "Designed",
         [
             "Full actuator stackup: sun, compound planets, fixed ring, output ring, carrier, bearings, shafts, and output hub.",
-            "3-stage compound layout in one compact axial package instead of stacking multiple conventional planetary gearboxes.",
+            "3-stage compound layout in one compact axial package, saving the length of multiple stacked conventional planetary gearboxes.",
             "Split output ring, bolt access, dowel alignment, bearing support, preload strategy, and assembly order.",
             "Built FDM prototypes to validate meshing, stack height, bearing placement, and assembly before moving into metal hardware.",
         ],
@@ -457,7 +457,7 @@ def pulse_system(c, page=7):
         ],
         "Device-Side Notes",
         [
-            "What matters is the voltage that actually lands across the BFO device, not just the connector setting.",
+            "What matters is the voltage that actually lands across the BFO device across the full fixture path.",
             "Measured current can mix polarization switching, leakage, dielectric capacitance, and fixture parasitics.",
             "No final rise-time, jitter, device result, or amplitude-stability claim yet; bring-up is still in progress.",
         ],
@@ -483,7 +483,7 @@ def pulse_board(c, page=8):
             "Clip-lead power and weak lab I/O made the first board awkward around real bench equipment.",
             "Triggering needed to be tied into Python/RP2040 control, not treated as an isolated pulse node.",
             "LTspice transient work informed switching timing and V1 bring-up, while the current revision is documented through schematic/layout and bench validation artifacts.",
-            "Grounding and connector strategy had to be designed into the instrument rather than left to bench improvisation.",
+            "Grounding and connector strategy had to be designed into the instrument from the start.",
         ],
         "Current Revision Adds",
         [
@@ -835,7 +835,7 @@ GENERIC_PROJECTS = [
         "left_title": "Built",
         "left": [
             "Tank-drive robot with basic arm for freight placement, passive intake with compliant wheels, and carousel spinner.",
-            "Design priority was reliability and match completion rather than maximum mechanism complexity.",
+            "Design priority was reliability, match completion, and manageable mechanism complexity.",
             "Competed in league meets with a functioning robot for a young team.",
         ],
         "right_title": "Team Process",

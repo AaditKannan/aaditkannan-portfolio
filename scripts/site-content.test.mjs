@@ -67,7 +67,7 @@ assert.match(imageLightbox, /event\.stopImmediatePropagation\(\)/, 'Image lightb
 assert.match(imageLightbox, /document\.addEventListener\('keydown',[\s\S]*?\},\s*true\);/, 'Image lightbox keyboard handling should run in the capture phase');
 assert.match(imageLightbox, /MutationObserver/, 'Image lightbox should discover dynamically rendered project images');
 assert.match(imageLightbox, /data-lightbox-ignore/, 'Image lightbox should honor explicit image exclusions');
-assert.match(imageLightbox, /IGNORE_SELECTOR[^\n]*\.project-card/, 'Project-card images should navigate to project details instead of opening the lightbox');
+assert.match(imageLightbox, /IGNORE_SELECTOR[^\n]*\.project-card/, 'Project-card images should navigate to project details without opening the lightbox');
 assert.match(home, /class="bg-poster"[^>]*data-lightbox-ignore/, 'Home background poster should not open in the lightbox');
 assert.match(resume, /id="aboutPreviewImg"[^>]*data-lightbox-ignore/, 'Resume hover preview should not open in the lightbox');
 assert.match(projects, /id="projectHoverPreviewImg"[^>]*data-lightbox-ignore/, 'Project hover preview should not open in the lightbox');
@@ -75,6 +75,12 @@ assert.match(projects, /class="gallery-thumb[^>]*data-lightbox-ignore/, 'Project
 const numberedRobotMentions = deployableSource.match(/\b\d+\+?(?:\s+[A-Za-z-]+){0,3}\s+robots\b/g) ?? [];
 assert.deepEqual(numberedRobotMentions, ['5 robots'], 'The only numbered robot count across the deployable site should be 5 robots');
 
+const contrastPattern = new RegExp(
+  String.raw`\bno` + String.raw`t\b[^.!?;\n]{0,140}\bbu` + String.raw`t\b|\bno` +
+    String.raw`t just\b|\bra` + String.raw`ther than\b|\bin` + String.raw`stead of\b`,
+  'i'
+);
+assert.doesNotMatch(deployableSource, contrastPattern, 'Deployable site source should avoid contrast-copy phrasing');
 assert.doesNotMatch(deployableSource, /x[- ]?ray diffraction|xrd/i, 'Deployable site source should not mention XRD or x-ray diffraction');
 assert.doesNotMatch(deployableSource, /<span class="skill-pill">\s*(AFM|PFM|XRD)\s*<\/span>/i, 'Resume skill pills should not list AFM, PFM, or XRD');
 assert.doesNotMatch(deployableSource, /tags:\s*\[[^\]]*['"](AFM|PFM|XRD)['"]/i, 'Project tags should not list AFM, PFM, or XRD as skills');
@@ -103,7 +109,7 @@ for (const file of publicPdfAssets) {
   assert.doesNotMatch(contents, /aaditkannan@berkeley\.edu/i, `${file} should not include the raw Berkeley email bytes`);
   assert.doesNotMatch(contents, /mailto:/i, `${file} should not include raw mailto link bytes`);
 }
-assert.match(resume, /href="\/assets\/AaditKannanJulyResume\.pdf"/, 'Resume PDF link should use July PDF');
+assert.doesNotMatch(resume, /AaditKannanJulyResume\.pdf|Resume PDF|resume-pdf-wrapper|pdf-typing-text/i, 'Resume page should not link or render a resume PDF control');
 assert.doesNotMatch(resume, /<section id="projects">|data-section="projects"|>\s*Projects\s*<span class="nav-cursor">/, 'Resume should not include a separate Projects section or sidebar item');
 assert.doesNotMatch(resume, />Current Projects</, 'Resume should not use the Current Projects section label');
 assert.doesNotMatch(resume, /current-projects|>\s*Current\s*</, 'Resume navigation should not use Current Projects wording or anchors');
@@ -126,7 +132,6 @@ assert.ok(undergraduateResearcher, 'Technical Experience should include the Unde
 assert.doesNotMatch(undergraduateResearcher[0], /Altium/, 'Undergraduate Researcher skill pills should not include Altium');
 assert.match(technicalExperience[1], /Mechanical Engineering Intern · Posha/, 'Posha should be listed inside Technical Experience');
 assert.doesNotMatch(technicalExperience[1], /Leitmotif/, 'Leitmotif should stay on Projects and not appear in Technical Experience');
-assert.ok(existsSync(join(root, 'public', 'assets', 'AaditKannanJulyResume.pdf')), 'July resume PDF should exist in public assets');
 assert.equal(existsSync(join(root, 'connect.html')), false, 'Connect page should be removed');
 assert.doesNotMatch(readPage('vite.config.js'), /connect\.html/, 'Vite build entries should not include connect.html');
 assert.doesNotMatch(readPage('vercel.json'), /connect\.html/, 'Vercel routes should not include connect.html');
