@@ -610,20 +610,6 @@
       background: #b6b6d1;
     }
 
-    .project-card[data-id="pldtracker"] .project-image img {
-      object-fit: cover;
-      object-position: center center;
-    }
-
-    .project-card[data-id="pldtracker"]:hover .project-image img {
-      transform: scale(1.05);
-    }
-
-    .detail-content[data-project-id="pldtracker"] .gallery-main img {
-      object-fit: cover;
-      object-position: center center;
-    }
-
     .project-card[data-id="friendly-fires"] .project-image img,
     .detail-content[data-project-id="friendly-fires"] .gallery-main img {
       object-fit: cover;
@@ -2485,12 +2471,11 @@ const wolfromDescription = `
         date: 'Jan 2026 — Present',
         active: true,
         featured: false,
-        excerpt: 'Researching complex-oxide thin films for faster, lower-power memory and logic beyond DRAM and CMOS, with supervised PLD growth work and linked instrumentation/software projects.',
-        description: `<strong>Research Context</strong><br><br>I work in Ramesh Lab researching complex-oxide thin films for faster, lower-power memory and logic beyond DRAM and CMOS. These materials store and switch state through polarization rather than charge, enabling non-volatile memory and ferroelectric logic far more efficient than today's silicon-based hardware. The core question is how atomic-level fabrication choices -- stacking order, strain, interface chemistry, oxygen vacancy concentration -- reshape the electronic behavior of the final device.<br><br><strong>Physics and Materials Learning</strong><br><br>A major part of this work is building the physics foundation behind the experiments. I am reading <em>Principles and Applications of Ferroelectric and Related Materials</em> by Lines and Glass while learning how polarization, domains, coercive fields, hysteresis, dielectric response, strain, and defects show up in real oxide films. The goal is to understand not just how to run a tool, but what the measurements mean physically.<br><br><strong>Growth and Deposition Work</strong><br><br>I am learning the full thin-film workflow through supervised growth and characterization work: substrate prep, solvent cleaning, annealing, step-terrace control for atomically flat surfaces, PLD growth, laser fluence tuning, oxygen partial pressure control, substrate temperature stabilization, RHEED monitoring, and post-growth film characterization plus electrical measurements.<br><br>I am also practicing thin-film deposition workflows under the guidance of a PhD student in the lab. That means learning how small process choices -- oxygen pressure, plume shape, target/substrate geometry, temperature drift, and interface preparation -- can change domain structures, mobility, coercive fields, leakage behavior, or whether the film is useful at all.<br><br><strong>Connected Technical Projects</strong><br><br>This Ramesh Lab page is the hub for two technical projects I built around that workflow. <a href="#pldtracker" class="project-preview-link" data-preview="/assets/Screenshot 2026-03-13 000052.png">PLDTracker (Ramesh Lab)</a> supports growth documentation and deposition-data organization. <a href="#ns-us-pulse-generator" class="project-preview-link" data-preview="/assets/ns-pulse-schematic-thumbnail.png">HV Nanosecond Pulse Generator PCB</a> supports fast electrical characterization after films and devices are fabricated.<br><br>Together, the projects cover both sides of the lab process: making and tracking the thin films, then building the instrumentation needed to measure how they switch.<br><br><strong>Why It Matters</strong><br><br>Strain, interfaces, and atomic stacking order create emergent behaviors you cannot get in any single material alone: switchable polarization for ultra-low-energy memory, interfacial conduction for novel logic, and coupled ferroic states that can enable electrical control of magnetism. My long-term goal is to take more ownership of growth and characterization experiments while building tools that make the research workflow more repeatable, measurable, and technically grounded.`,
-        tags: ['PLD Growth', 'RHEED', 'Ferroelectric Characterization', 'BiFeO3 Thin Films'],
+        excerpt: 'Researching complex-oxide thin-film devices for faster, lower-power memory and logic beyond DRAM and CMOS, with linked pulse-instrumentation and characterization work.',
+        description: `<strong>Research Context</strong><br><br>I work in Ramesh Lab researching complex-oxide thin-film devices for faster, lower-power memory and logic beyond DRAM and CMOS. These materials store and switch state through polarization rather than charge, enabling non-volatile memory and ferroelectric logic far more efficient than today's silicon-based hardware. The core question is how atomic-level structure, strain, interface chemistry, and defect concentration reshape the electronic behavior of the final device.<br><br><strong>Physics and Materials Learning</strong><br><br>A major part of this work is building the physics foundation behind the experiments. I am reading <em>Principles and Applications of Ferroelectric and Related Materials</em> by Lines and Glass while learning how polarization, domains, coercive fields, hysteresis, dielectric response, strain, and defects show up in real oxide films. The goal is to understand not just how to run a tool, but what the measurements mean physically.<br><br><strong>Characterization and Instrumentation</strong><br><br>I am focused on device characterization workflows and the electronics needed to drive fast switching measurements. That includes semiconductor-compatible sample handling, source-measure biasing, nanosecond pulse generation, oscilloscope validation, fixture design, and data organization for repeatable electrical tests.<br><br><strong>Connected Technical Project</strong><br><br>This Ramesh Lab page links to the <a href="#ns-us-pulse-generator" class="project-preview-link" data-preview="/assets/ns-pulse-schematic-thumbnail.png">HV Nanosecond Pulse Generator PCB</a>, a compact instrument for fast electrical characterization after films and devices are fabricated.<br><br><strong>Why It Matters</strong><br><br>Strain, interfaces, and atomic stacking order create emergent behaviors you cannot get in any single material alone: switchable polarization for ultra-low-energy memory, interfacial conduction for novel logic, and coupled ferroic states that can enable electrical control of magnetism. My long-term goal is to connect device physics with measurement hardware that makes switching behavior easier to test, compare, and understand.`,
+        tags: ['Ferroelectric Characterization', 'BiFeO3 Thin Films', 'Pulse Electronics', 'Device Physics'],
         links: [
           { label: 'HV Nanosecond Pulse Generator PCB', url: '#ns-us-pulse-generator' },
-          { label: 'PLDTracker', url: '#pldtracker' },
           { label: 'Lab Website', url: 'https://rameshlab.lbl.gov' }
         ],
         images: ['/assets/IMG_4508.JPG', '/assets/IMG_4507.JPG', '/assets/IMG_4509.JPG']
@@ -2668,22 +2653,6 @@ const wolfromDescription = `
           '/assets/toolbox-prototype-closed.png',
           '/assets/toolbox-prototype-open.png'
         ]
-      },
-      {
-        id: 'pldtracker',
-        title: 'PLDTracker (Ramesh Lab)',
-        category: 'Research Tool',
-        filterCategory: ['software', 'research'],
-        years: [2026],
-        period: 'college',
-        date: 'Jan 2026 — Mar 2026',
-        active: false,
-        featured: false,
-        excerpt: 'Experiment tracking and data-management system for PLD thin-film workflows, linking growth parameters, wafer position, characterization data, and lab documentation.',
-        description: `<strong>Overview</strong><br><br>PLDTracker is a custom experiment tracking and data-management system I built for the lab's pulsed laser deposition setup. The goal was to replace scattered notes, slide decks, screenshots, and spreadsheets with a searchable dataset that connects how a film was grown with how it later characterized.<br><br><strong>What It Tracks</strong><br><br>The system logs each deposition run's substrate, target material, temperature, oxygen pressure, laser fluence, deposition time, and wafer disk position. It stores and links characterization records to specific runs, so researchers can correlate growth parameters with resulting film structure and properties.<br><br><strong>Data Explorer</strong><br><br>I used Python and Pandas to clean deposition records into a structure that could actually be filtered and compared. The dashboard lets researchers move through runs, filter by growth parameters, and plot connected datapoints or trend lines when they want to check whether a process change is showing up in characterization results.<br><br><strong>Image and Document Pipeline</strong><br><br>The camera module was built to tie substrate-position images to the deposition run instead of leaving them as loose screenshots. I also wrote a PDF slide-deck parser that pulls characterization figures out of lab presentations and helps associate them with the correct deposition records. OpenCV/image-processing work came in where the system needed to organize camera captures and make image data easier to search later.<br><br><strong>Why It Matters</strong><br><br>Thin-film growth is sensitive to small process changes. Oxygen vacancy concentration, substrate temperature, plume shape, and interface quality can all reshape domain structures, mobility, leakage, or coercive fields. PLDTracker was built to make those relationships easier to document and revisit across experiments instead of relying on memory and scattered files.<br><br><strong>Hardware Tie-In</strong><br><br>I also CAD-modeled a SolidWorks camera mount for the PLD chamber so the tracking workflow was not purely software. That part of the project was a good reminder that lab software gets much more useful when it matches how the hardware is actually used during growth.`,
-        tags: ['Python', 'Pandas', 'OpenCV', 'PDF Parsing', 'Data Visualization', 'Experiment Metadata Modeling', 'SolidWorks'],
-        links: [{ label: 'Ramesh Lab Hub', url: '#ramesh-lab' }],
-        images: ['/assets/Screenshot 2026-03-13 000052.png', '/assets/Screenshot 2026-03-13 000118.png', '/assets/Screenshot 2026-03-13 000132.png', '/assets/Screenshot 2026-03-13 000202.png', '/assets/Screenshot 2026-03-13 000143.png', '/assets/Screenshot 2026-03-13 000538.png']
       },
       {
         id: 'atlas-smr',

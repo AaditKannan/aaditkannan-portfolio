@@ -22,6 +22,11 @@ assert.doesNotMatch(
 );
 assert.doesNotMatch(
   generator,
+  /\bPLD\b|pulsed laser deposition|pldtracker|PLD Growth|Growth and Deposition Work/i,
+  'Portfolio generator should not mention PLD growth work or PLDTracker'
+);
+assert.doesNotMatch(
+  generator,
   /Nanosecond Spin Transport Pulse Generator Board|Spin Transport Pulse Generator PCB/,
   'Portfolio generator should not use the old spin transport title'
 );

@@ -439,36 +439,6 @@ def formula_validation(c):
     finish(c)
 
 
-def ramesh_lab(c, page=6):
-    project_title(
-        c, page, "Ramesh Lab: Complex-Oxide Thin Films", "Jan 2026 - Present", "Research",
-        "Research context for my Ramesh Lab work: BiFeO3 and related complex-oxide thin films for memory/logic devices beyond conventional DRAM and CMOS."
-    )
-    image(c, "IMG_4508.JPG", M, 460, 160, 156, "Lab/growth workflow context.", "cover")
-    image(c, "IMG_4507.JPG", M + 178, 460, 160, 156, "Thin-film process and sample handling context.", "cover")
-    image(c, "IMG_4509.JPG", M + 356, 460, 160, 156, "Experimental hardware context from lab work.", "cover")
-    two_text_columns(
-        c,
-        "Learning + Growth Work",
-        [
-            "Reading Lines and Glass for the physics base: polarization, domains, coercive fields, hysteresis, dielectric response, strain, and defects.",
-            "Learning substrate prep, solvent cleaning, annealing, step-terrace control, PLD growth, and RHEED monitoring.",
-            "Practicing the deposition workflow with Donald's guidance: oxygen pressure, plume shape, target/substrate geometry, and temperature stability.",
-            "Connecting growth choices to post-growth film and electrical characterization results.",
-        ],
-        "Connected Projects",
-        [
-            "HV Nanosecond Pulse Generator PCB: hardware for fast electrical characterization of oxide devices after fabrication.",
-            "PLDTracker: data tool linking deposition conditions to characterization data and lab documentation.",
-            "The larger loop is simple: grow films, track how they were grown, then measure how the devices switch.",
-        ],
-        y_top=394,
-    )
-    label(c, "Why It Matters", M, 136)
-    text(c, "Strain, interfaces, atomic stacking order, and oxygen vacancies can create switching behavior that does not exist in a single bulk material. I am mainly trying to understand how process choices show up later in device behavior.", M, 118, CONTENT_W, size=7.8, leading=9.8, max_lines=5)
-    finish(c)
-
-
 def pulse_system(c, page=7):
     project_title(
         c, page, "HV Nanosecond Pulse Generator PCB", "May 2026 - Present", "Research Hardware / PCB",
@@ -522,33 +492,6 @@ def pulse_board(c, page=8):
             "Bring-up order: rails, trigger logic, dummy loads, switching behavior, then device-side fixture measurements.",
         ],
         y_top=270,
-    )
-    finish(c)
-
-
-def pldtracker(c, page=9):
-    project_title(
-        c, page, "PLDTracker (Ramesh Lab)", "Jan 2026 - Mar 2026", "Research Software",
-        "A lab tool for keeping PLD runs, wafer position, growth parameters, images, and slide-deck analysis from getting scattered across notes and folders."
-    )
-    image(c, "Screenshot 2026-03-13 000052.png", M, 470, CONTENT_W, 168, "Dashboard and deposition data explorer for tracking thin-film growth records.", "contain", bg=(255, 255, 255))
-    image(c, "Screenshot 2026-03-13 000118.png", M, 284, 248, 126, "Filtering and data exploration interface.", "contain", bg=(255, 255, 255))
-    image(c, "Screenshot 2026-03-13 000132.png", M + 268, 284, 248, 126, "Analysis-image/document workflow tied back to deposition records.", "contain", bg=(255, 255, 255))
-    two_text_columns(
-        c,
-        "Implemented",
-        [
-            "Logs substrate, target material, temperature, oxygen pressure, laser fluence, deposition time, and wafer disk position.",
-            "Links characterization figures, slide-deck figures, and camera captures to specific runs.",
-            "Dashboard for filtering records and plotting parameter trends with connected datapoints and fit lines.",
-        ],
-        "Research Value",
-        [
-            "Replaces scattered notes, spreadsheets, screenshots, and slide decks with searchable experiment metadata.",
-            "Makes it easier to ask whether a growth-condition change explains a film-structure or device-property change.",
-            "Includes a SolidWorks camera mount path for substrate-position monitoring at the PLD chamber.",
-        ],
-        y_top=232,
     )
     finish(c)
 

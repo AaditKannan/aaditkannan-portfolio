@@ -15,8 +15,7 @@ export default defineConfig({
                 footage: './footage.html',
                 projects: './projects.html',
                 fieldStationToolbox: './field-station-toolbox.html',
-                nsUsPulseGenerator: './ns-us-pulse-generator.html',
-                pldtracker: './pldtracker.html'
+                nsUsPulseGenerator: './ns-us-pulse-generator.html'
             }
     }
   }

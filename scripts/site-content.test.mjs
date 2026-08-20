@@ -79,6 +79,7 @@ assert.doesNotMatch(deployableSource, /x[- ]?ray diffraction|xrd/i, 'Deployable 
 assert.doesNotMatch(deployableSource, /<span class="skill-pill">\s*(AFM|PFM|XRD)\s*<\/span>/i, 'Resume skill pills should not list AFM, PFM, or XRD');
 assert.doesNotMatch(deployableSource, /tags:\s*\[[^\]]*['"](AFM|PFM|XRD)['"]/i, 'Project tags should not list AFM, PFM, or XRD as skills');
 assert.doesNotMatch(deployableSource, /Thin-Film Characterization,\s*(XRD|AFM|PFM)/i, 'Resume technical skills should not list AFM, PFM, or XRD');
+assert.doesNotMatch(deployableSource, /\bPLD\b|pulsed laser deposition|pldtracker|PLD Growth|Growth and Deposition Work/i, 'Deployable site source should not mention PLD growth work or PLDTracker');
 assert.doesNotMatch(deployableSource, /\+?1?\s*\(?734\)?[\s)-]*546[\s-]*0380/, 'Deployable site source should not expose the phone number');
 assert.doesNotMatch(deployableSource, /aaditkannan@berkeley\.edu/i, 'Deployable site source should not expose the raw Berkeley email address');
 assert.doesNotMatch(deployableSource, /mailto:/i, 'Deployable site source should not include raw mailto links');

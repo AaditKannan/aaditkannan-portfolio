@@ -23,10 +23,6 @@
     {
       "source": "/projects/ns-us-pulse-generator",
       "destination": "/ns-us-pulse-generator.html"
-    },
-    {
-      "source": "/projects/pldtracker",
-      "destination": "/pldtracker.html"
     }
   ],
   "redirects": [
