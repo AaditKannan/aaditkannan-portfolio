@@ -182,6 +182,7 @@ for (const checkpoint of [/588 V/, /40g lateral/, /20g vertically/, /18%/, /6 mm
   assert.match(formulaAttic[1], checkpoint, `Formula Electric attic case study should retain ${checkpoint.source}`);
 }
 assert.doesNotMatch(formulaAttic[1], /<details/, 'Formula Electric attic should stay fully visible without jumpy disclosures');
+assert.doesNotMatch(formulaAttic[1], /shorted two segment busbars|Nobody was hurt/, 'Formula Electric attic should omit the busbar-short incident');
 assert.match(projects, /id: 'formula-electric-attic'[\s\S]*?title: 'Formula Electric — SN5 HV Attic'[\s\S]*?date: '2025 — 2026'[\s\S]*?active: false[\s\S]*?displayOrder: 4/, 'Attic should be a distinct completed SN5 Formula Electric project');
 assert.match(projects, /id: 'formula-electric-attic'[\s\S]*?images: \[\s*'\/assets\/img1\.png'/, 'SN5 should use the Formula car photo as a distinct thumbnail');
 assert.match(projects, /\.project-card\[data-id="formula-electric-attic"\] \.project-image img\s*{[\s\S]*?object-fit:\s*cover;[\s\S]*?transform:\s*scale\(1\.28\)/, 'SN5 should crop the car thumbnail tightly enough to fill its card');
