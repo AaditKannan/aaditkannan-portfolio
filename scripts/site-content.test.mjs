@@ -153,6 +153,54 @@ assert.match(projects, /\.detail-inner\s*{[\s\S]*max-width:\s*1520px/, 'Project 
 assert.match(projects, /title: 'Wolfrom Humanoid Joint Actuator'/, 'Wolfrom project title should describe its humanoid robotics application');
 assert.doesNotMatch(projects, /title: 'Wolfrom Compound Planetary Actuator'/, 'Wolfrom project should not use the old title');
 
+const formulaCooling = projects.match(/const formulaElectricCoolingDescription = `([\s\S]*?)`;\s*const formulaElectricAtticDescription/);
+assert.ok(formulaCooling, 'Projects should define the Formula Electric cooling case study');
+for (const heading of ['Overview', 'Modeling the Flow', 'What CFD Showed', 'Thermal Result', 'What I Am Changing']) {
+  assert.match(formulaCooling[1], new RegExp(`<strong>${heading}<\\/strong>`), `Formula Electric cooling page should visibly include ${heading}`);
+}
+for (const checkpoint of [/588 V/, /425 CFM/, /521 Pa/, /79%/, /2\.69 W/, /1\.13 kW/, /75\.1 °C/, /60\.8 °C/, /14\.2 °C drop/]) {
+  assert.match(formulaCooling[1], checkpoint, `Formula Electric cooling case study should retain ${checkpoint.source}`);
+}
+assert.match(projects, /description: formulaElectricCoolingDescription/, 'Formula Electric cooling project should render the Wolfrom-style cooling case study');
+assert.doesNotMatch(formulaCooling[1], /cooling-section-nav|cooling-stat-grid|cooling-decision-grid/, 'Formula Electric content should use the established project-detail components');
+assert.doesNotMatch(formulaCooling[1], /<details/, 'Formula Electric cooling should stay fully visible without jumpy disclosures');
+assert.match(projects, /id: 'formula-electric'[\s\S]*?title: 'Formula Electric — SN6 Cooling'[\s\S]*?date: '2026 — Present'[\s\S]*?displayOrder: 3/, 'Cooling should be a distinct current SN6 Formula Electric project');
+const formulaCoolingGallery = projects.match(/id: 'formula-electric'[\s\S]*?images: \[([\s\S]*?)\]\s*\n\s*}/)?.[1] || '';
+assert.deepEqual(
+  [...formulaCoolingGallery.matchAll(/'([^']+)'/g)].map((match) => match[1]),
+  ['/assets/accumimg.png', '/assets/formula-cooling-steady-state.png', '/assets/formula-cooling-temperature-baseline.png', '/assets/formula-cooling-module-stackup.png'],
+  'SN6 should keep the original CAD cover and a tight four-image gallery'
+);
+assert.doesNotMatch(formulaCoolingGallery, /velocity-baseline|temperature-map|variant-60-8|fan-system-curve/, 'Supporting simulations should stay in the SN6 page body');
+
+const formulaAttic = projects.match(/const formulaElectricAtticDescription = `([\s\S]*?)`;\s*\/\/ Projects data/);
+assert.ok(formulaAttic, 'Projects should define a first-class Formula Electric attic case study');
+for (const heading of ['Overview', 'Packaging the HV Hardware', 'Cutting Weight', 'Manufacturing']) {
+  assert.match(formulaAttic[1], new RegExp(`<strong>${heading}<\\/strong>`), `Formula Electric attic page should visibly include ${heading}`);
+}
+for (const checkpoint of [/588 V/, /40g lateral/, /20g vertically/, /18%/, /6 mm polycarbonate/, /3 mm neoprene/]) {
+  assert.match(formulaAttic[1], checkpoint, `Formula Electric attic case study should retain ${checkpoint.source}`);
+}
+assert.doesNotMatch(formulaAttic[1], /<details/, 'Formula Electric attic should stay fully visible without jumpy disclosures');
+assert.match(projects, /id: 'formula-electric-attic'[\s\S]*?title: 'Formula Electric — SN5 HV Attic'[\s\S]*?date: '2025 — 2026'[\s\S]*?active: false[\s\S]*?displayOrder: 4/, 'Attic should be a distinct completed SN5 Formula Electric project');
+assert.match(projects, /id: 'formula-electric-attic'[\s\S]*?images: \[\s*'\/assets\/img1\.png'/, 'SN5 should use the Formula car photo as a distinct thumbnail');
+assert.match(projects, /\.project-card\[data-id="formula-electric-attic"\] \.project-image img\s*{[\s\S]*?object-fit:\s*cover;[\s\S]*?transform:\s*scale\(1\.28\)/, 'SN5 should crop the car thumbnail tightly enough to fill its card');
+assert.match(projects, /data-project-id="formula-electric-attic"\][\s\S]*?img\[src\$="\/img1\.png"\][\s\S]*?transform:\s*scale\(1\.32\)/, 'SN5 should zoom the car image in its project gallery');
+assert.match(projects, /id: 'formula-electric'[\s\S]*?url: '#formula-electric-attic'/, 'Cooling should link to the prior attic project');
+assert.match(projects, /id: 'formula-electric-attic'[\s\S]*?url: '#formula-electric'/, 'Attic should link to the current cooling project');
+assert.match(projects, /data-project-id\^="formula-electric"[\s\S]*?max-width:\s*100%\s*!important/, 'Both Formula pages should keep feature images inside the established reading columns');
+for (const image of [
+  'formula-cooling-steady-state.png',
+  'formula-cooling-velocity-baseline.png',
+  'formula-cooling-temperature-baseline.png',
+  'formula-cooling-temperature-map.png',
+  'formula-cooling-variant-60-8.png',
+  'formula-cooling-module-stackup.png',
+]) {
+  assert.match(projects, new RegExp(image.replace('.', '\\.')), `Formula Electric case study should use ${image}`);
+  assert.ok(existsSync(join(root, 'public', 'assets', image)), `${image} should exist in public assets`);
+}
+
 const pulseGenerator = projects.match(/id: 'ns-us-pulse-generator'([\s\S]*?)id: 'field-station-toolbox'/);
 assert.ok(pulseGenerator, 'Projects should include the pulse-generator entry');
 const pulseGeneratorSource = pulseGenerator[1];

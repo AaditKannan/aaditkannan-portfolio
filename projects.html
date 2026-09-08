@@ -506,6 +506,17 @@
       transform: scale(1.03);
     }
 
+    /* Formula Electric SN5 - bring the car forward inside the wide source image */
+    .project-card[data-id="formula-electric-attic"] .project-image img {
+      object-fit: cover;
+      object-position: 50% 58%;
+      transform: scale(1.28);
+    }
+
+    .project-card[data-id="formula-electric-attic"]:hover .project-image img {
+      transform: scale(1.32);
+    }
+
     /* Pear Volunteering - zoom in from center */
     .project-card[data-id="pear-volunteering"] .project-image img {
       object-fit: cover;
@@ -1282,6 +1293,20 @@
       display: block;
     }
 
+    .detail-content[data-project-id^="formula-electric"] .project-feature-figure img {
+      width: auto;
+      max-width: 100% !important;
+      max-height: 560px;
+      margin-left: auto !important;
+      margin-right: auto !important;
+      object-fit: contain;
+      border-radius: 8px;
+    }
+
+    .detail-content[data-project-id^="formula-electric"] .project-feature-figure:first-of-type img {
+      max-width: 82% !important;
+    }
+
     .project-feature-figure figcaption {
       margin-top: 8px;
       color: var(--text-muted);
@@ -1327,6 +1352,7 @@
     .project-result-list li {
       margin: 5px 0;
     }
+
 
     @media (max-width: 768px) {
       .project-inline-grid {
@@ -1728,6 +1754,12 @@
 
     [data-theme="light"] .gallery-main img {
       background: #f0ede9;
+    }
+
+    .detail-content[data-project-id="formula-electric-attic"] #galleryMediaContainer img[src$="/img1.png"] {
+      object-fit: cover;
+      object-position: 50% 58%;
+      transform: scale(1.32);
     }
 
     .detail-content[data-project-id="wolfrom-actuator"] .gallery-main,
@@ -2415,6 +2447,109 @@ const wolfromDescription = `
 
   <strong>Status</strong><br><br>
   I am manufacturing the CNC aluminum structure and wire-EDM ring gears while building the dyno. The test sequence will start with contact patterns and load sharing, then measure breakaway torque, backdrive feel, output torque, and efficiency. No final backlash, torque, backdrive, or efficiency result is claimed yet.`;
+
+
+const formulaElectricCoolingDescription = `
+  <strong>Overview</strong><br><br>
+  For SN6, I am working on cooling Formula Electric at Berkeley's <b>588 V accumulator</b>. The pack has 420 cylindrical cells split across ten 14s3p modules. Five Sanyo Denki exhaust fans each pull through a two-module branch.<br><br>
+
+  Free-air CFM is basically useless here. The cells, inlet holes, and divider put hundreds of pascals of resistance in front of the fans, and some air finds paths around the cells.<br><br>
+
+  <figure class="project-feature-figure">
+    <img src="/assets/formula-cooling-module-stackup.png" alt="Exploded horizontal stackup of a Formula Electric battery module showing the cell array, structural frames, sensing electronics, and covers" width="888" height="409" loading="lazy" decoding="async">
+    <figcaption>Exploded 42-cell module stackup. This is the hardware the airflow has to cross.</figcaption>
+  </figure>
+
+  <strong>Modeling the Flow</strong><br><br>
+  I built a MATLAB pressure-drop model around the real Sanyo fan curve. It predicts an operating point near <b>425 CFM at 521 Pa</b>, or about 85 CFM through each two-module branch. Cell-bank crossflow accounts for roughly <b>79%</b> of the modeled loss.<br><br>
+
+  The analytical model gave me the system-level answer. Icepak showed me where the flow was actually going.<br><br>
+
+  <figure class="project-feature-figure">
+    <img src="/assets/formula-cooling-steady-state.png" alt="ANSYS Icepak steady-state temperature field with streamlines passing through both accumulator modules" width="356" height="214" loading="lazy" decoding="async">
+    <figcaption>Steady-state temperature and streamlines through both modules.</figcaption>
+  </figure>
+
+  <strong>What CFD Showed</strong><br><br>
+  The flow split across the two modules was uneven. The center divider created a sharp restriction, and several inlet regions fed easy bypass paths. More inlet holes did not automatically mean more useful airflow.<br><br>
+
+  The simulated branch settled near <b>92 CFM per fan at 457 Pa</b>, close to the MATLAB result. That gave me confidence in the overall operating point while exposing the local geometry problems the lumped model could not show.<br><br>
+
+  <figure class="project-feature-figure">
+    <img src="/assets/formula-cooling-velocity-baseline.png" alt="ANSYS Icepak speed streamlines entering the accumulator and passing through both cell banks" width="1417" height="850" loading="lazy" decoding="async">
+    <figcaption>Baseline velocity field. The streamline paths make the bypass and module imbalance easy to see.</figcaption>
+  </figure>
+
+  <strong>Thermal Result</strong><br><br>
+  At the 55 A RMS design case, each cell dissipates about <b>2.69 W</b>. That is roughly <b>1.13 kW</b> across the full pack.<br><br>
+
+  The baseline case reached <b>75.1 °C</b> with a 35 °C inlet. The best saved iteration reached <b>60.8 °C</b>, a 14.2 °C drop. It is still 0.8 °C above the 60 °C target.<br><br>
+
+  <div class="project-inline-grid">
+    <figure>
+      <img src="/assets/formula-cooling-temperature-baseline.png" alt="Baseline Icepak cell-temperature field with a maximum of 75.054 degrees Celsius" width="1413" height="850" loading="lazy" decoding="async">
+      <figcaption>Baseline · 75.1 °C maximum.</figcaption>
+    </figure>
+    <figure>
+      <img src="/assets/formula-cooling-variant-60-8.png" alt="Improved CFD run with a maximum cell temperature of 60.820 degrees Celsius" width="1421" height="859" loading="lazy" decoding="async">
+      <figcaption>Best saved run · 60.8 °C maximum.</figcaption>
+    </figure>
+  </div>
+
+  <figure class="project-feature-figure">
+    <img src="/assets/formula-cooling-temperature-map.png" alt="Top-down cell-temperature map showing the hot corner of the second module" width="622" height="369" loading="lazy" decoding="async">
+    <figcaption>The per-cell map shows the hot corner in the downstream module.</figcaption>
+  </figure>
+
+  <strong>What I Am Changing</strong><br><br>
+  <ul class="project-result-list">
+    <li><b>Open the center divider.</b> Give the downstream module a cleaner flow path.</li>
+    <li><b>Remove bad inlet paths.</b> Block holes that feed bypass around the cells.</li>
+    <li><b>Test inlet assistance.</b> Pair a thin intake fan with the existing high-static-pressure exhaust fan.</li>
+  </ul>
+
+  I am using the model to decide which changes are worth carrying back into CAD. The next step is tying each saved thermal result to its exact geometry revision and rerunning the strongest configuration with consistent comparison planes.`;
+
+const formulaElectricAtticDescription = `
+  <strong>Overview</strong><br><br>
+  For SN5, I designed and manufactured the attic casing for Formula Electric at Berkeley's <b>588 V accumulator</b>. The attic holds the contactors, current sensor, busbars, connectors, and low-voltage controls above the cells.<br><br>
+
+  It had to survive <b>40g lateral and longitudinal loads</b> and <b>20g vertically</b>, keep the HV system isolated, pass water-ingress checks, and stay easy to inspect and service.<br><br>
+
+  <figure class="project-feature-figure">
+    <img src="/assets/formula-cooling-attic.png" alt="Top view of the Formula Electric accumulator attic showing high-voltage electronics and service clearances" width="512" height="512" loading="lazy" decoding="async">
+    <figcaption>SN5 attic layout with the HV hardware packed above the accumulator.</figcaption>
+  </figure>
+
+  <strong>Packaging the HV Hardware</strong><br><br>
+  I built the enclosure around the real contactor, current-sensor, busbar, connector, and harness geometry. I checked copper clearance, wire bends, tool access, inspection sightlines, and the order the panels could come apart.<br><br>
+
+  Early in the season, I accidentally shorted two segment busbars. Nobody was hurt, but the cells heated up extremely fast. After that, I reviewed every exposed interface as live hardware and kept risky connections visible for inspection.<br><br>
+
+  <div class="project-inline-grid">
+    <figure>
+      <img src="/assets/formula-e-hv-hardware.jpg" alt="Formula Electric high-voltage contactors, busbars, current sensing, connectors, and low-voltage harnessing" loading="lazy" decoding="async">
+      <figcaption>The actual contactors, busbars, current sensor, connectors, and harnessing.</figcaption>
+    </figure>
+    <figure>
+      <img src="/assets/formula-cooling-accumulator-render.png" alt="Formula Electric accumulator and attic enclosure render" width="760" height="602" loading="lazy" decoding="async">
+      <figcaption>The complete accumulator with the attic above the cell enclosure.</figcaption>
+    </figure>
+  </div>
+
+  <strong>Cutting Weight</strong><br><br>
+  The revised casing came out <b>18% lighter</b>. I used 6061-T6 aluminum because it fit our welding, heat-treatment, and shop constraints. The floor is <b>6 mm polycarbonate</b> for electrical isolation and visual inspection. A <b>3 mm neoprene gasket</b> seals the perimeter, and Nomex 410 lines surfaces near the HV hardware.<br><br>
+
+  <strong>Manufacturing</strong><br><br>
+  I designed every panel around the processes we actually had: FabLight laser cutting, TIG welding, heat treatment, and waterjet cutting for the polycarbonate and gasket. That meant planning weld access, datums, fastener reach, fit-up, and assembly order in CAD.<br><br>
+
+  <figure class="project-feature-figure">
+    <img src="/assets/formula-e-attic-fabrication.jpg" alt="Formula Electric accumulator attic panel clamped during fabrication fit-up" loading="lazy" decoding="async">
+    <figcaption>Checking panel fit-up and hardware clearance during fabrication.</figcaption>
+  </figure>
+
+  The final casing is lighter, sealed, electrically isolated, and easy for the team to open and inspect. It still goes through structural review, dielectric testing, water-ingress checks, and gasket-compression inspection before running in the car.`;
+
     // Projects data
     const projects = [
       {
@@ -2438,23 +2573,53 @@ const wolfromDescription = `
       },
       {
         id: 'formula-electric',
-        title: 'Formula Electric at Berkeley (FEB)',
+        title: 'Formula Electric — SN6 Cooling',
+        category: 'Hardware',
+        filterCategory: 'hardware',
+        years: [2026],
+        period: 'college',
+        date: '2026 — Present',
+        active: true,
+        featured: false,
+        displayOrder: 3,
+        excerpt: 'Modeled airflow, pressure loss, and cell temperature for Berkeley\'s 588V Formula Electric accumulator.',
+        description: formulaElectricCoolingDescription,
+        tags: ['MATLAB', 'ANSYS Icepak', 'CFD', 'Heat Transfer', 'Fan Curves', 'Thermal Modeling', 'SolidWorks'],
+        links: [
+          { url: '#formula-electric-attic', label: 'SN5 Accumulator Attic' },
+          { url: 'https://ev.berkeley.edu/', label: 'Team Website' }
+        ],
+        images: [
+          '/assets/accumimg.png',
+          '/assets/formula-cooling-steady-state.png',
+          '/assets/formula-cooling-temperature-baseline.png',
+          '/assets/formula-cooling-module-stackup.png'
+        ]
+      },
+      {
+        id: 'formula-electric-attic',
+        title: 'Formula Electric — SN5 HV Attic',
         category: 'Hardware',
         filterCategory: 'hardware',
         years: [2025, 2026],
         period: 'college',
-        date: 'Sep 2025 — Present',
-        active: true,
+        date: '2025 — 2026',
+        active: false,
         featured: false,
-        excerpt: 'High-voltage battery system for Berkeley\'s Formula Electric racing team.',
-        description: `<strong>The Accumulator</strong><br><br>I work on the Accumulator subteam at Formula Electric at Berkeley, designing and manufacturing the attic casing for our 588V lithium-ion battery pack. At 588V, packaging decides whether the system can be inspected, serviced, sealed, cooled, and handled without turning every maintenance step into a high-voltage risk.<br><br>I once accidentally shorted two segment busbars together and watched the cells heat up alarmingly fast. Nobody was hurt. The incident changed how I approach every decision on this system: assume stored energy is real, make inspection easy, and keep risky interfaces visible in the design.<br><br><strong>My Role: The Attic</strong><br><br>The casing has to survive FSAE crash loading, maintain dielectric isolation, pass water-ingress checks, and stay serviceable around the busbars, sensing, and HV electronics. I used SolidWorks and SolidWorks PDM for the packaging work, then ran FEA to check stress and deflection under the required 40g lateral, 40g longitudinal, and 20g vertical load cases with the team safety factors baked into the design review.<br><br>The attic mass came down by 18% while keeping the structural and dielectric requirements intact. Material choice was part of that trade: 6061-T6 aluminum gave us a workable balance between weight, weldability, heat treatment, and shop reality. 7075 was stronger on paper; welding made it a poor structural choice. Steel was heavy, and carbon fiber introduced conductivity concerns near HV components.<br><br><strong>Electrical Packaging</strong><br><br>The attic geometry has to follow the real HV hardware. I use the physical contactor, current-sensor, busbar, connector, and low-voltage harness layout to check copper clearances, wire bend space, inspection access, and whether the casing can be opened without disturbing every electrical interface.<br><br><picture><source srcset="/assets/formula-e-hv-hardware.webp" type="image/webp"><img src="/assets/formula-e-hv-hardware.jpg" alt="Formula Electric high-voltage hardware with copper busbars, contactors, current sensing, connectors, and low-voltage harnessing" loading="lazy" decoding="async" style="display:block; max-width: 72%; margin: 20px auto; border-radius: 8px;"></picture><br><em style="opacity: 0.7; font-size: 0.9em;">HV hardware used to check busbar paths, sensor placement, connector access, and harness routing against the casing package.</em><br><br><strong>Floor and Sealing</strong><br><br>The floor uses 6 mm polycarbonate because it gives electrical isolation, impact resistance, and visual inspection access without disassembling the pack; at roughly 15 kV/mm dielectric strength, the material choice has huge margin over the 588V pack voltage. Waterproofing uses a 3 mm neoprene gasket at controlled compression, with aluminum standoffs preventing over-compression around the perimeter. I chose neoprene over silicone because petroleum resistance matters near the powertrain and paddock environment.<br><br><img src="/assets/accumimg.png" alt="Formula Electric accumulator attic CAD and casing packaging context" style="max-width: 100%; margin: 20px 0; border-radius: 8px;"><br><em style="opacity: 0.7; font-size: 0.9em;">Accumulator attic packaging: casing geometry, service access, busbar clearance, and gasket path all have to work together.</em><br><br><strong>Insulation and Thermal</strong><br><br>All internal surfaces near HV components are lined with Nomex 410 for dielectric and flame resistance. The thermal work focuses on airflow and heat escape where the pack actually needs it. The serviceability constraint is always there too: if the design makes inspection miserable, it will fail in the shop even if the simulation is clean.<br><br><strong>Manufacturing</strong><br><br>Panels are laser-cut on a FabLight fiber laser, TIG welded, then heat-treated. The polycarbonate floor and neoprene gasket are waterjet cut.<br><br><picture><source srcset="/assets/formula-e-attic-fabrication.webp" type="image/webp"><img src="/assets/formula-e-attic-fabrication.jpg" alt="Formula Electric accumulator attic panel clamped on a fabrication table during fit-up and hardware clearance work" loading="lazy" decoding="async" style="display:block; max-width: 66%; margin: 20px auto; border-radius: 8px;"></picture><br><em style="opacity: 0.7; font-size: 0.9em;">Panel fit-up and hardware-clearance work on the clamped attic assembly before final integration.</em><br><br>Before approval, the casing goes through dielectric testing, water-ingress checks, structural simulation review, and gasket compression inspection. The work is a mix of CAD, FEA, GD&T, HV packaging, material choice, and manufacturing planning, all pointed at one goal: a pack that can survive competition and still be worked on by humans.`,
-        tags: ['SolidWorks', 'SolidWorks PDM', 'FEA', 'GD&T', 'High-Voltage Packaging', 'Laser Cutting', 'Waterjet', 'TIG Welding'],
-        links: [{ url: 'https://ev.berkeley.edu/', label: 'Team Website' }],
+        displayOrder: 4,
+        excerpt: 'Designed and manufactured a lighter, serviceable casing for the accumulator\'s 588V high-voltage electronics.',
+        description: formulaElectricAtticDescription,
+        tags: ['SolidWorks', 'SolidWorks PDM', 'FEA', 'GD&T', 'High-Voltage Packaging', 'Laser Cutting', 'Waterjet', 'TIG Welding', 'DFMA'],
+        links: [
+          { url: '#formula-electric', label: 'SN6 Accumulator Cooling' },
+          { url: 'https://ev.berkeley.edu/', label: 'Team Website' }
+        ],
         images: [
-          '/assets/accumimg.png',
-          '/assets/formula-e-attic-fabrication.jpg',
-          '/assets/formula-e-hv-hardware.jpg',
           '/assets/img1.png',
+          '/assets/formula-cooling-attic.png',
+          '/assets/formula-e-hv-hardware.jpg',
+          '/assets/formula-cooling-accumulator-render.png',
+          '/assets/formula-e-attic-fabrication.jpg',
           '/assets/img2.png',
           '/assets/img3.png',
           '/assets/accumsa.png',
@@ -2930,11 +3095,11 @@ const wolfromDescription = `
         const categoryMatch = activeFilter === 'all' || categories.includes(activeFilter);
         return categoryMatch;
       }).sort((a, b) => {
-        // Active projects first, then preserve array order
-        if (a.active !== b.active) return a.active ? -1 : 1;
+        // Explicit portfolio order first, then active projects and array order.
         if ((a.displayOrder || 999) !== (b.displayOrder || 999)) {
           return (a.displayOrder || 999) - (b.displayOrder || 999);
         }
+        if (a.active !== b.active) return a.active ? -1 : 1;
         return projects.indexOf(a) - projects.indexOf(b);
       });
     }
@@ -2950,7 +3115,7 @@ const wolfromDescription = `
 
       const webpSrc = (src) => src.replace(/\.(png|jpe?g)$/i, '.webp');
       const webpMissing = new Set(['/assets/pulse-v1-ltspice.png']);
-      const hasWebpVariant = (src) => /\.(png|jpe?g)$/i.test(src) && !webpMissing.has(src);
+      const hasWebpVariant = (src) => /\.(png|jpe?g)$/i.test(src) && !webpMissing.has(src) && !src.startsWith('/assets/formula-cooling-');
       const isVideoSrc = (src) => src.endsWith('.mp4') || src.endsWith('.webm');
       const gridThumb = (src, alt) => {
         if (isVideoSrc(src)) {
@@ -3065,7 +3230,7 @@ const wolfromDescription = `
         const isVideo = (src) => src.endsWith('.mp4') || src.endsWith('.webm');
       const webpSrc = (src) => src.replace(/\.(png|jpe?g)$/i, '.webp');
       const galleryWebpMissing = new Set(['/assets/pulse-v1-ltspice.png']);
-      const hasWebpVariant = (src) => /\.(png|jpe?g)$/i.test(src) && !galleryWebpMissing.has(src);
+      const hasWebpVariant = (src) => /\.(png|jpe?g)$/i.test(src) && !galleryWebpMissing.has(src) && !src.startsWith('/assets/formula-cooling-');
       const pulseGalleryPhotoAssets = new Set(['/assets/pulse-v1-cover.jpg', '/assets/pulse-v1-bench.jpeg']);
       const galleryCanvasClass = (src) => {
         if (project.id !== 'ns-us-pulse-generator') return '';
