@@ -120,6 +120,7 @@ assert.match(resume, /Designing the 588V accumulator hardware and cooling system
 assert.match(resume, /Researching beyond-CMOS memory and logic while building high-frequency pulse electronics/, 'Resume About section should connect beyond-CMOS research with high-frequency electronics');
 assert.match(resume, /Building a compact high-ratio <a href="\/projects#wolfrom-actuator"[\s\S]*?>Wolfrom gearbox<\/a> for humanoid joints<\/li>/, 'Resume About section should keep Wolfrom to one concise line');
 assert.match(resume, /Incoming Mechanical Engineering Intern at <a href="https:\/\/www\.spacex\.com\/"[\s\S]*?><strong>SpaceX<\/strong><\/a>/, 'Resume About section should include the incoming SpaceX role as a linked bold name');
+assert.match(resume, /\.about-highlight\s*{[\s\S]*?color:\s*var\(--text-heading\);[\s\S]*?font-weight:\s*700;/, 'Resume About project and company links should be bold and heading-black');
 assert.match(resume, /Led cooling design for a 588V Formula Electric battery pack[\s\S]*?Improved simulated peak cell temperature by 14\.2&deg;C/, 'Formula Electric resume copy should lead with impact and keep only the strongest metrics');
 assert.doesNotMatch(resume, /420-cell accumulator|92 CFM per fan|457 Pa|1\.13 kW pack heat/, 'Formula Electric resume copy should not read like a simulation report');
 assert.doesNotMatch(resume, /focused on hands-on electromechanical hardware|Developing lab tools and workflows/, 'Resume About section should not use the newer lab-tools description');
