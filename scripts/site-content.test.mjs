@@ -119,12 +119,15 @@ assert.match(resume, /<p class="subtitle">Electromechanical Engineer<\/p>/, 'Res
 assert.match(resume, /Designing the 588V accumulator hardware and cooling system/, 'Resume About section should mention accumulator hardware and cooling');
 assert.match(resume, /Researching beyond-CMOS memory and logic while building high-frequency pulse electronics/, 'Resume About section should connect beyond-CMOS research with high-frequency electronics');
 assert.match(resume, /Building a compact high-ratio <a href="\/projects#wolfrom-actuator"[\s\S]*?>Wolfrom gearbox<\/a> for humanoid joints<\/li>/, 'Resume About section should keep Wolfrom to one concise line');
-assert.match(resume, /Incoming Mechanical Engineering Intern · SpaceX/, 'Resume Technical Experience should include the incoming SpaceX role');
+assert.match(resume, /Incoming Mechanical Engineering Intern at <a href="https:\/\/www\.spacex\.com\/"[\s\S]*?><strong>SpaceX<\/strong><\/a>/, 'Resume About section should include the incoming SpaceX role as a linked bold name');
+assert.match(resume, /Led cooling design for a 588V Formula Electric battery pack[\s\S]*?Improved simulated peak cell temperature by 14\.2&deg;C/, 'Formula Electric resume copy should lead with impact and keep only the strongest metrics');
+assert.doesNotMatch(resume, /420-cell accumulator|92 CFM per fan|457 Pa|1\.13 kW pack heat/, 'Formula Electric resume copy should not read like a simulation report');
 assert.doesNotMatch(resume, /focused on hands-on electromechanical hardware|Developing lab tools and workflows/, 'Resume About section should not use the newer lab-tools description');
 assert.match(resume, /Designed 5 robots across 500\+ part CAD assemblies/, 'Resume robotics entry should use the requested 5 robots count');
 assert.doesNotMatch(resume, /Designed 8 robots across/, 'Resume robotics entry should not use the old 8 robots count');
 const technicalExperience = resume.match(/<section id="technical-experience">([\s\S]*?)<section id="education">/);
 assert.ok(technicalExperience, 'Resume should include Technical Experience before Education');
+assert.doesNotMatch(technicalExperience[1], /SpaceX/, 'SpaceX should stay in About instead of Technical Experience');
 const firstTechnicalHeading = technicalExperience[1].match(/<h3>[\s\S]*?<\/h3>/);
 assert.ok(firstTechnicalHeading, 'Technical Experience should include at least one entry');
 assert.match(firstTechnicalHeading[0], /Formula Electric at Berkeley/, 'Formula Electric should be first in Technical Experience');
@@ -134,7 +137,7 @@ assert.ok(
 );
 const formulaResumeEntry = technicalExperience[1].match(/HV Battery Pack Mechanical Engineer · Formula Electric at Berkeley[\s\S]*?<div class="entry-date">Sep 2025/);
 assert.ok(formulaResumeEntry, 'Technical Experience should include the Formula Electric entry');
-for (const checkpoint of [/420-cell accumulator/, /ANSYS Icepak CFD/, /92 CFM per fan/, /457 Pa/, /75\.1&deg;C/, /60\.8&deg;C/, /1\.13 kW pack heat/, /18%/]) {
+for (const checkpoint of [/Led cooling design/, /ANSYS Icepak CFD/, /14\.2&deg;C/, /18%/]) {
   assert.match(formulaResumeEntry[0], checkpoint, `Formula Electric resume entry should retain ${checkpoint.source}`);
 }
 for (const skill of ['MATLAB', 'ANSYS Icepak CFD', 'Heat Transfer', 'SolidWorks/PDM', 'HV Systems']) {
