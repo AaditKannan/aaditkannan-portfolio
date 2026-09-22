@@ -127,6 +127,14 @@ assert.ok(
   technicalExperience[1].indexOf('Formula Electric at Berkeley') < technicalExperience[1].indexOf('Ramesh Lab'),
   'Formula Electric should appear above Ramesh Lab in Technical Experience'
 );
+const formulaResumeEntry = technicalExperience[1].match(/HV Battery Pack Mechanical Engineer · Formula Electric at Berkeley[\s\S]*?<div class="entry-date">Sep 2025/);
+assert.ok(formulaResumeEntry, 'Technical Experience should include the Formula Electric entry');
+for (const checkpoint of [/420-cell accumulator/, /ANSYS Icepak CFD/, /92 CFM per fan/, /457 Pa/, /75\.1&deg;C/, /60\.8&deg;C/, /1\.13 kW pack heat/, /18%/]) {
+  assert.match(formulaResumeEntry[0], checkpoint, `Formula Electric resume entry should retain ${checkpoint.source}`);
+}
+for (const skill of ['MATLAB', 'ANSYS Icepak CFD', 'Heat Transfer', 'SolidWorks/PDM', 'HV Systems']) {
+  assert.match(formulaResumeEntry[0], new RegExp(`<span class="skill-pill">${skill.replace('/', '\\/')}<\\/span>`), `Formula Electric resume entry should include ${skill}`);
+}
 const undergraduateResearcher = technicalExperience[1].match(/Undergraduate Researcher[\s\S]*?<div class="entry-date">Jan 2026/);
 assert.ok(undergraduateResearcher, 'Technical Experience should include the Undergraduate Researcher entry');
 assert.doesNotMatch(undergraduateResearcher[0], /Altium/, 'Undergraduate Researcher skill pills should not include Altium');
