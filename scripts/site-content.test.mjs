@@ -115,6 +115,11 @@ assert.doesNotMatch(resume, />Current Projects</, 'Resume should not use the Cur
 assert.doesNotMatch(resume, /current-projects|>\s*Current\s*</, 'Resume navigation should not use Current Projects wording or anchors');
 assert.doesNotMatch(resume, /<section id="work-experience">|data-section="work-experience"|>\s*Work\s*</, 'Resume should not include a separate Work section or sidebar item');
 assert.match(resume, /Mechanical engineering and EECS student at UC Berkeley interested in robotics, semiconductors, and space\./, 'Resume About intro should use the restored concise wording with semiconductors');
+assert.match(resume, /<p class="subtitle">Electromechanical Engineer<\/p>/, 'Resume sidebar should use the Electromechanical Engineer subtitle');
+assert.match(resume, /Designing the 588V accumulator hardware and cooling system/, 'Resume About section should mention accumulator hardware and cooling');
+assert.match(resume, /Researching beyond-CMOS memory and logic while building high-frequency pulse electronics/, 'Resume About section should connect beyond-CMOS research with high-frequency electronics');
+assert.match(resume, /Building a compact high-ratio <a href="\/projects#wolfrom-actuator"[\s\S]*?>Wolfrom gearbox<\/a> for humanoid joints<\/li>/, 'Resume About section should keep Wolfrom to one concise line');
+assert.match(resume, /Incoming Mechanical Engineering Intern · SpaceX/, 'Resume Technical Experience should include the incoming SpaceX role');
 assert.doesNotMatch(resume, /focused on hands-on electromechanical hardware|Developing lab tools and workflows/, 'Resume About section should not use the newer lab-tools description');
 assert.match(resume, /Designed 5 robots across 500\+ part CAD assemblies/, 'Resume robotics entry should use the requested 5 robots count');
 assert.doesNotMatch(resume, /Designed 8 robots across/, 'Resume robotics entry should not use the old 8 robots count');
