@@ -121,8 +121,8 @@ assert.match(resume, /Researching beyond-CMOS memory and logic while building hi
 assert.match(resume, /Building a compact high-ratio <a href="\/projects#wolfrom-actuator"[\s\S]*?>Wolfrom gearbox<\/a> for humanoid joints<\/li>/, 'Resume About section should keep Wolfrom to one concise line');
 assert.match(resume, /Incoming Mechanical Engineering Intern at <a href="https:\/\/www\.spacex\.com\/"[\s\S]*?><strong>SpaceX<\/strong><\/a>/, 'Resume About section should include the incoming SpaceX role as a linked bold name');
 assert.match(resume, /\.about-highlight\s*{[\s\S]*?color:\s*var\(--text-heading\);[\s\S]*?font-weight:\s*700;/, 'Resume About project and company links should be bold and heading-black');
-assert.match(resume, /Led cooling design for a 588V Formula Electric battery pack[\s\S]*?Improved simulated peak cell temperature by 14\.2&deg;C/, 'Formula Electric resume copy should lead with impact and keep only the strongest metrics');
-assert.doesNotMatch(resume, /420-cell accumulator|92 CFM per fan|457 Pa|1\.13 kW pack heat/, 'Formula Electric resume copy should not read like a simulation report');
+assert.doesNotMatch(resume, /Led cooling design|14\.2&deg;C/, 'Formula Electric resume copy should separate the seasonal thermal result from the packaging bullet');
+assert.doesNotMatch(resume, /92 CFM per fan|457 Pa|1\.13 kW pack heat/, 'Formula Electric resume copy should not read like a simulation report');
 assert.doesNotMatch(resume, /focused on hands-on electromechanical hardware|Developing lab tools and workflows/, 'Resume About section should not use the newer lab-tools description');
 assert.match(resume, /Designed 5 robots across 500\+ part CAD assemblies/, 'Resume robotics entry should use the requested 5 robots count');
 assert.doesNotMatch(resume, /Designed 8 robots across/, 'Resume robotics entry should not use the old 8 robots count');
@@ -138,7 +138,7 @@ assert.ok(
 );
 const formulaResumeEntry = technicalExperience[1].match(/HV Battery Pack Mechanical Engineer · Formula Electric at Berkeley[\s\S]*?<div class="entry-date">Sep 2025/);
 assert.ok(formulaResumeEntry, 'Technical Experience should include the Formula Electric entry');
-for (const checkpoint of [/Led cooling design/, /ANSYS Icepak CFD/, /14\.2&deg;C/, /18%/]) {
+for (const checkpoint of [/Designed and optimized air-cooling architecture for a 420-cell accumulator/, /predicted 425 CFM operating airflow across five fans/, /Developed analytical heat-transfer models/, /guiding fan selection, inlet geometry, and accumulator packaging/, /reduced enclosure mass by 18%/, /sized conductors for 80 A peak current/]) {
   assert.match(formulaResumeEntry[0], checkpoint, `Formula Electric resume entry should retain ${checkpoint.source}`);
 }
 for (const skill of ['MATLAB', 'ANSYS Icepak CFD', 'Heat Transfer', 'SolidWorks/PDM', 'HV Systems']) {
