@@ -1317,9 +1317,17 @@
     }
 
     .detail-content[data-project-id^="formula-electric"] .project-priority-result img {
+      width: 100% !important;
+      max-width: 760px !important;
+      max-height: 520px;
+      margin-left: auto !important;
+      margin-right: auto !important;
+    }
+
+    .detail-content[data-project-id^="formula-electric"] .project-baseline-velocity img {
       width: auto;
-      max-width: 620px !important;
-      max-height: 360px;
+      max-width: 58% !important;
+      max-height: 420px;
       margin-left: auto !important;
       margin-right: auto !important;
     }
@@ -2508,7 +2516,7 @@ const formulaElectricCoolingDescription = `
 
   The first Icepak runs made the same point visually: the center divider restricted the downstream bank and some inlet regions fed easy bypass paths. More holes did not automatically mean more useful airflow.<br><br>
 
-  <figure class="project-feature-figure">
+  <figure class="project-feature-figure project-baseline-velocity">
     <img src="/assets/formula-cooling-velocity-baseline.png" alt="ANSYS Icepak speed streamlines entering the accumulator and passing through both cell banks" width="1417" height="850" loading="lazy" decoding="async">
     <figcaption>Baseline velocity field. The streamline paths make the bypass and module imbalance easy to see.</figcaption>
   </figure>

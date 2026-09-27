@@ -182,6 +182,8 @@ assert.match(projects, /description: formulaElectricCoolingDescription/, 'Formul
 assert.doesNotMatch(formulaCooling[1], /cooling-section-nav|cooling-stat-grid|cooling-decision-grid/, 'Formula Electric content should use the established project-detail components');
 assert.doesNotMatch(formulaCooling[1], /<details/, 'Formula Electric cooling should stay fully visible without jumpy disclosures');
 assert.ok(formulaCooling[1].indexOf('formula-cooling-sub60.png') < formulaCooling[1].indexOf('formula-cooling-module-stackup.png'), 'SN6 should lead with the current optimized cooling result');
+assert.match(projects, /\.project-priority-result img\s*{[\s\S]*?width:\s*100%\s*!important[\s\S]*?max-width:\s*760px\s*!important[\s\S]*?max-height:\s*520px/, 'SN6 optimized steady-state image should be prominent');
+assert.match(projects, /\.project-baseline-velocity img\s*{[\s\S]*?max-width:\s*58%\s*!important/, 'SN6 baseline velocity image should stay secondary');
 assert.match(projects, /\.project-hand-calcs img\s*{[\s\S]*?max-width:\s*180px\s*!important[\s\S]*?max-height:\s*220px/, 'SN6 hand calculations should stay compact until enlarged');
 assert.match(projects, /id: 'formula-electric'[\s\S]*?title: 'Formula Electric — SN6 Cooling'[\s\S]*?date: '2026 — Present'[\s\S]*?displayOrder: 3/, 'Cooling should be a distinct current SN6 Formula Electric project');
 const formulaCoolingGallery = projects.match(/id: 'formula-electric'[\s\S]*?images: \[([\s\S]*?)\]\s*\n\s*}/)?.[1] || '';
