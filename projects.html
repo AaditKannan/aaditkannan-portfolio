@@ -1307,6 +1307,23 @@
       max-width: 82% !important;
     }
 
+    .detail-content[data-project-id^="formula-electric"] .project-hand-calcs img {
+      width: auto;
+      max-width: 180px !important;
+      max-height: 220px;
+      margin-left: auto !important;
+      margin-right: auto !important;
+      cursor: zoom-in;
+    }
+
+    .detail-content[data-project-id^="formula-electric"] .project-priority-result img {
+      width: auto;
+      max-width: 620px !important;
+      max-height: 360px;
+      margin-left: auto !important;
+      margin-right: auto !important;
+    }
+
     .project-feature-figure figcaption {
       margin-top: 8px;
       color: var(--text-muted);
@@ -2451,9 +2468,16 @@ const wolfromDescription = `
 
 const formulaElectricCoolingDescription = `
   <strong>Overview</strong><br><br>
-  For SN6, I am working on cooling Formula Electric at Berkeley's <b>588 V accumulator</b>. The pack has 420 cylindrical cells split across ten 14s3p modules. Five Sanyo Denki exhaust fans each pull through a two-module branch.<br><br>
+  For SN6, I am working on cooling Formula Electric at Berkeley's <b>588 V accumulator</b>. The pack has 420 cylindrical cells split across ten 14s3p modules. Five Sanyo Denki exhaust fans pull through the two-module branches.<br><br>
 
-  Free-air CFM is basically useless here. The cells, inlet holes, and divider put hundreds of pascals of resistance in front of the fans, and some air finds paths around the cells.<br><br>
+  The requirement is simple: keep every cell below <b>60 °C</b> through a 25-minute endurance case at <b>35 °C ambient</b>, while keeping cell-to-cell spread below <b>5 °C</b>. The current draw basis is <b>56 A RMS</b>, or roughly <b>226 W per branch</b>.<br><br>
+
+  The current optimized five-exhaust run is below the target at about <b>58 °C maximum</b>, with a <b>49 °C mean</b> and <b>5.4 °C spread</b>. It is the strongest saved result so far, with busbar and PCB heat, mesh, and shroud/rainproofing losses still to add.<br><br>
+
+  <figure class="project-feature-figure project-priority-result">
+    <img src="/assets/formula-cooling-sub60.png" alt="Optimized ANSYS Icepak temperature field with streamlines through both accumulator modules below 60 degrees Celsius" width="368" height="256" loading="lazy" decoding="async">
+    <figcaption>Current optimized steady-state run · below 60 °C.</figcaption>
+  </figure>
 
   <figure class="project-feature-figure">
     <img src="/assets/formula-cooling-module-stackup.png" alt="Exploded horizontal stackup of a Formula Electric battery module showing the cell array, structural frames, sensing electronics, and covers" width="888" height="409" loading="lazy" decoding="async">
@@ -2461,19 +2485,28 @@ const formulaElectricCoolingDescription = `
   </figure>
 
   <strong>Modeling the Flow</strong><br><br>
-  I built a MATLAB pressure-drop model around the real Sanyo fan curve. It predicts an operating point near <b>425 CFM at 521 Pa</b>, or about 85 CFM through each two-module branch. Cell-bank crossflow accounts for roughly <b>79%</b> of the modeled loss.<br><br>
-
-  The analytical model gave me the system-level answer. Icepak showed me where the flow was actually going.<br><br>
+  I built a MATLAB pressure-drop model around the real Sanyo fan curve. It puts the operating point at <b>425 CFM (12.04 m³/min)</b>, or <b>85.1 CFM per fan</b>, at <b>521 Pa</b>. Total fan electrical power is <b>234 W</b>, well below the combined <b>653 CFM</b> free-air rating.<br><br>
 
   <figure class="project-feature-figure">
-    <img src="/assets/formula-cooling-steady-state.png" alt="ANSYS Icepak steady-state temperature field with streamlines passing through both accumulator modules" width="356" height="214" loading="lazy" decoding="async">
-    <figcaption>Steady-state temperature and streamlines through both modules.</figcaption>
+    <img src="/assets/formula-cooling-fan-system-curve.png" alt="MATLAB fan pressure-flow curve and cross-flow pack system curve showing the 425 CFM operating point" width="804" height="530" loading="lazy" decoding="async">
+    <figcaption>MATLAB fan/system-curve intersection at the modeled operating point.</figcaption>
+  </figure>
+
+  The model gives an approach velocity of <b>3.19 m/s</b> and a maximum cell-gap velocity of <b>16.76 m/s</b> (<b>Re<sub>max</sub> = 22,143</b>). The pressure split is <b>412 Pa</b> across the cell bank (<b>79%</b>), <b>106 Pa</b> across the inlet holes, and <b>3 Pa</b> miscellaneous. The cell-bank loss coefficient, <b>K = 2.52</b>, was calibrated from earlier SN5 CFD.<br><br>
+
+  From that operating point, the idealized tube-bank correlation gives <b>Nu = 127.3</b> and <b>h = 157.6 W/m²K</b>. It predicts <b>1.72 kW</b> of idealized pack heat removal at 40 °C cell / 30 °C inlet, or <b>344 W per branch</b>, with outlet air at about <b>37.3 °C</b>. Air warming is handled with an NTU-effectiveness calculation while allowing the inlet temperature to rise through the pack.<br><br>
+
+  The equal-flow assumption makes this useful for fan and pressure sizing, not pack-temperature prediction. Icepak is where the meaningful answer comes from because it shows the actual distribution through the cells, divider, and bypass paths.<br><br>
+
+  <figure class="project-feature-figure project-hand-calcs">
+    <img src="/assets/formula-cooling-hand-calcs.png" alt="Hand calculations for accumulator pack energy, branch heat generation, and RMS current draw" width="408" height="512" loading="lazy" decoding="async">
+    <figcaption>Current-draw basis for the thermal model: pack energy and RMS current, with a 56 A design case.</figcaption>
   </figure>
 
   <strong>What CFD Showed</strong><br><br>
   The flow split across the two modules was uneven. The center divider created a sharp restriction, and several inlet regions fed easy bypass paths. More inlet holes did not automatically mean more useful airflow.<br><br>
 
-  The simulated branch settled near <b>92 CFM per fan at 457 Pa</b>, close to the MATLAB result. That gave me confidence in the overall operating point while exposing the local geometry problems the lumped model could not show.<br><br>
+  The first Icepak runs made the same point visually: the center divider restricted the downstream bank and some inlet regions fed easy bypass paths. More holes did not automatically mean more useful airflow.<br><br>
 
   <figure class="project-feature-figure">
     <img src="/assets/formula-cooling-velocity-baseline.png" alt="ANSYS Icepak speed streamlines entering the accumulator and passing through both cell banks" width="1417" height="850" loading="lazy" decoding="async">
@@ -2481,9 +2514,9 @@ const formulaElectricCoolingDescription = `
   </figure>
 
   <strong>Thermal Result</strong><br><br>
-  At the 55 A RMS design case, each cell dissipates about <b>2.69 W</b>. That is roughly <b>1.13 kW</b> across the full pack.<br><br>
+  At the current RMS design case, the pack is being evaluated through the 25-minute endurance duty cycle; free-air fan ratings are not the design basis.<br><br>
 
-  The baseline case reached <b>75.1 °C</b> with a 35 °C inlet. The best saved iteration reached <b>60.8 °C</b>, a 14.2 °C drop. It is still 0.8 °C above the 60 °C target.<br><br>
+  The baseline case reached <b>75.1 °C</b> with a 35 °C inlet. The current optimized five-exhaust run is below the target at about <b>58 °C maximum</b>, with a <b>49 °C mean</b> and <b>5.4 °C spread</b>. It is a design checkpoint, not final validation yet: busbar and PCB heat, mesh, and shroud/rainproofing losses still need to be included.<br><br>
 
   <div class="project-inline-grid">
     <figure>
@@ -2491,24 +2524,19 @@ const formulaElectricCoolingDescription = `
       <figcaption>Baseline · 75.1 °C maximum.</figcaption>
     </figure>
     <figure>
-      <img src="/assets/formula-cooling-variant-60-8.png" alt="Improved CFD run with a maximum cell temperature of 60.820 degrees Celsius" width="1421" height="859" loading="lazy" decoding="async">
-      <figcaption>Best saved run · 60.8 °C maximum.</figcaption>
+      <img src="/assets/formula-cooling-sub60-top.png" alt="Optimized ANSYS Icepak temperature map below 60 degrees Celsius across both module cell banks" width="368" height="256" loading="lazy" decoding="async">
+      <figcaption>Current optimized run · below 60 °C.</figcaption>
     </figure>
   </div>
-
-  <figure class="project-feature-figure">
-    <img src="/assets/formula-cooling-temperature-map.png" alt="Top-down cell-temperature map showing the hot corner of the second module" width="622" height="369" loading="lazy" decoding="async">
-    <figcaption>The per-cell map shows the hot corner in the downstream module.</figcaption>
-  </figure>
 
   <strong>What I Am Changing</strong><br><br>
   <ul class="project-result-list">
     <li><b>Open the center divider.</b> Give the downstream module a cleaner flow path.</li>
     <li><b>Remove bad inlet paths.</b> Block holes that feed bypass around the cells.</li>
-    <li><b>Test inlet assistance.</b> Pair a thin intake fan with the existing high-static-pressure exhaust fan.</li>
+    <li><b>Keep refining the fan spacing.</b> Give the inlet and exhaust fans enough plenum to use the full perforated area.</li>
   </ul>
 
-  I am using the model to decide which changes are worth carrying back into CAD. The next step is tying each saved thermal result to its exact geometry revision and rerunning the strongest configuration with consistent comparison planes.`;
+  I am using the model to decide which changes are worth carrying back into CAD. The next step is rerunning the strongest geometry with busbar and PCB heat, mesh/rainproofing losses, and consistent comparison planes.`;
 
 const formulaElectricAtticDescription = `
   <strong>Overview</strong><br><br>
@@ -2589,8 +2617,8 @@ const formulaElectricAtticDescription = `
         ],
         images: [
           '/assets/accumimg.png',
-          '/assets/formula-cooling-steady-state.png',
-          '/assets/formula-cooling-temperature-baseline.png',
+          '/assets/formula-cooling-sub60.png',
+          '/assets/formula-cooling-sub60-top.png',
           '/assets/formula-cooling-module-stackup.png'
         ]
       },
