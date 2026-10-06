@@ -172,16 +172,17 @@ assert.doesNotMatch(projects, /title: 'Wolfrom Compound Planetary Actuator'/, 'W
 
 const formulaCooling = projects.match(/const formulaElectricCoolingDescription = `([\s\S]*?)`;\s*const formulaElectricAtticDescription/);
 assert.ok(formulaCooling, 'Projects should define the Formula Electric cooling case study');
-for (const heading of ['Overview', 'Modeling the Flow', 'What CFD Showed', 'Thermal Result', 'What I Am Changing']) {
-  assert.match(formulaCooling[1], new RegExp(`<strong>${heading}<\\/strong>`), `Formula Electric cooling page should visibly include ${heading}`);
+for (const heading of ['Overview', 'Does the Pack Need Cooling?', 'Choosing the Airflow Architecture', 'What the Transient CFD Shows', 'Where the Models Disagree', 'Validating with Endurance Data']) {
+  assert.ok(formulaCooling[1].includes(`<strong>${heading}</strong>`), `Formula Electric cooling page should visibly include ${heading}`);
 }
-for (const checkpoint of [/588 V/, /420 cylindrical cells/, /60 °C/, /56 A RMS/, /226 W per branch/, /425 CFM/, /12\.04 m³\/min/, /85\.1 CFM per fan/, /521 Pa/, /234 W/, /653 CFM/, /3\.19 m\/s/, /16\.76 m\/s/, /22,143/, /412 Pa/, /106 Pa/, /K = 2\.52/, /Nu = 127\.3/, /h = 157\.6 W\/m²K/, /1\.72 kW/, /344 W per branch/, /37\.3 °C/, /equal-flow assumption/, /75\.1 °C/, /58 °C maximum/, /5\.4 °C spread/, /25-minute endurance/]) {
-  assert.match(formulaCooling[1], checkpoint, `Formula Electric cooling case study should retain ${checkpoint.source}`);
+for (const checkpoint of [/57 °C design target/, /0\.61 K predicted rise against 0\.6 K measured/, /39 A RMS/, /50 A design case/, /54\.6 °C/, /13\.9 K/, /above the 5 K uniformity goal/, /40 CFM at 780 Pa/, /flow within 10%/, /temperatures within 3 K/]) {
+  assert.match(formulaCooling[1], checkpoint, `Formula Electric cooling case study should explain ${checkpoint.source}`);
 }
+assert.doesNotMatch(formulaCooling[1], /56 A RMS|226 W per branch|1\.72 kW|5\.4 °C spread|Current optimized steady-state run/, 'SN6 should retire the outdated steady-state design basis');
 assert.match(projects, /description: formulaElectricCoolingDescription/, 'Formula Electric cooling project should render the Wolfrom-style cooling case study');
 assert.doesNotMatch(formulaCooling[1], /cooling-section-nav|cooling-stat-grid|cooling-decision-grid/, 'Formula Electric content should use the established project-detail components');
 assert.doesNotMatch(formulaCooling[1], /<details/, 'Formula Electric cooling should stay fully visible without jumpy disclosures');
-assert.ok(formulaCooling[1].indexOf('formula-cooling-sub60.png') < formulaCooling[1].indexOf('formula-cooling-module-stackup.png'), 'SN6 should lead with the current optimized cooling result');
+assert.ok(formulaCooling[1].indexOf('Does the Pack Need Cooling?') < formulaCooling[1].indexOf('What the Transient CFD Shows'), 'SN6 should establish the cooling need before presenting simulation results');
 assert.match(projects, /\.project-priority-result img\s*{[\s\S]*?width:\s*100%\s*!important[\s\S]*?max-width:\s*760px\s*!important[\s\S]*?max-height:\s*520px/, 'SN6 optimized steady-state image should be prominent');
 assert.match(projects, /\.project-baseline-velocity img\s*{[\s\S]*?max-width:\s*58%\s*!important/, 'SN6 baseline velocity image should stay secondary');
 assert.match(projects, /\.project-hand-calcs img\s*{[\s\S]*?max-width:\s*180px\s*!important[\s\S]*?max-height:\s*220px/, 'SN6 hand calculations should stay compact until enlarged');
@@ -189,7 +190,7 @@ assert.match(projects, /id: 'formula-electric'[\s\S]*?title: 'Formula Electric �
 const formulaCoolingGallery = projects.match(/id: 'formula-electric'[\s\S]*?images: \[([\s\S]*?)\]\s*\n\s*}/)?.[1] || '';
 assert.deepEqual(
   [...formulaCoolingGallery.matchAll(/'([^']+)'/g)].map((match) => match[1]),
-  ['/assets/accumimg.png', '/assets/formula-cooling-sub60.png', '/assets/formula-cooling-sub60-top.png', '/assets/formula-cooling-module-stackup.png'],
+  ['/assets/accumimg.png', '/assets/formula-cooling-transient-50a.jpg', '/assets/formula-cooling-transient-50a-top.jpg', '/assets/formula-cooling-module-stackup.png'],
   'SN6 should keep the original CAD cover and a tight four-image gallery'
 );
 assert.doesNotMatch(formulaCoolingGallery, /velocity-baseline|temperature-map|variant-60-8|fan-system-curve/, 'Supporting simulations should stay in the SN6 page body');
@@ -212,12 +213,10 @@ assert.match(projects, /id: 'formula-electric'[\s\S]*?url: '#formula-electric-at
 assert.match(projects, /id: 'formula-electric-attic'[\s\S]*?url: '#formula-electric'/, 'Attic should link to the current cooling project');
 assert.match(projects, /data-project-id\^="formula-electric"[\s\S]*?max-width:\s*100%\s*!important/, 'Both Formula pages should keep feature images inside the established reading columns');
 for (const image of [
-  'formula-cooling-hand-calcs.png',
-  'formula-cooling-fan-system-curve.png',
-  'formula-cooling-velocity-baseline.png',
-  'formula-cooling-temperature-baseline.png',
-  'formula-cooling-sub60-top.png',
-  'formula-cooling-sub60.png',
+  'formula-cooling-rain-inlet.jpg',
+  'formula-cooling-endurance-model.jpg',
+  'formula-cooling-transient-50a.jpg',
+  'formula-cooling-transient-50a-top.jpg',
   'formula-cooling-module-stackup.png',
 ]) {
   assert.match(projects, new RegExp(image.replace('.', '\\.')), `Formula Electric case study should use ${image}`);
