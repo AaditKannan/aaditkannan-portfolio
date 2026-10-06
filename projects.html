@@ -1378,121 +1378,8 @@
       margin: 5px 0;
     }
 
-    .sn6-section {
-      margin-bottom: 28px;
-      break-inside: avoid;
-      -webkit-column-break-inside: avoid;
-    }
-
-    body:has(.detail-content[data-project-id="formula-electric"].visible) .nav-bar {
-      pointer-events: none;
-    }
-
-    body:has(.detail-content[data-project-id="formula-electric"].visible) .nav-link {
-      pointer-events: auto;
-    }
-
-    .detail-content[data-project-id="formula-electric"] {
-      scroll-padding-top: 88px;
-    }
-
-    .detail-content[data-project-id="formula-electric"]::before {
-      content: '';
-      position: fixed;
-      inset: 0 0 auto;
-      height: 80px;
-      background: var(--bg);
-      z-index: 1;
-      pointer-events: none;
-    }
-
-    .detail-content[data-project-id="formula-electric"] .detail-close {
-      top: 18px;
-      right: 90px;
-      width: 44px;
-      height: 44px;
-      z-index: 2;
-    }
-
-    .sn6-section figcaption,
-    .sn6-loads th,
-    .sn6-metrics dt {
-      color: var(--text-dim);
-    }
-
-    @media (max-width: 768px) {
-      .detail-content[data-project-id="formula-electric"] .detail-close {
-        right: 8px;
-        width: 36px;
-        height: 36px;
-      }
-    }
-
-    @media (max-width: 380px) {
-      body:has(.detail-content[data-project-id="formula-electric"].visible) .nav-bar {
-        padding-left: 12px;
-        padding-right: 52px;
-        gap: 14px;
-      }
-    }
-
-    .sn6-section p {
-      margin: 10px 0 14px;
-    }
-
-    .detail-content[data-project-id="formula-electric"] .sn6-section .project-feature-figure img {
+    .detail-content[data-project-id="formula-electric"] .project-feature-figure img {
       height: auto !important;
-    }
-
-    .sn6-equation {
-      margin: 16px 0;
-      padding: 12px 0;
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-      font-size: 15px;
-      text-align: center;
-      letter-spacing: 0;
-    }
-
-    .sn6-loads {
-      width: 100%;
-      margin: 16px 0 20px;
-      border-collapse: collapse;
-      font-size: 13px;
-      line-height: 1.5;
-    }
-
-    .sn6-loads th,
-    .sn6-loads td {
-      padding: 9px 6px;
-      border-bottom: 1px solid var(--border);
-      text-align: left;
-      vertical-align: top;
-    }
-
-    .sn6-loads th {
-      font-weight: 500;
-    }
-
-    .sn6-metrics {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 12px;
-      margin: 16px 0;
-      padding: 12px 0;
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-    }
-
-    .sn6-metrics dt {
-      font-size: 12px;
-    }
-
-    .sn6-metrics dd {
-      margin: 4px 0 0;
-      font-size: 18px;
-      font-weight: 600;
-      letter-spacing: 0;
     }
 
 
@@ -2592,87 +2479,68 @@ const wolfromDescription = `
 
 
 const formulaElectricCoolingDescription = `
-  <section class="sn6-section">
-    <strong>Overview</strong>
-    <p>I am developing Berkeley Formula Electric's <b>588 V SN6 accumulator cooling</b>, from first-principles heat balance through MATLAB, ANSYS Icepak, and endurance validation. The goal is a <b>25-minute endurance run at 35 °C ambient</b> within thermal, packaging, and fan-power budgets.</p>
-    <p><b>420 cylindrical cells</b>, ten 14s3p modules, five Sanyo Denki 9HV0824P1G0011 exhaust fans. Each fan serves 84 cells in two modules with approximately 5 mm cell gaps. The <b>57 °C design target</b> leaves margin below the 60 °C ceiling.</p>
+    <strong>Overview</strong><br><br>
+    I am developing Berkeley Formula Electric's <b>588 V SN6 accumulator cooling</b>, from first-principles heat balance through MATLAB, ANSYS Icepak, and endurance validation. The goal is a <b>25-minute endurance run at 35 °C ambient</b> within thermal, packaging, and fan-power budgets.<br><br>
+    The pack has 420 cylindrical cells in ten 14s3p modules, cooled by five Sanyo Denki 9HV0824P1G0011 exhaust fans. Each fan serves 84 cells in two modules with approximately 5 mm cell gaps. The <b>57 °C design target</b> leaves margin below the 60 °C ceiling.<br><br>
     <figure class="project-feature-figure">
       <img src="/assets/formula-cooling-module-stackup.png" alt="Exploded 42-cell module showing cell holders, sensing electronics, and covers" width="888" height="409" loading="lazy" decoding="async">
       <figcaption>Two of these 42-cell modules share each cooling branch.</figcaption>
     </figure>
-  </section>
 
-  <section class="sn6-section">
-    <strong>Does the Pack Need Cooling?</strong>
-    <p>I start with measured SN5 current, convert it to cell heating, and integrate the transient energy balance:</p>
-    <div class="sn6-equation" role="math" aria-label="Cell thermal capacitance times temperature rate equals cell current squared times effective resistance minus convective heat loss">C<sub>cell</sub> dT/dt = I<sub>cell</sub>(t)<sup>2</sup> R<sub>eff</sub> − Q<sub>conv</sub></div>
-    <p>Using <b>I<sub>cell</sub> = I<sub>pack</sub>/3</b>, 85 J/K per cell, and R<sub>eff</sub> ≈ 8.5 mΩ gives <b>0.61 K predicted rise against 0.6 K measured</b> on available SN5 data. This checks heat generation within sensor resolution; SN6 hardware validation remains ahead.</p>
-    <p>The passive time constant is roughly <b>3.1 hours</b>, so thermal mass buffers the short event. The sealed-pack estimate reaches the 60 °C endurance limit near <b>39 A RMS</b>; at 60 A, it reaches the limit in <b>10.5 minutes</b>.</p>
-    <table class="sn6-loads">
-      <caption style="text-align:left; margin-bottom:8px;">Load cases used in the design review</caption>
-      <thead><tr><th scope="col">Pack RMS</th><th scope="col">Heat / branch</th><th scope="col">Basis</th></tr></thead>
-      <tbody>
-        <tr><th scope="row">22 A</th><td>≈ 38 W</td><td>Measured SN5 anchor</td></tr>
-        <tr><th scope="row">38 A</th><td>≈ 108 W</td><td>No-fan threshold check</td></tr>
-        <tr><th scope="row">50 A</th><td>≈ 198 W</td><td>Design case</td></tr>
-        <tr><th scope="row">60 A</th><td>≈ 286 W</td><td>Upper-bound stress case</td></tr>
-      </tbody>
-    </table>
-    <p>Event energy and a current form factor set the design/stress cases; I scale the measured waveform accordingly. The 22 A anchor is logged vehicle data.</p>
-  </section>
+    <strong>First-Principles Thermal Model</strong><br><br>
+    I start with measured SN5 current, convert it to cell heating, and integrate the transient energy balance:
+    $$C_{\\mathrm{cell}}\\frac{\\mathrm{d}T}{\\mathrm{d}t}
+    = I_{\\mathrm{cell}}(t)^2 R_{\\mathrm{eff}} - \\dot{Q}_{\\mathrm{conv}}$$
+    With three cells in parallel, $I_{\\mathrm{cell}}=I_{\\mathrm{pack}}/3$. Using 85 J/K per cell and $R_{\\mathrm{eff}}\\approx8.5\\,\\mathrm{m}\\Omega$ gives <b>0.61 K predicted rise against 0.6 K measured</b> on available SN5 data. This checks heat generation within sensor resolution; SN6 hardware validation remains ahead.<br><br>
+    The passive time constant is roughly 3.1 hours, so thermal mass buffers the short event. The sealed-pack estimate reaches the 60 °C endurance limit near <b>39 A RMS</b>; at 60 A, it reaches the limit in 10.5 minutes.<br><br>
+    I use four load cases to check cooling margin:
+    <ul class="project-result-list">
+      <li><b>22 A RMS:</b> measured SN5 anchor, approximately 38 W per branch.</li>
+      <li><b>38 A RMS:</b> no-fan threshold check, approximately 108 W per branch.</li>
+      <li><b>50 A RMS:</b> design case, approximately 198 W per branch.</li>
+      <li><b>60 A RMS:</b> stress case, approximately 286 W per branch.</li>
+    </ul>
+    Event energy and a current form factor set the design/stress cases; I scale the measured waveform accordingly. The 22 A anchor is logged vehicle data.<br><br>
 
-  <section class="sn6-section">
-    <strong>Choosing the Airflow Architecture</strong>
-    <p>Air crosses the rain-protected inlet, module 1, a perforated divider, and module 2. CFD exposed bypass paths and divider restrictions that starve downstream cells.</p>
-    <p>An earlier exhaust-only run gave <b>47 CFM at 689 Pa</b> and 57.8 °C maximum. Push-pull gave 56 CFM and 55.6 °C, with twice the fans, wiring, and packaging. That trade supported five exhaust fans.</p>
+    <strong>Airflow Architecture</strong><br><br>
+    Air crosses the rain-protected inlet, module 1, a perforated divider, and module 2. CFD exposed bypass paths and divider restrictions that starve downstream cells.<br><br>
+    An earlier exhaust-only run gave <b>47 CFM at 689 Pa</b> and 57.8 °C maximum. Push-pull gave 56 CFM and 55.6 °C, with twice the fans, wiring, and packaging. That trade supported five exhaust fans.<br><br>
     <figure class="project-feature-figure">
       <img src="/assets/formula-cooling-rain-inlet.jpg" alt="Icepak branch geometry with louvred passive inlet on the left, two cell modules, and exhaust fan on the right" width="1064" height="724" loading="lazy" decoding="async">
       <figcaption>Useful flow must reach both cell banks through the inlet, divider, and exhaust.</figcaption>
     </figure>
-    <p>I selected a <b>15 mm exhaust air gap</b>: 20 → 15 mm costs about 30 Pa; 10 mm adds another 70 Pa and recirculation. The current model includes the 45° inlet louvres and mesh losses.</p>
-  </section>
+    I selected a <b>15 mm exhaust air gap</b>: reducing 20 mm to 15 mm costs about 30 Pa; 10 mm adds another 70 Pa and recirculation. The current model includes the 45° inlet louvres and mesh losses.<br><br>
 
-  <section class="sn6-section">
-    <strong>What the Transient CFD Shows</strong>
-    <p>The <b>50 A design case</b> uses 35 °C inlet air, a 15 mm fan gap, and a 4% busbar heat allowance. Each branch runs near <b>40 CFM at 780 Pa</b>.</p>
+    <strong>Transient CFD</strong><br><br>
+    The <b>50 A design case</b> uses 35 °C inlet air, a 15 mm fan gap, and a 4% busbar heat allowance. Each branch runs near <b>40 CFM at 780 Pa</b>.<br><br>
     <figure class="project-feature-figure project-priority-result">
       <img src="/assets/formula-cooling-transient-50a.jpg" alt="25-minute Icepak design-case temperature field with a 54.6 degree Celsius maximum in the downstream module" width="1416" height="807" loading="lazy" decoding="async">
       <figcaption>50 A RMS, 25 minutes: the hottest cells sit in the downstream module.</figcaption>
     </figure>
-    <dl class="sn6-metrics">
-      <div><dt>Hottest cell</dt><dd>54.6 °C</dd></div>
-      <div><dt>Mean cell</dt><dd>47.6 °C</dd></div>
-      <div><dt>Coolest cell</dt><dd>40.7 °C</dd></div>
-    </dl>
-    <p>At 25 minutes, the hottest cell has <b>2.4 K margin</b> to target. Module 2 receives preheated air. The max-to-min range is <b>13.9 K</b>, above the 5 K uniformity goal; redistributing flow through the divider and cell passages is the next geometry priority.</p>
+    At 25 minutes, the hottest cell is <b>54.6 °C</b>, the mean is 47.6 °C, and the coolest is 40.7 °C. That leaves 2.4 K margin to the temperature target. Module 2 receives preheated air, giving a max-to-min range of <b>13.9 K</b>, above the 5 K uniformity goal. Redistributing flow through the divider and cell passages is the next geometry priority.<br><br>
     <figure class="project-feature-figure">
       <img src="/assets/formula-cooling-transient-50a-top.jpg" alt="Top view of the 50 A transient CFD showing warmer downstream cells and streamlines through both banks" width="1414" height="800" loading="lazy" decoding="async">
       <figcaption>The flow paths explain the temperature field: module 2 receives air already heated by module 1.</figcaption>
     </figure>
-  </section>
 
-  <section class="sn6-section">
-    <strong>Where the Models Disagree</strong>
-    <p>Early MATLAB sizing predicted <b>425 CFM total at 521 Pa</b> and 234 W fan power. Cell-bank loss dominated. Current CFD includes a more restrictive inlet and plenum.</p>
-    <p>Earlier tube-bank correlations gave <b>h ≈ 125–160 W/m²K</b>; representative Icepak geometry gave about <b>48 W/m²K</b>. Bypass and uneven flow reduce effective cooling. Boundary-layer mesh resolution remains a modeling uncertainty.</p>
+    <strong>Analytical and CFD Comparison</strong><br><br>
+    Early MATLAB sizing predicted <b>425 CFM total at 521 Pa</b> and 234 W fan power. Cell-bank loss dominated. Current CFD includes a more restrictive inlet and plenum.<br><br>
+    Earlier tube-bank correlations gave $h\\approx125\\text{–}160\\,\\mathrm{W\\,m^{-2}\\,K^{-1}}$; representative Icepak geometry gave about $48\\,\\mathrm{W\\,m^{-2}\\,K^{-1}}$. Bypass and uneven flow reduce effective cooling. Boundary-layer mesh resolution remains a modeling uncertainty.<br><br>
     <figure class="project-feature-figure">
       <img src="/assets/formula-cooling-endurance-model.jpg" alt="MATLAB plots of temperature versus RMS current, the 60 A transient response, time to the sealed-pack limit, and passive thermal resistance" width="1249" height="866" loading="lazy" decoding="async">
       <figcaption>1D model comparison at 35 °C: the 60 A stress case ends near 64 °C with CFD-derived cooling and 52 °C with the ideal correlation.</figcaption>
     </figure>
-    <p>The <b>12 K model difference</b> makes measured cooldown conductance a priority. Passive CFD with zero imposed flow and buoyancy enabled also checks the no-fan baseline.</p>
-  </section>
+    The <b>12 K model difference</b> makes measured cooldown conductance a priority. Passive CFD with zero imposed flow and buoyancy enabled also checks the no-fan baseline.<br><br>
 
-  <section class="sn6-section">
-    <strong>Validating with Endurance Data</strong>
-    <p>The next tests isolate heat generation, airflow, and heat transfer:</p>
+    <strong>Endurance Validation</strong><br><br>
+    The next tests isolate heat generation, airflow, and heat transfer:
     <ul class="project-result-list">
       <li><b>Endurance.</b> Replay logged current, cell temperatures, initial/ambient temperatures, and fan state.</li>
       <li><b>Airflow.</b> Check 40–47 CFM using branch pressure taps and an outlet anemometer.</li>
       <li><b>Cooldown.</b> Fit effective UA from fan-on temperature decay after the run.</li>
     </ul>
-    <p>Correlation targets: <b>flow within 10%</b> and <b>temperatures within 3 K</b>. SN5 supplies the uncooled baseline; temporary fan/duct tests and assembled SN6 testing check active cooling.</p>
-    <p>Bodywork could shift inlet/exhaust pressure. Comparing pressure and flow versus vehicle speed with bodywork installed will test this integration hypothesis.</p>
-  </section>`;
+    Correlation targets: <b>flow within 10%</b> and <b>temperatures within 3 K</b>. SN5 supplies the uncooled baseline; temporary fan/duct tests and assembled SN6 testing check active cooling.<br><br>
+    Bodywork could shift inlet/exhaust pressure. Comparing pressure and flow versus vehicle speed with bodywork installed will test this integration hypothesis.`;
 
 const formulaElectricAtticDescription = `
   <strong>Overview</strong><br><br>
