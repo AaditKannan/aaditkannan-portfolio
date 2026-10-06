@@ -1382,6 +1382,15 @@
       height: auto !important;
     }
 
+    .detail-content[data-project-id="formula-electric"] .project-disclosure img {
+      width: auto;
+      max-width: 100%;
+      max-height: 720px;
+      height: auto !important;
+      margin: 16px auto;
+      object-fit: contain;
+    }
+
 
     @media (max-width: 768px) {
       .project-inline-grid {
@@ -2493,23 +2502,87 @@ const formulaElectricCoolingDescription = `
     = I_{\\mathrm{cell}}(t)^2 R_{\\mathrm{eff}} - \\dot{Q}_{\\mathrm{conv}}$$
     With three cells in parallel, $I_{\\mathrm{cell}}=I_{\\mathrm{pack}}/3$. Using 85 J/K per cell and $R_{\\mathrm{eff}}\\approx8.5\\,\\mathrm{m}\\Omega$ gives <b>0.61 K predicted rise against 0.6 K measured</b> on available SN5 data. This checks heat generation within sensor resolution; SN6 hardware validation remains ahead.<br><br>
     The passive time constant is roughly 3.1 hours, so thermal mass buffers the short event. The sealed-pack estimate reaches the 60 °C endurance limit near <b>39 A RMS</b>; at 60 A, it reaches the limit in 10.5 minutes.<br><br>
-    I use four load cases to check cooling margin:
-    <ul class="project-result-list">
-      <li><b>22 A RMS:</b> measured SN5 anchor, approximately 38 W per branch.</li>
-      <li><b>38 A RMS:</b> no-fan threshold check, approximately 108 W per branch.</li>
-      <li><b>50 A RMS:</b> design case, approximately 198 W per branch.</li>
-      <li><b>60 A RMS:</b> stress case, approximately 286 W per branch.</li>
-    </ul>
-    Event energy and a current form factor set the design/stress cases; I scale the measured waveform accordingly. The 22 A anchor is logged vehicle data.<br><br>
+    <details class="project-disclosure">
+      <summary>Heat generation, thermal mass, and the no-fan limit</summary>
+      <div class="project-disclosure-content">
+        At 60 A pack current, each parallel cell carries 20 A and dissipates 3.4 W. That gives approximately 286 W per 84-cell branch and 1.43 kW across the pack.
+        $$\\begin{gathered}
+        \\dot{Q}_{\\mathrm{branch}}=84\\left(\\frac{I_{\\mathrm{pack}}}{3}\\right)^2R_{\\mathrm{eff}}\\\\
+        C_{\\mathrm{branch}}=84(85)=7140\\,\\mathrm{J\\,K^{-1}}
+        \\end{gathered}$$
+        For an initially 35 °C cell, the 25 K allowance to 60 °C sets the adiabatic 25-minute current bound:
+        $$I_{\\mathrm{pack,lim}}=3\\sqrt{\\frac{C_{\\mathrm{cell}}\\Delta T}{R_{\\mathrm{eff}}t}}
+        \\approx38.7\\,\\mathrm{A}$$
+        A passive branch conductance of approximately 0.65 W/K gives $\\tau=C_{\\mathrm{branch}}/(UA)\\approx3.1\\,\\mathrm{h}$. This is the basis for treating passive heat loss as small over endurance. The bound is sensitive to starting temperature and effective resistance.<br><br>
+        <figure class="project-feature-figure">
+          <img src="/assets/formula-cooling-thermal-handcalcs.jpg" alt="Original hand calculations for cell heat, branch thermal capacitance, SN5 temperature-rise correlation, and the no-fan current limit" width="1322" height="1734" loading="lazy" decoding="async">
+          <figcaption>Original heat-balance notes, including the SN5 correlation and the time-to-limit calculation.</figcaption>
+        </figure>
+      </div>
+    </details>
+    <details class="project-disclosure">
+      <summary>Endurance energy and RMS load-case derivation</summary>
+      <div class="project-disclosure-content">
+        The pack's nominal 140s3p configuration gives 504 V, 14.85 Ah, and approximately 7.48 kWh. Dividing that energy by a 25-minute run gives approximately 18 kW average power and 35.6 A average current. Heating follows the squared current waveform:
+        $$\\begin{gathered}
+        I_{\\mathrm{RMS}}=\\sqrt{\\frac{1}{t}\\int_0^t I(\\xi)^2\\,\\mathrm{d}\\xi}\\\\
+        F_I=\\frac{I_{\\mathrm{RMS}}}{I_{\\mathrm{avg}}}
+        \\end{gathered}$$
+        Event energy and the SN5 RMS/mean current form factor of 1.59 inform the design and stress cases. I scale the measured waveform for those scenarios:
+        <ul class="project-result-list">
+          <li><b>22 A RMS:</b> measured SN5 anchor, approximately 38 W per branch.</li>
+          <li><b>38 A RMS:</b> no-fan threshold check, approximately 108 W per branch.</li>
+          <li><b>50 A RMS:</b> design case, approximately 198 W per branch.</li>
+          <li><b>60 A RMS:</b> stress case, approximately 286 W per branch.</li>
+        </ul>
+        The notes below document earlier pack-energy and event-result estimates, including a peak/average power proxy. The current load cases use measured current-waveform scaling; the 22 A anchor is logged vehicle data.<br><br>
+        <figure class="project-feature-figure">
+          <img src="/assets/formula-cooling-pack-energy-handcalcs.jpg" alt="Original working notes deriving nominal pack energy, average endurance current, and an earlier RMS estimate" width="1244" height="1066" loading="lazy" decoding="async">
+          <figcaption>Earlier pack-energy calculation and cross-team current estimate.</figcaption>
+        </figure>
+        <figure class="project-feature-figure">
+          <img src="/assets/formula-cooling-rms-handcalcs.jpg" alt="Handwritten comparison of Formula SAE event energy, average current, and early form-factor estimates" width="795" height="998" loading="lazy" decoding="async">
+          <figcaption>Working through event energy and the sensitivity of RMS current to drive-cycle assumptions.</figcaption>
+        </figure>
+        <figure class="project-feature-figure">
+          <img src="/assets/formula-cooling-event-energy.jpg" alt="2025 Formula SAE Electric efficiency results used as the event-energy reference" width="1193" height="841" loading="lazy" decoding="async">
+          <figcaption>Event-energy reference behind the load-case comparison.</figcaption>
+        </figure>
+      </div>
+    </details>
 
     <strong>Airflow Architecture</strong><br><br>
     Air crosses the rain-protected inlet, module 1, a perforated divider, and module 2. CFD exposed bypass paths and divider restrictions that starve downstream cells.<br><br>
     An earlier exhaust-only run gave <b>47 CFM at 689 Pa</b> and 57.8 °C maximum. Push-pull gave 56 CFM and 55.6 °C, with twice the fans, wiring, and packaging. That trade supported five exhaust fans.<br><br>
-    <figure class="project-feature-figure">
-      <img src="/assets/formula-cooling-rain-inlet.jpg" alt="Icepak branch geometry with louvred passive inlet on the left, two cell modules, and exhaust fan on the right" width="1064" height="724" loading="lazy" decoding="async">
-      <figcaption>Useful flow must reach both cell banks through the inlet, divider, and exhaust.</figcaption>
-    </figure>
     I selected a <b>15 mm exhaust air gap</b>: reducing 20 mm to 15 mm costs about 30 Pa; 10 mm adds another 70 Pa and recirculation. The current model includes the 45° inlet louvres and mesh losses.<br><br>
+    <details class="project-disclosure">
+      <summary>Rain-inlet geometry and free-area calculations</summary>
+      <div class="project-disclosure-content">
+        I worked through louvre angle, pitch, thickness, and depth to keep a direct rain path out of the cell bank while preserving inlet area. For slat length $L$, angle $\\theta$, pitch $p$, and thickness $t_s$:
+        $$\\begin{gathered}
+        d=L\\cos\\theta,\\qquad r=L\\sin\\theta\\\\
+        f=\\cos\\theta-\\frac{t_s}{p}
+        \\end{gathered}$$
+        The working geometry uses 45° slats, 20 mm length, 2 mm thickness, and 12 mm pitch, giving approximately 14 mm depth and rise. The louvre's geometric free-area ratio is roughly 0.55; the combined mesh/louvre grille in the current CFD uses 0.14. The divider uses 0.25.<br><br>
+        <figure class="project-feature-figure">
+          <img src="/assets/formula-cooling-inlet-handcalcs.jpg" alt="Original rain-inlet sketches and derivations for louvre angle, pitch, water shielding, free area, and pressure loss" width="1406" height="1796" loading="lazy" decoding="async">
+          <figcaption>Inlet hand calculations connecting rain protection, print geometry, and free area.</figcaption>
+        </figure>
+      </div>
+    </details>
+    <details class="project-disclosure">
+      <summary>Fan-spacing pressure-loss trade</summary>
+      <div class="project-disclosure-content">
+        At fixed flow, narrowing the fan gap increases velocity and dynamic pressure approximately with the inverse square of gap depth:
+        $$\\Delta p_{\\mathrm{gap}}\\sim\\frac{\\rho}{2}
+        \\left(\\frac{Q}{w g}\\right)^2$$
+        The analytical 47 CFM sweep gives approximately 33 Pa at 20 mm, 60 Pa at 15 mm, and 130 Pa at 10 mm. The 15 mm choice keeps total depth near 56 mm, including the 38 mm fan and approximately 3 mm wall. The 10 mm geometry also showed recirculation during iteration.<br><br>
+        <figure class="project-feature-figure">
+          <img src="/assets/formula-cooling-airgap-trade.jpg" alt="Analytical exhaust-gap pressure loss versus depth with 10, 15, and 20 millimeter cases" width="1200" height="690" loading="lazy" decoding="async">
+          <figcaption>The 15 mm gap balances packaging depth against the rapidly increasing pressure penalty.</figcaption>
+        </figure>
+      </div>
+    </details>
 
     <strong>Transient CFD</strong><br><br>
     The <b>50 A design case</b> uses 35 °C inlet air, a 15 mm fan gap, and a 4% busbar heat allowance. Each branch runs near <b>40 CFM at 780 Pa</b>.<br><br>
@@ -2518,19 +2591,53 @@ const formulaElectricCoolingDescription = `
       <figcaption>50 A RMS, 25 minutes: the hottest cells sit in the downstream module.</figcaption>
     </figure>
     At 25 minutes, the hottest cell is <b>54.6 °C</b>, the mean is 47.6 °C, and the coolest is 40.7 °C. That leaves 2.4 K margin to the temperature target. Module 2 receives preheated air, giving a max-to-min range of <b>13.9 K</b>, above the 5 K uniformity goal. Redistributing flow through the divider and cell passages is the next geometry priority.<br><br>
-    <figure class="project-feature-figure">
-      <img src="/assets/formula-cooling-transient-50a-top.jpg" alt="Top view of the 50 A transient CFD showing warmer downstream cells and streamlines through both banks" width="1414" height="800" loading="lazy" decoding="async">
-      <figcaption>The flow paths explain the temperature field: module 2 receives air already heated by module 1.</figcaption>
-    </figure>
+    <details class="project-disclosure">
+      <summary>CFD setup, assumptions, and flow paths</summary>
+      <div class="project-disclosure-content">
+        The transient run uses 5 s steps over 25 minutes, scaled SN5 current, and 35 °C inlet air. Cell properties are 21.7 mm diameter, 70.5 mm length, 85 J/K thermal capacitance, and anisotropic conductivity of 25 W/mK axially and 0.6 W/mK radially.<br><br>
+        Five branches are modeled as identical and independent. External walls are adiabatic; busbar heat has a 4% allowance, while busbar/PCB thermal mass is omitted. Boundary-layer mesh refinement and measured cooldown conductance are needed to establish the accuracy of the effective heat-transfer coefficient.<br><br>
+        <figure class="project-feature-figure">
+          <img src="/assets/formula-cooling-transient-50a-top.jpg" alt="Top view of the 50 A transient CFD showing warmed downstream cells and streamlines through the divider" width="1414" height="800" loading="lazy" decoding="async">
+          <figcaption>Section view: air warms in module 1 before reaching module 2. Divider openings and bypass paths determine which cells receive that flow.</figcaption>
+        </figure>
+        The temperature curves flatten by about 20 minutes, with a forced-cooling time constant near 15 minutes. This differs from the approximately 3.1-hour passive case and explains why the fan-on design approaches steady state during endurance.
+      </div>
+    </details>
 
     <strong>Analytical and CFD Comparison</strong><br><br>
     Early MATLAB sizing predicted <b>425 CFM total at 521 Pa</b> and 234 W fan power. Cell-bank loss dominated. Current CFD includes a more restrictive inlet and plenum.<br><br>
     Earlier tube-bank correlations gave $h\\approx125\\text{–}160\\,\\mathrm{W\\,m^{-2}\\,K^{-1}}$; representative Icepak geometry gave about $48\\,\\mathrm{W\\,m^{-2}\\,K^{-1}}$. Bypass and uneven flow reduce effective cooling. Boundary-layer mesh resolution remains a modeling uncertainty.<br><br>
+    <details class="project-disclosure">
+      <summary>MATLAB fan/system curve and convection model</summary>
+      <div class="project-disclosure-content">
+        I intersected the Sanyo fan pressure-flow curve with the modeled cell-bank and inlet losses. The earlier analytical operating point was approximately 85 CFM per branch. Its pressure split was 412 Pa across the cells, 106 Pa at the inlet, and 3 Pa miscellaneous; the cell bank accounted for about 79% of the loss.<br><br>
+        <figure class="project-feature-figure">
+          <img src="/assets/formula-cooling-fan-system-curve.png" alt="Earlier MATLAB fan and cross-flow system curves intersecting near 12 cubic meters per minute and 521 pascals" width="804" height="530" loading="lazy" decoding="async">
+          <figcaption>Earlier analytical sizing model. The current detailed branch CFD predicts a different operating point.</figcaption>
+        </figure>
+        The tube-bank calculation uses gap velocity and Reynolds number to estimate Nusselt number, then $h=Nu\\,k_{\\mathrm{air}}/D$. An NTU-effectiveness model accounts for air warming along the cells. Equal branch flow and idealized cell-bank exposure make the correlation sensitive to bypass and confinement.<br><br>
+        <figure class="project-feature-figure">
+          <img src="/assets/formula-cooling-h-vs-flow.png" alt="Analytical aligned tube-bank heat-transfer coefficient versus total pack airflow" width="681" height="450" loading="lazy" decoding="async">
+          <figcaption>Idealized convection estimate versus flow; the operating-point estimate exceeds representative CFD heat transfer.</figcaption>
+        </figure>
+      </div>
+    </details>
     <figure class="project-feature-figure">
       <img src="/assets/formula-cooling-endurance-model.jpg" alt="MATLAB plots of temperature versus RMS current, the 60 A transient response, time to the sealed-pack limit, and passive thermal resistance" width="1249" height="866" loading="lazy" decoding="async">
       <figcaption>1D model comparison at 35 °C: the 60 A stress case ends near 64 °C with CFD-derived cooling and 52 °C with the ideal correlation.</figcaption>
     </figure>
     The <b>12 K model difference</b> makes measured cooldown conductance a priority. Passive CFD with zero imposed flow and buoyancy enabled also checks the no-fan baseline.<br><br>
+    <details class="project-disclosure">
+      <summary>Heat-budget crossings and cooling limits</summary>
+      <div class="project-disclosure-content">
+        The quadratic heat-generation curve is compared with the per-cell energy allowance over 25 minutes. With a 35 °C start and 60 °C ceiling, the adiabatic allowance is approximately 1.42 W per cell, giving the roughly 39 A no-fan bound. The plotted CFD-derived fan allowance gives a crossing near 55 A.<br><br>
+        <figure class="project-feature-figure">
+          <img src="/assets/formula-cooling-heat-budget.jpg" alt="Cell heat versus pack RMS current with passive, CFD-derived fan, and ideal air-side cooling bounds" width="1379" height="1008" loading="lazy" decoding="async">
+          <figcaption>Analytical 60 °C-limit comparison. The project uses 50 A as its design case and 60 A as the stress case; these current bounds remain model estimates.</figcaption>
+        </figure>
+        These limits change with initial temperature, effective cell resistance, airflow, and measured UA. The ideal air-side line is a theoretical upper bound. Endurance replay and fan-on cooldown are the planned checks on the useful cooling margin.
+      </div>
+    </details>
 
     <strong>Endurance Validation</strong><br><br>
     The next tests isolate heat generation, airflow, and heat transfer:
