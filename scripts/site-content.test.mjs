@@ -227,7 +227,7 @@ assert.ok(existsSync(join(root, 'public', 'assets', 'actuator.glb')), 'The actua
 
 const formulaCooling = projects.match(/const formulaElectricCoolingDescription = `([\s\S]*?)`;\s*const formulaElectricAtticDescription/);
 assert.ok(formulaCooling, 'Projects should define the Formula Electric cooling case study');
-for (const heading of ['Overview', 'Cooling Problem', 'Airflow Model', 'What CFD Showed', 'Thermal Model', 'Design Changes', 'Results and Validation']) {
+for (const heading of ['Overview', 'First-Principles Thermal Model', 'Airflow Architecture', 'Transient CFD', 'Analytical and CFD Comparison', 'Design Changes', 'Endurance Validation']) {
   assert.match(formulaCooling[1], new RegExp(`<strong[^>]*>${heading.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}<\\/strong>`), `Formula Electric cooling page should visibly include ${heading}`);
 }
 for (const checkpoint of [/57 °C design target/, /0\.61 K predicted rise against 0\.6 K measured/, /39 A RMS/, /50 A design case/, /54\.6 °C/, /13\.9 K/, /above the 5 K uniformity goal/, /40 CFM at 780 Pa/, /flow within 10%/, /temperatures within 3 K/]) {
@@ -237,7 +237,7 @@ assert.doesNotMatch(formulaCooling[1], /56 A RMS|226 W per branch|1\.72 kW|5\.4 
 assert.match(projects, /description: formulaElectricCoolingDescription/, 'Formula Electric cooling project should render the Wolfrom-style cooling case study');
 assert.doesNotMatch(formulaCooling[1], /cooling-section-nav|cooling-stat-grid|cooling-decision-grid/, 'Formula Electric content should use the established project-detail components');
 assert.match(formulaCooling[1], /<details class="project-disclosure">/, 'SN6 should use the established disclosures for technical evidence');
-assert.ok(formulaCooling[1].indexOf('Cooling Problem') < formulaCooling[1].indexOf('What CFD Showed'), 'SN6 should establish the cooling need before presenting simulation results');
+assert.ok(formulaCooling[1].indexOf('First-Principles Thermal Model') < formulaCooling[1].indexOf('Transient CFD'), 'SN6 should establish the cooling need before presenting simulation results');
 assert.match(projects, /\.project-priority-result img\s*{[\s\S]*?width:\s*100%\s*!important[\s\S]*?max-width:\s*760px\s*!important[\s\S]*?max-height:\s*520px/, 'SN6 optimized steady-state image should be prominent');
 assert.match(projects, /\.project-baseline-velocity img\s*{[\s\S]*?max-width:\s*58%\s*!important/, 'SN6 baseline velocity image should stay secondary');
 assert.match(projects, /\.project-hand-calcs img\s*{[\s\S]*?max-width:\s*180px\s*!important[\s\S]*?max-height:\s*220px/, 'SN6 hand calculations should stay compact until enlarged');

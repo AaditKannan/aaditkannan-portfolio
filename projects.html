@@ -3287,13 +3287,13 @@ const formulaElectricCoolingDescription = `
       <img src="/assets/formula-cooling-transient-50a.jpg" alt="25-minute Icepak design-case temperature field with a 54.6 degree Celsius maximum in the downstream module" width="1416" height="807" loading="lazy" decoding="async">
       <figcaption>Current Icepak result: at the 50 A design case, the downstream module reaches 54.6 °C after 25 minutes.</figcaption>
     </figure>
-    I am developing Berkeley Formula Electric's <b>504 V nominal / 588 V peak SN6 accumulator cooling</b>, from first-principles heat balance through MATLAB, ANSYS Icepak, and endurance validation. The goal is a <b>25-minute endurance run at 35 °C ambient</b> within thermal, packaging, and fan-power budgets.<br><br>
+    I am developing Berkeley Formula Electric's <b>588 V SN6 accumulator cooling</b>, from first-principles heat balance through MATLAB, ANSYS Icepak, and endurance validation. The goal is a <b>25-minute endurance run at 35 °C ambient</b> within thermal, packaging, and fan-power budgets.<br><br>
     The pack has 420 cylindrical cells in ten 14s3p modules, cooled by five Sanyo Denki 9HV0824P1G0011 exhaust fans. Each fan serves 84 cells in two modules with approximately 5 mm cell gaps. The <b>57 °C design target</b> leaves margin below the 60 °C ceiling.<br><br>
     The result gives the first design answer: the pack stays below the temperature target, but the second module runs hotter because it receives air that has already picked up heat upstream.<br><br>
 
     </section>
     <section class="latex-section" id="sn6-first-principles">
-    <strong>Cooling Problem</strong><br><br>
+    <strong>First-Principles Thermal Model</strong><br><br>
     The flow path set the thermal result. Five high-static-pressure fans offer theoretical capacity. The cells, inlet perforations, divider, and exhaust gaps still create a restrictive path with easy bypass routes.<br><br>
     I started with measured SN5 current, converted it to cell heating, and integrated the transient energy balance:
     $$C_{\\mathrm{cell}}\\frac{\\mathrm{d}T}{\\mathrm{d}t}
@@ -3351,7 +3351,7 @@ const formulaElectricCoolingDescription = `
 
     </section>
     <section class="latex-section" id="sn6-airflow">
-    <strong>Airflow Model</strong><br><br>
+    <strong>Airflow Architecture</strong><br><br>
     I built a MATLAB pressure-drop model around the real Sanyo Denki fan curve, representing each fan through its pressure-flow behavior. Air crosses the rain-protected inlet, module 1, a perforated divider, and module 2; the model keeps those losses separate so the dominant restriction is visible.<br><br>
     <b>425 CFM at 521 Pa</b> was the earlier system-level operating point, with the cell bank accounting for roughly 79% of modeled pressure loss.<br><br>
     <details class="project-disclosure">
@@ -3397,7 +3397,7 @@ const formulaElectricCoolingDescription = `
 
     </section>
     <section class="latex-section" id="sn6-transient">
-    <strong>What CFD Showed</strong><br><br>
+    <strong>Transient CFD</strong><br><br>
     The <b>50 A design case</b> uses 35 °C inlet air, a 15 mm fan gap, and a 4% busbar heat allowance. Each branch runs near <b>40 CFM at 780 Pa</b>.<br><br>
     At 25 minutes, the hottest cell is <b>54.6 °C</b>, the mean is 47.6 °C, and the coolest is 40.7 °C. That leaves 2.4 K margin to the temperature target. Module 2 receives preheated air, giving a max-to-min range of <b>13.9 K</b>, above the 5 K uniformity goal. Redistributing flow through the divider and cell passages is the next geometry priority.<br><br>
     <details class="project-disclosure">
@@ -3415,7 +3415,7 @@ const formulaElectricCoolingDescription = `
 
     </section>
     <section class="latex-section" id="sn6-analytical">
-    <strong>Thermal Model</strong><br><br>
+    <strong>Analytical and CFD Comparison</strong><br><br>
     Air near the outlet has already absorbed heat from upstream cells. Even if the local convection coefficient stays reasonable, those cells see a smaller temperature difference to the cooling air. The analytical model gave me the system-level answer; CFD showed where that assumption broke down.<br><br>
     Early MATLAB sizing predicted <b>425 CFM total at 521 Pa</b> and 234 W fan power. Cell-bank loss dominated. Current CFD includes a more restrictive inlet and plenum.<br><br>
     Earlier tube-bank correlations gave $h\\approx125\\text{–}160\\,\\mathrm{W\\,m^{-2}\\,K^{-1}}$; representative Icepak geometry gave about $48\\,\\mathrm{W\\,m^{-2}\\,K^{-1}}$. Bypass and uneven flow reduce effective cooling. Boundary-layer mesh resolution remains a modeling uncertainty.<br><br>
@@ -3469,7 +3469,7 @@ const formulaElectricCoolingDescription = `
 
     </section>
     <section class="latex-section" id="sn6-validation">
-    <strong>Results and Validation</strong><br><br>
+    <strong>Endurance Validation</strong><br><br>
     The next tests isolate heat generation, airflow, and heat transfer:
     <ul class="project-result-list">
       <li><b>Endurance.</b> Replay logged current, cell temperatures, initial/ambient temperatures, and fan state.</li>
@@ -3548,7 +3548,7 @@ const formulaElectricAtticDescription = `
         active: true,
         featured: false,
         displayOrder: 3,
-        excerpt: 'Developing cooling for a 504 V nominal / 588 V peak SN6 accumulator from measured drive-cycle heating through transient CFD and endurance validation.',
+        excerpt: 'Developing SN6 accumulator cooling from measured drive-cycle heating through transient CFD and endurance validation.',
         description: formulaElectricCoolingDescription,
         tags: ['MATLAB', 'ANSYS Icepak', 'CFD', 'Heat Transfer', 'Fan Curves', 'Thermal Modeling', 'SolidWorks'],
         links: [
