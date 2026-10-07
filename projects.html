@@ -21,7 +21,7 @@
   <link rel="apple-touch-icon" sizes="180x180" href="/assets/newstfavicon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=STIX+Two+Text:wght@400;500;600;700&display=swap" rel="stylesheet">
   <!-- KaTeX for LaTeX math rendering -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
@@ -38,6 +38,7 @@
     [data-theme="light"] ::selection { background: rgba(170, 150, 120, 0.35); color: #1a202c; }
 
     :root {
+      --font-latex: 'STIX Two Text', 'Latin Modern Roman', 'Computer Modern', 'Times New Roman', serif;
       --bg: #0a0a0a;
       --text: #fff;
       --text-dim: #888;
@@ -56,8 +57,8 @@
     [data-theme="light"] {
       --bg: #f5f2ee;
       --text: #0f172a;
-      --text-dim: #4a5568;
-      --text-muted: #64748b;
+      --text-dim: #344054;
+      --text-muted: #475467;
       --border: rgba(0,0,0,0.1);
       --border-light: rgba(0,0,0,0.22);
       --nav-bg: rgba(245, 242, 238, 0.95);
@@ -86,7 +87,7 @@
     html::-webkit-scrollbar { display: none; }
 
     body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-family: var(--font-latex);
       background-color: var(--bg);
       color: var(--text);
       font-weight: 400;
@@ -156,7 +157,7 @@
 
     /* Nav */
     .nav-bar {
-      position: absolute;
+      position: fixed;
       top: 0;
       left: 0;
       right: 0;
@@ -166,7 +167,9 @@
       justify-content: center;
       align-items: center;
       gap: 40px;
-      background: transparent;
+      background: var(--nav-bg);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
       height: 80px;
       box-sizing: border-box;
     }
@@ -174,11 +177,10 @@
     .nav-link {
       color: var(--nav-link);
       text-decoration: none;
-      font-size: 13px;
+      font-size: 15px;
       font-weight: 500;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      font-family: 'JetBrains Mono', monospace;
+      letter-spacing: 0.04em;
+      font-family: var(--font-latex);
       border-bottom: 1px solid transparent;
       padding: 8px 0;
       transition: all 0.3s ease;
@@ -229,9 +231,8 @@
     .filter-label {
       font-size: 10px;
       letter-spacing: 0.15em;
-      text-transform: uppercase;
       color: var(--text-muted);
-      font-family: 'JetBrains Mono', monospace;
+      font-family: var(--font-latex);
       margin-right: 8px;
     }
 
@@ -241,9 +242,8 @@
       border: 1px solid var(--border);
       color: var(--text-dim);
       font-size: 11px;
-      font-family: 'JetBrains Mono', monospace;
+      font-family: var(--font-latex);
       letter-spacing: 0.1em;
-      text-transform: uppercase;
       cursor: pointer;
       transition: all 0.2s ease;
     }
@@ -267,10 +267,10 @@
     }
 
     @media (max-width: 768px) {
-      /* Mobile font: Inter on small screens (except nav) */
+      /* Keep the same paper-like type system on small screens. */
       body, .filter-btn, .project-title, .project-subtitle,
       .project-description, .project-meta, .detail-title, .detail-body {
-        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+        font-family: var(--font-latex) !important;
       }
 
       .filter-bar {
@@ -286,7 +286,7 @@
     }
 
     .page-title {
-      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      font-family: var(--font-latex);
       font-size: clamp(42px, 7vw, 56px);
       font-weight: 700;
       color: var(--text);
@@ -484,9 +484,9 @@
       transform: scale(1.03);
     }
 
-    /* Wolfrom Actuator - fill the card with the gearbox top-down */
+    /* Keep the full landscape exploded assembly visible in the card. */
     .project-card[data-id="wolfrom-actuator"] .project-image img {
-      object-fit: cover;
+      object-fit: contain;
       object-position: center center;
       transform: scale(1.0);
     }
@@ -560,6 +560,14 @@
       justify-content: center;
       width: 100%;
       height: 100%;
+    }
+
+    .detail-content[data-project-id="wolfrom-actuator"] .gallery-media-prototype { position: relative; }
+    .detail-content[data-project-id="wolfrom-actuator"] .gallery-media-prototype::after {
+      content: 'V1 prototype'; position: absolute; top: 16px; left: 16px; z-index: 2;
+      padding: 5px 8px; color: #fff; background: #17191dcc;
+      font: 13px/1.2 var(--font-latex); letter-spacing: .01em;
+      text-shadow: 0 1px 2px #0008; pointer-events: none;
     }
 
     .detail-content[data-project-id="ns-us-pulse-generator"] .gallery-media-photo,
@@ -640,15 +648,16 @@
     .project-preview-link {
       color: var(--text);
       font-weight: 600;
-      text-decoration: none;
-      border-bottom: 1px solid transparent;
-      transition: color 0.2s ease, border-color 0.2s ease;
+      text-decoration: underline;
+      text-decoration-thickness: 1px;
+      text-underline-offset: 4px;
+      transition: color 0.2s ease, text-decoration-thickness 0.2s ease;
       position: relative;
     }
 
     .project-preview-link:hover {
       color: var(--text);
-      border-bottom-color: var(--text);
+      text-decoration-thickness: 2px;
     }
 
     .project-hover-preview {
@@ -686,8 +695,7 @@
       color: var(--text-muted);
       font-size: 10px;
       letter-spacing: 0.15em;
-      text-transform: uppercase;
-      font-family: 'JetBrains Mono', monospace;
+      font-family: var(--font-latex);
     }
 
     .project-content {
@@ -702,17 +710,17 @@
     }
 
     .project-category {
-      font-size: 10px;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
+      font-size: 12px;
+      letter-spacing: 0.04em;
+      font-weight: 500;
       color: var(--text-dim);
-      font-family: 'JetBrains Mono', monospace;
+      font-family: var(--font-latex);
     }
 
     .project-date {
       font-size: 12px;
       color: var(--text-muted);
-      font-family: 'JetBrains Mono', monospace;
+      font-family: var(--font-latex);
     }
 
     .project-title {
@@ -833,7 +841,7 @@
 
     /* Match the project index heading so title transitions happen in place */
     .detail-title {
-      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      font-family: var(--font-latex);
       font-size: clamp(42px, 7vw, 56px);
       font-weight: 700;
       color: var(--text);
@@ -845,7 +853,8 @@
     .detail-date {
       font-size: 14px;
       color: var(--text-dim);
-      font-family: 'JetBrains Mono', monospace;
+      font-family: var(--font-latex);
+      letter-spacing: 0;
       opacity: 0;
       transform: translateY(10px);
       transition: all 0.3s ease 0.15s;
@@ -920,9 +929,13 @@
       opacity: 0;
     }
 
-    .gallery-main:hover .gallery-nav {
+    .gallery-main:hover .gallery-nav,
+    .gallery-main:focus-within .gallery-nav {
       opacity: 1;
     }
+
+    .gallery-thumb:focus-visible { outline: 2px solid var(--text); outline-offset: 3px; }
+    @media (hover: none) { .gallery-nav { opacity: 1; } }
 
     .gallery-nav:hover {
       background: rgba(255,255,255,0.15);
@@ -959,8 +972,7 @@
       color: var(--text-muted);
       font-size: 11px;
       letter-spacing: 0.1em;
-      text-transform: uppercase;
-      font-family: 'JetBrains Mono', monospace;
+      font-family: var(--font-latex);
     }
 
     .gallery-thumbs {
@@ -1000,6 +1012,73 @@
       transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.2s;
     }
 
+    .detail-body.has-toc {
+      display: grid;
+      grid-template-columns: 156px minmax(0, 1fr);
+      gap: 32px;
+      align-items: start;
+    }
+
+    .detail-main {
+      min-width: 0;
+    }
+
+    .project-toc[hidden] {
+      display: none !important;
+    }
+
+    .project-toc {
+      position: sticky;
+      top: 112px;
+      align-self: start;
+      padding: 14px 0;
+    }
+
+    .project-toc-label {
+      display: block;
+      margin-bottom: 12px;
+      color: var(--text);
+      font-family: var(--font-latex);
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: 0;
+    }
+
+    .project-toc-toggle { display: none; }
+
+    .project-toc ol {
+      display: grid;
+      gap: 8px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      counter-reset: sn6-toc;
+    }
+
+    .project-toc li { counter-increment: sn6-toc; }
+
+    .project-toc a {
+      display: block;
+      color: var(--text-muted);
+      font-family: var(--font-latex);
+      font-size: 15px;
+      line-height: 1.25;
+      text-decoration: underline;
+      text-underline-offset: 4px;
+      text-decoration-thickness: 1px;
+    }
+
+    .project-toc a::before { content: none; }
+
+    .project-toc a:hover,
+    .project-toc a:focus-visible { color: var(--text); }
+
+    .project-toc a:focus-visible {
+      outline: 2px solid var(--text);
+      outline-offset: 3px;
+      border-radius: 2px;
+    }
+
     .detail-content.visible .detail-body {
       opacity: 1;
       transform: translateY(0);
@@ -1012,11 +1091,10 @@
     }
 
     .detail-model-heading {
-      font-family: 'JetBrains Mono', monospace;
+      font-family: var(--font-latex);
       font-size: 13px;
       font-weight: 600;
       letter-spacing: 0.08em;
-      text-transform: uppercase;
       color: var(--text-dim);
       margin: 0 0 14px;
     }
@@ -1064,10 +1142,9 @@
       align-items: center;
       gap: 10px;
       padding: 12px 20px;
-      font-family: 'JetBrains Mono', monospace;
+      font-family: var(--font-latex);
       font-size: 13px;
       letter-spacing: 0.04em;
-      text-transform: uppercase;
       color: #fff;
       background: rgba(20,20,22,0.72);
       border: 1px solid rgba(255,255,255,0.25);
@@ -1134,10 +1211,9 @@
     .detail-model-hint {
       display: block;
       margin-top: 8px;
-      font-family: 'JetBrains Mono', monospace;
+      font-family: var(--font-latex);
       font-size: 11px;
       letter-spacing: 0.04em;
-      text-transform: uppercase;
       color: var(--text-dim);
       opacity: 0.7;
     }
@@ -1148,14 +1224,48 @@
     }
 
     .detail-description {
-      font-family: 'Inter', system-ui, -apple-system, sans-serif;
-      font-size: 15px;
-      line-height: 1.75;
+      font-family: var(--font-latex);
+      font-size: 16px;
+      line-height: 1.7;
       color: var(--text);
       margin-bottom: 32px;
       columns: 2;
       column-gap: 40px;
-      opacity: 0.85;
+      opacity: 1;
+    }
+
+    .detail-description a {
+      color: inherit;
+      text-decoration: underline;
+      text-decoration-thickness: 1px;
+      text-underline-offset: 4px;
+    }
+
+    .detail-description a:hover {
+      text-decoration-thickness: 2px;
+    }
+
+    .detail-content[data-project-id="formula-electric"] .detail-description {
+      font-family: var(--font-latex);
+      font-size: 16px;
+      line-height: 1.72;
+      opacity: 0.92;
+      columns: 1;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      column-gap: 40px;
+      row-gap: 44px;
+      align-items: start;
+    }
+
+    .detail-content[data-project-id="formula-electric"] .latex-section {
+      min-width: 0;
+      margin: 0;
+      break-inside: avoid;
+    }
+
+    .detail-content[data-project-id="formula-electric"] .latex-section > strong {
+      margin-top: 0;
     }
 
     .detail-content[data-project-id="ns-us-pulse-generator"] .detail-description {
@@ -1188,7 +1298,7 @@
       border: 1px solid rgba(255,255,255,0.1);
       padding: 12px 16px;
       margin: 12px 0;
-      font-family: 'JetBrains Mono', 'Courier New', monospace;
+      font-family: var(--font-latex);
       font-size: 14px;
       color: #7dd3fc;
       border-radius: 4px;
@@ -1219,7 +1329,10 @@
 
     .detail-description strong {
       color: var(--text);
-      font-weight: 600;
+      font-family: var(--font-latex);
+      font-size: 1.08em;
+      font-weight: 700;
+      letter-spacing: 0;
       display: block;
       margin-top: 14px;
       margin-bottom: 2px;
@@ -1231,22 +1344,23 @@
       margin-top: 0;
     }
 
+    .detail-description strong[id] {
+      scroll-margin-top: 24px;
+    }
+
     .project-disclosure {
-      margin: 14px 0;
+      margin: 18px 0;
       padding: 0;
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
       break-inside: avoid;
       -webkit-column-break-inside: avoid;
     }
 
     .project-disclosure + .project-disclosure {
-      margin-top: -15px;
-      border-top: 0;
+      margin-top: 18px;
     }
 
     .project-disclosure summary {
-      padding: 12px 0;
+      padding: 6px 0 8px;
       color: var(--text);
       font: inherit;
       font-weight: 600;
@@ -1265,6 +1379,228 @@
 
     .project-disclosure-content {
       padding: 0 0 14px;
+    }
+
+    .project-data-table {
+      width: 100%;
+      border-collapse: collapse;
+      border: 1px solid var(--border-light);
+      margin: 16px 0 24px;
+      font-size: 15px;
+      line-height: 1.45;
+    }
+
+    .project-data-table th,
+    .project-data-table td {
+      padding: 10px 12px;
+      border: 1px solid var(--border-light);
+      text-align: left;
+      vertical-align: top;
+    }
+
+    .project-data-table th {
+      color: var(--text);
+      font-weight: 700;
+    }
+
+    .project-data-table td {
+      color: var(--text-dim);
+    }
+
+    .project-small-table {
+      max-width: 620px;
+    }
+
+    .project-placeholder {
+      color: var(--text-muted);
+      font-style: italic;
+    }
+
+    .project-figure-placeholder {
+      margin: 18px 0 24px;
+      padding: 6px 0 8px;
+      color: var(--text-muted);
+      text-align: center;
+      font-size: 15px;
+      line-height: 1.5;
+    }
+
+    .project-figure-placeholder code {
+      display: inline;
+      padding: 0;
+      border: 0;
+      background: var(--nav-bg);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      color: var(--text);
+      font-size: 0.95em;
+    }
+
+    .project-figure-placeholder span {
+      font-size: 0.92em;
+    }
+
+    .project-section-status {
+      color: var(--text-muted);
+      font-size: 0.7em;
+      font-weight: 400;
+    }
+
+    .project-detail-card-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0 24px;
+      margin: 16px 0 24px;
+    }
+
+    .project-detail-card {
+      padding: 8px 0;
+      color: var(--text-dim);
+      break-inside: avoid;
+      -webkit-column-break-inside: avoid;
+    }
+
+    .project-detail-card b {
+      color: var(--text);
+    }
+
+    .detail-description img {
+      max-width: 100%;
+      height: auto;
+    }
+
+    .detail-content[data-project-id="wolfrom-actuator"] .project-feature-figure img {
+      width: 100%;
+      height: auto;
+      max-width: 100%;
+      max-height: 360px;
+      margin: 0 auto;
+      object-fit: contain;
+    }
+
+    .detail-content[data-project-id="wolfrom-actuator"] .project-hand-calcs img {
+      width: min(100%, 460px);
+      max-height: 460px;
+    }
+
+    .detail-content[data-project-id="wolfrom-actuator"] .project-inline-grid {
+      grid-template-columns: 1fr;
+      gap: 22px;
+    }
+
+    .detail-content[data-project-id="wolfrom-actuator"] .project-inline-grid img,
+    .detail-content[data-project-id="wolfrom-actuator"] .project-disclosure img {
+      max-height: 340px;
+      object-fit: contain;
+    }
+
+    .detail-content[data-project-id="wolfrom-actuator"] .project-detail-card-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .detail-content[data-project-id="wolfrom-actuator"] .project-data-table {
+      break-inside: avoid;
+      -webkit-column-break-inside: avoid;
+    }
+
+    .detail-content[data-project-id="wolfrom-actuator"] .detail-description {
+      display: block;
+      columns: auto;
+    }
+
+    .detail-content[data-project-id="wolfrom-actuator"] .detail-description > .latex-section {
+      min-width: 0;
+      margin: 0 0 48px;
+      break-inside: auto;
+      -webkit-column-break-inside: auto;
+    }
+
+    .detail-content[data-project-id="wolfrom-actuator"] .detail-description > .latex-section + .latex-section::before {
+      content: '';
+      display: block;
+      width: 64px;
+      border-top: 1px solid var(--border-light);
+      margin-bottom: 24px;
+    }
+
+    .wolfrom-section-body {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: 24px 40px;
+      align-items: start;
+    }
+
+    .wolfrom-prose, .wolfrom-evidence { min-width: 0; }
+    .wolfrom-prose { max-width: 38em; }
+    .wolfrom-prose p { margin: 0 0 18px; }
+    .detail-content[data-project-id="wolfrom-actuator"] .detail-top-row { display: none; }
+    .detail-content[data-project-id="wolfrom-actuator"] .detail-header { margin-bottom: 24px; }
+    .detail-content[data-project-id="wolfrom-actuator"] .project-toc {
+      top: max(104px, calc(50svh - var(--toc-half-height, 240px) + 36px));
+      max-height: calc(100svh - 160px);
+      overflow-y: auto;
+      scrollbar-width: thin;
+    }
+    .wolfrom-gallery-slot .gallery-main { aspect-ratio: 4 / 3; max-height: 400px; }
+    .wolfrom-gallery-slot .gallery-thumbs { gap: 8px; flex-wrap: wrap; }
+    .wolfrom-gallery-slot .detail-gallery { min-width: 0; }
+    .wolfrom-gallery-row { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 32px; align-items: center; }
+    .wolfrom-gallery-row .detail-sidebar { margin: 0; }
+    .wolfrom-skills { margin: 0; }
+    .wolfrom-skills dt { color: var(--text); font-weight: 700; margin-top: 18px; }
+    .wolfrom-skills dd { margin: 4px 0 0; line-height: 1.6; }
+    .matlab-panel { position: relative; aspect-ratio: var(--panel-ratio, 11 / 8); overflow: hidden; }
+    .detail-content[data-project-id="wolfrom-actuator"] .matlab-panel img { position: absolute; width: var(--panel-width, 218.1818%); max-width: none; max-height: none; height: auto; margin: 0; left: var(--panel-x, 0%); top: var(--panel-y, 0%); }
+    [data-theme="light"] .matlab-panel img { mix-blend-mode: multiply; }
+    html:not([data-theme="light"]) .dyno-diagram img { filter: invert(.9); }
+    .detail-content[data-project-id="wolfrom-actuator"] .dyno-diagram img { max-height: none; }
+    .wolfrom-build-board { display: grid; grid-template-columns: 1fr 1fr; gap: 22px 16px; padding: 16px 8px; align-items: start; }
+    .wolfrom-build-board figure { position: relative; margin: 0; padding: 6px; background: var(--bg); box-shadow: 0 2px 6px #00000018; }
+    .wolfrom-build-board figure:first-child { grid-row: span 2; transform: rotate(-2deg); }
+    .wolfrom-build-board figure:nth-child(2) { transform: rotate(2deg); }
+    .wolfrom-build-board figure::before { content: ''; position: absolute; z-index: 1; width: 56px; height: 17px; top: -8px; left: calc(50% - 28px); background: #c9c0acb3; transform: rotate(-7deg); clip-path: polygon(0 8%, 5% 0, 10% 8%, 95% 0, 100% 12%, 96% 90%, 100% 100%, 4% 92%); pointer-events: none; }
+    .wolfrom-build-board figure::after { content: 'V1 prototype'; position: absolute; z-index: 2; top: 13px; left: 13px; padding: 4px 7px; color: #fff; background: #17191dcc; font: 12px/1.2 var(--font-latex); letter-spacing: .01em; text-shadow: 0 1px 2px #0008; pointer-events: none; }
+    .detail-content[data-project-id="wolfrom-actuator"] .wolfrom-build-board img { display: block; width: 100%; height: 145px; object-fit: cover; max-height: none; }
+    .detail-content[data-project-id="wolfrom-actuator"] .wolfrom-build-board figure:first-child img { height: 310px; object-position: 50% 45%; }
+    .wolfrom-build-board figcaption { font-size: 14px; line-height: 1.35; margin-top: 6px; color: var(--text-dim); }
+    .wolfrom-evidence > :first-child { margin-top: 0; }
+    .wolfrom-section-body.prose-only { display: block; max-width: 38em; }
+    .wolfrom-supplement { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px 40px; }
+    .wolfrom-supplement > figure { margin: 0; min-width: 0; }
+    .wolfrom-supplement > details { grid-column: 1 / -1; }
+    #wolfrom-test .wolfrom-supplement p { max-width: 70ch; }
+    .detail-content[data-project-id="wolfrom-actuator"] .wolfrom-supplement .project-inline-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px 40px; }
+    @media (max-width: 900px) {
+      .wolfrom-section-body, .wolfrom-supplement,
+      .detail-content[data-project-id="wolfrom-actuator"] .wolfrom-supplement .project-inline-grid { grid-template-columns: minmax(0, 1fr); }
+      .wolfrom-section-body { gap: 20px; }
+      .wolfrom-evidence { order: -1; }
+      .wolfrom-gallery-row { grid-template-columns: minmax(0, 1fr); gap: 20px; }
+    }
+
+    .detail-content[data-project-id="wolfrom-actuator"] .project-wide-figure {
+      grid-column: 1 / -1;
+      width: 100%;
+      margin: 0 0 4px;
+      text-align: center;
+    }
+
+    .detail-content[data-project-id="wolfrom-actuator"] .project-wide-figure img {
+      display: block;
+      width: min(100%, 1120px);
+      max-height: 460px;
+      margin: 0 auto;
+      object-fit: contain;
+    }
+
+    .detail-content[data-project-id="wolfrom-actuator"] .project-wide-figure figcaption {
+      max-width: 760px;
+      margin: 8px auto 0;
+    }
+
+    .project-toc a.active {
+      color: var(--text);
+      font-weight: 700;
     }
 
     .project-inline-grid {
@@ -1378,10 +1714,37 @@
       margin: 5px 0;
     }
 
+    .detail-content[data-project-id="formula-electric"] .project-feature-figure img {
+      height: auto !important;
+    }
+
+    .detail-content[data-project-id="formula-electric"] .project-disclosure img {
+      width: auto;
+      max-width: 100%;
+      max-height: 720px;
+      height: auto !important;
+      margin: 16px auto;
+      object-fit: contain;
+    }
+
 
     @media (max-width: 768px) {
+      .detail-content[data-project-id="wolfrom-actuator"] .detail-description {
+        display: block;
+      }
+
       .project-inline-grid {
         grid-template-columns: 1fr;
+      }
+
+      .project-detail-card-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .project-data-table {
+        display: block;
+        overflow-x: auto;
+        font-size: 14px;
       }
 
       .project-disclosure,
@@ -1421,10 +1784,9 @@
       padding: 6px 8px;
       border: 1px solid var(--border);
       color: var(--text-dim);
-      font-family: 'JetBrains Mono', monospace;
+      font-family: var(--font-latex);
       font-size: 10px;
       letter-spacing: 0.04em;
-      text-transform: uppercase;
       cursor: pointer;
       transition: all 0.2s;
     }
@@ -1467,11 +1829,10 @@
       border: 1px solid rgba(255,255,255,0.24);
       background: rgba(12,13,18,0.78);
       color: #fff;
-      font-family: 'JetBrains Mono', monospace;
+      font-family: var(--font-latex);
       font-size: 9px;
-      line-height: 1;
+      line-height: 1.15;
       letter-spacing: 0.04em;
-      text-transform: uppercase;
       text-decoration: none;
       cursor: pointer;
       opacity: 1;
@@ -1495,7 +1856,7 @@
       display: block;
       margin-top: 10px;
       color: var(--text-dim);
-      font-family: 'JetBrains Mono', monospace;
+      font-family: var(--font-latex);
       font-size: 10px;
       line-height: 1.5;
       letter-spacing: 0.02em;
@@ -1569,7 +1930,7 @@
       background: rgba(0,0,0,0.4);
       color: #fff;
       font-size: 22px;
-      line-height: 1;
+      line-height: 1.15;
       cursor: pointer;
     }
 
@@ -1608,11 +1969,11 @@
     }
 
     .detail-tag {
-      padding: 8px 16px;
-      border: 1px solid var(--border);
-      font-size: 12px;
+      padding: 0;
+      border: 0;
+      font-size: 16px;
       color: var(--text-dim);
-      font-family: 'JetBrains Mono', monospace;
+      font-family: var(--font-latex);
       transition: all 0.2s;
     }
 
@@ -1622,52 +1983,107 @@
     }
 
     .detail-sidebar h3 {
-      font-size: 11px;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--text-dim);
-      font-family: 'JetBrains Mono', monospace;
-      margin-bottom: 16px;
+      font-size: 16px;
+      letter-spacing: 0;
+      text-transform: none;
+      color: var(--text);
+      font-family: var(--font-latex);
+      font-weight: 700;
+      margin: 0 0 10px;
     }
 
     .detail-sidebar {
       min-width: 0;
+      font-family: var(--font-latex);
     }
 
     .detail-links {
       display: flex;
       flex-direction: column;
-      gap: 12px;
-      margin-bottom: 40px;
+      gap: 7px;
+      margin-bottom: 24px;
     }
 
     .detail-link {
       display: inline-flex;
       align-items: center;
-      gap: 10px;
-      padding: 12px 20px;
+      gap: 8px;
+      padding: 2px 0;
       background: transparent;
-      border: 1px solid var(--border);
-      color: var(--text-dim);
+      border: 0;
+      color: var(--text);
       text-decoration: none;
-      font-size: 13px;
-      font-family: 'JetBrains Mono', monospace;
+      font-size: 16px;
+      font-family: var(--font-latex);
+      line-height: 1.35;
       transition: all 0.2s;
       min-width: 0;
       overflow-wrap: anywhere;
     }
 
     .detail-link:hover {
-      border-color: var(--border-light);
-      color: #fff;
-      background: rgba(255,255,255,0.02);
+      color: var(--text);
     }
 
+    .detail-link .link-text {
+      text-decoration: underline;
+      text-decoration-thickness: 1px;
+      text-underline-offset: 4px;
+    }
+
+    .detail-link:hover .link-text { text-decoration-thickness: 2px; }
+
     .detail-link svg {
-      width: 16px;
-      height: 16px;
+      width: 14px;
+      height: 14px;
       fill: currentColor;
       flex: 0 0 16px;
+      opacity: 0.65;
+    }
+
+    .detail-skills { margin-top: 10px; }
+
+    .detail-skills-label {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--text);
+      font-family: var(--font-latex);
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    .detail-skill-list {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      color: var(--text-dim);
+      font-family: var(--font-latex);
+      font-size: 15px;
+      line-height: 1.45;
+    }
+
+    .detail-skill-list span {
+      position: relative;
+      white-space: nowrap;
+    }
+
+    .detail-skill-list span:not(:last-child)::after {
+      content: '·';
+      display: inline-block;
+      margin: 0 9px;
+      color: var(--text-muted);
+    }
+
+    .detail-project-info {
+      margin: 0 0 28px;
+      color: var(--text-dim);
+      font-size: 15px;
+      line-height: 1.7;
+    }
+
+    .detail-project-info strong {
+      color: var(--text);
+      font-weight: 700;
     }
 
     .detail-link.unavailable-link {
@@ -1697,8 +2113,10 @@
       right: 40px;
       width: 50px;
       height: 50px;
-      background: rgba(0,0,0,0.8);
-      border: 1px solid var(--border);
+      background: transparent;
+      border: 0;
+      border-radius: 0;
+      color: var(--text-muted);
       cursor: pointer;
       z-index: 200;
       display: flex;
@@ -1710,19 +2128,20 @@
     }
 
     [data-theme="light"] .detail-close {
-      background: rgba(255,255,255,0.9);
-      border-color: rgba(0,0,0,0.15);
+      background: transparent;
+      border-color: transparent;
+      color: var(--text-muted);
     }
 
     [data-theme="light"] .detail-close::before,
     [data-theme="light"] .detail-close::after {
-      background: #111;
+      background: currentColor;
     }
 
     [data-theme="light"] .detail-close:hover {
-      background: rgba(0,0,0,0.06);
-      border-color: rgba(0,0,0,0.25);
-      box-shadow: 0 0 20px rgba(0,0,0,0.1);
+      background: transparent;
+      border-color: transparent;
+      box-shadow: none;
     }
 
     [data-theme="light"] .gallery-nav {
@@ -1787,15 +2206,65 @@
       transform: scale(1.32);
     }
 
-    .detail-content[data-project-id="wolfrom-actuator"] .gallery-main,
-    .detail-content[data-project-id="wolfrom-actuator"] #galleryMediaContainer,
-    .detail-content[data-project-id="wolfrom-actuator"] #galleryMediaContainer picture,
-    .detail-content[data-project-id="wolfrom-actuator"] #galleryMediaContainer img {
+    .detail-content[data-project-id="wolfrom-actuator"] :where(.gallery-main, #galleryMediaContainer, #galleryMediaContainer picture, #galleryMediaContainer img) {
       background: #fff;
     }
 
     .detail-content[data-project-id="wolfrom-actuator"] #galleryMediaContainer img {
       object-position: center center;
+    }
+
+    .detail-content[data-project-id="wolfrom-actuator"] .gallery-thumb {
+      background: #fff;
+    }
+
+    .detail-content[data-project-id="wolfrom-actuator"] .gallery-thumb img {
+      object-fit: contain;
+      background: transparent;
+    }
+
+    [data-theme="light"] .detail-content[data-project-id="wolfrom-actuator"] :where(.gallery-main, #galleryMediaContainer, #galleryMediaContainer picture, #galleryMediaContainer img, .gallery-thumb, .gallery-thumb img),
+    [data-theme="light"] .project-card[data-id="wolfrom-actuator"] :is(.project-image, img) {
+      background: transparent;
+    }
+
+    [data-theme="light"] .detail-content[data-project-id="wolfrom-actuator"] :is(.gallery-main, .gallery-media-frame, .gallery-thumb),
+    [data-theme="light"] .project-card[data-id="wolfrom-actuator"] .project-image {
+      background: var(--bg);
+      isolation: isolate;
+    }
+
+    .detail-content[data-project-id="wolfrom-actuator"] .gallery-main { border: 0; }
+
+    [data-theme="light"] .detail-content[data-project-id="wolfrom-actuator"] #galleryMediaContainer :is(img, picture) {
+      background: transparent;
+    }
+
+    [data-theme="light"] .detail-content[data-project-id="wolfrom-actuator"] .gallery-thumb.active {
+      border-color: transparent;
+      border-bottom-color: var(--text-muted);
+    }
+
+    .detail-content[data-project-id="wolfrom-actuator"].visible :is(.detail-body, .detail-top-row) {
+      transform: none;
+    }
+
+    .detail-content[data-project-id="wolfrom-actuator"] .detail-top-row {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+
+    .detail-content[data-project-id="wolfrom-actuator"] .gallery-thumb {
+      transition: opacity 0.2s ease, border-bottom-color 0.2s ease;
+    }
+
+    [data-theme="light"] :is(.detail-content[data-project-id="wolfrom-actuator"], .project-card[data-id="wolfrom-actuator"]) img:is(
+      [src$="/exploded-landscape.png"], [src$="/exploded.png"],
+      [src$="/hero-isometric.png"], [src$="/half-section.png"],
+      [src$="/gear-train.png"], [src$="/cutaway-three-quarter.png"]
+    ) {
+      mix-blend-mode: multiply;
     }
 
     .detail-content.visible .detail-close {
@@ -1804,19 +2273,20 @@
     }
 
     .detail-close:hover {
-      background: rgba(255,255,255,0.1);
-      border-color: var(--border-light);
-      transform: scale(1.05);
-      box-shadow: 0 0 20px rgba(255,255,255,0.2), 0 0 40px rgba(255,255,255,0.1);
+      background: transparent;
+      border-color: transparent;
+      color: var(--text);
+      transform: scale(1.04);
+      box-shadow: none;
     }
 
     .detail-close::before,
     .detail-close::after {
       content: '';
       position: absolute;
-      width: 20px;
-      height: 2px;
-      background: #fff;
+      width: 19px;
+      height: 1.5px;
+      background: currentColor;
       transition: all 0.2s;
     }
     .detail-close::before { transform: rotate(45deg); }
@@ -1829,7 +2299,7 @@
       right: 100px;
       font-size: 13px;
       color: rgba(255,255,255,0.5);
-      font-family: var(--font-mono);
+      font-family: var(--font-latex);
       letter-spacing: 0.05em;
       opacity: 0;
       transform: translateX(20px);
@@ -1952,8 +2422,38 @@
         gap: 32px;
       }
 
+      .detail-body.has-toc {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 18px;
+      }
+
+      .project-toc,
+      .detail-content[data-project-id="wolfrom-actuator"] .project-toc {
+        position: sticky;
+        top: 80px;
+        z-index: 25;
+        padding: 0;
+        max-height: none;
+        overflow: visible;
+        background: var(--bg);
+        border-bottom: 1px solid var(--border-light);
+      }
+      .project-toc-label { display: none; }
+      .project-toc-toggle { display: flex; align-items: center; gap: 10px; width: 100%; min-height: 46px; padding: 8px 0; border: 0; background: none; color: var(--text); font: inherit; font-size: 16px; text-align: left; cursor: pointer; }
+      .project-toc-toggle::after { content: '⌄'; margin-left: auto; }
+      .project-toc-toggle[aria-expanded="true"]::after { content: '⌃'; }
+      .project-toc-toggle:focus-visible { outline: 2px solid currentColor; outline-offset: 2px; }
+      .project-toc-current { color: var(--text-dim); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+      .project-toc ol { display: none; position: absolute; top: 100%; left: 0; right: 0; max-height: min(65svh, 540px); overflow-y: auto; padding: 10px 16px 16px; background: var(--bg); border: 1px solid var(--border-light); box-shadow: 0 6px 12px #00000012; }
+      .project-toc.is-menu-open ol { display: grid; gap: 0; }
+      .project-toc a { padding: 10px 0; font-size: 17px; line-height: 1.35; }
+
       .detail-description {
         columns: 1;
+      }
+
+      .detail-content[data-project-id="formula-electric"] .detail-description {
+        display: block;
       }
 
       .detail-content[data-project-id="ns-us-pulse-generator"] .detail-description {
@@ -2003,34 +2503,38 @@
     @media (max-width: 768px) {
       /* Standardized mobile nav */
       .nav-bar {
-        position: absolute;
+        position: fixed;
         padding: 16px 16px;
-        gap: 24px;
+        gap: 16px;
         justify-content: center;
-        height: auto;
-        background: transparent;
-        backdrop-filter: none;
-        -webkit-backdrop-filter: none;
+        height: 70px;
+        background: var(--nav-bg);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
       }
       .nav-link {
-        font-size: 11px;
-        padding: 6px 0;
-        letter-spacing: 0.1em;
+        font-size: 14px;
+        padding: 6px 0 8px;
+        letter-spacing: 0.04em;
+        line-height: 1.15;
       }
 
+      .project-toc,
+      .detail-content[data-project-id="wolfrom-actuator"] .project-toc { top: 70px; }
+
       .theme-toggle {
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        top: auto;
-        transform: none;
+        position: absolute;
+        bottom: auto;
+        right: 8px;
+        top: 50%;
+        transform: translateY(-50%);
         z-index: 1002;
         opacity: 1;
         transition: opacity 0.3s ease;
         background: rgba(255, 255, 255, 0.1);
         border-radius: 50%;
-        width: 36px;
-        height: 36px;
+        width: 28px;
+        height: 28px;
       }
       [data-theme="light"] .theme-toggle {
         background: rgba(0, 0, 0, 0.08);
@@ -2041,7 +2545,7 @@
       .detail-inner { padding: 120px 24px 80px; }
 
       .page-title {
-        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+        font-family: var(--font-latex) !important;
         font-size: clamp(32px, 8vw, 42px);
       }
 
@@ -2050,6 +2554,7 @@
       }
 
       .detail-close {
+        position: absolute;
         top: 90px;
         right: 24px;
         width: 44px;
@@ -2067,7 +2572,8 @@
       }
 
       .detail-inner {
-        overflow-x: hidden;
+        overflow-x: clip;
+        overflow-y: visible;
         width: 100%;
         max-width: 100vw;
         box-sizing: border-box;
@@ -2089,8 +2595,8 @@
       .detail-link {
         width: 100%;
         box-sizing: border-box;
-        font-size: 12px;
-        padding: 10px 14px;
+        font-size: 16px;
+        padding: 2px 0;
         white-space: normal;
       }
 
@@ -2104,6 +2610,10 @@
         max-width: 100%;
       }
 
+      .detail-skill-list {
+        grid-template-columns: 1fr;
+      }
+
       .detail-tag {
         padding: 6px 12px;
         font-size: 11px;
@@ -2114,7 +2624,8 @@
       }
 
       .detail-description {
-        font-size: 14px;
+        font-size: 17px;
+        line-height: 1.65;
       }
 
       .detail-description img,
@@ -2123,6 +2634,8 @@
         max-width: 100% !important;
         height: auto !important;
       }
+
+      .detail-content[data-project-id="wolfrom-actuator"] .matlab-panel img { width: var(--panel-width, 218.1818%); max-width: none !important; }
 
       .detail-description .katex-display {
         max-width: 100%;
@@ -2234,9 +2747,8 @@
     .footage-label {
       font-size: 10px;
       letter-spacing: 0.2em;
-      text-transform: uppercase;
       color: var(--text-muted);
-      font-family: 'JetBrains Mono', monospace;
+      font-family: var(--font-latex);
     }
 
     .footage-title {
@@ -2281,6 +2793,8 @@
   </style>
   <link rel="stylesheet" href="/page-transitions.css">
   <link rel="stylesheet" href="/image-lightbox.css">
+  <link rel="stylesheet" href="/wolfrom-explode.css">
+  <script type="module" src="/wolfrom-explode.js"></script>
   <script src="/page-transitions.js"></script>
   <script type="module" src="/image-lightbox.js"></script>
 </head>
@@ -2288,10 +2802,10 @@
   <div class="cursor-glow" id="cursorGlow"></div>
 
   <nav class="nav-bar">
-    <a href="/" class="nav-link">HOME</a>
-    <a href="/resume" class="nav-link">RESUME</a>
-    <a href="/projects" class="nav-link active">PROJECTS</a>
-    <a href="/footage" class="nav-link">FOOTAGE</a>
+    <a href="/" class="nav-link">Home</a>
+    <a href="/resume" class="nav-link">Resume</a>
+    <a href="/projects" class="nav-link active">Projects</a>
+    <a href="/footage" class="nav-link">Footage</a>
     <button class="theme-toggle" id="themeToggle" aria-label="Toggle light mode">
       <svg class="icon-moon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
       <svg class="icon-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
@@ -2327,7 +2841,7 @@
             </svg>
           </div>
           <div class="footage-text">
-            <span class="footage-label">WATCH</span>
+            <span class="footage-label">Watch</span>
             <span class="footage-title">Drone Footage & Aerial Views</span>
           </div>
           <div class="footage-arrow">
@@ -2342,9 +2856,7 @@
 
   <!-- Detail View -->
   <div class="detail-content" id="detailContent">
-    <button class="detail-close" id="detailClose"></button>
-    <span class="esc-hint">or press esc</span>
-
+    <button class="detail-close" id="detailClose" aria-label="Close project"></button>
     <div class="detail-inner">
       <header class="detail-header">
         <p class="detail-category" id="detailCategory"></p>
@@ -2358,6 +2870,7 @@
       </div>
 
       <div class="detail-body">
+        <nav class="project-toc" id="projectToc" aria-label="Project sections" hidden></nav>
         <div class="detail-main">
           <div class="detail-description" id="detailDescription"></div>
           <div class="detail-tags" id="detailTags"></div>
@@ -2381,170 +2894,591 @@
   </div>
 
   <script>
+function layoutWolfromSections(description) {
+  // Each section is a reading row, not a pair of unrelated newspaper columns.
+  const evidenceSelectors = {
+    'wolfrom-why': 'figure',
+    'wolfrom-requirements': 'table',
+    'wolfrom-first-principles': 'figure',
+    'wolfrom-packaging': 'figure',
+    'wolfrom-load-cases': 'figure',
+    'wolfrom-hand-calculations': 'figure',
+    'wolfrom-simulation': '.project-inline-grid',
+    'wolfrom-build': '.wolfrom-build-board',
+    'wolfrom-test': 'figure',
+    'wolfrom-results': 'table',
+  };
+  description.querySelectorAll(':scope > .latex-section:not(.wx):not(.wolfrom-gallery-section)').forEach(section => {
+    const heading = section.querySelector(':scope > strong');
+    const body = document.createElement('div');
+    body.className = 'wolfrom-section-body';
+    const prose = document.createElement('div');
+    prose.className = 'wolfrom-prose';
+    const evidence = document.createElement('div');
+    evidence.className = 'wolfrom-evidence';
+    const supplement = document.createElement('div');
+    supplement.className = 'wolfrom-supplement';
+    let paragraph = null;
+    const finishParagraph = () => { paragraph = null; };
+    const appendFigure = figure => {
+      (evidence.children.length ? supplement : evidence).append(figure);
+    };
+    for (const node of [...section.childNodes]) {
+      if (node === heading) continue;
+      if (node.nodeName === 'BR') { finishParagraph(); node.remove(); continue; }
+      if (node.nodeType === Node.TEXT_NODE && !node.textContent.trim()) { node.remove(); continue; }
+      if (node.nodeType === Node.ELEMENT_NODE && node.matches(evidenceSelectors[section.id] || ':not(*)')) {
+        finishParagraph();
+        if (node.matches('figure')) appendFigure(node);
+        else if (node.matches('.project-inline-grid')) {
+          [...node.children].forEach(appendFigure);
+          node.remove();
+        } else evidence.append(node);
+      } else if (node.nodeType === Node.ELEMENT_NODE && node.matches('details, div, ul, table, figure, p')) {
+        finishParagraph();
+        if (section.id === 'wolfrom-build' && node.matches('.project-inline-grid')) {
+          [...node.children].forEach(figure => supplement.append(figure));
+          node.remove();
+        } else if (section.id === 'wolfrom-test' && node.matches('details')) {
+          const summary = node.querySelector('summary')?.textContent?.trim() || '';
+          (summary.startsWith('Measurements') ? evidence : prose).append(node);
+        } else if (section.id === 'wolfrom-simulation' && node.matches('details')) supplement.append(node);
+        else prose.append(node);
+      } else {
+        if (!paragraph) { paragraph = document.createElement('p'); prose.append(paragraph); }
+        paragraph.append(node);
+      }
+    }
+    body.append(prose);
+    if (evidence.childNodes.length) body.append(evidence);
+    else body.classList.add('prose-only');
+    if (supplement.childNodes.length) body.append(supplement);
+    section.append(body);
+  });
+}
+
 const wolfromDescription = `
-  <strong>Overview</strong><br><br>
-  I am designing a compact Wolfrom compound planetary actuator for humanoid-scale joints. The current geartrain uses a driven sun, three compound planets at 120°, a fixed Ra ring integrated into the housing, and an Rb output ring. Tooth counts S=33, Ps=57, Pa=27, Pb=25, Ra=72, and Rb=75 give <b>555/11 = 50.45:1</b> reduction.<br><br>
+  <section class="latex-section wx" id="wolfrom-architecture" data-model="/assets/actuator.glb" aria-label="Scroll-driven exploded view of the Wolfrom actuator">
+    <div class="wx-stage">
+      <div class="wx-canvas-wrap">
+        <img class="wx-poster" src="/assets/gear-train.png" alt="Wolfrom actuator with the compound planetary gear train exposed and no loose retaining bolts" width="1150" height="863" decoding="async" fetchpriority="high" data-lightbox-ignore>
+        <canvas aria-hidden="true"></canvas>
+      </div>
+      <div class="wx-copy">
+        <div class="wx-introduction">
+          <strong>Architecture</strong>
+        </div>
+        <div class="wx-caption" aria-live="polite">
+          <p class="wx-step"></p>
+          <h3 class="wx-title">50.45:1 in a 104 mm package</h3>
+          <p class="wx-body">I’m designing and building a backdrivable actuator for a humanoid elbow, with the motor, gearbox, and controller in one package. The printed prototype checks the assembly before a load-rated metal build.</p>
+          <span class="wx-spec">30 Nm continuous and 50 Nm peak design targets</span>
+        </div>
+        <div class="wx-progress" aria-hidden="true"><i></i></div>
+        <div class="wx-controls" aria-label="Model controls">
+          <button type="button" data-wx-explore>Interact with model</button>
+          <button type="button" data-wx-skip>Skip animation</button>
+          <button type="button" data-wx-replay hidden>Replay animation</button>
+          <button type="button" data-wx-reset hidden>Reset view</button>
+        </div>
+      </div>
+      <div class="wx-fallback">
+        <img src="/assets/exploded.png" alt="Exploded view of the Wolfrom actuator from output retainer screws to controller housing" width="1369" height="896" loading="lazy" decoding="async">
+      </div>
+    </div>
+  </section>
 
-  The design target is <b>50 N·m peak</b> and <b>30 N·m continuous</b> output torque. I pushed more reduction into the sun stage to reduce circulating power in the Wolfrom differential, then packaged the gearbox, output bearing, motor, electronics, and cable exit as one joint module. Efficiency, backlash, and backdrive performance are still targets for the metal revision and dyno, not measured final claims.<br><br>
+  <section class="latex-section wolfrom-gallery-section" id="wolfrom-gallery">
+    <strong>Gallery and tools</strong><br><br>
+    <div class="wolfrom-gallery-row">
+      <div class="wolfrom-gallery-slot"></div>
+      <aside class="wolfrom-tools-slot" aria-label="Project tools and skills"></aside>
+    </div>
+  </section>
 
-  <picture>
-    <source srcset="/assets/wolfrom-integrated-section.webp" type="image/webp">
-    <img src="/assets/wolfrom-integrated-section.png" alt="Integrated Wolfrom actuator cutaway showing the output support, compound geartrain, motor, electronics, and cable exit" width="1633" height="1376" loading="lazy" decoding="async" style="display:block; max-width:82%; margin:20px auto; border-radius:8px;">
-  </picture>
-  <br><em style="opacity:0.7; font-size:0.9em;">Current integrated package: Wolfrom reduction and output support above the motor, with control electronics inside the lower housing.</em><br><br>
+  <section class="latex-section" id="wolfrom-why">
+    <strong>Why this project</strong><br><br>
+    Humanoid joints need high torque in a small package, but the usual answers trade away something important. Strain-wave drives are compact and stiff but lose 10 to 20 percent of input torque just to start moving. Low-ratio planetary drives are efficient and backdrivable but need a large motor. A Wolfrom gearbox (a three-ring compound planetary) reaches high ratios in one compact stage and stays backdrivable if its gear meshes are efficient enough. This project designs one at <b>50:1</b>, in the gap between the two.
+    <details class="project-disclosure">
+      <summary>Background</summary>
+      <div class="project-disclosure-content">
+        A Wolfrom drive has a sun gear, compound planets with three gear stages on one body, a fixed ring gear, and an output ring gear. The planet carrier floats and carries no net torque.<br><br>
+        Published robotic Wolfrom gearboxes sit at ratios around 80:1 and above, including R2poweR at 275:1, Bilateral Drive Gear at 102:1, and Omni at 125:1. Quasi-direct drives sit around 6:1 to 20:1. This design targets the band between those families.<br><br>
+        <span class="project-placeholder">To be added: one sentence on who this project was done with or for.</span>
+      </div>
+    </details>
+  </section>
 
-  The current revision is judged first by whether the interfaces assemble cleanly and leave room for service. That keeps packaging, manufacturability, and future measurement access in the same design loop before performance claims are made.<br><br>
+  <section class="latex-section" id="wolfrom-requirements">
+    <strong>Requirements and constraints</strong><br><br>
+    <table class="project-data-table">
+      <thead><tr><th>Requirement</th><th>Target</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr><td>Continuous output torque</td><td>30 Nm</td><td>Design target; motor needs about 25 A</td></tr>
+        <tr><td>Peak output torque</td><td>50 Nm</td><td>Design target; motor needs about 42 A of a 59.2 A peak</td></tr>
+        <tr><td>Ratio</td><td>About 50:1</td><td>50.45:1 achieved</td></tr>
+        <tr><td>No-load output speed</td><td><span class="project-placeholder">To be added: elbow requirement</span></td><td>143 rpm at 24 V; 285 rpm at 48 V available</td></tr>
+        <tr><td>Forward efficiency</td><td>&gt;80%</td><td>Three-stage KISSsoft prediction pending; bench validation to follow</td></tr>
+        <tr><td>Backdrivable</td><td>Yes</td><td>Predicted; depends on mesh efficiency above 94.3%</td></tr>
+        <tr><td>Backdrive efficiency</td><td>&ge;75% at 30 Nm, 30 rpm</td><td>Derived design target; KISSsoft and bench validation pending</td></tr>
+        <tr><td>Envelope</td><td><span class="project-placeholder">To be added</span></td><td>104 mm diameter, 81 mm long including motor and controller</td></tr>
+        <tr><td>Prototype process</td><td>FDM housings, SLA gears</td><td>In progress</td></tr>
+        <tr><td>Production intent</td><td>Aluminium housings, steel gears, standard gear-cutting processes</td><td>Designed for</td></tr>
+      </tbody>
+    </table>
+    <details class="project-disclosure">
+      <summary>Where the targets came from</summary>
+      <div class="project-disclosure-content">
+        The 30 and 50 Nm figures are initial targets. A placeholder elbow case, using 5 kg held at 0.35 m with a 2 g dynamic factor, gives about 40 Nm including the forearm, which sits between them. A requirement derived from a specific arm is still to be written.
+        <p>The greater-than-80% forward-efficiency figure is a target, not a completed three-stage KISSsoft result or a measured result. The next analysis will rate the stages separately and combine them for the overall prediction. The backdrive target is at least 75% at the continuous load case of 30 Nm and 30 rpm. At that point, joint power is 94.2 W, and 80% forward efficiency allows 23.6 W of mechanical loss. Giving backdriving the same loss budget leaves at least 70.7 W reaching the motor shaft.</p>
+        $$\\eta_{b,\\min}=1-\\frac{P_{\\mathrm{loss,max}}}{P_j}=1-\\left(\\frac{1}{0.80}-1\\right)=0.75$$
+        <p>This is a chosen loss-budget requirement, not an identity relating forward and backward efficiency. As a screening check, the MATLAB rolling-power model gives 75.7% backdrive efficiency at 80% forward efficiency when the sun mesh is assumed to be 98% efficient and both ring meshes 98.64% efficient. Those assumptions still need to be checked against the stage-level KISSsoft results. The target covers loaded gearbox efficiency, not motor or inverter electrical losses, and does not replace a separate breakaway-torque check.</p>
+      </div>
+    </details>
+  </section>
 
-  <strong>Prototype Iteration</strong><br><br>
-  I built FDM versions before committing the housing and ring interfaces to metal. The printed hardware exposed gear-mesh clearance, stack-height, bearing-placement, gear-timing, fastener-access, and split-ring assembly problems while those changes were still cheap. The prototypes are geometry and assembly checks, not load-rated actuator validation.<br><br>
-
-  <div class="project-inline-grid">
-    <figure>
-      <img src="/assets/wolfrom-stand.jpg" alt="Assembled FDM Wolfrom actuator prototype on its test stand" loading="lazy" decoding="async">
-      <figcaption>Assembled prototype used for stack-height, output-ring, and access checks.</figcaption>
+  <section class="latex-section" id="wolfrom-first-principles">
+    <strong>First principles</strong><br><br>
+    In a Wolfrom gearbox, power circulating through the two ring-gear meshes reaches 8 to 9 times the output power. A small loss per mesh is multiplied, so mesh efficiency decides overall efficiency and whether the joint can be backdriven.
+    $$\\eta = \\frac{1 + \\eta_a \\eta_s (i_{sc}-1)}{i(1 - \\eta_a \\eta_b i_0)}$$
+    Here $i_{sc}=5.606$, $i_0=0.889$, $i=50.45$, and $\\eta_s$, $\\eta_a$, and $\\eta_b$ are the sun, fixed-ring, and output-ring mesh efficiencies.
+    <figure class="project-feature-figure">
+      <div class="matlab-panel" style="--panel-x: 0%; --panel-y: 0%; --panel-width: 218.1818%; --panel-ratio: 11 / 8"><img src="/assets/wolfrom-load-analysis.png" alt="MATLAB prediction of forward and backdrive efficiency versus ring-mesh efficiency" width="1200" height="1200" loading="lazy" decoding="async" data-lightbox-caption="Full MATLAB analysis sheet: forward and backdrive efficiency, circulating mesh power, planet forces and bearing loads, gear-root stress, and motor envelope."></div>
+      <figcaption>Forward and backdrive efficiency versus ring-mesh efficiency. Open the figure for the full MATLAB sheet.</figcaption>
+      <div class="matlab-panel" style="--panel-x: -80.3%; --panel-y: 0%; --panel-width: 184.6154%; --panel-ratio: 13 / 8"><img src="/assets/wolfrom-load-analysis.png" alt="MATLAB power-flow calculation showing the fixed-ring and output-ring meshes carry nine and eight times output power" width="1200" height="1200" loading="lazy" decoding="async"></div>
+      <figcaption>Circulating power in the two ring meshes, showing why small mesh losses matter so much.</figcaption>
     </figure>
-    <figure>
-      <img src="/assets/wolfrom-bench.jpg" alt="Wolfrom prototype open on the bench during gear timing and assembly checks" loading="lazy" decoding="async">
-      <figcaption>Bench fit-check during gear timing and repeated teardown.</figcaption>
+    <table class="project-data-table project-small-table">
+      <thead><tr><th>Efficiency of each ring mesh</th><th>Forward</th><th>Backdriven</th></tr></thead>
+      <tbody>
+        <tr><td>99.5%</td><td>91%</td><td>90%</td></tr>
+        <tr><td>99%</td><td>84%</td><td>82%</td></tr>
+        <tr><td>97%</td><td>65%</td><td>47%</td></tr>
+      </tbody>
+    </table>
+    <figcaption>Sun mesh taken as 98.5%, 98%, and 97% in the three rows. Below 94.3% per ring mesh, the gearbox self-locks when backdriven.</figcaption>
+    <details class="project-disclosure">
+      <summary>Derivation</summary>
+      <div class="project-disclosure-content">
+        Tooth counts are sun 33, planet sun-stage 57, planet fixed-ring stage 27, planet output-ring stage 25, fixed ring 72, and output ring 75. Modules 0.5, 1.0, and 0.9 mm give all three meshes the same 22.5 mm centre distance.<br><br>
+        $i_{sc}=1+\\frac{57}{33}\\cdot\\frac{72}{27}=5.606$, $i_0=\\frac{72}{27}\\cdot\\frac{25}{75}=0.889$, and $i=\\frac{i_{sc}}{1-i_0}=50.45$.<br><br>
+        In the frame rotating with the carrier, the sun and output ring feed power into the planet while the fixed ring takes it out. Applying one efficiency per mesh gives the forward expression above. Backdriving follows $\\eta'=\\frac{i(\\eta_a-i_0/\\eta_b)}{(i_{sc}-1)/\\eta_s+\\eta_a}$, which reaches zero when $\\eta_a\\eta_b=i_0$. Rolling power relative to output power is 8 at the output-ring mesh and 9 at the fixed-ring mesh.
+      </div>
+    </details>
+  </section>
+
+  <section class="latex-section" id="wolfrom-packaging">
+    <strong>Packaging and gear train</strong><br><br>
+    The motor rotor drives the sun directly. Three compound planets mesh with the sun, a fixed ring gear, and an output ring gear with three more teeth. The output ring rides on one thin-section four-point bearing. The motor controller mounts behind the motor and reads rotor angle from a magnet on the shaft.
+    <figure class="project-feature-figure">
+      <img src="/assets/half-section.png" alt="Cross-section through the actuator axis showing sun, planets, both ring gears, output bearing, motor and controller" width="1024" height="812" loading="lazy" decoding="async">
+      <figcaption>Axial section through the drivetrain, output support, motor, and controller.</figcaption>
     </figure>
-  </div>
-
-  <details class="project-disclosure">
-    <summary>Prototype details</summary>
-    <div class="project-disclosure-content">
-      The first test article used a goBILDA gearmotor and a plate stack tied together with standoffs and dowels. I used it to check whether all three compound planets could be timed and assembled, whether the split output ring remained accessible, and whether bearings and fasteners could be removed without taking the whole actuator apart.<br><br>
-      <img src="/assets/wolfrom-render-side.jpg" alt="Side CAD view of the earlier plate-stack Wolfrom prototype" loading="lazy" decoding="async">
-    </div>
-  </details>
-
-  <strong>Simulation and Redesign</strong><br><br>
-  For the integrated Structural Steel Ra ring and housing, I checked a combined peak case with <b>50 N·m</b> torque reaction, <b>500 N</b> radial bearing load, and <b>50 N·m</b> overturning moment. The refined solution returned <b>5.34 MPa</b> peak von Mises stress and <b>1.069 µm</b> maximum deformation. Topology optimization then showed that the thick outer wall contributed little compared with the circumferential gear, bearing, and mounting structure.<br><br>
-
-  <picture>
-    <source srcset="/assets/wolfrom-ansys-stress.webp" type="image/webp">
-    <img src="/assets/wolfrom-ansys-stress.png" alt="ANSYS equivalent von Mises stress result for the integrated Wolfrom housing load case" width="2048" height="855" loading="lazy" decoding="async" style="display:block; max-width:100%; margin:20px 0; border-radius:8px;">
-  </picture>
-  <br><em style="opacity:0.7; font-size:0.9em;">Refined-mesh ANSYS result for the combined peak load case: 5.34 MPa maximum equivalent stress.</em><br><br>
-
-  <details class="project-disclosure">
-    <summary>Load case and hand calculations</summary>
-    <div class="project-disclosure-content">
-      Gravity and acceleration produced a <b>28.1 N·m</b> calculated continuous case, rounded to the 30 N·m design target. A 50 N hard-stop event at the load arm produced about <b>50.3 N·m</b>, setting the 50 N·m peak case.
-      <div class="project-inline-grid">
-        <figure><img src="/assets/wolfrom-hand-calcs.png" alt="Actuator hand calculations for continuous and peak output torque" width="892" height="838" loading="lazy" decoding="async"><figcaption>Arm load model and final design basis.</figcaption></figure>
-        <figure><img src="/assets/wolfrom-ansys-load-case.png" alt="ANSYS combined load case and boundary conditions" width="1229" height="669" loading="lazy" decoding="async"><figcaption>Fixed mounting interfaces, frictionless lower face, and loads applied through Ra and the output bearing seat.</figcaption></figure>
+    <figure class="project-feature-figure">
+      <img src="/assets/gear-train.png" alt="Three compound planets meshing with the sun and ring gears, with retaining screws removed" width="1150" height="863" loading="lazy" decoding="async">
+      <figcaption>Top retainers removed to show the three compound planets and ring meshes.</figcaption>
+    </figure>
+    <figure class="project-feature-figure">
+      <img src="/assets/cutaway-three-quarter.png" alt="Three-quarter section view showing the gear train, motor, and controller inside the actuator housing" width="1369" height="1024" loading="lazy" decoding="async">
+      <figcaption>Three-quarter section showing how the gearbox, motor, and controller fit inside the housing.</figcaption>
+    </figure>
+    <details class="project-disclosure">
+      <summary>Parts and hardware</summary>
+      <div class="project-disclosure-content">
+        <ul class="project-result-list">
+          <li>Motor: MAD M6C10, 300 KV. Controller: ODrive S1.</li>
+          <li>Output bearing: Kaydon KA030XP0, 76.2 mm bore, four-point contact.</li>
+          <li>Planet bearings: two 604ZZ per planet.</li>
+          <li>Gears: module 0.5 sun stage, 1.0 fixed-ring stage, 0.9 output-ring stage; face widths 5, 5, and 6 mm.</li>
+          <li>Unequal modules on the two ring stages give a three-tooth difference on a common centre distance with standard, unshifted teeth.</li>
+          <li>Fully parametric CAD in Onshape, driven from one variable table.</li>
+        </ul>
       </div>
-    </div>
-  </details>
+    </details>
+  </section>
 
-  <details class="project-disclosure">
-    <summary>Static structural and mesh sensitivity</summary>
-    <div class="project-disclosure-content">
-      The preliminary integrated housing model used Structural Steel. Refining the mesh changed peak stress from <b>5.62 to 5.34 MPa</b>, about 5.1%, while deformation changed from <b>1.066 to 1.069 µm</b>, about 0.3%. I treat this as mesh sensitivity, not rigorous convergence.
-      <div class="project-inline-grid">
-        <figure><img src="/assets/wolfrom-ansys-stress.png" alt="ANSYS equivalent von Mises stress result" width="2048" height="855" loading="lazy" decoding="async"><figcaption>5.34 MPa peak equivalent stress.</figcaption></figure>
-        <figure><img src="/assets/wolfrom-ansys-deformation.png" alt="ANSYS total deformation result" width="2158" height="896" loading="lazy" decoding="async"><figcaption>1.069 µm maximum deformation.</figcaption></figure>
+  <section class="latex-section" id="wolfrom-load-cases">
+    <strong>Load cases</strong><br><br>
+    <table class="project-data-table">
+      <thead><tr><th>Case</th><th>Output torque</th><th>Output speed</th><th>Purpose</th></tr></thead>
+      <tbody>
+        <tr><td>Printed prototype</td><td>5 Nm</td><td>30 rpm</td><td>Limit for resin gears</td></tr>
+        <tr><td>Continuous</td><td>30 Nm</td><td>30 rpm</td><td>Life and thermal</td></tr>
+        <tr><td>Peak</td><td>50 Nm</td><td>10 rpm</td><td>Static strength</td></tr>
+      </tbody>
+    </table>
+    <figure class="project-feature-figure project-hand-calcs">
+      <img src="/assets/wolfrom-hand-calcs.png" alt="Hand calculations deriving gravity, acceleration, continuous, and peak torque for the Wolfrom elbow actuator" width="892" height="892" loading="lazy" decoding="async">
+      <figcaption>Load-case hand calculations setting the 30 Nm continuous and 50 Nm peak design targets.</figcaption>
+    </figure>
+    <figure class="project-feature-figure">
+      <div class="matlab-panel" style="--panel-y: -100%"><img src="/assets/wolfrom-load-analysis.png" alt="MATLAB free-body diagram of tangential mesh forces and bearing reactions along the compound planet axis" width="1200" height="1200" loading="lazy" decoding="async"></div>
+      <figcaption>Mesh forces and bearing reactions at 50 Nm output, from the same MATLAB calculation.</figcaption>
+    </figure>
+    The fixed ring and output ring push on each planet in opposite directions, 8 mm apart along its axis. The forces nearly cancel, so the carrier carries no net torque. They still leave a tilting moment on every planet: <b>4.2 Nm at 50 Nm output</b>.
+    <details class="project-disclosure">
+      <summary>Mesh forces per planet at 50 Nm</summary>
+      <div class="project-disclosure-content">Sun mesh: <b>40 N</b>. Fixed-ring mesh: <b>454 N</b>. Output-ring mesh: <b>494 N</b> tangential. Radial components are these values multiplied by $\\tan 20^\\circ$.</div>
+    </details>
+  </section>
+
+  <section class="latex-section" id="wolfrom-hand-calculations">
+    <strong>Hand calculations</strong><br><br>
+    <div class="project-detail-card-grid">
+      <article class="project-detail-card"><b>Planet bearings are the limiting part.</b> Worst bearing load is <b>235 N at 30 Nm</b> and <b>392 N at 50 Nm</b> against a static rating of about 350 N. Static safety is 1.5 continuous and 0.9 at peak. The rating is reached at 45 Nm output.</article>
+      <article class="project-detail-card"><b>Gear teeth have margin.</b> Nominal root stress at 50 Nm is 269 MPa on the output-ring stage, 261 MPa on the fixed-ring stage, and 44 MPa on the sun stage. Nominal contact stress is 740, 686, and 415 MPa.</article>
+      <article class="project-detail-card"><b>The carrier is not unloaded.</b> Its two plates are twisted against each other by 40% of output torque: 20 Nm at 50 Nm output.</article>
+    </div>
+    <figure class="project-feature-figure">
+      <div class="matlab-panel" style="--panel-x: -84.6154%; --panel-y: -100%; --panel-width: 184.6154%; --panel-ratio: 13 / 8"><img src="/assets/wolfrom-load-analysis.png" alt="MATLAB planet-bearing reaction versus output torque: 235 newtons continuous and 392 newtons peak against a 350 newton static rating" width="1200" height="1200" loading="lazy" decoding="async"></div>
+      <figcaption>Planet bearing load at the continuous and peak cases, compared with the assumed static rating.</figcaption>
+    </figure>
+    <details class="project-disclosure">
+      <summary>Method and caveats</summary>
+      <div class="project-disclosure-content">
+        The planet is treated as a beam on two bearings 14 mm apart, with tooth forces at three mesh planes. Root stress uses the Lewis formula and contact stress uses the Hertz line-contact formula, without ISO 6336 load factors. Those are the next step.<br><br>
+        The 604ZZ static rating is a typical catalogue value and remains to be confirmed for the bearings purchased. The calculations are scripted in MATLAB so every number regenerates from the gear table. One design consequence under evaluation is replacing the planet ball bearings with needle rollers on a fixed pin.
       </div>
-    </div>
-  </details>
+    </details>
+  </section>
 
-  <details class="project-disclosure">
-    <summary>Topology optimization</summary>
-    <div class="project-disclosure-content">
-      I used density-based topology optimization with minimum compliance, a 50% mass response target, and a 3 mm minimum member size. Ra teeth and support, the bearing seat, mounting geometry, bolt regions, and mating faces stayed fixed. Whole-part mass moved from <b>153.4 g to 99.6 g</b>, about 35%. I used the result as a load-path study, then replaced the organic output with the shelled and ribbed housing retained in the project gallery.
-      <div class="project-inline-grid">
-        <figure><img src="/assets/wolfrom-ansys-topology-setup.png" alt="Topology optimization preserved and design regions" width="2048" height="845" loading="lazy" decoding="async"><figcaption>Preserved functional interfaces.</figcaption></figure>
-        <figure><img src="/assets/wolfrom-ansys-topology-result.png" alt="ANSYS topology density result" width="2048" height="852" loading="lazy" decoding="async"><figcaption>Density result used to identify the useful load paths.</figcaption></figure>
+  <section class="latex-section" id="wolfrom-simulation">
+    <strong>Simulation</strong><br><br>
+    The first screening pass checked the integrated housing load path, topology, and a manually configured compound gear pair. Next, I will rate the three gear stages separately in KISSsoft and couple their results through the compound-train kinematics to predict total forward and backdrive efficiency. Profile-shift optimisation and the remaining contact, carrier-stiffness, roundness, and modal checks follow that system-level efficiency gate.
+    <div class="project-inline-grid">
+      <figure>
+        <img src="/assets/wolfrom-ansys-topology-result.png" alt="ANSYS topology density result for the Wolfrom housing" width="2048" height="852" loading="lazy" decoding="async">
+        <figcaption>Topology result used to identify useful housing load paths.</figcaption>
+      </figure>
+      <figure>
+        <img src="/assets/wolfrom-kisssoft-results.png" alt="KISSsoft contact ratio and safety result table for the compound gear pair" width="890" height="248" loading="lazy" decoding="async">
+        <figcaption>Pair-level KISSsoft contact and safety outputs.</figcaption>
+      </figure>
+    </div>
+    <details class="project-disclosure">
+      <summary>Additional screening views</summary>
+      <div class="project-disclosure-content">
+        These are screening results, not final system validation.
+        <div class="project-inline-grid">
+          <figure>
+            <img src="/assets/wolfrom-ansys-stress.png" alt="ANSYS equivalent von Mises stress result for the integrated Wolfrom housing load case" width="2048" height="855" loading="lazy" decoding="async">
+            <figcaption>Integrated housing stress screening.</figcaption>
+          </figure>
+          <figure>
+            <img src="/assets/wolfrom-kisssoft-contact-stiffness.png" alt="KISSsoft contact and mesh stiffness plot over rotation" width="494" height="260" loading="lazy" decoding="async">
+            <figcaption>Contact and mesh stiffness over rotation.</figcaption>
+          </figure>
+        </div>
       </div>
-    </div>
-  </details>
+    </details>
+  </section>
 
-  <details class="project-disclosure">
-    <summary>KISSsoft gear analysis</summary>
-    <div class="project-disclosure-content">
-      The stock simple-planetary template does not cleanly represent the compound Wolfrom, so I configured the evaluated pair manually. The reported pair-level outputs were <b>1.913 / 0.000 / 1.913</b> transverse, overlap, and total contact ratio; <b>1.258 / 1.340</b> root safety; and <b>1.217 / 1.384</b> flank safety. These are not a system-level efficiency result or final gearbox validation.
-      <div class="project-inline-grid">
-        <figure><img src="/assets/wolfrom-kisssoft-results.png" alt="KISSsoft contact ratio and safety result table" width="890" height="248" loading="lazy" decoding="async"><figcaption>Pair-level contact and safety outputs.</figcaption></figure>
-        <figure><img src="/assets/wolfrom-kisssoft-contact-stiffness.png" alt="KISSsoft contact and mesh stiffness plot" width="494" height="260" loading="lazy" decoding="async"><figcaption>Single-contact and total mesh stiffness over rotation.</figcaption></figure>
+  <section class="latex-section" id="wolfrom-design-decisions">
+    <strong>Design decisions</strong><br><br>
+    <p><b>Different modules on the two ring stages.</b> Module 1.0 on the 72/27 fixed-ring mesh and module 0.9 on the 75/25 output-ring mesh both give a 22.5 mm centre distance. The compound planet can therefore engage both rings using standard, unshifted teeth while producing the 50.45:1 ratio. Mesh efficiency and profile-shift optimization remain separate analysis tasks. The geometry and ratio derivation are in <a href="#wolfrom-first-principles" data-project-section="wolfrom-first-principles">First principles</a>.</p>
+    <p><b>Revising the planet support before peak-load testing.</b> Two 604ZZ bearings fit the package, but the calculated worst reaction is 392 N at 50 Nm output against an assumed 350 N static rating. On that assumption, the support falls short at peak. A fixed-pin and needle-roller arrangement is under evaluation; no replacement has been selected, and the peak-torque target remains unvalidated. See the reactions and rating caveats in <a href="#wolfrom-hand-calculations" data-project-section="wolfrom-hand-calculations">Hand calculations</a>.</p>
+    <p><b>Connecting the carrier plates structurally.</b> The floating carrier carries no net external torque, but its plates still react 20 Nm against each other at 50 Nm output. The posts must transfer that torque as well as set the stack height, so their joints and stiffness need a carrier wind-up check. The existing housing screening does not establish carrier stiffness. See the mesh forces in <a href="#wolfrom-load-cases" data-project-section="wolfrom-load-cases">Load cases</a> and the planned checks in <a href="#wolfrom-simulation" data-project-section="wolfrom-simulation">Simulation</a>.</p>
+  </section>
+
+  <section class="latex-section" id="wolfrom-build">
+    <strong>Build</strong><br><br>
+    Housings and the carrier are printed in FDM, while the gears are printed in SLA resin. I use the printed assembly to check gear timing, bearing fits, stack height, and access before committing those interfaces to metal parts.
+    <div class="wolfrom-build-board" aria-label="Physical prototype and assembly photos">
+      <figure>
+        <img src="/assets/wolfrom-bench.jpg" alt="Aadit assembling the printed Wolfrom prototype at the workshop bench" loading="lazy" decoding="async">
+        <figcaption>Assembly and fit checks at the bench.</figcaption>
+      </figure>
+      <figure>
+        <img src="/assets/wolfrom-cover.jpg" alt="Built printed Wolfrom prototype with its output bearing and gears exposed" loading="lazy" decoding="async">
+        <figcaption>Printed gear train and output support.</figcaption>
+      </figure>
+      <figure>
+        <img src="/assets/wolfrom-stand.jpg" alt="Assembled printed Wolfrom prototype mounted on its stand" loading="lazy" decoding="async">
+        <figcaption>Assembled prototype on the stand.</figcaption>
+      </figure>
+    </div>
+    <details class="project-disclosure">
+      <summary>Prototype iteration</summary>
+      <div class="project-disclosure-content">
+        The printed hardware exposed gear-mesh clearance, stack-height, bearing placement, gear timing, fastener access, and split-ring assembly problems while those changes were still cheap. The prototypes are geometry and assembly checks, not load-rated actuator validation.
       </div>
-    </div>
-  </details>
+    </details>
+  </section>
 
-  <strong>Status</strong><br><br>
-  I am manufacturing the CNC aluminum structure and wire-EDM ring gears while building the dyno. The test sequence will start with contact patterns and load sharing, then measure breakaway torque, backdrive feel, output torque, and efficiency. No final backlash, torque, backdrive, or efficiency result is claimed yet.`;
+  <section class="latex-section" id="wolfrom-test">
+    <strong>Test and validation</strong><br><br>
+    The planned bench couples the actuator to an output torque transducer and a separately controlled load motor. In forward operation the actuator drives while the load motor absorbs power; for backdrive testing the load motor drives the joint while the actuator resists it. Both units mount on an aligned base, with flexible couplings, a guarded shaft, and a defined path for regenerated energy.
+    <figure class="project-feature-figure dyno-diagram">
+      <img src="/assets/wolfrom-dyno.svg" alt="Proposed dyno layout showing the actuator, output torque transducer, load motor, guarded couplings, DC energy path, and synchronized measurements" width="720" height="650" loading="lazy" decoding="async">
+      <figcaption>Proposed instrumentation layout, not a completed or validated bench. Sensor models and the input-torque arrangement remain to be selected.</figcaption>
+    </figure>
+    <p>The continuous validation point is 30 Nm at 30 rpm, or 94.2 W at the joint. The gearbox goals are above 80% forward efficiency and at least 75% backdrive efficiency. Torque, angle, temperature, and electrical power need a shared time base so each operating point can be compared with the MATLAB and KISSsoft predictions.</p>
+    <p>The load side must support the joint’s torque and speed range in both directions. A reduction stage can be added if the chosen load motor cannot provide 30 Nm continuously and the required peak torque directly; sensor placement stays on the actuator side of that stage.</p>
+    <details class="project-disclosure">
+      <summary>Measurements and instrumentation</summary>
+      <div class="project-disclosure-content">
+        <table class="project-data-table">
+          <thead><tr><th>Measurement</th><th>Sensor or tool</th><th>Use</th></tr></thead>
+          <tbody>
+            <tr><td>Output torque</td><td>Bidirectional inline transducer, amplifier, and calibration arm with known weights</td><td>Load map, breakaway torque, stiffness, and output power</td></tr>
+            <tr><td>Input and output angle</td><td>Motor encoder and independent output encoder</td><td>Speed, ratio, lost motion, and elastic deflection</td></tr>
+            <tr><td>Input-shaft torque</td><td>Instrumented input interface; fixture and calibration still to be defined</td><td>Gearbox-only efficiency, separate from motor and drive losses</td></tr>
+            <tr><td>DC voltage and current</td><td>Calibrated bidirectional power measurement on the actuator bus</td><td>Whole-actuator electrical efficiency and regeneration</td></tr>
+            <tr><td>Temperatures</td><td>Thermocouples or RTDs on the motor, housing, and bearing region; ambient probe</td><td>Thermal rise, stabilization, and limits during endurance</td></tr>
+            <tr><td>Acquisition</td><td>Synchronized logger with sensor scaling, timestamps, and controller telemetry</td><td>Repeatable runs and uncertainty estimates</td></tr>
+          </tbody>
+        </table>
+        <p>Output torque and DC power alone measure the integrated actuator, not isolated gearbox efficiency. The motor is inside this package, so accessing input torque requires a dedicated fixture or a calibrated motor-loss characterization. Controller current is useful telemetry but is not a substitute for measured shaft power.</p>
+        $$P_{\\mathrm{shaft}}=T\\omega,\\qquad \\eta_f=\\frac{|T_o\\omega_o|}{|T_i\\omega_i|},\\qquad \\eta_b=\\frac{|T_i\\omega_i|}{|T_o\\omega_o|}$$
+        <p>The two efficiency expressions apply to separate steady-state runs with opposite power flow. Near zero speed, power ratios become unreliable, so breakaway torque is reported directly in Nm.</p>
+      </div>
+    </details>
+    <details class="project-disclosure">
+      <summary>Test sequence and acceptance checks</summary>
+      <div class="project-disclosure-content">
+        <table class="project-data-table">
+          <thead><tr><th>Test</th><th>Method</th><th>Reported result</th></tr></thead>
+          <tbody>
+            <tr><td>Calibration and no-load sweep</td><td>Zero and calibrate torque in both directions; measure at several speeds after warm-up</td><td>Torque offset, drag, repeatability, and baseline temperatures</td></tr>
+            <tr><td>Forward and backdrive maps</td><td>Sweep steady torque and speed in each power-flow direction</td><td>Efficiency and loss maps, with uncertainty; check &gt;80% forward and &ge;75% backdrive at 30 Nm, 30 rpm</td></tr>
+            <tr><td>Breakaway and lost motion</td><td>Slowly reverse output torque with a defined input restraint</td><td>Starting torque and input/output angular hysteresis</td></tr>
+            <tr><td>Torsional stiffness</td><td>Hold the input and sweep output torque without rotation</td><td>Torque versus $\\theta_o-\\theta_i/i$, separating deadband from elastic slope</td></tr>
+            <tr><td>Thermal and endurance</td><td>Hold the continuous case to thermal stabilization, then cycle the specified duty</td><td>Temperature rise, drift, wear, and pre/post-test backlash</td></tr>
+          </tbody>
+        </table>
+        <p>The printed gears are limited to the 5 Nm prototype case; the 30 and 50 Nm targets are for a load-rated build after the bearing support issue is resolved. Peak torque needs a defined duration and thermal limit before testing. Initial runs stay at reduced torque and speed while the fixture, sensor signs, limits, and energy path are checked.</p>
+        <p>The power supply cannot be assumed to absorb regeneration. The drive and braking hardware need to be configured for the chosen bus and duty, following the <a href="https://docs.odriverobotics.com/v/latest/manual/hardware-config.html" target="_blank" rel="noopener">ODrive hardware guidance</a>. Measurement design follows the distinction between mechanical and electrical power described by <a href="https://cloud.hbkworld.com/en/knowledge/resource-center/whitepapers/torque-as-parameter-for-better-efficiency-determination-of-electric-motors-and-generators" target="_blank" rel="noopener">HBK’s efficiency measurement guidance</a>.</p>
+        <p>No measured efficiency, thermal, or endurance results are claimed yet.</p>
+      </div>
+    </details>
+  </section>
+
+  <section class="latex-section" id="wolfrom-failures">
+    <strong>What went wrong</strong><br><br>
+    <ul class="project-result-list">
+      <li>The first torque target came from a paper describing a different gearbox at 125:1 and 120 Nm. The load cases were reset before simulation.</li>
+      <li>The planet bearings were sized by fit, without a load calculation. The hand calculation put them below their static rating at peak torque.</li>
+      <li>The fixed housing's ring gear was first held by bolt pillars and a thin vent skin. It read as two parts in CAD, which exposed the missing load path.</li>
+    </ul>
+  </section>
+
+  <section class="latex-section" id="wolfrom-results">
+    <strong>Results and next steps</strong><br><br>
+    <table class="project-data-table">
+      <thead><tr><th>Requirement</th><th>Target</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr><td>Continuous output torque</td><td>30 Nm</td><td>Design target; motor needs about 25 A</td></tr>
+        <tr><td>Peak output torque</td><td>50 Nm</td><td>Design target; motor needs about 42 A of a 59.2 A peak</td></tr>
+        <tr><td>Ratio</td><td>About 50:1</td><td>50.45:1 achieved</td></tr>
+        <tr><td>Forward efficiency</td><td>&gt;80%</td><td>Three-stage KISSsoft prediction pending; bench validation follows</td></tr>
+        <tr><td>Backdrivable</td><td>Yes</td><td>Predicted above 94.3% ring-mesh efficiency</td></tr>
+        <tr><td>Backdrive efficiency</td><td>&ge;75% at 30 Nm, 30 rpm</td><td>Derived design target; KISSsoft and bench validation pending</td></tr>
+        <tr><td>Envelope</td><td><span class="project-placeholder">To be added</span></td><td>104 mm diameter, 81 mm long</td></tr>
+      </tbody>
+    </table>
+    The next step is to rate each gear stage separately in KISSsoft, then combine the stage efficiencies through the Wolfrom train to predict total forward and backdrive efficiency. This gives a stronger theoretical efficiency estimate than the screening hand calculation. If the coupled model clears the efficiency targets, I will move to a production-intent model with steel gears and aluminium housings. The printed V1 remains an assembly and fit prototype, not a load-rated design.
+  </section>`;
 
 
 const formulaElectricCoolingDescription = `
-  <strong>Overview</strong><br><br>
-  For SN6, I am working on cooling Formula Electric at Berkeley's <b>588 V accumulator</b>. The pack has 420 cylindrical cells split across ten 14s3p modules. Five Sanyo Denki exhaust fans pull through the two-module branches.<br><br>
-
-  The requirement is simple: keep every cell below <b>60 °C</b> through a 25-minute endurance case at <b>35 °C ambient</b>, while keeping cell-to-cell spread below <b>5 °C</b>. The current draw basis is <b>56 A RMS</b>, or roughly <b>226 W per branch</b>.<br><br>
-
-  The current optimized five-exhaust run is below the target at about <b>58 °C maximum</b>, with a <b>49 °C mean</b> and <b>5.4 °C spread</b>. It is the strongest saved result so far, with busbar and PCB heat, mesh, and shroud/rainproofing losses still to add.<br><br>
-
-  <figure class="project-feature-figure project-priority-result">
-    <img src="/assets/formula-cooling-sub60.png" alt="Optimized ANSYS Icepak temperature field with streamlines through both accumulator modules below 60 degrees Celsius" width="368" height="256" loading="lazy" decoding="async">
-    <figcaption>Current optimized steady-state run · below 60 °C.</figcaption>
-  </figure>
-
-  <figure class="project-feature-figure">
-    <img src="/assets/formula-cooling-module-stackup.png" alt="Exploded horizontal stackup of a Formula Electric battery module showing the cell array, structural frames, sensing electronics, and covers" width="888" height="409" loading="lazy" decoding="async">
-    <figcaption>Exploded 42-cell module stackup. This is the hardware the airflow has to cross.</figcaption>
-  </figure>
-
-  <strong>Modeling the Flow</strong><br><br>
-  I built a MATLAB pressure-drop model around the real Sanyo fan curve. It puts the operating point at <b>425 CFM (12.04 m³/min)</b>, or <b>85.1 CFM per fan</b>, at <b>521 Pa</b>. Total fan electrical power is <b>234 W</b>, well below the combined <b>653 CFM</b> free-air rating.<br><br>
-
-  <figure class="project-feature-figure">
-    <img src="/assets/formula-cooling-fan-system-curve.png" alt="MATLAB fan pressure-flow curve and cross-flow pack system curve showing the 425 CFM operating point" width="804" height="530" loading="lazy" decoding="async">
-    <figcaption>MATLAB fan/system-curve intersection at the modeled operating point.</figcaption>
-  </figure>
-
-  The model gives an approach velocity of <b>3.19 m/s</b> and a maximum cell-gap velocity of <b>16.76 m/s</b> (<b>Re<sub>max</sub> = 22,143</b>). The pressure split is <b>412 Pa</b> across the cell bank (<b>79%</b>), <b>106 Pa</b> across the inlet holes, and <b>3 Pa</b> miscellaneous. The cell-bank loss coefficient, <b>K = 2.52</b>, was calibrated from earlier SN5 CFD.<br><br>
-
-  From that operating point, the idealized tube-bank correlation gives <b>Nu = 127.3</b> and <b>h = 157.6 W/m²K</b>. It predicts <b>1.72 kW</b> of idealized pack heat removal at 40 °C cell / 30 °C inlet, or <b>344 W per branch</b>, with outlet air at about <b>37.3 °C</b>. Air warming is handled with an NTU-effectiveness calculation while allowing the inlet temperature to rise through the pack.<br><br>
-
-  The equal-flow assumption makes this useful for fan and pressure sizing, not pack-temperature prediction. Icepak is where the meaningful answer comes from because it shows the actual distribution through the cells, divider, and bypass paths.<br><br>
-
-  <figure class="project-feature-figure project-hand-calcs">
-    <img src="/assets/formula-cooling-hand-calcs.png" alt="Hand calculations for accumulator pack energy, branch heat generation, and RMS current draw" width="408" height="512" loading="lazy" decoding="async">
-    <figcaption>Current-draw basis for the thermal model: pack energy and RMS current, with a 56 A design case.</figcaption>
-  </figure>
-
-  <strong>What CFD Showed</strong><br><br>
-  The flow split across the two modules was uneven. The center divider created a sharp restriction, and several inlet regions fed easy bypass paths. More inlet holes did not automatically mean more useful airflow.<br><br>
-
-  The first Icepak runs made the same point visually: the center divider restricted the downstream bank and some inlet regions fed easy bypass paths. More holes did not automatically mean more useful airflow.<br><br>
-
-  <figure class="project-feature-figure project-baseline-velocity">
-    <img src="/assets/formula-cooling-velocity-baseline.png" alt="ANSYS Icepak speed streamlines entering the accumulator and passing through both cell banks" width="1417" height="850" loading="lazy" decoding="async">
-    <figcaption>Baseline velocity field. The streamline paths make the bypass and module imbalance easy to see.</figcaption>
-  </figure>
-
-  <strong>Thermal Result</strong><br><br>
-  At the current RMS design case, the pack is being evaluated through the 25-minute endurance duty cycle; free-air fan ratings are not the design basis.<br><br>
-
-  The baseline case reached <b>75.1 °C</b> with a 35 °C inlet. The current optimized five-exhaust run is below the target at about <b>58 °C maximum</b>, with a <b>49 °C mean</b> and <b>5.4 °C spread</b>. It is a design checkpoint, not final validation yet: busbar and PCB heat, mesh, and shroud/rainproofing losses still need to be included.<br><br>
-
-  <div class="project-inline-grid">
-    <figure>
-      <img src="/assets/formula-cooling-temperature-baseline.png" alt="Baseline Icepak cell-temperature field with a maximum of 75.054 degrees Celsius" width="1413" height="850" loading="lazy" decoding="async">
-      <figcaption>Baseline · 75.1 °C maximum.</figcaption>
+    <section class="latex-section" id="sn6-overview">
+    <strong>Overview</strong><br><br>
+    <figure class="project-feature-figure project-priority-result">
+      <img src="/assets/formula-cooling-transient-50a.jpg" alt="25-minute Icepak design-case temperature field with a 54.6 degree Celsius maximum in the downstream module" width="1416" height="807" loading="lazy" decoding="async">
+      <figcaption>Current Icepak result: at the 50 A design case, the downstream module reaches 54.6 °C after 25 minutes.</figcaption>
     </figure>
-    <figure>
-      <img src="/assets/formula-cooling-sub60-top.png" alt="Optimized ANSYS Icepak temperature map below 60 degrees Celsius across both module cell banks" width="368" height="256" loading="lazy" decoding="async">
-      <figcaption>Current optimized run · below 60 °C.</figcaption>
+    I am developing Berkeley Formula Electric's <b>504 V nominal / 588 V peak SN6 accumulator cooling</b>, from first-principles heat balance through MATLAB, ANSYS Icepak, and endurance validation. The goal is a <b>25-minute endurance run at 35 °C ambient</b> within thermal, packaging, and fan-power budgets.<br><br>
+    The pack has 420 cylindrical cells in ten 14s3p modules, cooled by five Sanyo Denki 9HV0824P1G0011 exhaust fans. Each fan serves 84 cells in two modules with approximately 5 mm cell gaps. The <b>57 °C design target</b> leaves margin below the 60 °C ceiling.<br><br>
+    The result gives the first design answer: the pack stays below the temperature target, but the second module runs hotter because it receives air that has already picked up heat upstream.<br><br>
+
+    </section>
+    <section class="latex-section" id="sn6-first-principles">
+    <strong>Cooling Problem</strong><br><br>
+    The flow path set the thermal result. Five high-static-pressure fans offer theoretical capacity. The cells, inlet perforations, divider, and exhaust gaps still create a restrictive path with easy bypass routes.<br><br>
+    I started with measured SN5 current, converted it to cell heating, and integrated the transient energy balance:
+    $$C_{\\mathrm{cell}}\\frac{\\mathrm{d}T}{\\mathrm{d}t}
+    = I_{\\mathrm{cell}}(t)^2 R_{\\mathrm{eff}} - \\dot{Q}_{\\mathrm{conv}}$$
+    With three cells in parallel, $I_{\\mathrm{cell}}=I_{\\mathrm{pack}}/3$. Using 85 J/K per cell and $R_{\\mathrm{eff}}\\approx8.5\\,\\mathrm{m}\\Omega$ gives <b>0.61 K predicted rise against 0.6 K measured</b> on available SN5 data. This checks heat generation within sensor resolution; SN6 hardware validation remains ahead.<br><br>
+    The passive time constant is roughly 3.1 hours, so thermal mass buffers the short event. The sealed-pack estimate reaches the 60 °C endurance limit near <b>39 A RMS</b>; at 60 A, it reaches the limit in 10.5 minutes.<br><br>
+    <details class="project-disclosure">
+      <summary>Heat generation, thermal mass, and the no-fan limit</summary>
+      <div class="project-disclosure-content">
+        At 60 A pack current, each parallel cell carries 20 A and dissipates 3.4 W. That gives approximately 286 W per 84-cell branch and 1.43 kW across the pack.
+        $$\\begin{gathered}
+        \\dot{Q}_{\\mathrm{branch}}=84\\left(\\frac{I_{\\mathrm{pack}}}{3}\\right)^2R_{\\mathrm{eff}}\\\\
+        C_{\\mathrm{branch}}=84(85)=7140\\,\\mathrm{J\\,K^{-1}}
+        \\end{gathered}$$
+        For an initially 35 °C cell, the 25 K allowance to 60 °C sets the adiabatic 25-minute current bound:
+        $$I_{\\mathrm{pack,lim}}=3\\sqrt{\\frac{C_{\\mathrm{cell}}\\Delta T}{R_{\\mathrm{eff}}t}}
+        \\approx38.7\\,\\mathrm{A}$$
+        A passive branch conductance of approximately 0.65 W/K gives $\\tau=C_{\\mathrm{branch}}/(UA)\\approx3.1\\,\\mathrm{h}$. This is the basis for treating passive heat loss as small over endurance. The bound is sensitive to starting temperature and effective resistance.<br><br>
+        <figure class="project-feature-figure">
+          <img src="/assets/formula-cooling-thermal-handcalcs.jpg" alt="Original hand calculations for cell heat, branch thermal capacitance, SN5 temperature-rise correlation, and the no-fan current limit" width="1322" height="1734" loading="lazy" decoding="async">
+          <figcaption>Original heat-balance notes, including the SN5 correlation and the time-to-limit calculation.</figcaption>
+        </figure>
+      </div>
+    </details>
+    <details class="project-disclosure">
+      <summary>Endurance energy and RMS load-case derivation</summary>
+      <div class="project-disclosure-content">
+        The pack's nominal 140s3p configuration gives 504 V, 14.85 Ah, and approximately 7.48 kWh. Dividing that energy by a 25-minute run gives approximately 18 kW average power and 35.6 A average current. Heating follows the squared current waveform:
+        $$\\begin{gathered}
+        I_{\\mathrm{RMS}}=\\sqrt{\\frac{1}{t}\\int_0^t I(\\xi)^2\\,\\mathrm{d}\\xi}\\\\
+        F_I=\\frac{I_{\\mathrm{RMS}}}{I_{\\mathrm{avg}}}
+        \\end{gathered}$$
+        Event energy and the SN5 RMS/mean current form factor of 1.59 inform the design and stress cases. I scale the measured waveform for those scenarios:
+        <ul class="project-result-list">
+          <li><b>22 A RMS:</b> measured SN5 anchor, approximately 38 W per branch.</li>
+          <li><b>38 A RMS:</b> no-fan threshold check, approximately 108 W per branch.</li>
+          <li><b>50 A RMS:</b> design case, approximately 198 W per branch.</li>
+          <li><b>60 A RMS:</b> stress case, approximately 286 W per branch.</li>
+        </ul>
+        The notes below document earlier pack-energy and event-result estimates, including a peak/average power proxy. The current load cases use measured current-waveform scaling; the 22 A anchor is logged vehicle data.<br><br>
+        <figure class="project-feature-figure">
+          <img src="/assets/formula-cooling-pack-energy-handcalcs.jpg" alt="Original working notes deriving nominal pack energy, average endurance current, and an earlier RMS estimate" width="1244" height="1066" loading="lazy" decoding="async">
+          <figcaption>Earlier pack-energy calculation and cross-team current estimate.</figcaption>
+        </figure>
+        <figure class="project-feature-figure">
+          <img src="/assets/formula-cooling-rms-handcalcs.jpg" alt="Handwritten comparison of Formula SAE event energy, average current, and early form-factor estimates" width="795" height="998" loading="lazy" decoding="async">
+          <figcaption>Working through event energy and the sensitivity of RMS current to drive-cycle assumptions.</figcaption>
+        </figure>
+        <figure class="project-feature-figure">
+          <img src="/assets/formula-cooling-event-energy.jpg" alt="2025 Formula SAE Electric efficiency results used as the event-energy reference" width="1193" height="841" loading="lazy" decoding="async">
+          <figcaption>Event-energy reference behind the load-case comparison.</figcaption>
+        </figure>
+      </div>
+    </details>
+
+    </section>
+    <section class="latex-section" id="sn6-airflow">
+    <strong>Airflow Model</strong><br><br>
+    I built a MATLAB pressure-drop model around the real Sanyo Denki fan curve, representing each fan through its pressure-flow behavior. Air crosses the rain-protected inlet, module 1, a perforated divider, and module 2; the model keeps those losses separate so the dominant restriction is visible.<br><br>
+    <b>425 CFM at 521 Pa</b> was the earlier system-level operating point, with the cell bank accounting for roughly 79% of modeled pressure loss.<br><br>
+    <details class="project-disclosure">
+      <summary>Pack geometry and cooling branch</summary>
+      <div class="project-disclosure-content">
+        The modeled pack uses 420 cells in ten 14s3p modules. Two 42-cell modules share each cooling branch, with the perforated divider between them setting how much air reaches the downstream bank.<br><br>
+        <figure class="project-feature-figure">
+          <img src="/assets/formula-cooling-module-stackup.png" alt="Exploded 42-cell module showing cell holders, sensing electronics, and covers" width="888" height="409" loading="lazy" decoding="async">
+          <figcaption>Reference module stackup used to communicate the cooling path; the cooling geometry and CFD model are my work.</figcaption>
+        </figure>
+      </div>
+    </details>
+    An earlier exhaust-only run gave <b>47 CFM at 689 Pa</b> and 57.8 °C maximum. Push-pull gave 56 CFM and 55.6 °C, with twice the fans, wiring, and packaging. That trade supported five exhaust fans.<br><br>
+    I selected a <b>15 mm exhaust air gap</b>: reducing 20 mm to 15 mm costs about 30 Pa; 10 mm adds another 70 Pa and recirculation. The current model includes the 45° inlet louvres and mesh losses.<br><br>
+    <details class="project-disclosure">
+      <summary>Rain-inlet geometry and free-area calculations</summary>
+      <div class="project-disclosure-content">
+        I worked through louvre angle, pitch, thickness, and depth to keep a direct rain path out of the cell bank while preserving inlet area. For slat length $L$, angle $\\theta$, pitch $p$, and thickness $t_s$:
+        $$\\begin{gathered}
+        d=L\\cos\\theta,\\qquad r=L\\sin\\theta\\\\
+        f=\\cos\\theta-\\frac{t_s}{p}
+        \\end{gathered}$$
+        The working geometry uses 45° slats, 20 mm length, 2 mm thickness, and 12 mm pitch, giving approximately 14 mm depth and rise. The louvre's geometric free-area ratio is roughly 0.55; the combined mesh/louvre grille in the current CFD uses 0.14. The divider uses 0.25.<br><br>
+        <figure class="project-feature-figure">
+          <img src="/assets/formula-cooling-inlet-handcalcs.jpg" alt="Original rain-inlet sketches and derivations for louvre angle, pitch, water shielding, free area, and pressure loss" width="1406" height="1796" loading="lazy" decoding="async">
+          <figcaption>Inlet hand calculations connecting rain protection, print geometry, and free area.</figcaption>
+        </figure>
+      </div>
+    </details>
+    <details class="project-disclosure">
+      <summary>Fan-spacing pressure-loss trade</summary>
+      <div class="project-disclosure-content">
+        At fixed flow, narrowing the fan gap increases velocity and dynamic pressure approximately with the inverse square of gap depth:
+        $$\\Delta p_{\\mathrm{gap}}\\sim\\frac{\\rho}{2}
+        \\left(\\frac{Q}{w g}\\right)^2$$
+        The analytical 47 CFM sweep gives approximately 33 Pa at 20 mm, 60 Pa at 15 mm, and 130 Pa at 10 mm. The 15 mm choice keeps total depth near 56 mm, including the 38 mm fan and approximately 3 mm wall. The 10 mm geometry also showed recirculation during iteration.<br><br>
+        <figure class="project-feature-figure">
+          <img src="/assets/formula-cooling-airgap-trade.jpg" alt="Analytical exhaust-gap pressure loss versus depth with 10, 15, and 20 millimeter cases" width="1200" height="690" loading="lazy" decoding="async">
+          <figcaption>The 15 mm gap balances packaging depth against the rapidly increasing pressure penalty.</figcaption>
+        </figure>
+      </div>
+    </details>
+
+    </section>
+    <section class="latex-section" id="sn6-transient">
+    <strong>What CFD Showed</strong><br><br>
+    The <b>50 A design case</b> uses 35 °C inlet air, a 15 mm fan gap, and a 4% busbar heat allowance. Each branch runs near <b>40 CFM at 780 Pa</b>.<br><br>
+    At 25 minutes, the hottest cell is <b>54.6 °C</b>, the mean is 47.6 °C, and the coolest is 40.7 °C. That leaves 2.4 K margin to the temperature target. Module 2 receives preheated air, giving a max-to-min range of <b>13.9 K</b>, above the 5 K uniformity goal. Redistributing flow through the divider and cell passages is the next geometry priority.<br><br>
+    <details class="project-disclosure">
+      <summary>CFD setup, assumptions, and flow paths</summary>
+      <div class="project-disclosure-content">
+        The transient run uses 5 s steps over 25 minutes, scaled SN5 current, and 35 °C inlet air. Cell properties are 21.7 mm diameter, 70.5 mm length, 85 J/K thermal capacitance, and anisotropic conductivity of 25 W/mK axially and 0.6 W/mK radially.<br><br>
+        Five branches are modeled as identical and independent. External walls are adiabatic; busbar heat has a 4% allowance, while busbar/PCB thermal mass is omitted. Boundary-layer mesh refinement and measured cooldown conductance are needed to establish the accuracy of the effective heat-transfer coefficient.<br><br>
+        <figure class="project-feature-figure">
+          <img src="/assets/formula-cooling-transient-50a-top.jpg" alt="Top view of the 50 A transient CFD showing warmed downstream cells and streamlines through the divider" width="1414" height="800" loading="lazy" decoding="async">
+          <figcaption>Section view: air warms in module 1 before reaching module 2. Divider openings and bypass paths determine which cells receive that flow.</figcaption>
+        </figure>
+        The temperature curves flatten by about 20 minutes, with a forced-cooling time constant near 15 minutes. This differs from the approximately 3.1-hour passive case and explains why the fan-on design approaches steady state during endurance.
+      </div>
+    </details>
+
+    </section>
+    <section class="latex-section" id="sn6-analytical">
+    <strong>Thermal Model</strong><br><br>
+    Air near the outlet has already absorbed heat from upstream cells. Even if the local convection coefficient stays reasonable, those cells see a smaller temperature difference to the cooling air. The analytical model gave me the system-level answer; CFD showed where that assumption broke down.<br><br>
+    Early MATLAB sizing predicted <b>425 CFM total at 521 Pa</b> and 234 W fan power. Cell-bank loss dominated. Current CFD includes a more restrictive inlet and plenum.<br><br>
+    Earlier tube-bank correlations gave $h\\approx125\\text{–}160\\,\\mathrm{W\\,m^{-2}\\,K^{-1}}$; representative Icepak geometry gave about $48\\,\\mathrm{W\\,m^{-2}\\,K^{-1}}$. Bypass and uneven flow reduce effective cooling. Boundary-layer mesh resolution remains a modeling uncertainty.<br><br>
+    <details class="project-disclosure">
+      <summary>MATLAB fan/system curve and convection model</summary>
+      <div class="project-disclosure-content">
+        I intersected the Sanyo fan pressure-flow curve with the modeled cell-bank and inlet losses. The earlier analytical operating point was approximately 85 CFM per branch. Its pressure split was 412 Pa across the cells, 106 Pa at the inlet, and 3 Pa miscellaneous; the cell bank accounted for about 79% of the loss.<br><br>
+        <figure class="project-feature-figure">
+          <img src="/assets/formula-cooling-fan-system-curve.png" alt="Earlier MATLAB fan and cross-flow system curves intersecting near 12 cubic meters per minute and 521 pascals" width="804" height="530" loading="lazy" decoding="async">
+          <figcaption>Earlier analytical sizing model. The current detailed branch CFD predicts a different operating point.</figcaption>
+        </figure>
+        The tube-bank calculation uses gap velocity and Reynolds number to estimate Nusselt number, then $h=Nu\\,k_{\\mathrm{air}}/D$. An NTU-effectiveness model accounts for air warming along the cells. Equal branch flow and idealized cell-bank exposure make the correlation sensitive to bypass and confinement.<br><br>
+        <figure class="project-feature-figure">
+          <img src="/assets/formula-cooling-h-vs-flow.png" alt="Analytical aligned tube-bank heat-transfer coefficient versus total pack airflow" width="681" height="450" loading="lazy" decoding="async">
+          <figcaption>Idealized convection estimate versus flow; the operating-point estimate exceeds representative CFD heat transfer.</figcaption>
+        </figure>
+      </div>
+    </details>
+    <figure class="project-feature-figure">
+      <img src="/assets/formula-cooling-endurance-model.jpg" alt="MATLAB plots of temperature versus RMS current, the 60 A transient response, time to the sealed-pack limit, and passive thermal resistance" width="1249" height="866" loading="lazy" decoding="async">
+      <figcaption>1D model comparison at 35 °C: the 60 A stress case ends near 64 °C with CFD-derived cooling and 52 °C with the ideal correlation.</figcaption>
     </figure>
-  </div>
+    The <b>12 K model difference</b> makes measured cooldown conductance a priority. Passive CFD with zero imposed flow and buoyancy enabled also checks the no-fan baseline.<br><br>
+    <details class="project-disclosure">
+      <summary>Heat-budget crossings and cooling limits</summary>
+      <div class="project-disclosure-content">
+        The quadratic heat-generation curve is compared with the per-cell energy allowance over 25 minutes. With a 35 °C start and 60 °C ceiling, the adiabatic allowance is approximately 1.42 W per cell, giving the roughly 39 A no-fan bound. The plotted CFD-derived fan allowance gives a crossing near 55 A.<br><br>
+        <figure class="project-feature-figure">
+          <img src="/assets/formula-cooling-heat-budget.jpg" alt="Cell heat versus pack RMS current with passive, CFD-derived fan, and ideal air-side cooling bounds" width="1379" height="1008" loading="lazy" decoding="async">
+          <figcaption>Analytical 60 °C-limit comparison. The project uses 50 A as its design case and 60 A as the stress case; these current bounds remain model estimates.</figcaption>
+        </figure>
+        These limits change with initial temperature, effective cell resistance, airflow, and measured UA. The ideal air-side line is a theoretical upper bound. Endurance replay and fan-on cooldown are the planned checks on the useful cooling margin.
+      </div>
+    </details>
 
-  <strong>What I Am Changing</strong><br><br>
-  <ul class="project-result-list">
-    <li><b>Open the center divider.</b> Give the downstream module a cleaner flow path.</li>
-    <li><b>Remove bad inlet paths.</b> Block holes that feed bypass around the cells.</li>
-    <li><b>Keep refining the fan spacing.</b> Give the inlet and exhaust fans enough plenum to use the full perforated area.</li>
-  </ul>
+    </section>
+    <section class="latex-section" id="sn6-design">
+    <strong>Design Changes</strong><br><br>
+    The next geometry changes follow directly from the CFD and the measured fan curve:
+    <ul class="project-result-list">
+      <li><b>Open the divider restriction.</b> Reduce the local pressure penalty between the two module banks and improve the downstream flow split.</li>
+      <li><b>Remove bad inlet paths.</b> Block perforations that feed easy bypass routes. The objective is useful flow through the cells; hole count alone is insufficient.</li>
+      <li><b>Keep the 15 mm exhaust gap.</b> It balances package depth against the rapidly increasing pressure loss at smaller gaps.</li>
+    </ul>
+    <details class="project-disclosure">
+      <summary>Rejected and future airflow changes</summary>
+      <div class="project-disclosure-content">
+        Push-pull airflow increased the earlier branch flow, while requiring additional fans, wiring, and packaging. A thin intake fan paired with the existing high-static-pressure exhaust fan remains a future comparison, with inlet and outlet flow solved as one operating point.
+      </div>
+    </details>
 
-  I am using the model to decide which changes are worth carrying back into CAD. The next step is rerunning the strongest geometry with busbar and PCB heat, mesh/rainproofing losses, and consistent comparison planes.`;
+    </section>
+    <section class="latex-section" id="sn6-validation">
+    <strong>Results and Validation</strong><br><br>
+    The next tests isolate heat generation, airflow, and heat transfer:
+    <ul class="project-result-list">
+      <li><b>Endurance.</b> Replay logged current, cell temperatures, initial/ambient temperatures, and fan state.</li>
+      <li><b>Airflow.</b> Check 40–47 CFM using branch pressure taps and an outlet anemometer.</li>
+      <li><b>Cooldown.</b> Fit effective UA from fan-on temperature decay after the run.</li>
+    </ul>
+    Correlation targets: <b>flow within 10%</b> and <b>temperatures within 3 K</b>. SN5 supplies the uncooled baseline; temporary fan/duct tests and assembled SN6 testing check active cooling.<br><br>
+    Bodywork could shift inlet/exhaust pressure. Comparing pressure and flow versus vehicle speed with bodywork installed will test this integration hypothesis.
+    </section>`;
 
 const formulaElectricAtticDescription = `
   <strong>Overview</strong><br><br>
@@ -2588,35 +3522,33 @@ const formulaElectricAtticDescription = `
     const projects = [
       {
         id: 'wolfrom-actuator',
-        title: 'Wolfrom Humanoid Joint Actuator',
+        title: 'Wolfrom Robotic Actuator',
         category: 'Hardware',
         filterCategory: 'hardware',
         years: [2026],
         period: 'college',
-        date: 'May 2026 — Present',
+        date: 'May 2026 - Present',
         active: true,
         featured: true,
         displayOrder: 1,
-        excerpt: 'Wolfrom compound planetary actuator for humanoid joints, targeting about 50:1 reduction with custom geartrain geometry, bearing stackups, output ring design, and prototype validation.',
+        excerpt: 'A 50:1 backdrivable compound-planetary actuator for a humanoid elbow, taken from first principles to a printed prototype.',
         description: wolfromDescription,
-        tags: ['Onshape', 'ANSYS Mechanical', 'KISSsoft', 'Static Structural FEA', 'Topology Optimization', 'Planetary Gear Design', 'Tolerance Stackups', 'DFM'],
+        tags: ['Onshape', 'MATLAB', 'KISSsoft', 'FDM', 'SLA', 'Planetary Gear Design', 'Load Analysis'],
         links: [],
-        model: '/assets/wolfrom-gearbox.glb',
-        modelPoster: '/assets/wolfrom-render-iso.jpg',
-        images: ['/assets/wolfrom-cover.jpg', '/assets/wolfrom-integrated-cad.png', '/assets/wolfrom-integrated-section.png', '/assets/wolfrom-ansys-stress.png', '/assets/wolfrom-ansys-topology-result.png', '/assets/wolfrom-manufacturable-redesign.png', '/assets/wolfrom-kisssoft-results.png', '/assets/wolfrom-render-iso.jpg', '/assets/wolfrom-render-face.jpg', '/assets/wolfrom-render-section.jpg', '/assets/wolfrom-render-side.jpg', '/assets/wolfrom-stand.jpg', '/assets/wolfrom-spin.mp4', '/assets/wolfrom-bench.jpg']
+        images: ['/assets/exploded-landscape.png', '/assets/wolfrom-cover.jpg', '/assets/gear-train.png', '/assets/cutaway-three-quarter.png', '/assets/half-section.png', '/assets/wolfrom-ansys-topology-result.png', '/assets/wolfrom-ansys-stress.png']
       },
       {
         id: 'formula-electric',
-        title: 'Formula Electric — SN6 Cooling',
+        title: 'Formula Electric - SN6 Cooling',
         category: 'Hardware',
         filterCategory: 'hardware',
         years: [2026],
         period: 'college',
-        date: '2026 — Present',
+        date: '2026 - Present',
         active: true,
         featured: false,
         displayOrder: 3,
-        excerpt: 'Modeled airflow, pressure loss, and cell temperature for Berkeley\'s 588V Formula Electric accumulator.',
+        excerpt: 'Developing cooling for a 504 V nominal / 588 V peak SN6 accumulator from measured drive-cycle heating through transient CFD and endurance validation.',
         description: formulaElectricCoolingDescription,
         tags: ['MATLAB', 'ANSYS Icepak', 'CFD', 'Heat Transfer', 'Fan Curves', 'Thermal Modeling', 'SolidWorks'],
         links: [
@@ -2625,23 +3557,23 @@ const formulaElectricAtticDescription = `
         ],
         images: [
           '/assets/accumimg.png',
-          '/assets/formula-cooling-sub60.png',
-          '/assets/formula-cooling-sub60-top.png',
+          '/assets/formula-cooling-transient-50a.jpg',
+          '/assets/formula-cooling-transient-50a-top.jpg',
           '/assets/formula-cooling-module-stackup.png'
         ]
       },
       {
         id: 'formula-electric-attic',
-        title: 'Formula Electric — SN5 HV Attic',
+        title: 'Formula Electric - SN5 HV Attic',
         category: 'Hardware',
         filterCategory: 'hardware',
         years: [2025, 2026],
         period: 'college',
-        date: '2025 — 2026',
+        date: '2025 - 2026',
         active: false,
         featured: false,
         displayOrder: 4,
-        excerpt: 'Designed and manufactured a lighter, serviceable casing for the accumulator\'s 588V high-voltage electronics.',
+        excerpt: 'Designed and manufactured a lighter, serviceable casing for the accumulator\'s 504 V nominal / 588 V peak high-voltage electronics.',
         description: formulaElectricAtticDescription,
         tags: ['SolidWorks', 'SolidWorks PDM', 'FEA', 'GD&T', 'High-Voltage Packaging', 'Laser Cutting', 'Waterjet', 'TIG Welding', 'DFMA'],
         links: [
@@ -2667,7 +3599,7 @@ const formulaElectricAtticDescription = `
         filterCategory: 'research',
         years: [2026],
         period: 'college',
-        date: 'Jan 2026 — Present',
+        date: 'Jan 2026 - Present',
         active: true,
         featured: false,
         excerpt: 'Researching complex-oxide thin-film devices for faster, lower-power memory and logic beyond DRAM and CMOS, with linked pulse-instrumentation and characterization work.',
@@ -2686,7 +3618,7 @@ const formulaElectricAtticDescription = `
         filterCategory: ['hardware', 'research'],
         years: [2026],
         period: 'college',
-        date: 'May 2026 — Present',
+        date: 'May 2026 - Present',
         active: true,
         featured: false,
         displayOrder: 2,
@@ -2836,7 +3768,7 @@ const formulaElectricAtticDescription = `
         filterCategory: 'hardware',
         years: [2026],
         period: 'college',
-        date: 'May 2026 — Jun 2026',
+        date: 'May 2026 - Jun 2026',
         active: false,
         featured: false,
         excerpt: 'Custom toolbox assembly taken from CAD to production-style drawings, GD&T callouts, laser/FDM fabrication planning, inspection, and prototype fit-up.',
@@ -2860,7 +3792,7 @@ const formulaElectricAtticDescription = `
         filterCategory: ['research', 'software'],
         years: [2025, 2026],
         period: 'highschool',
-        date: 'Oct 2025 — Jan 2026',
+        date: 'Oct 2025 - Jan 2026',
         active: false,
         featured: false,
         excerpt: 'Interactive tool for evaluating nuclear reactor site feasibility + research paper.',
@@ -2890,12 +3822,12 @@ const formulaElectricAtticDescription = `
       },
       {
         id: 'dejavu-2024-25',
-        title: 'Deja Vu — INTO THE DEEP',
+        title: 'Deja Vu - INTO THE DEEP',
         category: 'Hardware/Software',
         filterCategory: ['hardware', 'software'],
         years: [2024, 2025],
         period: 'highschool',
-        date: 'Aug 2024 — Jun 2025',
+        date: 'Aug 2024 - Jun 2025',
         active: false,
         featured: false,
         excerpt: 'Hardware Lead for FTC #13216. Designed robot with 500+ custom parts.',
@@ -2906,12 +3838,12 @@ const formulaElectricAtticDescription = `
       },
       {
         id: 'dejavu-2023-24',
-        title: 'Deja Vu — CENTERSTAGE',
+        title: 'Deja Vu - CENTERSTAGE',
         category: 'Hardware/Software',
         filterCategory: ['hardware', 'software'],
         years: [2023, 2024],
         period: 'highschool',
-        date: 'Aug 2023 — Jun 2024',
+        date: 'Aug 2023 - Jun 2024',
         active: false,
         featured: false,
         excerpt: 'Hardware Lead for FTC #13216. Designed pixel-scoring mechanisms.',
@@ -2922,12 +3854,12 @@ const formulaElectricAtticDescription = `
       },
       {
         id: 'zenith-2022-23',
-        title: 'Zenith — POWERPLAY',
+        title: 'Zenith - POWERPLAY',
         category: 'Hardware/Software',
         filterCategory: ['hardware', 'software'],
         years: [2022, 2023],
         period: 'highschool',
-        date: 'Aug 2022 — Jun 2023',
+        date: 'Aug 2022 - Jun 2023',
         active: false,
         featured: false,
         excerpt: 'Team Lead for FTC #20424. Built cone-stacking robot with custom lift.',
@@ -2943,7 +3875,7 @@ const formulaElectricAtticDescription = `
         filterCategory: 'software',
         years: [2025],
         period: 'college',
-        date: 'Jun 2025 — Dec 2025',
+        date: 'Jun 2025 - Dec 2025',
         active: false,
         featured: false,
         excerpt: 'AI-powered robotics parts inventory and marketplace.',
@@ -2959,7 +3891,7 @@ const formulaElectricAtticDescription = `
         filterCategory: 'software',
         years: [2023, 2024, 2025],
         period: 'highschool',
-        date: 'Aug 2023 — May 2025',
+        date: 'Aug 2023 - May 2025',
         active: false,
         featured: false,
         excerpt: 'Platform connecting 2000+ students with volunteer opportunities.',
@@ -2975,7 +3907,7 @@ const formulaElectricAtticDescription = `
         filterCategory: ['hardware', 'software'],
         years: [2022, 2023],
         period: 'highschool',
-        date: 'Oct 2022 — Apr 2023',
+        date: 'Oct 2022 - Apr 2023',
         active: false,
         featured: false,
         excerpt: 'Low-cost probe alternative to save $118M in city spending.',
@@ -3004,12 +3936,12 @@ const formulaElectricAtticDescription = `
       },
       {
         id: 'zenith-2021-22',
-        title: 'Zenith — FREIGHT FRENZY',
+        title: 'Zenith - FREIGHT FRENZY',
         category: 'Hardware/Software',
         filterCategory: ['hardware', 'software'],
         years: [2021, 2022],
         period: 'highschool',
-        date: 'Aug 2021 — Jun 2022',
+        date: 'Aug 2021 - Jun 2022',
         active: false,
         featured: false,
         excerpt: 'First year on FTC #20424. Learned CAD and manufacturing.',
@@ -3020,12 +3952,12 @@ const formulaElectricAtticDescription = `
       },
       {
         id: 'serenity-2021-22',
-        title: 'Serenity — FREIGHT FRENZY',
+        title: 'Serenity - FREIGHT FRENZY',
         category: 'Hardware/Software',
         filterCategory: ['hardware', 'software'],
         years: [2021, 2022],
         period: 'highschool',
-        date: 'Aug 2021 — Jun 2022',
+        date: 'Aug 2021 - Jun 2022',
         active: false,
         featured: false,
         excerpt: 'Team Lead for FTC #13215. Managed design and build process.',
@@ -3041,7 +3973,7 @@ const formulaElectricAtticDescription = `
         filterCategory: ['hardware', 'software'],
         years: [2021, 2022],
         period: 'highschool',
-        date: 'Sep 2021 — Mar 2022',
+        date: 'Sep 2021 - Mar 2022',
         active: false,
         featured: false,
         excerpt: 'Coal-seam fire detection system for mining safety.',
@@ -3057,7 +3989,7 @@ const formulaElectricAtticDescription = `
         filterCategory: ['hardware', 'software'],
         years: [2020, 2021],
         period: 'highschool',
-        date: 'Nov 2020 — May 2021',
+        date: 'Nov 2020 - May 2021',
         active: false,
         featured: false,
         excerpt: 'Low-cost flood detection for Jakarta, Indonesia.',
@@ -3074,6 +4006,7 @@ const formulaElectricAtticDescription = `
     // State
     let currentProjectIndex = -1;
     let isDetailOpen = false;
+    let requestedProjectSectionId = null;
 
     // DOM elements
     const grid = document.getElementById('projectsGrid');
@@ -3081,6 +4014,11 @@ const formulaElectricAtticDescription = `
     const detailContent = document.getElementById('detailContent');
     const detailClose = document.getElementById('detailClose');
     const detailTitle = document.getElementById('detailTitle');
+    const projectToc = document.getElementById('projectToc');
+    const tocResizeObserver = new ResizeObserver(([entry]) => {
+      projectToc.style.setProperty('--toc-half-height', `${entry.target.offsetHeight / 2}px`);
+    });
+    tocResizeObserver.observe(projectToc);
     const scrambleRunIds = new WeakMap();
     let nextScrambleRunId = 0;
 
@@ -3101,7 +4039,7 @@ const formulaElectricAtticDescription = `
         
         let result = '';
         for (let i = 0; i < targetText.length; i++) {
-          if (targetText[i] === ' ' || targetText[i] === '—') {
+          if (targetText[i] === ' ' || targetText[i] === '-') {
             result += targetText[i];
           } else if (i < targetText.length * eased) {
             result += targetText[i];
@@ -3148,7 +4086,15 @@ const formulaElectricAtticDescription = `
       }
 
       const webpSrc = (src) => src.replace(/\.(png|jpe?g)$/i, '.webp');
-      const webpMissing = new Set(['/assets/pulse-v1-ltspice.png']);
+      const webpMissing = new Set([
+        '/assets/pulse-v1-ltspice.png',
+        '/assets/hero-isometric.png',
+        '/assets/exploded.png',
+        '/assets/exploded-landscape.png',
+        '/assets/cutaway-three-quarter.png',
+        '/assets/gear-train.png',
+        '/assets/half-section.png'
+      ]);
       const hasWebpVariant = (src) => /\.(png|jpe?g)$/i.test(src) && !webpMissing.has(src) && !src.startsWith('/assets/formula-cooling-');
       const isVideoSrc = (src) => src.endsWith('.mp4') || src.endsWith('.webm');
       const gridThumb = (src, alt) => {
@@ -3206,11 +4152,52 @@ const formulaElectricAtticDescription = `
       }, 250);
     }
 
+    function updateProjectTocActive() {
+      if (!projectToc || projectToc.hidden) return;
+      const links = [...projectToc.querySelectorAll('a[data-project-section]')];
+      if (!links.length) return;
+      const detailRect = detailContent.getBoundingClientRect();
+      const readingLine = detailContent.scrollTop + 140;
+      let activeLink = links[0];
+      let activeTop = Number.NEGATIVE_INFINITY;
+      links.forEach(link => {
+        const target = document.getElementById(link.dataset.projectSection);
+        if (!target) return;
+        const targetTop = target.getBoundingClientRect().top - detailRect.top + detailContent.scrollTop;
+        if (targetTop <= readingLine && targetTop >= activeTop) {
+          activeLink = link;
+          activeTop = targetTop;
+        }
+      });
+      if (detailContent.scrollTop <= 24) {
+        activeLink = links[0];
+      } else if (requestedProjectSectionId) {
+        const requestedLink = links.find(link => link.dataset.projectSection === requestedProjectSectionId);
+        const requestedTarget = requestedLink && document.getElementById(requestedProjectSectionId);
+        if (requestedLink && requestedTarget) {
+          const requestedTop = requestedTarget.getBoundingClientRect().top - detailRect.top + detailContent.scrollTop;
+          if (requestedTop - readingLine >= -320) activeLink = requestedLink;
+          else requestedProjectSectionId = null;
+        }
+      }
+      links.forEach(link => {
+        const active = link === activeLink;
+        link.classList.toggle('active', active);
+        if (active) link.setAttribute('aria-current', 'location');
+        else link.removeAttribute('aria-current');
+      });
+      const current = projectToc.querySelector('.project-toc-current');
+      if (current) current.textContent = activeLink.textContent;
+    }
 
     // Update detail view
     function updateDetailView(project) {
+      // Restore shared nodes before replacing a previous project's description.
+      const topRow = detailContent.querySelector('.detail-top-row');
+      topRow.append(document.getElementById('detailGallery'), document.getElementById('detailSidebar'));
       detailContent.dataset.projectId = project.id;
-      document.getElementById('detailCategory').textContent = project.category.toUpperCase();
+      requestedProjectSectionId = null;
+      document.getElementById('detailCategory').textContent = project.category;
       document.getElementById('detailDate').textContent = (project.active ? '● ' : '') + project.date;
 
       // Interactive 3D viewer: click-to-load (model-viewer for .glb, or iframe embed).
@@ -3263,7 +4250,15 @@ const formulaElectricAtticDescription = `
         const hasMultiple = project.images.length > 1;
         const isVideo = (src) => src.endsWith('.mp4') || src.endsWith('.webm');
       const webpSrc = (src) => src.replace(/\.(png|jpe?g)$/i, '.webp');
-      const galleryWebpMissing = new Set(['/assets/pulse-v1-ltspice.png']);
+      const galleryWebpMissing = new Set([
+        '/assets/pulse-v1-ltspice.png',
+        '/assets/hero-isometric.png',
+        '/assets/exploded.png',
+        '/assets/exploded-landscape.png',
+        '/assets/cutaway-three-quarter.png',
+        '/assets/gear-train.png',
+        '/assets/half-section.png'
+      ]);
       const hasWebpVariant = (src) => /\.(png|jpe?g)$/i.test(src) && !galleryWebpMissing.has(src) && !src.startsWith('/assets/formula-cooling-');
       const pulseGalleryPhotoAssets = new Set(['/assets/pulse-v1-cover.jpg', '/assets/pulse-v1-bench.jpeg']);
       const galleryCanvasClass = (src) => {
@@ -3283,10 +4278,11 @@ const formulaElectricAtticDescription = `
           return `<video src="${src}" id="${id}" autoplay loop muted playsinline style="width:100%;height:100%;object-fit:contain;"></video>`;
         }
         const mediaClass = galleryMediaClass(src);
+        const prototypeClass = project.id === 'wolfrom-actuator' && src === '/assets/wolfrom-cover.jpg' ? ' gallery-media-prototype' : '';
         if (!hasWebpVariant(src)) {
-          return `<div class="gallery-media-frame ${mediaClass}"><img src="${src}" alt="${project.title}" id="${id}" loading="lazy" decoding="async"></div>`;
+          return `<div class="gallery-media-frame ${mediaClass}${prototypeClass}"><img src="${src}" alt="${project.title}" id="${id}" loading="lazy" decoding="async"></div>`;
         }
-        return `<div class="gallery-media-frame ${mediaClass}"><picture>
+        return `<div class="gallery-media-frame ${mediaClass}${prototypeClass}"><picture>
           <source srcset="${webpSrc(src)}" type="image/webp">
           <img src="${src}" alt="${project.title}" id="${id}" loading="lazy" decoding="async">
           </picture></div>`;
@@ -3294,30 +4290,30 @@ const formulaElectricAtticDescription = `
 
         const renderThumb = (src, i) => {
           if (isVideo(src)) {
-            return `<div class="gallery-thumb${i === 0 ? ' active' : ''}" data-index="${i}" style="position:relative;" data-lightbox-ignore>
+            return `<button type="button" aria-label="Show gallery item ${i + 1}" aria-pressed="${i === 0}" class="gallery-thumb${i === 0 ? ' active' : ''}" data-index="${i}" style="position:relative;" data-lightbox-ignore>
               <video src="${src}" muted style="width:100%;height:100%;object-fit:cover;"></video>
               <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.3);">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg>
               </div>
-            </div>`;
+            </button>`;
           }
-          return `<div class="gallery-thumb${i === 0 ? ' active' : ''} ${galleryMediaClass(src)}" data-index="${i}" data-lightbox-ignore>
+          return `<button type="button" aria-label="Show gallery image ${i + 1}" aria-pressed="${i === 0}" class="gallery-thumb${i === 0 ? ' active' : ''} ${galleryMediaClass(src)}" data-index="${i}" data-lightbox-ignore>
             ${hasWebpVariant(src)
               ? `<picture><source srcset="${webpSrc(src)}" type="image/webp"><img src="${src}" alt="Thumbnail ${i + 1}" loading="lazy" decoding="async"></picture>`
               : `<img src="${src}" alt="Thumbnail ${i + 1}" loading="lazy" decoding="async">`}
-          </div>`;
+          </button>`;
         };
         
         galleryEl.innerHTML = `
           <div class="gallery-main">
             ${hasMultiple ? `
-              <button class="gallery-nav gallery-nav-prev" id="galleryPrev">
+              <button class="gallery-nav gallery-nav-prev" id="galleryPrev" type="button" aria-label="Previous gallery image">
                 <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
               </button>
             ` : ''}
             <div id="galleryMediaContainer">${renderMedia(firstMedia, 'galleryMainMedia')}</div>
             ${hasMultiple ? `
-              <button class="gallery-nav gallery-nav-next" id="galleryNext">
+              <button class="gallery-nav gallery-nav-next" id="galleryNext" type="button" aria-label="Next gallery image">
                 <svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
               </button>
             ` : ''}
@@ -3335,6 +4331,7 @@ const formulaElectricAtticDescription = `
           container.innerHTML = renderMedia(project.images[idx], 'galleryMainMedia');
           galleryEl.querySelectorAll('.gallery-thumb').forEach((t, i) => {
             t.classList.toggle('active', i === idx);
+            t.setAttribute('aria-pressed', String(i === idx));
           });
         };
 
@@ -3362,8 +4359,47 @@ const formulaElectricAtticDescription = `
         `;
       }
 
-      // Description (tags moved to sidebar)
-      document.getElementById('detailDescription').innerHTML = project.description;
+      // Description and section navigation. Existing section wrappers are used
+      // when available; older project descriptions get lightweight anchors from
+      // their top-level headings so every project has the same reading tools.
+      const descriptionEl = document.getElementById('detailDescription');
+      const detailBody = descriptionEl.closest('.detail-body');
+      descriptionEl.innerHTML = project.description;
+      if (project.id === 'wolfrom-actuator') {
+        layoutWolfromSections(descriptionEl);
+        descriptionEl.querySelector('.wolfrom-gallery-slot').append(galleryEl);
+        descriptionEl.querySelector('.wolfrom-tools-slot').append(document.getElementById('detailSidebar'));
+      }
+      descriptionEl.querySelectorAll('details.project-disclosure').forEach(disclosure => { disclosure.open = true; });
+      const explicitSections = [...descriptionEl.querySelectorAll(':scope > .latex-section')];
+      const tocItems = explicitSections.length > 0
+        ? explicitSections
+            .map(section => {
+              const heading = section.querySelector(':scope > strong, .wx-introduction > strong');
+              const labelNode = heading ? heading.cloneNode(true) : null;
+              labelNode?.querySelectorAll('.project-section-status').forEach(status => status.remove());
+              return [section.id, labelNode?.textContent.trim()];
+            })
+            .filter(([id, label]) => id && label)
+        : [...descriptionEl.querySelectorAll(':scope > strong')]
+            .map((heading, index) => {
+              const label = heading.textContent.trim();
+              const id = `project-${project.id}-section-${index + 1}`;
+              heading.id = id;
+              return [id, label];
+            })
+            .filter(([, label]) => label && label.toLowerCase() !== 'status');
+
+      detailBody.classList.toggle('has-toc', tocItems.length > 1);
+      if (tocItems.length > 1) {
+        projectToc.classList.remove('is-menu-open');
+        projectToc.innerHTML = `<span class="project-toc-label">Contents</span><button type="button" class="project-toc-toggle" aria-expanded="false" aria-controls="projectSectionLinks"><b>Contents</b><span class="project-toc-current"></span></button><ol id="projectSectionLinks">${tocItems.map(([id, label]) => `<li><a href="#${id}" data-project-section="${id}">${label}</a></li>`).join('')}</ol>`;
+        projectToc.hidden = false;
+      } else {
+        projectToc.innerHTML = '';
+        projectToc.hidden = true;
+      }
+      updateProjectTocActive();
       document.getElementById('detailTags').innerHTML = '';
       initializeProjectPreviews();
       initializeBoardLayerLightbox();
@@ -3400,32 +4436,35 @@ const formulaElectricAtticDescription = `
             ` : l.url && l.url.startsWith('#') ? `
               <a href="${l.url}" class="detail-link">
                 <svg viewBox="0 0 24 24"><path d="M9 5v2h6.59l-9.83 9.83 1.41 1.41L17 8.41V15h2V5H9z"/></svg>
-                ${l.label}
+                <span class="link-text">${l.label}</span>
               </a>
             ` : `
               <a href="${l.url}" target="_blank" rel="noopener" class="detail-link">
                 <svg viewBox="0 0 24 24"><path d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg>
-                ${l.label}
+                <span class="link-text">${l.label}</span>
               </a>
             `).join('')}
           </div>
         `;
       }
 
-      sidebarHTML += `
+      if (project.id !== 'wolfrom-actuator') sidebarHTML += `
         <h3>Project Info</h3>
-        <p style="color: var(--text-dim); font-size: 14px; line-height: 1.7;">
-          <strong style="color: var(--text);">Category:</strong> ${project.category}<br>
-          <strong style="color: var(--text);">Timeline:</strong> ${project.date}<br>
-          <strong style="color: var(--text);">Status:</strong> ${project.active ? 'Active' : 'Completed'}
+        <p class="detail-project-info">
+          <strong>Category:</strong> ${project.category}<br>
+          <strong>Timeline:</strong> ${project.date}<br>
         </p>
       `;
 
-      if (project.tags && project.tags.length > 0) {
+      if (project.id === 'wolfrom-actuator') {
+        sidebarHTML += `<dl class="wolfrom-skills"><dt>Design and analysis</dt><dd>Onshape, MATLAB, KISSsoft, planetary gear design, load analysis</dd><dt>Prototyping</dt><dd>FDM housings and carriers, SLA gears, assembly and fit checks</dd></dl>`;
+      } else if (project.tags && project.tags.length > 0) {
         sidebarHTML += `
-          <h3 style="margin-top: 32px;">Skills</h3>
-          <div class="detail-tags">
-            ${project.tags.map(t => `<span class="detail-tag">${t}</span>`).join('')}
+          <div class="detail-skills">
+            <span class="detail-skills-label">Skills</span>
+            <div class="detail-skill-list">
+              ${project.tags.map(t => `<span>${t}</span>`).join('')}
+            </div>
           </div>
         `;
       }
@@ -3558,9 +4597,11 @@ const formulaElectricAtticDescription = `
 
       // Set the lightweight header first so the transition can begin immediately.
       detailContent.dataset.projectId = project.id;
-      document.getElementById('detailCategory').textContent = project.category.toUpperCase();
+      document.getElementById('detailCategory').textContent = project.category;
       document.getElementById('detailDate').textContent = (project.active ? '● ' : '') + project.date;
       detailTitle.textContent = titleStart;
+      // Do not reveal cached gallery pixels from the previous open while its new styles settle.
+      document.getElementById('detailGallery').replaceChildren();
 
       document.querySelectorAll('.project-card.active-card').forEach(card => {
         card.classList.remove('active-card');
@@ -3619,6 +4660,7 @@ const formulaElectricAtticDescription = `
         detailTitle.textContent = '';
         isDetailOpen = false;
         currentProjectIndex = -1;
+        requestedProjectSectionId = null;
       }, 280);
     }
 
@@ -3633,6 +4675,41 @@ const formulaElectricAtticDescription = `
 
     detailClose.addEventListener('click', closeDetail);
 
+    function scrollToProjectSection(event) {
+      const toggle = event.target.closest('.project-toc-toggle');
+      if (toggle) {
+        const open = projectToc.classList.toggle('is-menu-open');
+        toggle.setAttribute('aria-expanded', String(open));
+        return;
+      }
+      const link = event.target.closest('a[data-project-section]');
+      if (!link || !isDetailOpen) return;
+      const target = document.getElementById(link.dataset.projectSection);
+      if (!target) return;
+      event.preventDefault();
+      projectToc.classList.remove('is-menu-open');
+      projectToc.querySelector('.project-toc-toggle')?.setAttribute('aria-expanded', 'false');
+      target.tabIndex = -1;
+      target.focus({ preventScroll: true });
+      requestedProjectSectionId = link.dataset.projectSection;
+      const targetTop = target.getBoundingClientRect().top - detailContent.getBoundingClientRect().top + detailContent.scrollTop;
+      const mobileOffset = matchMedia('(max-width: 900px)').matches ? 46 : 0;
+      const headerOffset = document.querySelector('.nav-bar').getBoundingClientRect().height + 24 + mobileOffset;
+      detailContent.scrollTo({ top: Math.max(0, targetTop - headerOffset), behavior: 'smooth' });
+      history.replaceState(null, '', `#${detailContent.dataset.projectId}`);
+    }
+
+    projectToc.addEventListener('click', scrollToProjectSection);
+    document.getElementById('detailDescription').addEventListener('click', scrollToProjectSection);
+    projectToc.addEventListener('keydown', event => {
+      if (event.key !== 'Escape' || !projectToc.classList.contains('is-menu-open')) return;
+      event.stopPropagation();
+      projectToc.classList.remove('is-menu-open');
+      const toggle = projectToc.querySelector('.project-toc-toggle');
+      toggle.setAttribute('aria-expanded', 'false');
+      toggle.focus();
+    });
+
     // Back to top button
     const detailFabs = document.getElementById('detailFabs');
     const fabBackToTop = document.getElementById('fabBackToTop');
@@ -3643,6 +4720,7 @@ const formulaElectricAtticDescription = `
       } else {
         detailFabs.classList.remove('visible');
       }
+      updateProjectTocActive();
     });
 
     fabBackToTop.addEventListener('click', () => {
@@ -3660,6 +4738,8 @@ const formulaElectricAtticDescription = `
       const hash = window.location.hash.substring(1);
       if (hash && projects.some(p => p.id === hash)) {
         openDetail(hash, false);
+      } else if ((hash.startsWith('sn6-') || hash.startsWith('project-')) && isDetailOpen) {
+        return;
       } else if (isDetailOpen) {
         closeDetail(false);
       }

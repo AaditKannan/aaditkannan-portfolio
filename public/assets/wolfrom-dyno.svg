@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="650" viewBox="0 0 720 650" role="img" aria-labelledby="title desc">
+  <title id="title">Proposed bidirectional actuator dynamometer</title>
+  <desc id="desc">An actuator and load motor share an aligned base with flexible couplings and an inline output torque transducer. Output angle, motor angle, bus voltage and current, and temperatures are logged together. DC power passes through a safety disconnect, with regenerative energy management. Gearbox-only efficiency additionally needs an input-shaft torque measurement.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M1 1 9 5 1 9" fill="none" stroke="#1b2639" stroke-width="1.5"/></marker>
+  </defs>
+  <g fill="none" stroke="#1b2639" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M55 200H665" stroke-dasharray="8 6" opacity=".35"/>
+    <rect x="76" y="143" width="122" height="113" rx="8"/>
+    <ellipse cx="76" cy="199" rx="15" ry="56"/>
+    <path d="M91 166H185M91 232H185M111 143V256M148 143V256" opacity=".5"/>
+    <path d="M198 200H268M340 200H428" stroke-width="5"/>
+    <path d="M226 185V215M232 185V215M381 185V215M387 185V215" stroke-width="3"/>
+    <rect x="268" y="174" width="72" height="52" rx="5"/>
+    <circle cx="304" cy="200" r="17"/>
+    <path d="M289 200H319M304 185V215" opacity=".5"/>
+    <rect x="428" y="143" width="168" height="113" rx="8"/>
+    <ellipse cx="596" cy="199" rx="15" ry="56"/>
+    <path d="M445 159H580M445 174H580M445 226H580M445 241H580" opacity=".5"/>
+    <path d="M105 256V279H172V256M454 256V279H566V256M58 281H633V294H58Z"/>
+    <path d="M183 312H452" marker-start="url(#arrow)" marker-end="url(#arrow)"/>
+    <path d="M140 131V95H70M514 131V95H601M304 167V96"/>
+    <path d="M240 130H366" marker-end="url(#arrow)"/>
+    <path d="M660 198V126M645 136L660 120 675 136" stroke-dasharray="4 4"/>
+    <rect x="54" y="397" width="178" height="57"/>
+    <rect x="299" y="397" width="163" height="57"/>
+    <rect x="521" y="397" width="145" height="57"/>
+    <path d="M232 425H299M462 425H521" marker-end="url(#arrow)"/>
+    <path d="M380 455V482H162"/>
+    <path d="M162 472V492M171 472V492M171 482H211L216 474 226 490 236 474 246 490 251 482H272"/>
+    <path d="M118 368V356H609M304 227V356M609 356H687V582H654" stroke-dasharray="4 4" marker-end="url(#arrow)"/>
+    <rect x="65" y="552" width="588" height="58"/>
+    <path d="M85 454V542M595 454V542" stroke-dasharray="4 4" marker-end="url(#arrow)"/>
+  </g>
+  <g fill="#1b2639" font-family="'Times New Roman', serif" font-size="20">
+    <text x="360" y="30" text-anchor="middle" font-size="25">Bidirectional dyno: proposed layout</text>
+    <text x="137" y="71" text-anchor="middle">Actuator under test</text>
+    <text x="304" y="70" text-anchor="middle">Output torque</text>
+    <text x="514" y="71" text-anchor="middle">Load motor</text>
+    <text x="514" y="94" text-anchor="middle" font-size="17">and second drive</text>
+    <text x="304" y="120" text-anchor="middle" font-size="16">forward power</text>
+    <text x="318" y="336" text-anchor="middle" font-size="18">reverse power for backdrive testing</text>
+    <text x="361" y="379" text-anchor="middle" font-size="17">torque, angle, temperature channels</text>
+    <text x="660" y="90" text-anchor="middle" font-size="16">Shaft</text>
+    <text x="660" y="110" text-anchor="middle" font-size="16">guard</text>
+    <text x="142" y="420" text-anchor="middle">DC source / sink</text>
+    <text x="142" y="442" text-anchor="middle" font-size="16">V and I measurement</text>
+    <text x="380" y="420" text-anchor="middle">Safety disconnect</text>
+    <text x="380" y="442" text-anchor="middle" font-size="16">E-stop and current limits</text>
+    <text x="594" y="420" text-anchor="middle">Two drives</text>
+    <text x="594" y="442" text-anchor="middle" font-size="16">motoring / loading</text>
+    <text x="235" y="513" text-anchor="middle" font-size="17">Regenerative energy path</text>
+    <text x="359" y="577" text-anchor="middle">Synchronized data acquisition</text>
+    <text x="359" y="599" text-anchor="middle" font-size="17">torque · input/output angle · bus V/I · temperatures</text>
+    <text x="360" y="639" text-anchor="middle" font-size="17">Gearbox-only efficiency also requires input-shaft torque.</text>
+  </g>
+</svg>

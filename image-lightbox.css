@@ -53,7 +53,7 @@ body.image-lightbox-open {
   min-height: 20px;
   margin-top: 12px;
   color: rgba(255, 255, 255, 0.82);
-  font-family: 'Inter', system-ui, sans-serif;
+  font-family: var(--font-latex, 'STIX Two Text', 'Latin Modern Roman', 'Computer Modern', 'Times New Roman', serif);
   font-size: 13px;
   line-height: 1.45;
   text-align: center;
@@ -120,7 +120,7 @@ body.image-lightbox-open {
   top: 29px;
   left: 50%;
   color: rgba(255, 255, 255, 0.68);
-  font-family: 'JetBrains Mono', monospace;
+  font-family: var(--font-latex, 'STIX Two Text', 'Latin Modern Roman', 'Computer Modern', 'Times New Roman', serif);
   font-size: 11px;
   letter-spacing: 0;
   transform: translateX(-50%);

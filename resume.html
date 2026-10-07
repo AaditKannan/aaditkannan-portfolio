@@ -34,7 +34,7 @@
   <link rel="apple-touch-icon" sizes="180x180" href="/assets/newstfavicon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=STIX+Two+Text:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     @view-transition { navigation: auto; }
     ::view-transition-old(root),
@@ -44,8 +44,8 @@
     }
 
     :root {
-      --font-heading: 'JetBrains Mono', monospace;
-      --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+      --font-heading: 'STIX Two Text', 'Latin Modern Roman', 'Computer Modern', 'Times New Roman', serif;
+      --font-body: 'STIX Two Text', 'Latin Modern Roman', 'Computer Modern', 'Times New Roman', serif;
       --bg: #0a0a0a;
       --text-primary: #e2e8f0;
       --text-secondary: #94a3b8;
@@ -69,10 +69,10 @@
     [data-theme="light"] {
       --bg: #f5f2ee;
       --text-primary: #1a202c;
-      --text-secondary: #4a5568;
+      --text-secondary: #344054;
       --text-heading: #111827;
       --text-white: #0f172a;
-      --text-muted: #64748b;
+      --text-muted: #475467;
       --card-hover: rgba(0, 0, 0, 0.04);
       --card-border: rgba(0, 0, 0, 0.08);
       --nav-bg: rgba(245, 242, 238, 0.95);
@@ -139,15 +139,14 @@
     .nav-link {
       color: var(--nav-link);
       text-decoration: none;
-      font-size: 13px;
+      font-size: 15px;
       font-weight: 500;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
+      letter-spacing: 0.04em;
       font-family: var(--font-heading);
       border-bottom: 1px solid transparent;
-      padding: 8px 0;
+      padding: 6px 0 8px;
       transition: all 0.3s ease;
-      line-height: 1;
+      line-height: 1.15;
     }
 
     .nav-link:hover {
@@ -276,7 +275,7 @@
       align-items: center;
       gap: 6px;
       padding: 2px 0;
-      font-size: 13px;
+      font-size: 14px;
       font-weight: 400;
       letter-spacing: 0.02em;
       font-family: var(--font-heading);
@@ -371,10 +370,9 @@
     /* ---- Section Headings ---- */
     .section-label {
       font-family: var(--font-heading);
-      font-size: 11px;
+      font-size: 12px;
       font-weight: 600;
       letter-spacing: 0.2em;
-      text-transform: uppercase;
       color: var(--text-muted);
       margin-bottom: 24px;
       position: sticky;
@@ -389,9 +387,9 @@
 
     /* ---- About Section ---- */
     .about-text p {
-      font-size: 14px;
+      font-size: 15px;
       color: var(--text-secondary);
-      line-height: 1.6;
+      line-height: 1.7;
       margin-bottom: 10px;
     }
 
@@ -415,7 +413,7 @@
     }
 
     .about-currently li {
-      font-size: 14px;
+      font-size: 15px;
       color: var(--text-secondary);
       line-height: 1.7;
       padding: 4px 0;
@@ -500,10 +498,9 @@
     }
 
     .entry-date {
-      font-size: 12px;
+      font-size: 13px;
       font-weight: 500;
       color: var(--text-muted);
-      text-transform: uppercase;
       letter-spacing: 0.04em;
       white-space: nowrap;
       text-align: right;
@@ -511,7 +508,7 @@
 
     .entry-body h3 {
       font-family: var(--font-body);
-      font-size: 15px;
+      font-size: 16px;
       font-weight: 600;
       color: var(--text-heading);
       line-height: 1.3;
@@ -544,21 +541,21 @@
     }
 
     .entry-role {
-      font-size: 13px;
+      font-size: 14px;
       color: var(--text-secondary);
       margin-bottom: 6px;
     }
 
     .entry-desc {
-      font-size: 13px;
+      font-size: 14px;
       color: var(--text-secondary);
-      line-height: 1.6;
+      line-height: 1.65;
     }
 
     .entry-desc p {
-      font-size: 13px;
+      font-size: 14px;
       color: var(--text-secondary);
-      line-height: 1.6;
+      line-height: 1.65;
       margin: 0;
     }
 
@@ -601,7 +598,7 @@
     .skills-grid ul { list-style: none; padding: 0; }
 
     .skills-grid ul li {
-      font-size: 13px;
+      font-size: 14px;
       color: var(--text-secondary);
       margin-bottom: 6px;
       line-height: 1.5;
@@ -641,7 +638,7 @@
         background: rgba(0, 0, 0, 0.08);
       }
       .theme-toggle svg { width: 14px; height: 14px; }
-      .nav-link { font-size: 11px; letter-spacing: 0.1em; padding: 6px 0; }
+      .nav-link { font-size: 14px; letter-spacing: 0.04em; padding: 6px 0 8px; line-height: 1.15; }
 
       .layout { flex-direction: column; padding: 0 24px; padding-top: 60px; }
 
@@ -657,7 +654,7 @@
         display: contents;
       }
 
-      /* Name spans full width — menu should NOT start next to name */
+      /* Name spans full width - menu should NOT start next to name */
       .sidebar h1 {
         font-size: 32px;
         grid-column: 1 / -1; grid-row: 1;
@@ -697,13 +694,13 @@
       .sidebar-nav { align-items: flex-end; }
       .nav-prefix, .nav-cursor { display: none; }
       .sidebar-nav a::after {
-        content: '——';
+        content: '·';
         font-size: 11px;
         opacity: 0.3;
         transition: opacity 0.25s ease;
       }
       .sidebar-nav a.active::after {
-        content: '————';
+        content: '··';
         opacity: 0.7;
       }
       .full-text { display: none; }
@@ -743,10 +740,10 @@
 
   <!-- Top Nav (scrolls with page) -->
   <nav class="nav-bar">
-    <a href="/" class="nav-link">HOME</a>
-    <a href="/resume" class="nav-link active">RESUME</a>
-    <a href="/projects" class="nav-link">PROJECTS</a>
-    <a href="/footage" class="nav-link">FOOTAGE</a>
+    <a href="/" class="nav-link">Home</a>
+    <a href="/resume" class="nav-link active">Resume</a>
+    <a href="/projects" class="nav-link">Projects</a>
+    <a href="/footage" class="nav-link">Footage</a>
     <button class="theme-toggle" id="themeToggle" aria-label="Toggle light mode">
       <svg class="icon-moon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
       <svg class="icon-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
@@ -793,7 +790,7 @@
           <p>Mechanical engineering and EECS student at UC Berkeley interested in robotics, semiconductors, and space.</p>
           <p>Currently:</p>
           <ul class="about-currently">
-            <li>Designing the 588V accumulator hardware and cooling system for <a href="/projects#formula-electric" class="about-highlight" data-preview="/assets/accumimg.png">Formula Electric at Berkeley</a></li>
+            <li>Designing the 588 V accumulator hardware and cooling system for <a href="/projects#formula-electric" class="about-highlight" data-preview="/assets/accumimg.png">Formula Electric at Berkeley</a></li>
             <li>Researching beyond-CMOS memory and logic while building high-frequency pulse electronics in <a href="/projects#ramesh-lab" class="about-highlight" data-preview="/assets/IMG_4508.JPG">Ramesh Lab</a></li>
             <li>Building a compact high-ratio <a href="/projects#wolfrom-actuator" class="about-highlight" data-preview="/assets/wolfrom-render-face.jpg">Wolfrom gearbox</a> for humanoid joints</li>
             <li>Incoming Mechanical Engineering Intern at <a href="https://www.spacex.com/" target="_blank" rel="noopener noreferrer" class="about-highlight"><strong>SpaceX</strong></a></li>
@@ -826,7 +823,7 @@
               <span class="skill-pill">HV Systems</span>
             </div>
           </div>
-          <div class="entry-date">Sep 2025 — Present</div>
+          <div class="entry-date">Sep 2025 - Present</div>
         </div>
 
         <div class="entry-card">
@@ -846,7 +843,7 @@
               <span class="skill-pill">Pulse Electronics</span>
             </div>
           </div>
-          <div class="entry-date">Jan 2026 — Present</div>
+          <div class="entry-date">Jan 2026 - Present</div>
         </div>
 
         <div class="entry-card">
@@ -866,7 +863,7 @@
               <span class="skill-pill">Leadership</span>
             </div>
           </div>
-          <div class="entry-date">Aug 2021 — Aug 2025</div>
+          <div class="entry-date">Aug 2021 - Aug 2025</div>
         </div>
 
         <div class="entry-card">
@@ -881,7 +878,7 @@
               <span class="skill-pill">Workflow Design</span>
             </div>
           </div>
-          <div class="entry-date">Aug 2023 — Aug 2025</div>
+          <div class="entry-date">Aug 2023 - Aug 2025</div>
         </div>
 
         <div class="entry-card">
@@ -897,7 +894,7 @@
               <span class="skill-pill">Machining</span>
             </div>
           </div>
-          <div class="entry-date">Aug 2019 — Aug 2025</div>
+          <div class="entry-date">Aug 2019 - Aug 2025</div>
         </div>
 
         <div class="entry-card">
@@ -912,7 +909,7 @@
               <span class="skill-pill">Electrical</span>
             </div>
           </div>
-          <div class="entry-date">Jun 2023 — Aug 2023</div>
+          <div class="entry-date">Jun 2023 - Aug 2023</div>
         </div>
       </section>
 
@@ -955,7 +952,7 @@
               <p>Supported student fabrication work with CO2 laser cutters, 3D printers, vinyl cutters, and CNC machines.</p>
             </div>
           </div>
-          <div class="entry-date">Aug 2021 — Jun 2025</div>
+          <div class="entry-date">Aug 2021 - Jun 2025</div>
         </div>
 
         <div class="entry-card">
@@ -965,7 +962,7 @@
               <p>Dinner server for underserved families in San Jose.</p>
             </div>
           </div>
-          <div class="entry-date">Aug 2021 — Aug 2023</div>
+          <div class="entry-date">Aug 2021 - Aug 2023</div>
         </div>
 
         <div class="entry-card">
@@ -975,7 +972,7 @@
               <p>Provided field-side technical support for teams and helped keep robotics matches moving cleanly.</p>
             </div>
           </div>
-          <div class="entry-date">Dec 2023 — Jan 2024</div>
+          <div class="entry-date">Dec 2023 - Jan 2024</div>
         </div>
       </section>
 

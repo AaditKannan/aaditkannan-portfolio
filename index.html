@@ -34,8 +34,12 @@
   <link rel="apple-touch-icon" sizes="180x180" href="/assets/newstfavicon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=STIX+Two+Text:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
+    :root {
+      --font-latex: 'STIX Two Text', 'Latin Modern Roman', 'Computer Modern', 'Times New Roman', serif;
+    }
+
     * {
       margin: 0;
       padding: 0;
@@ -55,7 +59,7 @@
     }
 
     body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-family: var(--font-latex);
       color: #FFFFFF;
       overflow-x: hidden;
       position: relative;
@@ -90,7 +94,7 @@
     .cursor-glow.visible { opacity: 1; }
 
     /* Background video wrapper. Poster and video are both rendered with
-       identical object-fit rules so their layout is pixel-identical —
+       identical object-fit rules so their layout is pixel-identical.
        prevents any "bounce" when the native swap happens. */
     .bg-video-wrap {
       position: fixed;
@@ -156,17 +160,16 @@
     .nav-link {
       color: rgba(255, 255, 255, 0.7);
       text-decoration: none;
-      font-size: 13px;
+      font-size: 15px;
       font-weight: 500;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
+      letter-spacing: 0.04em;
       transition: all 0.3s ease;
-      padding: 8px 0;
+      padding: 6px 0 8px;
       border: none;
       border-bottom: 1px solid transparent;
       background: transparent;
-      font-family: 'JetBrains Mono', monospace;
-      line-height: 1;
+      font-family: var(--font-latex);
+      line-height: 1.15;
     }
 
     .nav-link:hover {
@@ -203,9 +206,8 @@
       letter-spacing: 0.06em;
       margin-bottom: 0;
       margin-top: 0;
-      text-transform: uppercase;
       line-height: 0.95;
-      font-family: 'Inter', 'Arial', 'Helvetica', sans-serif;
+      font-family: var(--font-latex);
       color: #FFFFFF;
       -webkit-text-stroke: 3px rgba(0, 0, 0, 0.8);
       text-stroke: 3px rgba(0, 0, 0, 0.8);
@@ -221,8 +223,7 @@
       margin-top: 18px;
       margin-bottom: 0;
       opacity: 0.95;
-      text-transform: uppercase;
-      font-family: 'Inter', 'Arial', 'Helvetica', sans-serif;
+      font-family: var(--font-latex);
       color: rgba(255, 255, 255, 0.95);
       text-shadow: 0 6px 18px rgba(0, 0, 0, 0.45);
       line-height: 1.5;
@@ -237,13 +238,12 @@
       font-size: 11px;
       font-weight: 500;
       letter-spacing: 0.15em;
-      text-transform: uppercase;
       border-radius: 4px;
       transition: all 0.3s ease;
       background: transparent;
       position: relative;
       margin-top: 20px;
-      font-family: 'JetBrains Mono', monospace;
+      font-family: var(--font-latex);
     }
 
     .view-resume-btn:hover {
@@ -314,7 +314,7 @@
     .footage-credit {
       font-size: clamp(13px, 1vw, 16px);
       color: rgba(255,255,255,0.8);
-      font-family: 'Inter', sans-serif;
+      font-family: var(--font-latex);
       letter-spacing: 0.05em;
     }
 
@@ -339,9 +339,13 @@
 
 
     @media (max-width: 768px) {
-      /* Mobile font: Inter on small screens */
-      body, .nav-link, .view-resume-btn, .footer-text, .footage-credit {
-        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+      /* Keep the paper-like type system on small screens. */
+      body, .footer-text, .footage-credit {
+        font-family: var(--font-latex) !important;
+      }
+
+      .nav-link, .view-resume-btn {
+        font-family: var(--font-latex) !important;
       }
 
       .cursor-glow { display: none; }
@@ -408,9 +412,9 @@
       }
 
       .nav-link {
-        font-size: 11px;
-        padding: 6px 0;
-        letter-spacing: 0.1em;
+        font-size: 14px;
+        padding: 6px 0 8px;
+        letter-spacing: 0.04em;
       }
 
       .view-resume-btn {
@@ -487,9 +491,10 @@
       }
 
       .nav-link {
-        font-size: 11px;
-        padding: 6px 0;
-        letter-spacing: 0.1em;
+        font-size: 14px;
+        padding: 6px 0 8px;
+        letter-spacing: 0.04em;
+        line-height: 1.15;
       }
 
       .view-resume-btn {
@@ -564,10 +569,10 @@
 
   <!-- Navigation Bar -->
   <nav class="nav-bar nav-inter-uppercase">
-            <a href="/" class="nav-link active">HOME</a>
-            <a href="/resume" class="nav-link">RESUME</a>
-            <a href="/projects" class="nav-link">PROJECTS</a>
-            <a href="/footage" class="nav-link">FOOTAGE</a>
+            <a href="/" class="nav-link active">Home</a>
+            <a href="/resume" class="nav-link">Resume</a>
+            <a href="/projects" class="nav-link">Projects</a>
+            <a href="/footage" class="nav-link">Footage</a>
   </nav>
 
   <!-- Home Page Content -->
@@ -575,7 +580,7 @@
     <div class="home-content-wrapper">
       <h1 class="home-name">AADIT KANNAN</h1>
       <p class="home-subtitle subtitle-inter">MECHE/EECS STUDENT @ UC BERKELEY</p>
-      <a href="/resume" class="view-resume-btn button-inter">VIEW RESUME</a>
+      <a href="/resume" class="view-resume-btn button-inter">View resume</a>
     </div>
   </div>
 

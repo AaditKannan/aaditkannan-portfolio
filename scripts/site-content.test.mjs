@@ -18,8 +18,8 @@ const navPages = ['index.html', 'resume.html', 'projects.html', 'footage.html'];
 
 for (const page of navPages) {
   const nav = topNav(readPage(page));
-  assert.match(nav, /href="\/footage"[^>]*>\s*FOOTAGE\s*<\/a>/, `${page} should include Footage in top nav`);
-  assert.match(nav, /href="\/resume"[^>]*>\s*RESUME\s*<\/a>/, `${page} should label the resume page as Resume`);
+  assert.match(nav, /href="\/footage"[^>]*>\s*Footage\s*<\/a>/, `${page} should include Footage in top nav`);
+  assert.match(nav, /href="\/resume"[^>]*>\s*Resume\s*<\/a>/, `${page} should label the resume page as Resume`);
   assert.doesNotMatch(nav, /href="\/connect"|>\s*CONNECT\s*<\/a>/, `${page} should not include Connect in top nav`);
 }
 
@@ -116,7 +116,7 @@ assert.doesNotMatch(resume, /current-projects|>\s*Current\s*</, 'Resume navigati
 assert.doesNotMatch(resume, /<section id="work-experience">|data-section="work-experience"|>\s*Work\s*</, 'Resume should not include a separate Work section or sidebar item');
 assert.match(resume, /Mechanical engineering and EECS student at UC Berkeley interested in robotics, semiconductors, and space\./, 'Resume About intro should use the restored concise wording with semiconductors');
 assert.match(resume, /<p class="subtitle">Electromechanical Engineer<\/p>/, 'Resume sidebar should use the Electromechanical Engineer subtitle');
-assert.match(resume, /Designing the 588V accumulator hardware and cooling system/, 'Resume About section should mention accumulator hardware and cooling');
+assert.match(resume, /Designing the 588 V accumulator hardware and cooling system/, 'Resume About section should mention accumulator hardware and cooling');
 assert.match(resume, /Researching beyond-CMOS memory and logic while building high-frequency pulse electronics/, 'Resume About section should connect beyond-CMOS research with high-frequency electronics');
 assert.match(resume, /Building a compact high-ratio <a href="\/projects#wolfrom-actuator"[\s\S]*?>Wolfrom gearbox<\/a> for humanoid joints<\/li>/, 'Resume About section should keep Wolfrom to one concise line');
 assert.match(resume, /Incoming Mechanical Engineering Intern at <a href="https:\/\/www\.spacex\.com\/"[\s\S]*?><strong>SpaceX<\/strong><\/a>/, 'Resume About section should include the incoming SpaceX role as a linked bold name');
@@ -167,29 +167,85 @@ for (const page of ['resume.html', 'projects.html', 'footage.html']) {
 assert.match(projects, /main\s*{[\s\S]*max-width:\s*1520px/, 'Projects index should use the wider desktop container');
 assert.match(projects, /\.projects-grid\s*{[\s\S]*grid-template-columns:\s*repeat\(3,\s*minmax\(0,\s*1fr\)\)/, 'Projects grid columns should expand inside the wider container');
 assert.match(projects, /\.detail-inner\s*{[\s\S]*max-width:\s*1520px/, 'Project detail view should use the wider desktop container');
-assert.match(projects, /title: 'Wolfrom Humanoid Joint Actuator'/, 'Wolfrom project title should describe its humanoid robotics application');
+assert.match(projects, /title: 'Wolfrom Robotic Actuator'/, 'Wolfrom project title should identify the robotic actuator');
 assert.doesNotMatch(projects, /title: 'Wolfrom Compound Planetary Actuator'/, 'Wolfrom project should not use the old title');
+const wolfromSource = projects.match(/const wolfromDescription = `([\s\S]*?)`;/);
+assert.ok(wolfromSource, 'Projects should define the rebuilt Wolfrom case study');
+for (const heading of ['Why this project', 'Requirements and constraints', 'First principles', 'Architecture', 'Load cases', 'Hand calculations', 'Simulation', 'Design decisions', 'Build', 'Test and validation', 'What went wrong', 'Results and next steps']) {
+  assert.match(wolfromSource[1], new RegExp(`<strong[^>]*>${heading.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}`), `Wolfrom page should include ${heading}`);
+}
+const wolfromGallery = projects.match(/id: 'wolfrom-actuator'[\s\S]*?images: \[([\s\S]*?)\]\s*\n\s*}/)?.[1] || '';
+assert.deepEqual(
+  [...wolfromGallery.matchAll(/'([^']+)'/g)].map((match) => match[1]),
+  ['/assets/exploded-landscape.png', '/assets/wolfrom-cover.jpg', '/assets/gear-train.png', '/assets/cutaway-three-quarter.png', '/assets/half-section.png', '/assets/wolfrom-ansys-topology-result.png', '/assets/wolfrom-ansys-stress.png'],
+  'Wolfrom should keep a focused CAD gallery'
+);
+assert.match(wolfromSource[1], /wolfrom-stand|wolfrom-bench|wolfrom-ansys-stress|wolfrom-kisssoft-results/, 'Wolfrom should retain the strongest physical and analysis evidence');
+assert.match(projects, /href="\/wolfrom-explode\.css"/, 'Wolfrom should load the scoped exploded-view styles');
+assert.match(projects, /src="\/wolfrom-explode\.js"/, 'Wolfrom should load the exploded-view behavior');
+assert.match(wolfromSource[1], /class="latex-section wx"[^>]*data-model="\/assets\/actuator\.glb"/, 'Wolfrom Architecture should include the scroll-driven actuator viewer');
+assert.match(wolfromSource[1], /src="\/assets\/exploded\.png"/, 'Wolfrom viewer should include the static exploded fallback');
+assert.match(wolfromSource[1], /src="\/assets\/wolfrom-hand-calcs\.png"/, 'Wolfrom Load cases should keep the visible hand calculations');
+assert.match(wolfromSource[1], /class="wx-poster"[^>]*src="\/assets\/gear-train\.png"/, 'The opening should show the CAD view without loose bolts while the real model loads');
+assert.match(wolfromSource[1], /id="wolfrom-packaging"[\s\S]*?src="\/assets\/gear-train\.png"[\s\S]*?src="\/assets\/cutaway-three-quarter\.png"/, 'Packaging should pair the bolt-free gear-train view with a three-quarter section view');
+assert.match(wolfromSource[1], /id="wolfrom-gallery"[\s\S]*class="wolfrom-gallery-slot"/, 'The gallery should have its own navigable section after the model walkthrough');
+assert.match(projects, /\.wolfrom-tools-slot'\)\.append\(document\.getElementById\('detailSidebar'\)\)/, 'Tools should sit deliberately beside the gallery');
+assert.match(projects, /class="project-toc-toggle" aria-expanded="false" aria-controls="projectSectionLinks"/, 'Mobile Contents should provide an accessible disclosure control');
+assert.match(projects, /projectToc\.classList\.remove\('is-menu-open'\)/, 'Jumping to a section should close the mobile Contents menu');
+assert.match(projects, /\.project-toc-toggle:focus-visible/, 'The mobile navigation control should expose keyboard focus');
+assert.match(projects, /aria-label="Show gallery image \$\{i \+ 1\}"/, 'Gallery thumbnails should be named keyboard-accessible buttons');
+const wolfromBuild = wolfromSource[1].match(/id="wolfrom-build"[\s\S]*?<\/section>/)?.[0];
+assert.doesNotMatch(wolfromBuild, /cutaway|render-side|gear-train\.png|hero-isometric/, 'Build should contain physical evidence, not CAD');
+for (const photo of ['wolfrom-bench.jpg', 'wolfrom-cover.jpg', 'wolfrom-stand.jpg']) assert.ok(wolfromBuild.includes(photo), `Build should retain ${photo}`);
+assert.match(wolfromSource[1], /class="matlab-panel"/, 'The supplied MATLAB results should be visible beside the physics and hand calculations');
+assert.match(wolfromSource[1], /src="\/assets\/wolfrom-dyno\.svg"/, 'Validation should show the proposed dyno architecture');
+assert.match(wolfromSource[1], /not a completed or validated bench/, 'The dyno proposal must not be mistaken for completed work');
+assert.match(wolfromSource[1], /Output torque and DC power alone measure the integrated actuator/, 'Validation should distinguish gearbox and whole-actuator efficiency');
+const wolfromDecisions = wolfromSource[1].match(/id="wolfrom-design-decisions"[\s\S]*?<\/section>/)?.[0];
+assert.doesNotMatch(wolfromDecisions, /project-detail-card|Two builds from one model|Costs a custom gear blank/, 'Design decisions should explain consequential choices without generic part-description cards');
+for (const evidence of ['22.5 mm centre distance', '392 N at 50 Nm', '350 N static rating', '20 Nm', 'no replacement has been selected']) assert.ok(wolfromDecisions.includes(evidence), `Design decisions should retain the evidence and status: ${evidence}`);
+assert.match(wolfromDecisions, /data-project-section="wolfrom-hand-calculations"/, 'Design consequences should link directly to their supporting calculations');
+assert.match(projects, /getElementById\('detailDescription'\)\.addEventListener\('click', scrollToProjectSection\)/, 'Evidence links in the case study should use the same section-jump behavior as Contents');
+assert.match(projects, /topRow\.append\(document\.getElementById\('detailGallery'\), document\.getElementById\('detailSidebar'\)\)/, 'Shared gallery and sidebar should survive switching away from Wolfrom');
+assert.match(projects, /top: max\(104px, calc\(50svh - var\(--toc-half-height/, 'Wolfrom contents should be vertically centered beside the reading area');
+assert.match(wolfromSource[1], /30 Nm continuous and 50 Nm peak design targets/, 'Opening torque figures must be identified as design targets');
+for (const sectionId of ['wolfrom-requirements', 'wolfrom-results']) {
+  const section = wolfromSource[1].match(new RegExp(`<section[^>]*id="${sectionId}"[\\s\\S]*?<\\/section>`))?.[0];
+  if (sectionId === 'wolfrom-requirements') {
+    assert.match(section, /Forward efficiency<\/td><td>&gt;80%<\/td><td>Three-stage KISSsoft prediction pending; bench validation to follow/, `${sectionId} should keep the overall efficiency target pending until the coupled model is complete`);
+  } else {
+    assert.match(section, /Forward efficiency<\/td><td>&gt;80%<\/td><td>Three-stage KISSsoft prediction pending; bench validation follows/, `${sectionId} should keep the coupled efficiency result pending until the stage model is complete`);
+    assert.match(section, /rate each gear stage separately in KISSsoft[\s\S]*?steel gears and aluminium housings/, 'Next steps should prioritize the coupled KISSsoft model before the production-intent material model');
+  }
+  assert.match(section, /Backdrive efficiency<\/td><td>&ge;75% at 30 Nm, 30 rpm<\/td><td>Derived design target/, `${sectionId} should identify the derived backdrive goal and its operating point`);
+}
+assert.match(projects, /\.wolfrom-build-board figure::after \{ content: 'V1 prototype'/, 'Physical prototype photos should be visibly marked as V1');
+assert.match(projects, /gallery-media-prototype::after[\s\S]*?content: 'V1 prototype'/, 'The assembled prototype gallery image should carry the V1 label');
+assert.match(wolfromSource[1], /chosen loss-budget requirement, not an identity/, 'The backdrive target derivation must not imply that forward efficiency uniquely determines backdrive efficiency');
+assert.match(wolfromSource[1], /75\.7% backdrive efficiency at 80% forward efficiency/, 'The backdrive goal should be screened against the existing MATLAB model');
+assert.ok(existsSync(join(root, 'public', 'assets', 'actuator.glb')), 'The actuator GLB should be available to the viewer');
 
 const formulaCooling = projects.match(/const formulaElectricCoolingDescription = `([\s\S]*?)`;\s*const formulaElectricAtticDescription/);
 assert.ok(formulaCooling, 'Projects should define the Formula Electric cooling case study');
-for (const heading of ['Overview', 'Modeling the Flow', 'What CFD Showed', 'Thermal Result', 'What I Am Changing']) {
-  assert.match(formulaCooling[1], new RegExp(`<strong>${heading}<\\/strong>`), `Formula Electric cooling page should visibly include ${heading}`);
+for (const heading of ['Overview', 'Cooling Problem', 'Airflow Model', 'What CFD Showed', 'Thermal Model', 'Design Changes', 'Results and Validation']) {
+  assert.match(formulaCooling[1], new RegExp(`<strong[^>]*>${heading.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}<\\/strong>`), `Formula Electric cooling page should visibly include ${heading}`);
 }
-for (const checkpoint of [/588 V/, /420 cylindrical cells/, /60 °C/, /56 A RMS/, /226 W per branch/, /425 CFM/, /12\.04 m³\/min/, /85\.1 CFM per fan/, /521 Pa/, /234 W/, /653 CFM/, /3\.19 m\/s/, /16\.76 m\/s/, /22,143/, /412 Pa/, /106 Pa/, /K = 2\.52/, /Nu = 127\.3/, /h = 157\.6 W\/m²K/, /1\.72 kW/, /344 W per branch/, /37\.3 °C/, /equal-flow assumption/, /75\.1 °C/, /58 °C maximum/, /5\.4 °C spread/, /25-minute endurance/]) {
-  assert.match(formulaCooling[1], checkpoint, `Formula Electric cooling case study should retain ${checkpoint.source}`);
+for (const checkpoint of [/57 °C design target/, /0\.61 K predicted rise against 0\.6 K measured/, /39 A RMS/, /50 A design case/, /54\.6 °C/, /13\.9 K/, /above the 5 K uniformity goal/, /40 CFM at 780 Pa/, /flow within 10%/, /temperatures within 3 K/]) {
+  assert.match(formulaCooling[1], checkpoint, `Formula Electric cooling case study should explain ${checkpoint.source}`);
 }
+assert.doesNotMatch(formulaCooling[1], /56 A RMS|226 W per branch|1\.72 kW|5\.4 °C spread|Current optimized steady-state run/, 'SN6 should retire the outdated steady-state design basis');
 assert.match(projects, /description: formulaElectricCoolingDescription/, 'Formula Electric cooling project should render the Wolfrom-style cooling case study');
 assert.doesNotMatch(formulaCooling[1], /cooling-section-nav|cooling-stat-grid|cooling-decision-grid/, 'Formula Electric content should use the established project-detail components');
-assert.doesNotMatch(formulaCooling[1], /<details/, 'Formula Electric cooling should stay fully visible without jumpy disclosures');
-assert.ok(formulaCooling[1].indexOf('formula-cooling-sub60.png') < formulaCooling[1].indexOf('formula-cooling-module-stackup.png'), 'SN6 should lead with the current optimized cooling result');
+assert.match(formulaCooling[1], /<details class="project-disclosure">/, 'SN6 should use the established disclosures for technical evidence');
+assert.ok(formulaCooling[1].indexOf('Cooling Problem') < formulaCooling[1].indexOf('What CFD Showed'), 'SN6 should establish the cooling need before presenting simulation results');
 assert.match(projects, /\.project-priority-result img\s*{[\s\S]*?width:\s*100%\s*!important[\s\S]*?max-width:\s*760px\s*!important[\s\S]*?max-height:\s*520px/, 'SN6 optimized steady-state image should be prominent');
 assert.match(projects, /\.project-baseline-velocity img\s*{[\s\S]*?max-width:\s*58%\s*!important/, 'SN6 baseline velocity image should stay secondary');
 assert.match(projects, /\.project-hand-calcs img\s*{[\s\S]*?max-width:\s*180px\s*!important[\s\S]*?max-height:\s*220px/, 'SN6 hand calculations should stay compact until enlarged');
-assert.match(projects, /id: 'formula-electric'[\s\S]*?title: 'Formula Electric — SN6 Cooling'[\s\S]*?date: '2026 — Present'[\s\S]*?displayOrder: 3/, 'Cooling should be a distinct current SN6 Formula Electric project');
+assert.match(projects, /id: 'formula-electric'[\s\S]*?title: 'Formula Electric - SN6 Cooling'[\s\S]*?date: '2026 - Present'[\s\S]*?displayOrder: 3/, 'Cooling should be a distinct current SN6 Formula Electric project');
 const formulaCoolingGallery = projects.match(/id: 'formula-electric'[\s\S]*?images: \[([\s\S]*?)\]\s*\n\s*}/)?.[1] || '';
 assert.deepEqual(
   [...formulaCoolingGallery.matchAll(/'([^']+)'/g)].map((match) => match[1]),
-  ['/assets/accumimg.png', '/assets/formula-cooling-sub60.png', '/assets/formula-cooling-sub60-top.png', '/assets/formula-cooling-module-stackup.png'],
+  ['/assets/accumimg.png', '/assets/formula-cooling-transient-50a.jpg', '/assets/formula-cooling-transient-50a-top.jpg', '/assets/formula-cooling-module-stackup.png'],
   'SN6 should keep the original CAD cover and a tight four-image gallery'
 );
 assert.doesNotMatch(formulaCoolingGallery, /velocity-baseline|temperature-map|variant-60-8|fan-system-curve/, 'Supporting simulations should stay in the SN6 page body');
@@ -204,7 +260,7 @@ for (const checkpoint of [/588 V/, /40g lateral/, /20g vertically/, /18%/, /6 mm
 }
 assert.doesNotMatch(formulaAttic[1], /<details/, 'Formula Electric attic should stay fully visible without jumpy disclosures');
 assert.doesNotMatch(formulaAttic[1], /shorted two segment busbars|Nobody was hurt/, 'Formula Electric attic should omit the busbar-short incident');
-assert.match(projects, /id: 'formula-electric-attic'[\s\S]*?title: 'Formula Electric — SN5 HV Attic'[\s\S]*?date: '2025 — 2026'[\s\S]*?active: false[\s\S]*?displayOrder: 4/, 'Attic should be a distinct completed SN5 Formula Electric project');
+assert.match(projects, /id: 'formula-electric-attic'[\s\S]*?title: 'Formula Electric - SN5 HV Attic'[\s\S]*?date: '2025 - 2026'[\s\S]*?active: false[\s\S]*?displayOrder: 4/, 'Attic should be a distinct completed SN5 Formula Electric project');
 assert.match(projects, /id: 'formula-electric-attic'[\s\S]*?images: \[\s*'\/assets\/img1\.png'/, 'SN5 should use the Formula car photo as a distinct thumbnail');
 assert.match(projects, /\.project-card\[data-id="formula-electric-attic"\] \.project-image img\s*{[\s\S]*?object-fit:\s*cover;[\s\S]*?transform:\s*scale\(1\.28\)/, 'SN5 should crop the car thumbnail tightly enough to fill its card');
 assert.match(projects, /data-project-id="formula-electric-attic"\][\s\S]*?img\[src\$="\/img1\.png"\][\s\S]*?transform:\s*scale\(1\.32\)/, 'SN5 should zoom the car image in its project gallery');
@@ -212,12 +268,16 @@ assert.match(projects, /id: 'formula-electric'[\s\S]*?url: '#formula-electric-at
 assert.match(projects, /id: 'formula-electric-attic'[\s\S]*?url: '#formula-electric'/, 'Attic should link to the current cooling project');
 assert.match(projects, /data-project-id\^="formula-electric"[\s\S]*?max-width:\s*100%\s*!important/, 'Both Formula pages should keep feature images inside the established reading columns');
 for (const image of [
-  'formula-cooling-hand-calcs.png',
-  'formula-cooling-fan-system-curve.png',
-  'formula-cooling-velocity-baseline.png',
-  'formula-cooling-temperature-baseline.png',
-  'formula-cooling-sub60-top.png',
-  'formula-cooling-sub60.png',
+  'formula-cooling-thermal-handcalcs.jpg',
+  'formula-cooling-rms-handcalcs.jpg',
+  'formula-cooling-pack-energy-handcalcs.jpg',
+  'formula-cooling-inlet-handcalcs.jpg',
+  'formula-cooling-event-energy.jpg',
+  'formula-cooling-airgap-trade.jpg',
+  'formula-cooling-heat-budget.jpg',
+  'formula-cooling-endurance-model.jpg',
+  'formula-cooling-transient-50a.jpg',
+  'formula-cooling-transient-50a-top.jpg',
   'formula-cooling-module-stackup.png',
 ]) {
   assert.match(projects, new RegExp(image.replace('.', '\\.')), `Formula Electric case study should use ${image}`);
@@ -242,7 +302,7 @@ const pulseDisclosures = pulseGeneratorSource.match(/<details class="project-dis
 assert.equal(pulseDisclosures.length, 2, 'Pulse-generator detail should use two relevant secondary-detail disclosures');
 assert.match(pulseGeneratorSource, /<summary>Next Revision Architecture and Packaging<\/summary>/, 'Pulse-generator detail should include the next-revision packaging disclosure');
 assert.match(pulseGeneratorSource, /<summary>Earlier Microsecond Prototype<\/summary>/, 'Pulse-generator detail should include the earlier prototype disclosure');
-assert.doesNotMatch(pulseGeneratorSource, /<summary>(Architecture Validation — V1 Board|Testing \+ Key Design Lesson|Revision 2)<\/summary>/, 'Core V2 technical work should remain visible without opening a disclosure');
+assert.doesNotMatch(pulseGeneratorSource, /<summary>(Architecture Validation - V1 Board|Testing \+ Key Design Lesson|Revision 2)<\/summary>/, 'Core V2 technical work should remain visible without opening a disclosure');
 for (const heading of ['Overview', 'Experiment Target', 'Measurement Problem', 'V2 Architecture', 'Design Loop', 'Testing + Key Design Lesson', 'Next Revision', 'Current Stage']) {
   assert.match(pulseGeneratorSource, new RegExp(`<strong>${heading.replace('+', '\\+')}<\\/strong>`), `Pulse-generator detail should visibly include ${heading}`);
 }
