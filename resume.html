@@ -370,9 +370,9 @@
     /* ---- Section Headings ---- */
     .section-label {
       font-family: var(--font-heading);
-      font-size: 12px;
+      font-size: 16px;
       font-weight: 600;
-      letter-spacing: 0.2em;
+      letter-spacing: 0.01em;
       color: var(--text-muted);
       margin-bottom: 24px;
       position: sticky;
@@ -729,6 +729,35 @@
       .entry-date { font-size: 11px; text-align: left; order: -1; }
 
       .skills-grid { grid-template-columns: 1fr; gap: 24px; }
+
+      /* Once the sidebar menu scrolls away, a compact Contents bar takes over (as on Projects). */
+      .section-label { position: static; }
+      .content section[id] { scroll-margin-top: 64px; }
+      .resume-toc {
+        display: block;
+        position: fixed; top: 0; left: 0; right: 0; z-index: 1003;
+        padding: 0 24px;
+        background: var(--bg);
+        border-bottom: 1px solid var(--pill-border);
+        transform: translateY(-100%);
+        visibility: hidden;
+        transition: transform 0.25s ease, visibility 0s linear 0.25s;
+      }
+      .resume-toc.is-visible { transform: none; visibility: visible; transition: transform 0.25s ease; }
+      .resume-toc-toggle { display: flex; align-items: center; gap: 10px; width: 100%; min-height: 52px; padding: 8px 0; border: 0; background: none; color: var(--text-heading); font: inherit; font-size: 16px; text-align: left; cursor: pointer; }
+      .resume-toc-toggle::after { content: '⌄'; margin-left: auto; }
+      .resume-toc-toggle[aria-expanded="true"]::after { content: '⌃'; }
+      .resume-toc-toggle:focus-visible { outline: 2px solid currentColor; outline-offset: 2px; }
+      .resume-toc-current { color: var(--text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+      .resume-toc ol { display: none; margin: 0; padding: 4px 0 14px; list-style: none; }
+      .resume-toc.is-menu-open ol { display: grid; }
+      .resume-toc a { display: block; padding: 10px 0; color: var(--text-heading); font-size: 17px; line-height: 1.35; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 4px; }
+      .resume-toc a[aria-current="true"] { font-weight: 600; }
+      .resume-toc a:focus-visible { outline: 2px solid currentColor; outline-offset: 2px; }
+    }
+
+    @media (min-width: 769px) {
+      .resume-toc { display: none; }
     }
   </style>
   <link rel="stylesheet" href="/image-lightbox.css">
@@ -741,8 +770,8 @@
   <!-- Top Nav (scrolls with page) -->
   <nav class="nav-bar">
     <a href="/" class="nav-link">Home</a>
-    <a href="/resume" class="nav-link active">Resume</a>
     <a href="/projects" class="nav-link">Projects</a>
+    <a href="/resume" class="nav-link active">Resume</a>
     <a href="/footage" class="nav-link">Footage</a>
     <button class="theme-toggle" id="themeToggle" aria-label="Toggle light mode">
       <svg class="icon-moon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
@@ -779,6 +808,17 @@
         </a>
       </div>
     </header>
+
+    <nav class="resume-toc" id="resumeToc" aria-label="Resume sections">
+      <button type="button" class="resume-toc-toggle" aria-expanded="false" aria-controls="resumeTocLinks"><b>Contents</b><span class="resume-toc-current">About</span></button>
+      <ol id="resumeTocLinks">
+        <li><a href="#about" data-section="about">About</a></li>
+        <li><a href="#technical-experience" data-section="technical-experience">Technical Experience</a></li>
+        <li><a href="#education" data-section="education">Education</a></li>
+        <li><a href="#volunteering" data-section="volunteering">Volunteering</a></li>
+        <li><a href="#skills" data-section="skills">Skills</a></li>
+      </ol>
+    </nav>
 
     <!-- ====== RIGHT CONTENT ====== -->
     <main class="content">
@@ -1070,10 +1110,37 @@
             link.classList.add('active');
           }
         });
+        document.querySelectorAll('.resume-toc a').forEach((link) => {
+          const isCurrent = link.getAttribute('data-section') === current;
+          link.setAttribute('aria-current', isCurrent ? 'true' : 'false');
+          if (isCurrent) document.querySelector('.resume-toc-current').textContent = link.textContent;
+        });
       }
 
       window.addEventListener('scroll', updateActiveNav, { passive: true });
       updateActiveNav();
+    })();
+
+    // ---- Mobile Contents bar ----
+    (function() {
+      const toc = document.getElementById('resumeToc');
+      const sidebarNav = document.getElementById('sidebarNav');
+      if (!toc || !sidebarNav) return;
+      const toggle = toc.querySelector('.resume-toc-toggle');
+      const setOpen = (open) => {
+        toc.classList.toggle('is-menu-open', open);
+        toggle.setAttribute('aria-expanded', String(open));
+      };
+      new IntersectionObserver(([entry]) => {
+        const passed = !entry.isIntersecting && entry.boundingClientRect.top < 0;
+        toc.classList.toggle('is-visible', passed);
+        if (!passed) setOpen(false);
+      }).observe(sidebarNav);
+      toggle.addEventListener('click', () => setOpen(!toc.classList.contains('is-menu-open')));
+      toc.querySelectorAll('a').forEach((link) => link.addEventListener('click', () => setOpen(false)));
+      document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && toc.classList.contains('is-menu-open')) { setOpen(false); toggle.focus(); }
+      });
     })();
 
     // ---- Theme Toggle ----

@@ -287,6 +287,21 @@ async function init(root) {
     replay: root.querySelector('[data-wx-replay]'),
     reset: root.querySelector('[data-wx-reset]'),
   };
+  // Section view: a vertical plane through the actuator axis, facing the default CAD camera.
+  // Slider 0 leaves the housing whole; 100 removes the near half down to the axis.
+  const section = { input: root.querySelector('[data-wx-section]'), plane: new THREE.Plane(new THREE.Vector3(-Math.SQRT1_2, Math.SQRT1_2, 0), 60) };
+  section.label = section.input?.closest('label');
+  function setSection(value) {
+    const cut = clamp01(value / 100);
+    section.plane.constant = 60 * (1 - cut);
+    renderer.clippingPlanes = mode === 'cad' && cut > 0 ? [section.plane] : [];
+    if (cut > 0) model.traverse(o => {
+      if (!o.isMesh || o.material.side === THREE.DoubleSide) return;
+      o.material.side = THREE.DoubleSide; o.material.needsUpdate = true;   // show cut walls from inside
+    });
+    if (section.input && +section.input.value !== value) section.input.value = value;
+    dirty = true;
+  }
 
   function scrollToSection(section) {
     const scroller = root.closest('.detail-content');
@@ -307,6 +322,8 @@ async function init(root) {
     buttons.skip.textContent = mode === 'cad' ? 'Continue reading' : 'Skip animation';
     buttons.replay.hidden = mode === 'animation';
     buttons.reset.hidden = mode !== 'cad';
+    if (section.label) section.label.hidden = mode !== 'cad';
+    setSection(0);
     canvas.setAttribute('aria-hidden', mode === 'cad' ? 'false' : 'true');
     if (mode === 'cad') {
       canvas.setAttribute('aria-label', 'Interactive Wolfrom actuator CAD model');
@@ -334,6 +351,7 @@ async function init(root) {
     controls.minDistance = 140;
     controls.maxDistance = distance * 3;
     controls.update();
+    setSection(0);
     dirty = true;
   }
 
@@ -357,7 +375,9 @@ async function init(root) {
       resetView();
       els.step.textContent = '';
       els.title.textContent = 'Explore the actuator';
-      els.body.textContent = 'Drag to rotate, scroll to zoom, and shift-drag to pan.';
+      els.body.textContent = window.matchMedia('(pointer: coarse)').matches
+        ? 'Drag to rotate and pinch to zoom. Use the section slider to cut through to the gear stack.'
+        : 'Drag to rotate, scroll to zoom, and shift-drag to pan. Use the section slider to cut through to the gear stack.';
       els.spec.textContent = 'Onshape assembly';
       scrollToSection(root);
     } catch {
@@ -382,6 +402,7 @@ async function init(root) {
     scrollToSection(root);
   }, { signal: events.signal });
   buttons.reset.addEventListener('click', resetView, { signal: events.signal });
+  section.input?.addEventListener('input', () => setSection(+section.input.value), { signal: events.signal });
   setMode(reduce ? 'skipped' : 'animation');
 
   function setCaption(i) {

@@ -18,10 +18,12 @@
 }
 
 .wx-canvas-wrap { position: relative; min-width: 0; height: var(--wx-view-h, min(560px, var(--wx-stage-h))); align-self: start; overflow: hidden; }
-.wx-canvas-wrap canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
-.wx-canvas-wrap .wx-poster { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
-.wx:not(.wx-loaded) .wx-canvas-wrap canvas { visibility: hidden; }
-.wx.wx-loaded .wx-poster { display: none; }
+.wx-canvas-wrap canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; transition: opacity .35s ease; }
+/* The poster only appears when the model is slow to load, so fast loads never flash a mismatched still. */
+.wx-canvas-wrap .wx-poster { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; opacity: 0; animation: wx-poster-in .3s ease 1.2s forwards; }
+.wx:not(.wx-loaded) .wx-canvas-wrap canvas { visibility: hidden; opacity: 0; }
+.wx.wx-loaded .wx-poster { visibility: hidden; transition: visibility 0s .35s; }
+@keyframes wx-poster-in { to { opacity: 1; } }
 html[data-theme="light"] .wx-poster { mix-blend-mode: multiply; }
 .wx-copy { min-width: 0; align-self: start; transform: translateY(var(--wx-copy-y, 0px)); }
 .wx.wx-compact { height: var(--wx-stage-h); }
@@ -35,6 +37,10 @@ html[data-theme="light"] .wx-poster { mix-blend-mode: multiply; }
 .wx-controls button:disabled { color: var(--text-muted); cursor: wait; }
 .wx-controls button:focus-visible { outline: 2px solid currentColor; outline-offset: 5px; }
 .wx-controls [hidden] { display: none; }
+.wx-section-control { display: flex; flex-basis: 100%; align-items: center; gap: 14px; font-size: 17px; color: var(--text); }
+.wx-section-control input { flex: 1; max-width: 280px; min-height: 32px; accent-color: var(--text); cursor: pointer; }
+.wx-section-control input:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
+.wx-sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 .wx-introduction strong { color: var(--text); font-size: 1.08em; }
 .wx-introduction { margin-bottom: 20px; }
 .wx-introduction p { margin: 14px 0 28px; line-height: 1.65; }
@@ -63,13 +69,16 @@ html[data-theme="light"] .wx-poster { mix-blend-mode: multiply; }
 }
 
 @media (max-width: 768px) {
-  .wx { --wx-stage-h: calc(100svh - 148px); --wx-top: 116px; margin-bottom: 32px !important; }
+  /* Fill the visible screen below the Contents bar; dvh tracks the collapsing browser toolbar. */
+  .wx { --wx-stage-h: calc(100svh - 128px); --wx-top: 116px; margin-bottom: 32px !important; }
+  @supports (height: 100dvh) { .wx { --wx-stage-h: calc(100dvh - 128px); } }
   .wx-stage { grid-template-columns: 1fr; grid-template-rows: minmax(180px, 1fr) auto; gap: 12px; }
   .wx-canvas-wrap { height: 100%; }
   .wx-copy, .wx.wx-compact .wx-copy { align-self: start; transform: none; }
-  .wx-introduction p { display: none; }
-  .wx-introduction strong { display: block; margin-bottom: 10px; }
+  /* The Contents bar already names this section, so the model gets that height instead. */
+  .wx-introduction { display: none; }
   .wx-caption { min-height: 210px; }
+  .wx[data-wx-mode="cad"] .wx-caption { min-height: 0; }
   .wx-controls { margin-top: 12px; gap: 10px 18px; }
   .wx-controls button { font-size: 16px; }
   .wx-title { font-size: 21px; }
@@ -82,11 +91,13 @@ html[data-theme="light"] .wx-poster { mix-blend-mode: multiply; }
 
 @media (prefers-reduced-motion: reduce) {
   .wx-caption > * { transition: none; }
+  .wx-canvas-wrap canvas { transition: none; }
+  .wx-canvas-wrap .wx-poster { animation-duration: 0s; }
+  .wx.wx-loaded .wx-poster { transition: none; }
 }
 
 @media (max-width: 768px) and (max-height: 740px) {
   .wx-stage { grid-template-rows: minmax(140px, 1fr) auto; }
-  .wx-introduction { display: none; }
   .wx-caption { min-height: 0; }
   .wx-body { line-height: 1.45; }
 }
