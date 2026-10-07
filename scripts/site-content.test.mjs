@@ -161,7 +161,7 @@ assert.match(resume, /\.content\s*{[\s\S]*width:\s*66%/, 'Resume content should 
 for (const page of ['resume.html', 'projects.html', 'footage.html']) {
   const html = readPage(page);
   assert.match(html, /<html lang="en" data-theme="light">/, `${page} should default to light theme`);
-  assert.match(html, /if \(saved === 'dark'\) document\.documentElement\.removeAttribute\('data-theme'\);/, `${page} should honor an explicit saved dark theme`);
+  assert.doesNotMatch(html, /themeToggle|theme-toggle|localStorage\.setItem\('theme'/, `${page} should stay in the light theme with no dark-mode toggle`);
 }
 
 assert.match(projects, /main\s*{[\s\S]*max-width:\s*1520px/, 'Projects index should use the wider desktop container');
@@ -226,6 +226,8 @@ assert.match(projects, /gallery-media-prototype::after[\s\S]*?content: 'V1 proto
 assert.match(wolfromSource[1], /chosen loss-budget requirement, not an identity/, 'The backdrive target derivation must not imply that forward efficiency uniquely determines backdrive efficiency');
 assert.match(wolfromSource[1], /75\.7% backdrive efficiency at 80% forward efficiency/, 'The backdrive goal should be screened against the existing MATLAB model');
 assert.ok(existsSync(join(root, 'public', 'assets', 'actuator.glb')), 'The actuator GLB should be available to the viewer');
+
+assert.match(wolfromSource[1], /id="wolfrom-design-decisions"[\s\S]*?lead-in chamfers[\s\S]*?first-layer chamfers[\s\S]*?<\/section>/, 'Wolfrom design decisions should cover the DFMA choices in the printed parts');
 
 const formulaCooling = projects.match(/const formulaElectricCoolingDescription = `([\s\S]*?)`;\s*const formulaElectricAtticDescription/);
 assert.ok(formulaCooling, 'Projects should define the Formula Electric cooling case study');

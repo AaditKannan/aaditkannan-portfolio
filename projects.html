@@ -102,38 +102,10 @@
     body::-webkit-scrollbar { display: none; }
 
     /* Theme Toggle */
-    .theme-toggle {
-      position: absolute;
-      right: 40px;
-      top: 50%;
-      transform: translateY(-50%);
-      z-index: 1002;
-      background: none;
-      border: none;
-      cursor: pointer;
-      color: var(--text-muted);
-      padding: 4px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: color 0.25s ease;
-    }
 
-    .theme-toggle:hover { color: var(--text); }
 
-    .theme-toggle svg {
-      width: 18px;
-      height: 18px;
-      fill: none;
-      stroke: currentColor;
-      stroke-width: 1.5;
-    }
 
-    .theme-toggle .icon-sun { display: none; }
-    .theme-toggle .icon-moon { display: block; }
 
-    [data-theme="light"] .theme-toggle .icon-sun { display: block; }
-    [data-theme="light"] .theme-toggle .icon-moon { display: none; }
 
     /* Cursor Glow */
     .cursor-glow {
@@ -493,15 +465,6 @@
 
     .project-card[data-id="wolfrom-actuator"]:hover .project-image img {
       transform: scale(1.03);
-    }
-
-    /* Phone cards are wider than the render, so fill the frame and bring the stack forward. */
-    @media (max-width: 600px) {
-      .project-card[data-id="wolfrom-actuator"] .project-image img,
-      .project-card[data-id="wolfrom-actuator"]:hover .project-image img {
-        object-fit: cover;
-        transform: scale(1.1);
-      }
     }
 
     /* Formula Electric - zoom in to remove black bars on CAD render */
@@ -1036,9 +999,13 @@
       display: none !important;
     }
 
+    /* Once stuck, Contents sits at the vertical centre of the reading area on every project. */
     .project-toc {
       position: sticky;
-      top: 112px;
+      top: max(104px, calc(50svh - var(--toc-half-height, 240px) + 36px));
+      max-height: calc(100svh - 160px);
+      overflow-y: auto;
+      scrollbar-width: thin;
       align-self: start;
       padding: 14px 0;
     }
@@ -2571,10 +2538,12 @@
     @media (max-width: 768px) {
       /* Standardized mobile nav */
       .nav-bar {
+        /* Same link spacing and placement as the other pages; stays fixed for the Contents bar. */
         position: fixed;
         padding: 16px 16px;
-        gap: 16px;
+        gap: 24px;
         justify-content: center;
+        align-items: flex-start;
         height: 70px;
         background: var(--nav-bg);
         backdrop-filter: blur(12px);
@@ -2590,24 +2559,6 @@
       .project-toc,
       .detail-content[data-project-id="wolfrom-actuator"] .project-toc { top: 70px; }
 
-      .theme-toggle {
-        position: absolute;
-        bottom: auto;
-        right: 8px;
-        top: 50%;
-        transform: translateY(-50%);
-        z-index: 1002;
-        opacity: 1;
-        transition: opacity 0.3s ease;
-        background: rgba(255, 255, 255, 0.1);
-        border-radius: 50%;
-        width: 28px;
-        height: 28px;
-      }
-      [data-theme="light"] .theme-toggle {
-        background: rgba(0, 0, 0, 0.08);
-      }
-      .theme-toggle svg { width: 14px; height: 14px; }
 
       main { padding: 120px 24px 80px; }
       .detail-inner { padding: 120px 24px 80px; }
@@ -2874,10 +2825,6 @@
     <a href="/projects" class="nav-link active">Projects</a>
     <a href="/resume" class="nav-link">Resume</a>
     <a href="/footage" class="nav-link">Footage</a>
-    <button class="theme-toggle" id="themeToggle" aria-label="Toggle light mode">
-      <svg class="icon-moon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-      <svg class="icon-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
-    </button>
   </nav>
 
   <main>
@@ -3352,6 +3299,7 @@ const wolfromDescription = `
     <p><b>Different modules on the two ring stages.</b> Module 1.0 on the 72/27 fixed-ring mesh and module 0.9 on the 75/25 output-ring mesh both give a 22.5 mm centre distance. The compound planet can therefore engage both rings using standard, unshifted teeth while producing the 50.45:1 ratio. Mesh efficiency and profile-shift optimization remain separate analysis tasks. The geometry and ratio derivation are in <a href="#wolfrom-first-principles" data-project-section="wolfrom-first-principles">First principles</a>.</p>
     <p><b>Revising the planet support before peak-load testing.</b> Two 604ZZ bearings fit the package, but the calculated worst reaction is 392 N at 50 Nm output against an assumed 350 N static rating. On that assumption, the support falls short at peak. A fixed-pin and needle-roller arrangement is under evaluation; no replacement has been selected, and the peak-torque target remains unvalidated. See the reactions and rating caveats in <a href="#wolfrom-hand-calculations" data-project-section="wolfrom-hand-calculations">Hand calculations</a>.</p>
     <p><b>Connecting the carrier plates structurally.</b> The floating carrier carries no net external torque, but its plates still react 20 Nm against each other at 50 Nm output. The posts must transfer that torque as well as set the stack height, so their joints and stiffness need a carrier wind-up check. The existing housing screening does not establish carrier stiffness. See the mesh forces in <a href="#wolfrom-load-cases" data-project-section="wolfrom-load-cases">Load cases</a> and the planned checks in <a href="#wolfrom-simulation" data-project-section="wolfrom-simulation">Simulation</a>.</p>
+    <p><b>Designing the printed parts for assembly.</b> Bearing bores, shaft ends, and press-fits carry lead-in chamfers so parts self-align as the stack goes together. Bottom edges have first-layer chamfers that absorb elephant's foot and keep mating faces true. Each part is oriented so its gear teeth, bores, and load paths print in the strongest layer direction with the least support. Fasteners use common screw sizes with clear tool access, and the stack assembles from one direction. The printed checks are in <a href="#wolfrom-build" data-project-section="wolfrom-build">Build</a>.</p>
   </section>
 
   <section class="latex-section" id="wolfrom-build">
@@ -5115,35 +5063,6 @@ const formulaElectricAtticDescription = `
       animate();
     })();
 
-    // Theme toggle
-    (function() {
-      const toggle = document.getElementById('themeToggle');
-      const saved = localStorage.getItem('theme');
-      if (saved === 'dark') document.documentElement.removeAttribute('data-theme');
-      toggle.addEventListener('click', () => {
-        document.documentElement.classList.add('theme-transition');
-        const isLight = document.documentElement.getAttribute('data-theme') === 'light';
-        if (isLight) {
-          document.documentElement.removeAttribute('data-theme');
-          localStorage.setItem('theme', 'dark');
-        } else {
-          document.documentElement.setAttribute('data-theme', 'light');
-          localStorage.setItem('theme', 'light');
-        }
-        setTimeout(() => document.documentElement.classList.remove('theme-transition'), 350);
-      });
-
-      // Mobile: fade toggle out on first scroll only
-      if (window.innerWidth <= 768) {
-        let faded = false;
-        window.addEventListener('scroll', () => {
-          if (!faded && window.scrollY > 50) {
-            toggle.style.opacity = '0';
-            faded = true;
-          }
-        }, { passive: true });
-      }
-    })();
   </script>
 </body>
 </html>
