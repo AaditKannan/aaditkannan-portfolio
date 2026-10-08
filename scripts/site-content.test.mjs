@@ -147,7 +147,7 @@ for (const skill of ['MATLAB', 'ANSYS Icepak CFD', 'Heat Transfer', 'SolidWorks/
 const undergraduateResearcher = technicalExperience[1].match(/Undergraduate Researcher[\s\S]*?<div class="entry-date">Jan 2026/);
 assert.ok(undergraduateResearcher, 'Technical Experience should include the Undergraduate Researcher entry');
 assert.doesNotMatch(undergraduateResearcher[0], /Altium/, 'Undergraduate Researcher skill pills should not include Altium');
-assert.match(technicalExperience[1], /Mechanical Engineering Intern · Posha/, 'Posha should be listed inside Technical Experience');
+assert.match(technicalExperience[1], />Intern · Posha/, 'Posha should be listed inside Technical Experience as Intern');
 assert.doesNotMatch(technicalExperience[1], /Leitmotif/, 'Leitmotif should stay on Projects and not appear in Technical Experience');
 assert.equal(existsSync(join(root, 'connect.html')), false, 'Connect page should be removed');
 assert.doesNotMatch(readPage('vite.config.js'), /connect\.html/, 'Vite build entries should not include connect.html');
