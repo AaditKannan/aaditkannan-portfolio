@@ -283,7 +283,6 @@ assert.match(projects, /id: 'formula-electric-attic'[\s\S]*?url: '#formula-elect
 assert.match(projects, /data-project-id\^="formula-electric"[\s\S]*?max-width:\s*100%\s*!important/, 'Both Formula pages should keep feature images inside the established reading columns');
 for (const image of [
   'formula-cooling-thermal-handcalcs.jpg',
-  'formula-cooling-rms-handcalcs.jpg',
   'formula-cooling-pack-energy-handcalcs.jpg',
   'formula-cooling-inlet-handcalcs.jpg',
   'formula-cooling-event-energy.jpg',
@@ -367,9 +366,10 @@ assert.deepEqual(
 const pulseDescriptionRule = projects.match(/\.detail-content\[data-project-id="ns-us-pulse-generator"\] \.detail-description\s*{([^}]*)}/);
 assert.ok(pulseDescriptionRule, 'Projects should define a pulse-generator desktop description rule');
 assert.doesNotMatch(pulseDescriptionRule[1], /columns:\s*2/, 'Pulse-generator detail should use paired reading rows, not newspaper columns');
-for (const id of ['pcb-overview', 'pcb-target', 'pcb-measurement', 'pcb-architecture', 'pcb-design-loop', 'pcb-build', 'pcb-testing', 'pcb-next', 'pcb-current']) {
+for (const id of ['pcb-overview', 'pcb-target', 'pcb-measurement', 'pcb-architecture', 'pcb-design-loop', 'pcb-build', 'pcb-bringup', 'pcb-testing', 'pcb-next', 'pcb-current']) {
   assert.match(pulseGeneratorSource, new RegExp(`<section class="latex-section" id="${id}">`), `Pulse-generator detail should have a navigable ${id} section`);
 }
+assert.match(projects, /\.board-layer-viewer img\) \{/, 'The board viewer layers sit on a dark stage and must stay out of the cream blend');
 assert.match(projects, /function layoutPulseGeneratorSections[\s\S]*?'pcb-target': 'table'[\s\S]*?'pcb-next': 'table'/, 'Pulse-generator target and revision tables should sit beside their prose');
 assert.ok(pulseGeneratorSource.includes('f_c=') && pulseGeneratorSource.includes('RC='), 'Pulse-generator target should explain the DUT RC corner');
 assert.match(pulseGeneratorSource, /<td>Active control of both edges<\/td>/, 'Pulse-generator next revision should compare V2 with the planned architecture');

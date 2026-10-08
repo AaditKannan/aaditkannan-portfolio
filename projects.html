@@ -1590,6 +1590,12 @@
     .reading-supplement > figure { margin: 0; min-width: 0; }
     .reading-supplement > details { grid-column: 1 / -1; }
     .reading-supplement > .reading-after { grid-column: 1 / -1; max-width: 38em; margin: 0; }
+    .reading-supplement > table.reading-after { max-width: none; }
+    .reading-row.reading-stacked > .reading-supplement { margin-top: 8px; }
+    @media (min-width: 901px) {
+      .reading-row.reading-columns > .reading-prose { max-width: none; columns: 2; column-gap: 40px; }
+    }
+    .reading-row.reading-columns :is(.katex-display, figure, table) { break-inside: avoid; }
     #wolfrom-test .reading-supplement p { max-width: 70ch; }
     .detail-content[data-project-id="wolfrom-actuator"] .reading-supplement .project-inline-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px 40px; }
     @media (max-width: 900px) {
@@ -1756,6 +1762,10 @@
     .flow-path li b { display: block; color: var(--text); }
     .flow-path li::before { content: ''; position: absolute; left: 4px; top: 0.5em; width: 9px; height: 9px; border: 1.5px solid var(--text); border-radius: 50%; background: var(--bg); }
     .flow-path li:not(:last-child)::after { content: ''; position: absolute; left: 9px; top: calc(0.5em + 13px); bottom: 4px; border-left: 1px solid var(--border-light); }
+    @media (min-width: 901px) {
+      #pcb-bringup .flow-path ol { columns: 2; column-gap: 28px; }
+      #pcb-bringup .flow-path li { break-inside: avoid; }
+    }
     .flow-path figcaption { margin-top: 4px; padding-left: 30px; color: var(--text-muted); font-size: 0.82em; font-style: italic; line-height: 1.5; }
 
     /* High-level summary: a label column and short answers, quick to skim. */
@@ -1786,6 +1796,10 @@
     }
 
     .detail-content[data-project-id="formula-electric"] .project-disclosure :is(.reading-evidence, .reading-prose) .project-feature-figure img {
+      max-height: 470px;
+    }
+
+    .detail-content[data-project-id="formula-electric"] #sn6-first-principles > .reading-row > .reading-evidence .project-feature-figure img {
       max-height: 470px;
     }
 
@@ -2348,7 +2362,7 @@
     /* White-background technical exports (CAD, scans, plots, solver screenshots) take on the
        cream page colour. Multiply keeps every dark line and colour; photographs are left alone. */
     [data-theme="light"] .detail-content:is([data-project-id="wolfrom-actuator"], [data-project-id="formula-electric"]) .detail-description img:not(.wolfrom-build-board img, #galleryMediaContainer img, .gallery-thumb img, .wx-poster),
-    [data-theme="light"] .detail-content[data-project-id="ns-us-pulse-generator"] .detail-description img:is([src$=".png"], [src$=".svg"]):not(#galleryMediaContainer img, .gallery-thumb img) {
+    [data-theme="light"] .detail-content[data-project-id="ns-us-pulse-generator"] .detail-description img:is([src$=".png"], [src$=".svg"]):not(#galleryMediaContainer img, .gallery-thumb img, .board-layer-viewer img) {
       background: transparent;
       mix-blend-mode: multiply;
     }
@@ -3080,6 +3094,7 @@ function layoutFormulaCoolingSections(description) {
   layoutCaseStudySections(description, {
     'sn6-overview': 'figure',
     'sn6-requirements': 'table',
+    'sn6-first-principles': 'figure',
     'sn6-airflow': 'figure, table',
     'sn6-transient': 'figure',
     'sn6-analytical': 'figure',
@@ -3093,6 +3108,7 @@ function layoutPulseGeneratorSections(description) {
     'pcb-architecture': 'figure, .project-inline-grid',
     'pcb-design-loop': '.board-layer-viewer, figure',
     'pcb-build': 'figure',
+    'pcb-bringup': 'figure',
     'pcb-testing': 'figure',
     'pcb-next': 'table',
   });
@@ -3106,6 +3122,13 @@ function balanceReadingRows(root) {
     const prose = row.querySelector(':scope > .reading-prose');
     const evidence = row.querySelector(':scope > .reading-evidence');
     const supplement = row.querySelector(':scope > .reading-supplement');
+    if (row.classList.contains('reading-stacked')) return;
+    if (prose && !evidence) {
+      // A long run of text with no figure reads as two columns of a paper page.
+      row.classList.remove('reading-columns');
+      if (prose.getBoundingClientRect().height > 300 && !prose.querySelector('table, figure')) row.classList.add('reading-columns');
+      return;
+    }
     if (!prose || !evidence) return;
     // Figures keep their reading order, so rerunning after fonts load or a resize is stable.
     let figures = row.querySelectorAll(':scope > * > figure[data-balance-order]');
@@ -3128,6 +3151,18 @@ function balanceReadingRows(root) {
       heights.forEach((h, i) => { if (mask & (1 << i)) e += h; else p += h; });
       const cost = Math.max(p, e) + Math.abs(p - e) * 0.01;
       if (!best || cost < best.cost) best = { cost, mask };
+    }
+    // Short text beside several figures: set the text in two columns across the row and the
+    // figures side by side beneath it, when that leaves less empty space.
+    const textOnly = !prose.querySelector('table, figure, .board-layer-viewer');
+    let stacked = proseBase / 2;
+    for (let i = 0; i < heights.length; i += 2) stacked += Math.max(heights[i], heights[i + 1] || 0);
+    if (textOnly && !evidenceBase && figures.length >= 2 && stacked + 40 < best.cost) {
+      const below = supplement || row.appendChild(Object.assign(document.createElement('div'), { className: 'reading-supplement' }));
+      figures.forEach(figure => below.append(figure));
+      evidence.remove();
+      row.classList.add('prose-only', 'reading-columns', 'reading-stacked');
+      return;
     }
     figures.forEach((figure, i) => (best.mask & (1 << i) ? evidence : prose).append(figure));
     if (supplement && !supplement.children.length) supplement.remove();
@@ -3552,6 +3587,10 @@ const formulaElectricCoolingDescription = `
     = I_{\\mathrm{cell}}(t)^2 R_{\\mathrm{eff}} - \\dot{Q}_{\\mathrm{conv}}$$
     With three cells in parallel, $I_{\\mathrm{cell}}=I_{\\mathrm{pack}}/3$. Using 85 J/K per cell and $R_{\\mathrm{eff}}\\approx8.5\\,\\mathrm{m}\\Omega$ gives <b>0.61 K predicted rise against 0.6 K measured</b> on available SN5 data. This checks heat generation within sensor resolution; SN6 hardware validation remains ahead.<br><br>
     The passive time constant is roughly 3.1 hours, so thermal mass buffers the short event. The sealed-pack estimate reaches the 60 °C endurance limit near <b>39 A RMS</b>; at 60 A, it reaches the limit in 10.5 minutes.<br><br>
+    <figure class="project-feature-figure">
+      <img src="/assets/formula-cooling-thermal-handcalcs.jpg" alt="Original hand calculations for cell heat, branch thermal capacitance, SN5 temperature-rise correlation, and the no-fan current limit" width="1322" height="1734" loading="lazy" decoding="async">
+      <figcaption>Original heat-balance notes, including the SN5 correlation and the time-to-limit calculation.</figcaption>
+    </figure>
     <details class="project-disclosure">
       <summary>Heat generation, thermal mass, and the no-fan limit</summary>
       <div class="project-disclosure-content">
@@ -3566,10 +3605,6 @@ const formulaElectricCoolingDescription = `
         Without a fan, heat leaves through the cell can, across the enclosed air to the wall by natural convection and radiation in parallel, through the wall, and out to ambient. Per branch, in K/W:
         $$R_{\\mathrm{tot}}\\approx\\underbrace{0.01}_{\\text{core to can}}+\\underbrace{\\left(\\tfrac{1}{2.16}+\\tfrac{1}{2.03}\\right)^{-1}}_{\\text{convection}\\,\\parallel\\,\\text{radiation}}+\\underbrace{0.05}_{\\text{wall}}+\\underbrace{0.43}_{\\text{wall to ambient}}\\approx1.54$$
         That is a conductance of about 0.65 W/K and $\\tau=C_{\\mathrm{branch}}/(UA)\\approx3.1\\,\\mathrm{h}$, so passive loss removes only about 3% of the 60 A heat over 25 minutes. Treating the sealed pack as adiabatic is fair. The bound is sensitive to starting temperature and effective resistance.<br><br>
-        <figure class="project-feature-figure">
-          <img src="/assets/formula-cooling-thermal-handcalcs.jpg" alt="Original hand calculations for cell heat, branch thermal capacitance, SN5 temperature-rise correlation, and the no-fan current limit" width="1322" height="1734" loading="lazy" decoding="async">
-          <figcaption>Original heat-balance notes, including the SN5 correlation and the time-to-limit calculation.</figcaption>
-        </figure>
       </div>
     </details>
     <details class="project-disclosure">
@@ -3583,8 +3618,8 @@ const formulaElectricCoolingDescription = `
         Average current understates heating, so each case starts from event energy. The 2025 Formula SAE Electric efficiency results give each team's pack energy and lap times:
         $$\\bar{P}=\\frac{E}{n_{\\mathrm{laps}}\\,t_{\\mathrm{lap}}},\\qquad \\bar{I}=\\frac{\\bar{P}}{V_{\\mathrm{pack}}}$$
         San José State used 7.247 kWh over 22 laps of 62.27 s (0.381 h): about 19 kW, or 38 A average at 504 V. Teams just below the top five averaged about 4.3 kWh and 9.5 kW (19 A); the top five averaged about 5.4 kWh and 14 kW (27 A).<br><br>
-        A first form-factor bound came from the 80 kW peak-power cap, $F_I\\le\\sqrt{P_{\\mathrm{peak}}/\\bar{P}}$. It gave 2.4 to 2.9 and RMS currents of 56 to 66 A, implausibly high for an endurance run. The measured SN5 form factor of 1.59 replaced it:
-        <table class="project-data-table">
+        A first form-factor bound came from the 80 kW peak-power cap, $F_I\\le\\sqrt{P_{\\mathrm{peak}}/\\bar{P}}$. It gave 2.4 to 2.9 and RMS currents of 56 to 66 A, implausibly high for an endurance run. The measured SN5 form factor of 1.59 replaced it, giving the four load cases in the table below.<br><br>
+        <table class="project-data-table reading-after">
           <thead><tr><th>Case</th><th>Pack RMS</th><th>Per branch</th><th>Basis</th><th>Used for</th></tr></thead>
           <tbody>
             <tr><td>SN5 anchor</td><td>22 A</td><td>38 W</td><td>Measured SN5 waveform, as logged</td><td>Hardware correlation</td></tr>
@@ -3597,10 +3632,6 @@ const formulaElectricCoolingDescription = `
         <figure class="project-feature-figure">
           <img src="/assets/formula-cooling-pack-energy-handcalcs.jpg" alt="Original working notes deriving nominal pack energy, average endurance current, and an earlier RMS estimate" width="1244" height="1066" loading="lazy" decoding="async">
           <figcaption>Earlier pack-energy calculation and cross-team current estimate.</figcaption>
-        </figure>
-        <figure class="project-feature-figure">
-          <img src="/assets/formula-cooling-rms-handcalcs.jpg" alt="Handwritten comparison of Formula SAE event energy, average current, and early form-factor estimates" width="795" height="998" loading="lazy" decoding="async">
-          <figcaption>Working through event energy and the sensitivity of RMS current to drive-cycle assumptions.</figcaption>
         </figure>
         <figure class="project-feature-figure">
           <img src="/assets/formula-cooling-event-energy.jpg" alt="2025 Formula SAE Electric efficiency results used as the event-energy reference" width="1193" height="841" loading="lazy" decoding="async">
@@ -4015,7 +4046,6 @@ const formulaElectricAtticDescription = `
           <section class="latex-section" id="pcb-architecture">
           <strong>V2 Architecture</strong><br><br>
           V2 includes separate fast and microsecond signal paths, RP2040-based digital triggering, relay-selected routing, local driver power, a GaN pulldown stage, and dedicated connections for Keithley HI/LO, DUT, external trigger, and oscilloscope synchronization. The Keithley establishes device bias; the fast stage creates the pulse transition; and the scope observes the response at the experiment interfaces.<br><br>
-          The board was deliberately flexible enough to bring up each subsystem independently. Power, controller logic, trigger conditioning, gate drive, switching, bias routing, and sync could be checked in staged subsystem passes before full-chain debugging.<br><br>
           <figure class="flow-path">
             <ol>
               <li><b>Control</b>RP2040 digital triggering, an external trigger input, and relay selection between the fast and microsecond paths.</li>
@@ -4086,6 +4116,25 @@ const formulaElectricAtticDescription = `
           <figure class="project-feature-figure">
             <picture><source srcset="/assets/ns-pulse-board-angle.webp" type="image/webp"><img src="/assets/ns-pulse-board-angle.png" alt="Angled 3D render of the pulse-generator PCB and enclosure" width="1656" height="984" loading="lazy" decoding="async"></picture>
             <figcaption>Mechanical and connector-access review before assembly.</figcaption>
+          </figure>
+          </section>
+
+          <section class="latex-section" id="pcb-bringup">
+          <strong>Bring-up</strong><br><br>
+          The board was deliberately flexible enough to bring up each subsystem independently. Power, controller logic, trigger conditioning, gate drive, switching, bias routing, and sync could be checked in staged subsystem passes before full-chain debugging.<br><br>
+          Staged oscilloscope bring-up compared the LTspice switching and timing assumptions against the assembled hardware, one subsystem at a time, so a fault could be traced to the stage that introduced it.<br><br>
+          <figure class="flow-path">
+            <ol>
+              <li><b>Power</b>Board supplies and local driver power.</li>
+              <li><b>Controller</b>RP2040 logic and trigger commands.</li>
+              <li><b>Trigger conditioning</b>The external trigger input.</li>
+              <li><b>Gate drive</b>The high-speed gate driver.</li>
+              <li><b>Switching</b>The GaN pulldown stage.</li>
+              <li><b>Bias routing</b>Keithley HI/LO and the relay-selected paths.</li>
+              <li><b>Sync</b>The dedicated scope-sync output.</li>
+              <li><b>Full chain</b>Complete pulses into known dummy loads, captured at both DUT terminals.</li>
+            </ol>
+            <figcaption>Staged subsystem passes before full-chain debugging.</figcaption>
           </figure>
           </section>
 
