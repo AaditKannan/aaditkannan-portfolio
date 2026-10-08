@@ -1240,9 +1240,41 @@
     }
 
     .detail-content[data-project-id="ns-us-pulse-generator"] .detail-description {
-      columns: 2;
-      column-gap: 48px;
+      display: block;
+      columns: auto;
       max-width: none;
+    }
+
+    .detail-content[data-project-id="ns-us-pulse-generator"] .detail-description > .latex-section {
+      min-width: 0;
+      margin: 0 0 48px;
+    }
+
+    .detail-content[data-project-id="ns-us-pulse-generator"] .reading-evidence > :is(.project-data-table, .board-layer-viewer) {
+      margin-top: 0;
+    }
+
+    .detail-content[data-project-id="ns-us-pulse-generator"] :is(.reading-evidence, .reading-prose) > * + .project-feature-figure,
+    .detail-content[data-project-id="ns-us-pulse-generator"] :is(.reading-evidence, .reading-prose) > * + figure {
+      margin-top: 24px;
+    }
+
+    .detail-content[data-project-id="ns-us-pulse-generator"] :is(.reading-evidence, .reading-supplement, .reading-prose) figure {
+      margin-left: 0;
+      margin-right: 0;
+    }
+
+    /* Row images size from the column, so lazy images hold their space before they load. */
+    .detail-content[data-project-id="ns-us-pulse-generator"] :is(.reading-evidence, .reading-supplement, .reading-prose) figure img {
+      width: 100% !important;
+      height: auto !important;
+      max-height: 520px;
+      object-fit: contain;
+      background: transparent;
+    }
+
+    .detail-content[data-project-id="ns-us-pulse-generator"] #pcb-overview .reading-evidence figure img {
+      max-height: 500px;
     }
 
     .detail-content[data-project-id="ns-us-pulse-generator"] .project-inline-grid {
@@ -1449,6 +1481,14 @@
       object-fit: contain;
     }
 
+    .detail-content[data-project-id="wolfrom-actuator"] #wolfrom-overview .project-feature-figure {
+      margin: 20px 0 0;
+    }
+
+    .detail-content[data-project-id="wolfrom-actuator"] #wolfrom-overview .project-feature-figure img {
+      max-height: 210px;
+    }
+
     .detail-content[data-project-id="wolfrom-actuator"] .project-hand-calcs img {
       width: min(100%, 460px);
       max-height: 460px;
@@ -1486,7 +1526,7 @@
       -webkit-column-break-inside: auto;
     }
 
-    .detail-content:is([data-project-id="wolfrom-actuator"], [data-project-id="formula-electric"]) .detail-description > .latex-section + .latex-section::before {
+    .detail-content:is([data-project-id="wolfrom-actuator"], [data-project-id="formula-electric"], [data-project-id="ns-us-pulse-generator"]) .detail-description > .latex-section + .latex-section::before {
       content: '';
       display: block;
       width: 64px;
@@ -1549,6 +1589,7 @@
     .reading-supplement { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px 40px; }
     .reading-supplement > figure { margin: 0; min-width: 0; }
     .reading-supplement > details { grid-column: 1 / -1; }
+    .reading-supplement > .reading-after { grid-column: 1 / -1; max-width: 38em; margin: 0; }
     #wolfrom-test .reading-supplement p { max-width: 70ch; }
     .detail-content[data-project-id="wolfrom-actuator"] .reading-supplement .project-inline-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px 40px; }
     @media (max-width: 900px) {
@@ -1709,13 +1750,27 @@
     }
 
     /* Air path as a quiet vertical sequence: a hairline joins each stage to the next. */
-    .cooling-flow-path { margin: 0; }
-    .cooling-flow-path ol { list-style: none; margin: 0; padding: 0; }
-    .cooling-flow-path li { position: relative; padding: 0 0 18px 30px; line-height: 1.55; color: var(--text-dim); }
-    .cooling-flow-path li b { display: block; color: var(--text); }
-    .cooling-flow-path li::before { content: ''; position: absolute; left: 4px; top: 0.5em; width: 9px; height: 9px; border: 1.5px solid var(--text); border-radius: 50%; background: var(--bg); }
-    .cooling-flow-path li:not(:last-child)::after { content: ''; position: absolute; left: 9px; top: calc(0.5em + 13px); bottom: 4px; border-left: 1px solid var(--border-light); }
-    .cooling-flow-path figcaption { margin-top: 4px; padding-left: 30px; color: var(--text-muted); font-size: 0.82em; font-style: italic; line-height: 1.5; }
+    .flow-path { margin: 0; }
+    .flow-path ol { list-style: none; margin: 0; padding: 0; }
+    .flow-path li { position: relative; padding: 0 0 18px 30px; line-height: 1.55; color: var(--text-dim); }
+    .flow-path li b { display: block; color: var(--text); }
+    .flow-path li::before { content: ''; position: absolute; left: 4px; top: 0.5em; width: 9px; height: 9px; border: 1.5px solid var(--text); border-radius: 50%; background: var(--bg); }
+    .flow-path li:not(:last-child)::after { content: ''; position: absolute; left: 9px; top: calc(0.5em + 13px); bottom: 4px; border-left: 1px solid var(--border-light); }
+    .flow-path figcaption { margin-top: 4px; padding-left: 30px; color: var(--text-muted); font-size: 0.82em; font-style: italic; line-height: 1.5; }
+
+    /* High-level summary: a label column and short answers, quick to skim. */
+    .project-summary {
+      display: grid;
+      grid-template-columns: 6.5em minmax(0, 1fr);
+      gap: 12px 20px;
+      margin: 0 0 18px;
+    }
+    .project-summary dt { font-weight: 600; color: var(--text); }
+    .project-summary dd { margin: 0; }
+    @media (max-width: 600px) {
+      .project-summary { grid-template-columns: minmax(0, 1fr); gap: 2px; }
+      .project-summary dd { margin-bottom: 12px; }
+    }
 
     /* Reading rows: each figure fills its column beside or below the prose it supports. */
     .detail-content[data-project-id="formula-electric"] :is(.reading-evidence, .reading-supplement) .project-feature-figure {
@@ -1728,6 +1783,10 @@
       max-height: 560px;
       margin: 0 !important;
       border-radius: 0;
+    }
+
+    .detail-content[data-project-id="formula-electric"] .project-disclosure :is(.reading-evidence, .reading-prose) .project-feature-figure img {
+      max-height: 470px;
     }
 
     .detail-content[data-project-id="formula-electric"] #sn6-overview .reading-evidence .project-feature-figure img {
@@ -2246,6 +2305,10 @@
     .detail-content[data-project-id="wolfrom-actuator"] .gallery-main { border: 0; }
 
     /* SN6 gallery: Icepak exports sit on the page colour, with no black letterbox. */
+    .detail-content[data-project-id="formula-electric"] .gallery-main {
+      aspect-ratio: 1416 / 807;
+    }
+
     .detail-content[data-project-id="formula-electric"] :is(.gallery-main, #galleryMediaContainer, #galleryMediaContainer picture, #galleryMediaContainer img, .gallery-thumb) {
       background: var(--bg);
       border: 0;
@@ -2268,7 +2331,7 @@
       border-bottom-color: var(--text-muted);
     }
 
-    .detail-content:is([data-project-id="wolfrom-actuator"], [data-project-id="formula-electric"]).visible :is(.detail-body, .detail-top-row) {
+    .detail-content:is([data-project-id="wolfrom-actuator"], [data-project-id="formula-electric"], [data-project-id="ns-us-pulse-generator"]).visible :is(.detail-body, .detail-top-row) {
       transform: none;
     }
 
@@ -2284,7 +2347,8 @@
 
     /* White-background technical exports (CAD, scans, plots, solver screenshots) take on the
        cream page colour. Multiply keeps every dark line and colour; photographs are left alone. */
-    [data-theme="light"] .detail-content:is([data-project-id="wolfrom-actuator"], [data-project-id="formula-electric"]) .detail-description img:not(.wolfrom-build-board img, #galleryMediaContainer img, .gallery-thumb img, .wx-poster) {
+    [data-theme="light"] .detail-content:is([data-project-id="wolfrom-actuator"], [data-project-id="formula-electric"]) .detail-description img:not(.wolfrom-build-board img, #galleryMediaContainer img, .gallery-thumb img, .wx-poster),
+    [data-theme="light"] .detail-content[data-project-id="ns-us-pulse-generator"] .detail-description img:is([src$=".png"], [src$=".svg"]):not(#galleryMediaContainer img, .gallery-thumb img) {
       background: transparent;
       mix-blend-mode: multiply;
     }
@@ -2922,6 +2986,7 @@ function buildReadingRow(container, { skip = null, evidence: evidenceSelector, p
   const supplement = document.createElement('div');
   supplement.className = 'reading-supplement';
   const slots = { prose, evidence, supplement };
+  const evidenceNodes = new Set(evidenceSelector ? container.querySelectorAll(`:scope > :is(${evidenceSelector})`) : []);
   let paragraph = null;
   const finishParagraph = () => { paragraph = null; };
   // The first figure sits beside the prose; later figures span the row below.
@@ -2932,14 +2997,17 @@ function buildReadingRow(container, { skip = null, evidence: evidenceSelector, p
     if (node === skip) continue;
     if (node.nodeName === 'BR') { finishParagraph(); node.remove(); continue; }
     if (node.nodeType === Node.TEXT_NODE && !node.textContent.trim()) { node.remove(); continue; }
-    if (node.nodeType === Node.ELEMENT_NODE && node.matches(evidenceSelector || ':not(*)')) {
+    if (node.nodeType === Node.ELEMENT_NODE && node.matches('.reading-after')) {
+      finishParagraph();
+      supplement.append(node);
+    } else if (evidenceNodes.has(node)) {
       finishParagraph();
       if (node.matches('figure')) appendFigure(node);
       else if (node.matches('.project-inline-grid')) {
         [...node.children].forEach(appendFigure);
         node.remove();
       } else evidence.append(node);
-    } else if (node.nodeType === Node.ELEMENT_NODE && node.matches('details, div, ul, table, figure, p, aside')) {
+    } else if (node.nodeType === Node.ELEMENT_NODE && node.matches('details, div, ul, dl, table, figure, p, aside')) {
       finishParagraph();
       if (!placeNode(node, slots)) prose.append(node);
     } else {
@@ -2967,6 +3035,7 @@ function layoutReadingSections(description, evidenceSelectors, placeNode = () =>
 function layoutWolfromSections(description) {
   // Each section is a reading row, not a pair of unrelated newspaper columns.
   layoutReadingSections(description, {
+    'wolfrom-overview': 'table, figure',
     'wolfrom-why': '.wolfrom-gallery-slot, .wolfrom-tools-slot',
     'wolfrom-requirements': 'table',
     'wolfrom-first-principles': 'figure',
@@ -2995,21 +3064,37 @@ function layoutWolfromSections(description) {
   });
 }
 
+// Section prose sits beside its key result. Each disclosure becomes its own row below, with
+// the working beside the figure it produced.
+function layoutCaseStudySections(description, evidenceSelectors) {
+  layoutReadingSections(description, evidenceSelectors, (section, node, { supplement }) => {
+    if (!node.matches('details.project-disclosure')) return false;
+    const content = node.querySelector(':scope > .project-disclosure-content');
+    if (content) buildReadingRow(content, { evidence: 'figure, table + table, .project-inline-grid' });
+    supplement.append(node);
+    return true;
+  });
+}
+
 function layoutFormulaCoolingSections(description) {
-  // Section prose sits beside its key result. Each derivation disclosure becomes its own row
-  // below, with the working beside the hand calculation or plot it produced.
-  layoutReadingSections(description, {
+  layoutCaseStudySections(description, {
     'sn6-overview': 'figure',
     'sn6-requirements': 'table',
     'sn6-airflow': 'figure, table',
     'sn6-transient': 'figure',
     'sn6-analytical': 'figure',
-  }, (section, node, { supplement }) => {
-    if (!node.matches('details.project-disclosure')) return false;
-    const content = node.querySelector(':scope > .project-disclosure-content');
-    if (content) buildReadingRow(content, { evidence: 'figure, table + table' });
-    supplement.append(node);
-    return true;
+  });
+}
+
+function layoutPulseGeneratorSections(description) {
+  layoutCaseStudySections(description, {
+    'pcb-overview': 'figure',
+    'pcb-target': 'table',
+    'pcb-architecture': 'figure, .project-inline-grid',
+    'pcb-design-loop': '.board-layer-viewer, figure',
+    'pcb-build': 'figure',
+    'pcb-testing': 'figure',
+    'pcb-next': 'table',
   });
 }
 
@@ -3060,7 +3145,7 @@ function scheduleReadingBalance(description) {
     window.addEventListener('resize', () => {
       clearTimeout(timer);
       timer = setTimeout(() => {
-        const current = document.querySelector('.detail-content[data-project-id="formula-electric"] #detailDescription');
+        const current = document.querySelector('.detail-content:is([data-project-id="formula-electric"], [data-project-id="ns-us-pulse-generator"]) #detailDescription');
         if (current) balanceReadingRows(current);
       }, 200);
     });
@@ -3098,6 +3183,31 @@ const wolfromDescription = `
         <img src="/assets/exploded.png" alt="Exploded view of the Wolfrom actuator from output retainer screws to controller housing" width="1369" height="896" loading="lazy" decoding="async">
       </div>
     </div>
+  </section>
+
+  <section class="latex-section" id="wolfrom-overview">
+    <strong>Overview</strong><br><br>
+    <dl class="project-summary">
+      <dt>Goal</dt><dd>A backdrivable actuator for a humanoid elbow, with the motor, gearbox, and controller in one package. Design targets are 30 Nm continuous and 50 Nm peak.</dd>
+      <dt>Design</dt><dd>A three-stage compound Wolfrom gearbox at <b>50.45:1</b> in a 104 mm diameter, 81 mm long package.</dd>
+      <dt>My work</dt><dd>Ratio and tooth-count derivation, load cases, hand calculations for mesh forces and bearings, MATLAB efficiency screening, KISSsoft gear-pair rating, ANSYS housing and topology runs, and a printed V1 prototype for fit and assembly.</dd>
+      <dt>Key finding</dt><dd>The planet bearings reach their assumed static rating at about 45 Nm output, so the planet support is being revised before peak-load testing.</dd>
+      <dt>Next</dt><dd>Rate the three stages in KISSsoft and couple them into total forward and backdrive efficiency. If the model clears the targets, move to steel gears and aluminium housings, then bench-test on the proposed dynamometer.</dd>
+    </dl>
+    <table class="project-data-table">
+      <thead><tr><th>Specification</th><th>Value</th></tr></thead>
+      <tbody>
+        <tr><td>Ratio</td><td>50.45:1</td></tr>
+        <tr><td>Package</td><td>104 mm diameter, 81 mm long</td></tr>
+        <tr><td>Output torque</td><td>30 Nm continuous, 50 Nm peak (design targets)</td></tr>
+        <tr><td>Efficiency</td><td>&gt;80% forward, &ge;75% backdrive at 30 Nm and 30 rpm (targets)</td></tr>
+        <tr><td>Prototype</td><td>Printed V1 for geometry, fit, and assembly; not load-rated</td></tr>
+      </tbody>
+    </table>
+    <figure class="project-feature-figure">
+      <img src="/assets/half-section.png" alt="Half-section CAD of the assembled Wolfrom actuator showing the compound planets, ring gears, motor, and controller stack" width="1013" height="826" loading="lazy" decoding="async">
+      <figcaption>Half section through the assembled actuator: ring gears, compound planets, motor, and controller in one stack.</figcaption>
+    </figure>
   </section>
 
   <section class="latex-section" id="wolfrom-why">
@@ -3409,9 +3519,13 @@ const formulaElectricCoolingDescription = `
       <img src="/assets/formula-cooling-airflow-geometry-tight.png" alt="CAD of one SN6 cooling branch: two cell modules in series inside a sheet-metal duct, with perforated inlet and outlet walls and a perforated divider between the modules" width="594" height="619" loading="lazy" decoding="async">
       <figcaption>One SN6 cooling branch: two 42-cell modules in series between perforated inlet and outlet walls, with the divider between them.</figcaption>
     </figure>
-    I am developing Berkeley Formula Electric's <b>588 V SN6 accumulator cooling</b>, from first-principles heat balance through MATLAB, ANSYS Icepak, and endurance validation. The goal is a <b>25-minute endurance run at 35 °C ambient</b> within thermal, packaging, and fan-power budgets.<br><br>
-    The pack has 420 cylindrical cells in ten 14s3p modules, cooled by five Sanyo Denki 9HV0824P1G0011 exhaust fans. Each fan serves 84 cells in two modules with approximately 5 mm cell gaps. The <b>57 °C design target</b> leaves margin below the 60 °C ceiling.<br><br>
-    The design question is whether <b>one exhaust fan can cool two modules in series</b> below 57 °C for a full endurance run. The current transient CFD answers yes for peak temperature, with 2.4 K of margin, but not yet for uniformity: the second module runs hotter because its air has already picked up heat upstream. See <a href="#sn6-transient" data-project-section="sn6-transient">Transient CFD</a>.<br><br>
+    <dl class="project-summary">
+      <dt>Goal</dt><dd>Keep Berkeley Formula Electric's 504 V nominal / 588 V peak SN6 accumulator (420 cells in ten 14s3p modules) under a <b>57 °C design target</b> through a <b>25-minute endurance run at 35 °C ambient</b>.</dd>
+      <dt>Design</dt><dd>Five Sanyo Denki exhaust fans, each pulling air through two modules in series, with a passive louvred inlet and a 15 mm exhaust air gap. Chosen over push-pull, intake-only, and conduction to the casing.</dd>
+      <dt>My work</dt><dd>Heat balance and load cases from SN5 data and 2025 FSAE energy results, MATLAB fan and thermal models, transient ANSYS Icepak CFD, and the inlet and air-gap geometry.</dd>
+      <dt>Result</dt><dd>At the 50 A design case the hottest cell reaches 54.6 °C after 25 minutes, 2.4 K under target. Cell-to-cell spread is 13.9 K against a 5 K goal. See <a href="#sn6-transient" data-project-section="sn6-transient">Transient CFD</a>.</dd>
+      <dt>Next</dt><dd>Redistribute flow through the divider and inlet, then validate with endurance replay, airflow, and cooldown tests.</dd>
+    </dl>
 
     </section>
     <section class="latex-section" id="sn6-requirements">
@@ -3514,7 +3628,7 @@ const formulaElectricCoolingDescription = `
     </figure>
     Push-pull cooled best, but with one fan per branch an <b>active exhaust alone</b> was enough; the pressure-drop difference between the two was about 30 Pa. The intake-only layout left more than 10 K between cells and put the fan where the louvres and mesh need to be. That trade supported five exhaust fans. Liquid cooling was out of scope: it needs manufacturing processes beyond the team's current capability, is over-specified for this heat load, and needs an inlet and outlet for every module.<br><br>
     The chosen architecture keeps moving parts off the inlet and the fan outside the casing, in line with FSAE rule EV.6.5.4. Module 2 receives strong flow because it sits next to the fan, but that air has already been warmed by module 1.<br><br>
-    <figure class="cooling-flow-path">
+    <figure class="flow-path">
       <ol>
         <li><b>Passive inlet</b>Ambient air is drawn in by the exhaust fan and the car's motion, through the louvres and mesh.</li>
         <li><b>Module 1</b>Air enters through a 5 mm perforated hole pattern and crosses the cells perpendicular to their axis.</li>
@@ -3631,7 +3745,7 @@ const formulaElectricCoolingDescription = `
             <tr><td>Busbar and PCB thermal mass omitted</td><td>About 1 K</td></tr>
           </tbody>
         </table>
-        The run reports hottest, mean, and coolest cell temperature and spread over time, time to 60 °C, the fan operating point, the hottest-cell location, and the flow and temperature fields. The 15-minute forced-cooling time constant, against the roughly 3.1-hour passive case, is why the fan-on design approaches steady state during endurance.
+        <p class="reading-after">The run reports hottest, mean, and coolest cell temperature and spread over time, time to 60 °C, the fan operating point, the hottest-cell location, and the flow and temperature fields. The 15-minute forced-cooling time constant, against the roughly 3.1-hour passive case, is why the fan-on design approaches steady state during endurance.</p>
       </div>
     </details>
 
@@ -3854,37 +3968,80 @@ const formulaElectricAtticDescription = `
         displayOrder: 3,
         excerpt: 'Custom high-voltage pulse-generator PCB for complex-oxide device research, validated through 30 V before a clean-sheet high-speed redesign.',
         description: `
+          <section class="latex-section" id="pcb-overview">
           <strong>Overview</strong><br><br>
-          I am developing a custom pulse generator in Ramesh Lab for fast electrical characterization of BiFeO<sub>3</sub> and related complex-oxide devices. The instrument applies a controlled voltage pulse while a source-measure unit establishes bias and an oscilloscope captures both DUT terminals.<br><br>
-          This assembled four-layer instrument is <b>V2</b>. It combines an RP2040 controller, high-speed gate drive, GaN switching, relay-selected routing, external Keithley biasing, and grounded coaxial interfaces on a custom PCB. V1 was the earlier microsecond-only pulse-generator prototype preserved below; V2 is the complete architecture-validation platform for the cleaner high-speed revision now in development.<br><br>
+          <dl class="project-summary">
+            <dt>Goal</dt><dd>A pulse generator in Ramesh Lab for fast electrical characterization of BiFeO<sub>3</sub> and related complex-oxide devices: controlled voltage pulses while a source-measure unit sets bias and an oscilloscope captures both DUT terminals.</dd>
+            <dt>Design</dt><dd>This assembled four-layer instrument is <b>V2</b>: RP2040 control, high-speed gate drive, GaN switching, relay-selected routing, external Keithley biasing, and grounded coaxial interfaces. V1 was the earlier microsecond-only pulse-generator prototype, preserved in <a href="#pcb-next" data-project-section="pcb-next">Next Revision</a>.</dd>
+            <dt>My work</dt><dd>Schematic and four-layer layout in KiCad, LTspice checks, assembly and rework, the enclosure, and staged bench bring-up with Python and LabVIEW.</dd>
+            <dt>Result</dt><dd>Programmable operation through 30 V, down to pulses of about 100 ns. Testing showed that the passive return edge depends on device and fixture capacitance.</dd>
+            <dt>Next</dt><dd>A clean-sheet revision with active control of both edges, fully digital timing, and a 1 ns-class minimum-pulse target.</dd>
+          </dl>
+          <figure class="project-feature-figure">
+            <picture><source srcset="/assets/pulse-v1-board.webp" type="image/webp"><img src="/assets/pulse-v1-board.jpeg" alt="Populated V2 pulse-generator PCB installed inside its enclosure" width="2803" height="2889" loading="lazy" decoding="async"></picture>
+            <figcaption>Populated V2 board with RP2040 control, relay routing, GaN switching, and coaxial interfaces.</figcaption>
+          </figure>
+          </section>
 
+          <section class="latex-section" id="pcb-target">
           <strong>Experiment Target</strong><br><br>
-          The target electrical envelope is <b>0–30 V</b> at the DUT, with a project-wide programmable pulse-width range from <b>1 ns to 1 ms</b>. V2 has demonstrated operation into the approximately 100 ns regime; the 1 ns endpoint remains a next-revision target.<br><br>
-          The oxide ferroelectric capacitors are not 50 Ω loads. The expected devices behave roughly like <b>tens of pF</b> in parallel with <b>MΩ-scale</b> leakage resistance, so their impedance changes strongly with frequency: the resistive path matters during slower biasing and retention measurements, while capacitance and fixture parasitics dominate the fastest edges.<br><br>
-          The fixture and oscilloscope path use controlled <b>50 Ω</b> coaxial interfaces. Real-device bring-up starts single-shot or at no more than <b>1 kHz</b>, while dummy-load and board-debug repetition may reach roughly <b>100 kHz</b>. Resolving the shortest pulses requires at least <b>500 MHz</b> oscilloscope bandwidth, with <b>1 GHz</b> preferred, 50 Ω termination, and a short transmission-line measurement path.<br><br>
+          The instrument covers a wide pulse-width range on one board. V2 has demonstrated operation into the approximately 100 ns regime; the 1 ns endpoint remains a next-revision target.<br><br>
+          The oxide ferroelectric capacitors are far from 50 Ω loads. The expected devices behave roughly like <b>tens of pF</b> in parallel with <b>MΩ-scale</b> leakage resistance, so their impedance changes strongly with frequency:
+          $$Z_{\\mathrm{DUT}}(\\omega)=\\frac{R}{1+j\\omega RC},\\qquad f_c=\\frac{1}{2\\pi RC}$$
+          Capacitance and leakage vary between devices because film thickness varies. A representative 10 pF and 1 MΩ, with real devices scattered around it, gives $RC=10\\,\\mu\\mathrm{s}$ and $f_c\\approx16\\,\\mathrm{kHz}$. The resistive path matters during slower biasing and retention measurements, while capacitance and fixture parasitics dominate the fastest edges.<br><br>
+          Edges near 1 ns need roughly $f_{\\mathrm{BW}}\\approx0.35/t_r\\approx350\\,\\mathrm{MHz}$ of measurement bandwidth, which sets the oscilloscope floor and makes a short, terminated transmission-line path essential.<br><br>
           That makes this more than a fast-switching demonstration. It is an experiment interface designed to preserve delivered voltage, timing, source-measure bias state, and measurement visibility while fragile oxide devices are pulsed repeatedly.<br><br>
+          <table class="project-data-table">
+            <thead><tr><th>Parameter</th><th>Target</th><th>V2 status</th></tr></thead>
+            <tbody>
+              <tr><td>DUT voltage</td><td>0–30 V</td><td>Demonstrated through 30 V</td></tr>
+              <tr><td>Pulse width</td><td>1 ns to 1 ms</td><td>Microseconds down to about 100 ns</td></tr>
+              <tr><td>Device load</td><td>About 10 pF with 1 MΩ leakage, varying with film thickness</td><td>Bring-up on known dummy loads</td></tr>
+              <tr><td>Interfaces</td><td>50 Ω coaxial</td><td>Grounded BNC</td></tr>
+              <tr><td>Repetition</td><td>Single-shot to 1 kHz on devices; about 100 kHz on dummy loads</td><td>Single-shot and repeated commands</td></tr>
+              <tr><td>Scope bandwidth</td><td>At least 500 MHz, 1 GHz preferred, 50 Ω terminated</td><td>Capture at both DUT terminals</td></tr>
+            </tbody>
+          </table>
+          </section>
 
+          <section class="latex-section" id="pcb-measurement">
           <strong>Measurement Problem</strong><br><br>
-          A captured current waveform contains the useful device response plus leakage, displacement current, fixture capacitance, and the response of the test setup itself. Grounded BNC interfaces, a dedicated scope-sync output, known dummy loads, relay-selected paths, and direct source-measure compatibility make those contributions easier to characterize before connecting a sample.<br><br>
+          A captured current waveform contains the useful device response plus leakage, displacement current, fixture capacitance, and the response of the test setup itself:
+          $$i_{\\mathrm{meas}}(t)=i_{\\mathrm{device}}(t)+\\frac{v(t)}{R_{\\mathrm{leak}}}+\\left(C_{\\mathrm{DUT}}+C_{\\mathrm{fixture}}\\right)\\frac{\\mathrm{d}v}{\\mathrm{d}t}$$
+          Grounded BNC interfaces, a dedicated scope-sync output, known dummy loads, relay-selected paths, and direct source-measure compatibility make those contributions easier to characterize before connecting a sample.<br><br>
           I measure both DUT terminals so the delivered waveform can be compared with the source waveform. That distinction became important during V2 testing and directly changed the next architecture.<br><br>
+          </section>
 
+          <section class="latex-section" id="pcb-architecture">
           <strong>V2 Architecture</strong><br><br>
           V2 includes separate fast and microsecond signal paths, RP2040-based digital triggering, relay-selected routing, local driver power, a GaN pulldown stage, and dedicated connections for Keithley HI/LO, DUT, external trigger, and oscilloscope synchronization. The Keithley establishes device bias; the fast stage creates the pulse transition; and the scope observes the response at the experiment interfaces.<br><br>
           The board was deliberately flexible enough to bring up each subsystem independently. Power, controller logic, trigger conditioning, gate drive, switching, bias routing, and sync could be checked in staged subsystem passes before full-chain debugging.<br><br>
+          <figure class="flow-path">
+            <ol>
+              <li><b>Control</b>RP2040 digital triggering, an external trigger input, and relay selection between the fast and microsecond paths.</li>
+              <li><b>Drive</b>Local driver power and high-speed gate drive.</li>
+              <li><b>Switching</b>The GaN pulldown stage creates the pulse transition.</li>
+              <li><b>Device</b>Keithley HI/LO sets the bias across the DUT.</li>
+              <li><b>Measurement</b>A dedicated scope-sync output, with both DUT terminals captured.</li>
+            </ol>
+            <figcaption>V2 signal chain, from digital control to the oscilloscope.</figcaption>
+          </figure>
           <div class="project-inline-grid">
             <figure>
-              <picture><source srcset="/assets/ns-pulse-schematic-thumbnail.webp" type="image/webp"><img src="/assets/ns-pulse-schematic-thumbnail.png" alt="KiCad schematic for the V2 nanosecond and microsecond pulse-generator board" loading="lazy" decoding="async"></picture>
+              <picture><source srcset="/assets/ns-pulse-schematic-thumbnail.webp" type="image/webp"><img src="/assets/ns-pulse-schematic-thumbnail.png" alt="KiCad schematic for the V2 nanosecond and microsecond pulse-generator board" width="1042" height="713" loading="lazy" decoding="async"></picture>
               <figcaption>V2 schematic covering control, relay routing, gate drive, GaN switching, bias, and measurement interfaces.</figcaption>
             </figure>
             <figure>
-              <picture><source srcset="/assets/ns-pulse-board-layout.webp" type="image/webp"><img src="/assets/ns-pulse-board-layout.png" alt="Combined KiCad layout view of the four-layer V2 pulse-generator PCB" loading="lazy" decoding="async"></picture>
+              <picture><source srcset="/assets/ns-pulse-board-layout.webp" type="image/webp"><img src="/assets/ns-pulse-board-layout.png" alt="Combined KiCad layout view of the four-layer V2 pulse-generator PCB" width="1002" height="893" loading="lazy" decoding="async"></picture>
               <figcaption>Combined four-layer layout used to review routing, planes, interfaces, and the high-speed path together.</figcaption>
             </figure>
           </div>
+          </section>
 
+          <section class="latex-section" id="pcb-design-loop">
           <strong>Design Loop</strong><br><br>
           I used KiCad for schematic capture and the four-layer layout, LTspice to check switching and timing assumptions, and staged oscilloscope bring-up to compare simulation assumptions against assembled hardware. Python and LabVIEW support trigger control, capture organization, and repeatable bench measurements.<br><br>
-          Layout work focused on keeping the switching loop compact, giving the fast path a direct return plane, separating noisy control and relay routing from the measurement path, and placing the grounded coaxial interfaces where cables could connect without long flying leads. The viewer below exposes the actual board render, combined layout, copper planes, silkscreen, and bottom routing with more detail than a single screenshot could show.<br><br>
+          Layout work focused on keeping the switching loop compact, giving the fast path a direct return plane, separating noisy control and relay routing from the measurement path, and placing the grounded coaxial interfaces where cables could connect without long flying leads. The board viewer exposes the actual board render, combined layout, copper planes, silkscreen, and bottom routing with more detail than a single screenshot could show.<br><br>
           <div class="board-layer-viewer" data-lightbox-ignore>
             <input type="radio" id="ns-layer-render" name="ns-board-layer" checked>
             <input type="radio" id="ns-layer-layout" name="ns-board-layer">
@@ -3917,38 +4074,50 @@ const formulaElectricAtticDescription = `
             </div>
             <span class="board-layer-caption">Eight-state viewer for the V2 four-layer board: 3D assembly, combined layout, top view, F.Cu, both inner copper layers, silkscreen, and bottom routing. Use expand for the dedicated full-screen viewer.</span>
           </div>
+          </section>
 
-          <div class="project-inline-grid">
-            <figure>
-              <picture><source srcset="/assets/ns-pulse-board-angle.webp" type="image/webp"><img src="/assets/ns-pulse-board-angle.png" alt="Angled 3D render of the pulse-generator PCB and enclosure" loading="lazy" decoding="async"></picture>
-              <figcaption>Mechanical and connector-access review before assembly.</figcaption>
-            </figure>
-            <figure>
-              <picture><source srcset="/assets/pulse-v1-board.webp" type="image/webp"><img src="/assets/pulse-v1-board.jpeg" alt="Populated V2 pulse-generator PCB installed inside its enclosure" width="2803" height="2889" loading="lazy" decoding="async"></picture>
-              <figcaption>Populated V2 board with RP2040 control, relay routing, GaN switching, and coaxial interfaces.</figcaption>
-            </figure>
-          </div>
-
+          <section class="latex-section" id="pcb-build">
           <strong>Physical Implementation</strong><br><br>
           I assembled and reworked the PCB, integrated it into a custom enclosure, and wired the power, controls, and external connectors for bench use. The clear lid keeps the board inspectable during bring-up, while the BNC interfaces provide grounded, repeatable connections to the source-measure unit, DUT fixture, trigger, and oscilloscope.<br><br>
           <figure class="project-feature-figure">
-            <picture><source srcset="/assets/pulse-v1-enclosure.webp" type="image/webp"><img src="/assets/pulse-v1-enclosure.jpeg" alt="Assembled V2 pulse-generator hardware inside its clear-topped enclosure" width="2706" height="3096" loading="lazy" decoding="async" style="max-width:min(100%,760px); margin:0 auto; border-radius:4px;"></picture>
+            <picture><source srcset="/assets/pulse-v1-enclosure.webp" type="image/webp"><img src="/assets/pulse-v1-enclosure.jpeg" alt="Assembled V2 pulse-generator hardware inside its clear-topped enclosure" width="2706" height="3096" loading="lazy" decoding="async"></picture>
             <figcaption>Assembled V2 instrument before full bench characterization.</figcaption>
           </figure>
+          <figure class="project-feature-figure">
+            <picture><source srcset="/assets/ns-pulse-board-angle.webp" type="image/webp"><img src="/assets/ns-pulse-board-angle.png" alt="Angled 3D render of the pulse-generator PCB and enclosure" width="1656" height="984" loading="lazy" decoding="async"></picture>
+            <figcaption>Mechanical and connector-access review before assembly.</figcaption>
+          </figure>
+          </section>
 
+          <section class="latex-section" id="pcb-testing">
           <strong>Testing + Key Design Lesson</strong><br><br>
           I characterized V2 with a Keithley source-measure unit, known dummy loads, and a Tektronix oscilloscope measuring both DUT terminals. The board demonstrated programmable operation through <b>30 V</b>, from the microsecond range into the hundreds of nanoseconds. The shortest repeatable controller commands reached approximately the <b>100 ns scale</b> in the current setup.<br><br>
-          The important limitation appeared as pulses became shorter. The GaN stage actively creates the first transition. After it turns off, the output node returns through the DUT and surrounding bias network through a passive return path. The delivered pulse width and return edge therefore depend on device and fixture capacitance.<br><br>
-          That result was more useful than simply confirming that the switch worked: it identified a system-level limit that layout optimization alone would not fix. The next revision now starts from active control of both pulse edges.
+          The important limitation appeared as pulses became shorter. The GaN stage actively creates the first transition. After it turns off, the output node returns through the DUT and surrounding bias network through a passive return path:
+          $$v_{\\mathrm{out}}(t)\\approx V_0\\,e^{-t/\\tau},\\qquad \\tau\\approx R_{\\mathrm{return}}\\left(C_{\\mathrm{DUT}}+C_{\\mathrm{fixture}}\\right)$$
+          The delivered pulse width and return edge therefore depend on device and fixture capacitance.<br><br>
+          That result was more useful than simply confirming that the switch worked: it identified a system-level limit that layout optimization alone would not fix. The next revision now starts from active control of both pulse edges.<br><br>
           <figure class="project-feature-figure">
-            <picture><source srcset="/assets/pulse-v1-bench.webp" type="image/webp"><img src="/assets/pulse-v1-bench.jpeg" alt="Pulse generator connected to Keithley and Tektronix instruments during bench characterization" width="4284" height="5712" loading="lazy" decoding="async" style="max-width:min(100%,760px); margin:0 auto; border-radius:4px;"></picture>
+            <picture><source srcset="/assets/pulse-v1-bench.webp" type="image/webp"><img src="/assets/pulse-v1-bench.jpeg" alt="Pulse generator connected to Keithley and Tektronix instruments during bench characterization" width="4284" height="5712" loading="lazy" decoding="async"></picture>
             <figcaption>Bench characterization with source-measure biasing and oscilloscope capture at both DUT terminals.</figcaption>
           </figure>
+          </section>
 
+          <section class="latex-section" id="pcb-next">
           <strong>Next Revision</strong><br><br>
           The next revision is a clean-sheet high-speed pulser. The new architecture removes relay-selected nanosecond/microsecond paths and mechanical pulse-width controls in favor of one optimized signal path, fully digital experiment control, and dedicated Keithley HI/LO and DUT interfaces.<br><br>
           Its largest electrical change is active control of <b>both output transitions</b>, reducing the influence of DUT capacitance on delivered pulse width. The switching path will remain on the top layer directly above a continuous ground plane to minimize return-loop area and parasitic inductance.<br><br>
           The design goal is <b>30 V</b> operation with a <b>1 ns-class minimum pulse target</b>, single-shot and repetitive control, and a cleaner automated-experiment interface. That 1 ns-class figure is a next-revision target; V2 has not measured it. Dedicated high-speed timing circuitry will be required, with timing handled outside the RP2040 alone.<br><br>
+          <table class="project-data-table">
+            <thead><tr><th></th><th>V2</th><th>Next revision</th></tr></thead>
+            <tbody>
+              <tr><td>Signal path</td><td>Relay-selected nanosecond and microsecond paths</td><td>One optimized path</td></tr>
+              <tr><td>Timing</td><td>RP2040 commands and mechanical pulse-width controls</td><td>Fully digital, with dedicated high-speed timing circuitry</td></tr>
+              <tr><td>Pulse edges</td><td>GaN drives the first edge; passive return</td><td>Active control of both edges</td></tr>
+              <tr><td>Shortest pulse</td><td>About 100 ns measured</td><td>1 ns-class target</td></tr>
+              <tr><td>Interfaces</td><td>Grounded BNC with relay routing</td><td>Dedicated Keithley HI/LO, DUT, trigger, and sync</td></tr>
+              <tr><td>Layout</td><td>Four-layer board</td><td>Switching path on the top layer over a continuous ground plane</td></tr>
+            </tbody>
+          </table>
 
           <details class="project-disclosure">
             <summary>Next Revision Architecture and Packaging</summary>
@@ -3966,21 +4135,29 @@ const formulaElectricAtticDescription = `
             <summary>Earlier Microsecond Prototype</summary>
             <div class="project-disclosure-content">
               V1 was the earlier microsecond-only pulse-generator prototype. I built it to make the source-measure workflow concrete using a one-shot timing stage, gate driver, MOSFET output stage, manual/external triggering, and a Keithley interface. Bench work exposed the limits of terminal-block connections, loose wiring, and microsecond-oriented timing as the experiment moved toward cleaner, faster edges.<br><br>
-              The prototype was useful design history, not validation for the current board. Its schematic, layout, 3D render, and LTspice work are preserved here because they show the iteration that led to grounded coaxial interfaces, a four-layer PCB, digital control, and staged bring-up.
-              <figure><picture><source srcset="/assets/pulse-v1-physical.webp" type="image/webp"><img src="/assets/pulse-v1-physical.jpg" alt="Earlier microsecond pulse-generator board under oscilloscope probe during bench testing" loading="lazy" decoding="async"></picture><figcaption>Earlier microsecond board during bench testing.</figcaption></figure>
+              The prototype was useful design history, separate from validation of the current board. Its schematic, layout, 3D render, and LTspice work are preserved here because they show the iteration that led to grounded coaxial interfaces, a four-layer PCB, digital control, and staged bring-up.
+              <figure><picture><source srcset="/assets/pulse-v1-physical.webp" type="image/webp"><img src="/assets/pulse-v1-physical.jpg" alt="Earlier microsecond pulse-generator board under oscilloscope probe during bench testing" width="4032" height="3024" loading="lazy" decoding="async"></picture><figcaption>Earlier microsecond board during bench testing.</figcaption></figure>
               <div class="project-inline-grid">
-                <figure><img src="/assets/pulse-v1-us-schematic.png" alt="Schematic for the earlier microsecond pulse-generator prototype" loading="lazy" decoding="async"><figcaption>Prototype one-shot, driver, MOSFET, trigger, and source-measure circuitry.</figcaption></figure>
-                <figure><img src="/assets/pulse-v1-us-layout.png" alt="PCB layout for the earlier microsecond pulse-generator prototype" loading="lazy" decoding="async"><figcaption>Earlier two-layer PCB layout.</figcaption></figure>
-                <figure><img src="/assets/pulse-v1-us-render.png" alt="3D render of the earlier microsecond pulse-generator prototype" loading="lazy" decoding="async"><figcaption>Prototype board render before fabrication.</figcaption></figure>
-                <figure><img src="/assets/pulse-v1-ltspice.png" alt="LTspice transient simulation for the earlier microsecond pulse-generator prototype" loading="lazy" decoding="async"><figcaption>Transient simulation used to check timing and output behavior before bench testing.</figcaption></figure>
+                <figure><img src="/assets/pulse-v1-us-schematic.png" alt="Schematic for the earlier microsecond pulse-generator prototype" width="1444" height="787" loading="lazy" decoding="async"><figcaption>Prototype one-shot, driver, MOSFET, trigger, and source-measure circuitry.</figcaption></figure>
+                <figure><img src="/assets/pulse-v1-us-layout.png" alt="PCB layout for the earlier microsecond pulse-generator prototype" width="1513" height="657" loading="lazy" decoding="async"><figcaption>Earlier two-layer PCB layout.</figcaption></figure>
+                <figure><img src="/assets/pulse-v1-us-render.png" alt="3D render of the earlier microsecond pulse-generator prototype" width="1064" height="493" loading="lazy" decoding="async"><figcaption>Prototype board render before fabrication.</figcaption></figure>
+                <figure><img src="/assets/pulse-v1-ltspice.png" alt="LTspice transient simulation for the earlier microsecond pulse-generator prototype" width="1913" height="1077" loading="lazy" decoding="async"><figcaption>Transient simulation used to check timing and output behavior before bench testing.</figcaption></figure>
               </div>
             </div>
           </details>
+          </section>
 
+          <section class="latex-section" id="pcb-current">
           <strong>Current Stage</strong><br><br>
           V2 is physically assembled and bench characterized. It validated digital triggering, gate drive, GaN switching, external bias integration, DUT routing, scope synchronization, and programmable operation through <b>30 V</b>. It also revealed the load-dependent recovery behavior that limits very short pulses.<br><br>
-          I am now carrying those measurements into the next revision: active two-edge switching, fully digital timing, dedicated measurement interfaces, and a deliberate high-speed stackup. The immediate work is architecture selection and simulation before the next schematic and layout are finalized.`,
+          I am now carrying those measurements into the next revision: active two-edge switching, fully digital timing, dedicated measurement interfaces, and a deliberate high-speed stackup. The immediate work is architecture selection and simulation before the next schematic and layout are finalized.
+          </section>`,
         tags: ['KiCad', 'LTspice', 'Python', 'LabVIEW', 'PCB Design', 'PCB Layout', 'Circuit Design', 'Circuit Simulation', 'Embedded Systems', 'RP2040', 'SMD Soldering', 'Test Automation', 'Oscilloscope Testing'],
+        skillGroups: [
+          ['Electronics design', 'KiCad, LTspice'],
+          ['Firmware and automation', 'RP2040, Python, LabVIEW'],
+          ['Test and assembly', 'Oscilloscope, source-measure unit, SMD soldering'],
+        ],
         links: [],
         images: [
           '/assets/pulse-v1-cover.jpg',
@@ -4603,6 +4780,8 @@ const formulaElectricAtticDescription = `
         descriptionEl.querySelector('.wolfrom-tools-slot').append(document.getElementById('detailSidebar'));
       } else if (project.id === 'formula-electric') {
         layoutFormulaCoolingSections(descriptionEl);
+      } else if (project.id === 'ns-us-pulse-generator') {
+        layoutPulseGeneratorSections(descriptionEl);
       }
       descriptionEl.querySelectorAll('details.project-disclosure').forEach(disclosure => { disclosure.open = true; });
       const explicitSections = [...descriptionEl.querySelectorAll(':scope > .latex-section')];
@@ -4650,7 +4829,7 @@ const formulaElectricAtticDescription = `
             throwOnError: false
           });
           // Equation fonts change line heights, so measure only once they have loaded.
-          if (project.id === 'formula-electric') scheduleReadingBalance(document.getElementById('detailDescription'));
+          if (project.id === 'formula-electric' || project.id === 'ns-us-pulse-generator') scheduleReadingBalance(document.getElementById('detailDescription'));
         } else if (tries < 40) {
           setTimeout(function () { renderMath(tries + 1); }, 100);
         }

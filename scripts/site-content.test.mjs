@@ -366,8 +366,13 @@ assert.deepEqual(
 );
 const pulseDescriptionRule = projects.match(/\.detail-content\[data-project-id="ns-us-pulse-generator"\] \.detail-description\s*{([^}]*)}/);
 assert.ok(pulseDescriptionRule, 'Projects should define a pulse-generator desktop description rule');
-assert.match(pulseDescriptionRule[1], /columns:\s*2/, 'Pulse-generator desktop detail should retain two text columns');
-assert.doesNotMatch(pulseDescriptionRule[1], /columns:\s*1[;\s]/, 'Pulse-generator desktop detail should not be forced into one column');
+assert.doesNotMatch(pulseDescriptionRule[1], /columns:\s*2/, 'Pulse-generator detail should use paired reading rows, not newspaper columns');
+for (const id of ['pcb-overview', 'pcb-target', 'pcb-measurement', 'pcb-architecture', 'pcb-design-loop', 'pcb-build', 'pcb-testing', 'pcb-next', 'pcb-current']) {
+  assert.match(pulseGeneratorSource, new RegExp(`<section class="latex-section" id="${id}">`), `Pulse-generator detail should have a navigable ${id} section`);
+}
+assert.match(projects, /function layoutPulseGeneratorSections[\s\S]*?'pcb-target': 'table'[\s\S]*?'pcb-next': 'table'/, 'Pulse-generator target and revision tables should sit beside their prose');
+assert.ok(pulseGeneratorSource.includes('f_c=') && pulseGeneratorSource.includes('RC='), 'Pulse-generator target should explain the DUT RC corner');
+assert.match(pulseGeneratorSource, /<td>Active control of both edges<\/td>/, 'Pulse-generator next revision should compare V2 with the planned architecture');
 assert.doesNotMatch(projects, /\.pulse-full-span\s*{/, 'Pulse-generator media should not escape the reading columns');
 assert.doesNotMatch(pulseGeneratorSource, /pulse-full-span/, 'Every pulse-generator block should stay within a reading column');
 assert.match(projects, /data-project-id="ns-us-pulse-generator"\] \.project-inline-grid\s*{[\s\S]*?grid-template-columns:\s*1fr/, 'Pulse technical media grids should stack within their reading column');
