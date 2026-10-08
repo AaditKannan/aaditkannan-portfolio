@@ -44,7 +44,7 @@ html[data-theme="light"] .wx-poster { mix-blend-mode: multiply; }
 .wx-introduction strong { color: var(--text); font-size: 1.08em; }
 .wx-introduction { margin-bottom: 20px; }
 .wx-introduction p { margin: 14px 0 28px; line-height: 1.65; }
-.wx-caption { min-height: 220px; }
+.wx-caption { min-height: var(--wx-caption-h, 220px); }
 .wx-step { margin: 0 0 8px; font-size: 15px; color: var(--text-muted); font-variant-numeric: tabular-nums; }
 .wx-title { margin: 0 0 12px; font-family: inherit; font-size: 23px; line-height: 1.25; font-weight: 600; color: var(--text); }
 .wx-body { margin: 0; font-size: 18px; line-height: 1.65; color: var(--text-dim); }
@@ -77,7 +77,7 @@ html[data-theme="light"] .wx-poster { mix-blend-mode: multiply; }
   .wx-copy, .wx.wx-compact .wx-copy { align-self: start; transform: none; }
   /* The Contents bar already names this section, so the model gets that height instead. */
   .wx-introduction { display: none; }
-  .wx-caption { min-height: 210px; }
+  .wx-caption { min-height: var(--wx-caption-h, 210px); }
   .wx[data-wx-mode="cad"] .wx-caption { min-height: 0; }
   .wx-controls { margin-top: 12px; gap: 10px 18px; }
   .wx-controls button { font-size: 16px; }
@@ -98,6 +98,5 @@ html[data-theme="light"] .wx-poster { mix-blend-mode: multiply; }
 
 @media (max-width: 768px) and (max-height: 740px) {
   .wx-stage { grid-template-rows: minmax(140px, 1fr) auto; }
-  .wx-caption { min-height: 0; }
   .wx-body { line-height: 1.45; }
 }

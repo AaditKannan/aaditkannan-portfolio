@@ -405,6 +405,25 @@ async function init(root) {
   section.input?.addEventListener('input', () => setSection(+section.input.value), { signal: events.signal });
   setMode(reduce ? 'skipped' : 'animation');
 
+  // Reserve the tallest caption so the model area never resizes between steps.
+  function fitCaptionHeight() {
+    const fields = [els.step, els.title, els.body, els.spec];
+    const saved = fields.map(el => el.textContent);
+    root.style.setProperty('--wx-caption-h', '0px');
+    let tallest = 0;
+    for (const s of STEPS) {
+      els.step.textContent = '00 / 00'; els.title.textContent = s.title; els.body.textContent = s.body; els.spec.textContent = s.spec;
+      tallest = Math.max(tallest, els.cap.scrollHeight);
+    }
+    fields.forEach((el, i) => { el.textContent = saved[i]; });
+    root.style.setProperty('--wx-caption-h', `${Math.ceil(tallest)}px`);
+    dirty = true;
+  }
+  fitCaptionHeight();
+  document.fonts?.ready.then(() => { if (!disposed) fitCaptionHeight(); });
+  let captionTimer = 0;
+  window.addEventListener('resize', () => { clearTimeout(captionTimer); captionTimer = setTimeout(fitCaptionHeight, 150); }, { signal: events.signal });
+
   function setCaption(i) {
     if (i === shown) return; shown = i; const s = STEPS[i];
     const write = () => { els.step.textContent = String(i + 1).padStart(2, '0') + ' / ' + String(STEPS.length).padStart(2, '0'); els.title.textContent = s.title; els.body.textContent = s.body; els.spec.textContent = s.spec; els.cap.classList.remove('is-swapping'); };
@@ -469,6 +488,16 @@ async function init(root) {
       model.position.z = -upwardTravel;
       // Keep every part inside the column; highlighting and captions identify the active component.
       let gMid = (zMin + zMax) / 2, gSpan = zMax - zMin;
+      // Portrait screens frame the highlighted parts instead of the whole stack, so the
+      // actuator fills the width. Steps with nothing highlighted still show everything.
+      if (camera.aspect < 0.9 && focus.size) {
+        let fMin = Infinity, fMax = -Infinity;
+        for (const name of focus) {
+          const st = state[name]; if (!st || st.z === undefined) continue;
+          fMin = Math.min(fMin, st.z - 18); fMax = Math.max(fMax, st.z + 18);
+        }
+        if (fMin < fMax) { gMid = (fMin + fMax) / 2; gSpan = Math.max(fMax - fMin, 70); }
+      }
       if (!cam.init || reduce) { cam.mid = gMid; cam.span = gSpan; cam.init = true; cam.t = performance.now(); }
       else { const now = performance.now(), k = 1 - Math.exp(-Math.min(250, now - (cam.t || now)) / 160); cam.t = now;
         cam.mid += (gMid - cam.mid) * k; cam.span += (gSpan - cam.span) * k; if (Math.abs(gMid - cam.mid) > 0.2 || Math.abs(gSpan - cam.span) > 0.2) dirty = true; }

@@ -177,18 +177,18 @@ for (const heading of ['Why this project', 'Requirements and constraints', 'Firs
 const wolfromGallery = projects.match(/id: 'wolfrom-actuator'[\s\S]*?images: \[([\s\S]*?)\]\s*\n\s*}/)?.[1] || '';
 assert.deepEqual(
   [...wolfromGallery.matchAll(/'([^']+)'/g)].map((match) => match[1]),
-  ['/assets/exploded-landscape-tight.png', '/assets/wolfrom-cover.jpg', '/assets/gear-train.png', '/assets/cutaway-three-quarter.png', '/assets/half-section.png', '/assets/wolfrom-ansys-topology-result.png', '/assets/wolfrom-ansys-stress.png'],
+  ['/assets/exploded-landscape-tight-clear.png', '/assets/wolfrom-cover.jpg', '/assets/gear-train-clear.png', '/assets/cutaway-three-quarter-clear.png', '/assets/half-section-clear.png', '/assets/wolfrom-ansys-topology-result.png', '/assets/wolfrom-ansys-stress.png'],
   'Wolfrom should keep a focused CAD gallery'
 );
 assert.match(wolfromSource[1], /wolfrom-stand|wolfrom-bench|wolfrom-ansys-stress|wolfrom-kisssoft-results/, 'Wolfrom should retain the strongest physical and analysis evidence');
 assert.match(projects, /href="\/wolfrom-explode\.css"/, 'Wolfrom should load the scoped exploded-view styles');
 assert.match(projects, /src="\/wolfrom-explode\.js"/, 'Wolfrom should load the exploded-view behavior');
 assert.match(wolfromSource[1], /class="latex-section wx"[^>]*data-model="\/assets\/actuator\.glb"/, 'Wolfrom Architecture should include the scroll-driven actuator viewer');
-assert.match(wolfromSource[1], /src="\/assets\/exploded\.png"/, 'Wolfrom viewer should include the static exploded fallback');
-assert.match(wolfromSource[1], /src="\/assets\/wolfrom-hand-calcs\.png"/, 'Wolfrom Load cases should keep the visible hand calculations');
+assert.match(wolfromSource[1], /src="\/assets\/exploded(?:-clear)?.png"/, 'Wolfrom viewer should include the static exploded fallback');
+assert.match(wolfromSource[1], /src="\/assets\/wolfrom-hand-calcs(?:-clear)?.png"/, 'Wolfrom Load cases should keep the visible hand calculations');
 assert.match(wolfromSource[1], /class="wx-poster"[^>]*src="\/assets\/gear-train\.png"/, 'The opening should show the CAD view without loose bolts while the real model loads');
 assert.match(readPage('wolfrom-explode.css'), /\.wx-poster\s*{[^}]*opacity:\s*0;[^}]*animation:\s*wx-poster-in[^;]*\ds/, 'The loading poster should appear only after a delay so fast model loads do not flash a still image');
-assert.match(wolfromSource[1], /id="wolfrom-packaging"[\s\S]*?src="\/assets\/gear-train\.png"[\s\S]*?src="\/assets\/cutaway-three-quarter\.png"/, 'Packaging should pair the bolt-free gear-train view with a three-quarter section view');
+assert.match(wolfromSource[1], /id="wolfrom-packaging"[\s\S]*?src="\/assets\/gear-train(?:-clear)?.png"[\s\S]*?src="\/assets\/cutaway-three-quarter(?:-clear)?.png"/, 'Packaging should pair the bolt-free gear-train view with a three-quarter section view');
 assert.match(wolfromSource[1], /id="wolfrom-why"[\s\S]*?class="wolfrom-gallery-slot"[\s\S]*?class="wolfrom-tools-slot"[\s\S]*?<\/section>\s*<section class="latex-section" id="wolfrom-requirements"/, 'The gallery and tools should sit with Why this project, directly after the model walkthrough');
 assert.match(projects, /'wolfrom-why': '\.wolfrom-gallery-slot, \.wolfrom-tools-slot'/, 'The gallery should be the evidence column beside the Why prose');
 assert.match(projects, /\.wolfrom-tools-slot'\)\.append\(document\.getElementById\('detailSidebar'\)\)/, 'Tools should sit below the gallery beside the Why prose');
