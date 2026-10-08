@@ -22,13 +22,13 @@ const STEPS = [
     body: 'The carrier floats and carries no net torque, yet its two plates react 40 percent of output torque against each other through three posts. The posts also set the stack height, so they still need a wind-up stiffness check.',
     spec: '20 Nm plate-to-plate at 50 Nm output', focus: ['carrierOut', 'carrierIn'], move: ['carrierOut'] },
   { from: 0.417, title: 'Compound planets',
-    body: 'Each planet has three gears on one body: 57 teeth for the sun, 27 for the fixed ring and 25 for the output ring. The ring meshes push in opposite directions 8 mm apart, a 4.2 Nm tilt at peak that brings its two 604ZZ bearings to their assumed static rating at 45 Nm.',
+    body: 'Each planet carries 57, 27 and 25 teeth on one body. The two ring meshes push on it in opposite directions 8 mm apart, a 4.2 Nm tilt at peak, so its 604ZZ bearings reach their assumed static rating at 45 Nm.',
     spec: 'Worst bearing load 392 N against about 350 N at 50 Nm', focus: ['planets', 'planetBrg', 'carrierIn'], move: ['planetBrgTop', 'planets', 'planetBrgBot', 'carrierIn'] },
   { from: 0.5, title: 'Sun gear',
     body: 'The sun bolts to the motor rotor through a flange, so the torque path has no press fit. It is the lightest-loaded stage, at 40 N per planet and 44 MPa root stress at 50 Nm.',
     spec: '33 teeth, module 0.5, 5 mm face', focus: ['sun'], move: ['sun'] },
   { from: 0.583, title: 'Fixed ring gear housing',
-    body: 'The 72-tooth ring is part of the housing, so reaction torque runs through a solid wall to the mount plate. The ring meshes circulate 8 to 9 times the output power, and below 94.3 percent efficiency per ring mesh the gearbox self-locks when backdriven.',
+    body: 'The 72-tooth ring is part of the housing, so reaction torque runs through a solid wall. The ring meshes circulate 8 to 9 times output power, and below 94.3 percent ring-mesh efficiency the gearbox self-locks when backdriven.',
     spec: '72 teeth, module 1.0, 5 mm face, 454 N per planet at 50 Nm', focus: ['fixed', 'plate'], move: ['fixed'] },
   { from: 0.667, title: 'Motor',
     body: 'An outrunner drives the sun directly, shown with its magnet bell lifted off the 24 stator windings. It needs about 25 A for 30 Nm continuous and about 42 A of its 59.2 A peak for 50 Nm.',
@@ -41,7 +41,7 @@ const STEPS = [
     spec: '3 planets, 3 gear stages, FDM housings, SLA gears', focus: [], move: [] },
   { from: 0.917, title: 'Integrated actuator',
     body: 'Next, each stage gets rated in KISSsoft and the three are coupled into total forward and backdrive efficiency. If that model clears the targets, the build moves to steel gears and aluminium housings.',
-    spec: 'Targets: above 80% forward, at least 75% backdrive at 30 Nm, 30 rpm', focus: [], move: [] },
+    spec: 'Targets: >80% forward, ≥75% backdrive at 30 Nm, 30 rpm', focus: [], move: [] },
 ];
 
 /* --------------------------------------------------------------- explosion --- */
@@ -656,6 +656,14 @@ async function init(root) {
   // share one frame that fits every one of them, so the camera holds still while parts move.
   function frameFor(k) {
     const walk = k > 0 && k < EXPLODED_STEP;
+    // A phone canvas is close to square, so the tall walk-through stack would render tiny. There
+    // the camera keeps one zoom and pans to centre the current parts; the canvas edges fade
+    // whatever sits beyond the frame (wolfrom-explode.css).
+    if (walk && phoneLayout.matches) {
+      let lo = Infinity, hi = -Infinity;
+      for (const n of STEPS[k].move) { const e = EXPLODE[n], z = e.zc + LAYOUT[k][n]; lo = Math.min(lo, z - e.hz); hi = Math.max(hi, z + e.hz); }
+      return { mid: (lo + hi) / 2, span: 150, zoom: 1 };
+    }
     let lo = Infinity, hi = -Infinity;
     for (const layout of walk ? LAYOUT.slice(1, EXPLODED_STEP) : [LAYOUT[k]]) {
       for (const [n, e] of Object.entries(EXPLODE)) { const z = e.zc + layout[n]; lo = Math.min(lo, z - e.hz); hi = Math.max(hi, z + e.hz); }
