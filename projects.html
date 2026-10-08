@@ -1556,8 +1556,10 @@
     @media (max-width: 768px) {
       .detail-content[data-project-id="wolfrom-actuator"] .detail-inner { padding-top: 70px; }
       .detail-content[data-project-id="wolfrom-actuator"] .detail-body.has-toc { row-gap: 0; }
-      .detail-content[data-project-id="wolfrom-actuator"] .detail-header { top: 128px; left: 24px; right: 72px; }
-      .detail-content[data-project-id="wolfrom-actuator"] .detail-close { top: 124px; }
+      /* On phones the first caption already names the project, so the page title and date stay
+         out of view (still read by screen readers), and the close button is left to the top nav. */
+      .detail-content[data-project-id="wolfrom-actuator"] .detail-header { top: 0; left: 0; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+      .detail-content[data-project-id="wolfrom-actuator"] .detail-close { display: none; }
       .detail-content[data-project-id="wolfrom-actuator"] .detail-title { font-size: 28px; }
       .detail-content[data-project-id="wolfrom-actuator"] .project-toc { top: 70px; }
     }
@@ -3226,8 +3228,8 @@ const wolfromDescription = `
         </div>
         <div class="wx-caption" aria-live="polite">
           <div class="wx-step" role="progressbar" aria-label="Exploded view progress" aria-valuemin="1" aria-valuemax="12" aria-valuenow="1" aria-valuetext="Step 1 of 12"><i></i></div>
-          <h3 class="wx-title">Humanoid elbow actuator</h3>
-          <p class="wx-body">A motor, a three-stage compound Wolfrom gearbox and an ODrive controller share one stack 104 mm across and 81 mm long, geared 50.45:1. This printed V1 checks fit and assembly before a steel and aluminium build.</p>
+          <h3 class="wx-title">Wolfrom Robotic Actuator</h3>
+          <p class="wx-body">A humanoid elbow joint with the motor, a three-stage compound Wolfrom gearbox and an ODrive controller in one stack 104 mm across and 81 mm long, geared 50.45:1. This printed V1 checks fit and assembly before a steel and aluminium build.</p>
           <span class="wx-spec">Targets: 30 Nm continuous, 50 Nm peak</span>
         </div>
         <div class="wx-controls" aria-label="Model controls">

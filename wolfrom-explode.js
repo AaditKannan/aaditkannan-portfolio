@@ -6,8 +6,8 @@ let THREE;
 // the parts it presents. The walk-through goes down the stack in assembly order, so every part
 // is presented in exactly one step, with the parts above it already lifted out of the way.
 const STEPS = [
-  { from: 0.00, title: 'Humanoid elbow actuator',
-    body: 'A motor, a three-stage compound Wolfrom gearbox and an ODrive controller share one stack 104 mm across and 81 mm long, geared 50.45:1. This printed V1 checks fit and assembly before a steel and aluminium build.',
+  { from: 0.00, title: 'Wolfrom Robotic Actuator',
+    body: 'A humanoid elbow joint with the motor, a three-stage compound Wolfrom gearbox and an ODrive controller in one stack 104 mm across and 81 mm long, geared 50.45:1. This printed V1 checks fit and assembly before a steel and aluminium build.',
     spec: 'Targets: 30 Nm continuous, 50 Nm peak', focus: [], move: [] },
   { from: 0.083, title: 'Bearing retainers',
     body: 'The outer ring clamps the bearing outer race to the housing and the inner ring clamps its inner race to the output ring gear. Recessed screws keep the output face flush.',
@@ -262,7 +262,8 @@ async function init(root) {
   let renderer;
   try { renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true }); }
   catch (e) { root.classList.add('no-webgl'); return; }
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+  // Touch screens render at up to 1.5x: past that a phone GPU spends its time on pixels nobody can see.
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, window.matchMedia('(pointer: coarse)').matches ? 1.5 : 2));
   renderer.setClearColor(0x000000, 0);
 
   const scene = new THREE.Scene();
@@ -270,7 +271,7 @@ async function init(root) {
   const key = new THREE.DirectionalLight(0xffffff, 2.2); key.position.set(120, -160, 260); scene.add(key);
   const rim = new THREE.DirectionalLight(0xffffff, 0.5); rim.position.set(-160, 120, -80); scene.add(rim);
 
-  const camera = new THREE.PerspectiveCamera(24, 1, 10, 6000);
+  const camera = new THREE.PerspectiveCamera(24, 1, 4, 6000);
   camera.up.set(0, 0, 1);
 
   const model = new THREE.Group(); scene.add(model);
@@ -521,7 +522,7 @@ async function init(root) {
     const distance = Math.max(140 / (2 * Math.tan(camera.fov * Math.PI / 360)), 130 / (2 * Math.tan(camera.fov * Math.PI / 360) * camera.aspect));
     camera.position.set(distance * 0.65, -distance * 0.65, -16 + distance * 0.4);
     controls.target.set(0, 0, -16);
-    controls.minDistance = 140;
+    controls.minDistance = 45;   // close enough to look at single gear teeth
     controls.maxDistance = distance * 3;
     controls.autoRotate = !reduce;
     controls.update();
@@ -543,6 +544,9 @@ async function init(root) {
         controls.listenToKeyEvents(canvas);
         controls.addEventListener('change', () => { dirty = true; });
         controls.autoRotateSpeed = 1.2;
+        // Zoom and pinch head for the point under the cursor or fingers, and every move eases out.
+        controls.zoomToCursor = true;
+        controls.enableDamping = true; controls.dampingFactor = 0.12;
         // The model turns slowly on its own until the reader takes hold of it.
         controls.addEventListener('start', () => { controls.autoRotate = false; });
       }
@@ -679,7 +683,7 @@ async function init(root) {
     const header = root.closest('.detail-content')?.querySelector('.detail-header');
     const inner = root.closest('.detail-inner');
     const h = canvas.clientHeight, w = canvas.clientWidth;
-    if (!header || !inner || !h || !w) return { shift: 0, zoom: 1 };
+    if (!header || !inner || !h || !w || header.offsetHeight < 4) return { shift: 0, zoom: 1 };   // title hidden on phones
     const titleBottom = header.offsetTop + header.offsetHeight + 20
       - (root.getBoundingClientRect().top - inner.getBoundingClientRect().top);
     const vFov = camera.fov * Math.PI / 180, hFov = 2 * Math.atan(Math.tan(vFov / 2) * (w / h)), elev = 0.42;
@@ -706,7 +710,7 @@ async function init(root) {
       dirty = true;
     }
     if (mode === 'cad') {
-      if (controls?.autoRotate) controls.update(dt / 1000);   // marks the frame dirty through 'change'
+      controls?.update(dt / 1000);   // idle spin and damping; marks the frame dirty through 'change'
       if (drive.rpm) { drive.angle += drive.rpm * Math.PI / 30 * dt / 1000; applyDrive(); dirty = true; }
     }
     if (dirty) {
