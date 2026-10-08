@@ -44,16 +44,19 @@ html[data-theme="light"] .wx-poster { mix-blend-mode: multiply; }
 .wx-section-control input:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
 .wx-sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 .wx-introduction strong { color: var(--text); font-size: 1.08em; }
-.wx-introduction { margin-bottom: 20px; }
+/* The section name stays in the page for Contents and screen readers but is not shown. */
+.wx-introduction { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 .wx-introduction p { margin: 14px 0 28px; line-height: 1.65; }
 .wx-caption { min-height: var(--wx-caption-h, 220px); }
-.wx-step { margin: 0 0 8px; font-size: 15px; color: var(--text-muted); font-variant-numeric: tabular-nums; }
+/* A hairline progress track above the caption; the fill follows the parts as they glide. */
+.wx-step { position: relative; width: 120px; height: 2px; margin: 0 0 18px; border-radius: 1px; overflow: hidden; background: color-mix(in srgb, var(--text) 13%, transparent); }
+.wx-step i { position: absolute; inset: 0; border-radius: inherit; background: var(--text); transform: scaleX(0); transform-origin: left center; }
+.wx[data-wx-mode="cad"] .wx-step { visibility: hidden; }
 .wx-title { margin: 0 0 12px; font-family: inherit; font-size: 23px; line-height: 1.25; font-weight: 600; color: var(--text); }
 .wx-body { margin: 0; font-size: 18px; line-height: 1.65; color: var(--text-dim); }
 .wx-spec { display: block; margin-top: 16px; font-size: 16px; color: var(--text-dim); font-variant-numeric: tabular-nums; }
-.wx-progress { display: none; }
 .wx-caption > * { transition: opacity .08s ease; }
-.wx-caption.is-swapping > * { opacity: 0; }
+.wx-caption.is-swapping > *:not(.wx-step) { opacity: 0; }
 .wx-fallback { display: none; }
 .wx-fallback img { display: block; width: 100%; height: auto; max-height: 460px; object-fit: contain; }
 .wx.no-webgl { height: auto; }
@@ -85,7 +88,7 @@ html[data-theme="light"] .wx-poster { mix-blend-mode: multiply; }
   .wx-controls button { font-size: 16px; }
   .wx-title { font-size: 21px; }
   .wx-body { font-size: 16px; }
-  .wx-step { font-size: 14px; margin-bottom: 4px; }
+  .wx-step { width: 96px; margin-bottom: 12px; }
   .wx-spec { font-size: 15px; margin-top: 8px; }
   .wx.no-webgl .wx-fallback,
   .wx.no-webgl .wx-copy { grid-column: 1; grid-row: auto; }

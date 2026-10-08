@@ -3214,7 +3214,7 @@ function scheduleReadingBalance(description) {
 }
 
 const wolfromDescription = `
-  <section class="latex-section wx" id="wolfrom-architecture" data-model="/assets/actuator.glb" aria-label="Scroll-driven exploded view of the Wolfrom actuator">
+  <section class="latex-section wx" id="wolfrom-architecture" data-model="/assets/actuator.glb" data-windings="/assets/stator-windings.glb" aria-label="Scroll-driven exploded view of the Wolfrom actuator">
     <div class="wx-stage">
       <div class="wx-canvas-wrap">
         <img class="wx-poster" src="/assets/gear-train.png" alt="Wolfrom actuator with the compound planetary gear train exposed and no loose retaining bolts" width="1150" height="863" decoding="async" fetchpriority="high" data-lightbox-ignore>
@@ -3225,12 +3225,11 @@ const wolfromDescription = `
           <strong>Architecture</strong>
         </div>
         <div class="wx-caption" aria-live="polite">
-          <p class="wx-step"></p>
-          <h3 class="wx-title">50.45:1 in a 104 mm package</h3>
-          <p class="wx-body">I am designing and building a backdrivable humanoid-elbow actuator with the motor, gearbox, and controller in one package. The printed prototype checks assembly before a load-rated metal build.</p>
-          <span class="wx-spec">30 Nm continuous and 50 Nm peak design targets</span>
+          <div class="wx-step" role="progressbar" aria-label="Exploded view progress" aria-valuemin="1" aria-valuemax="12" aria-valuenow="1" aria-valuetext="Step 1 of 12"><i></i></div>
+          <h3 class="wx-title">Humanoid elbow actuator</h3>
+          <p class="wx-body">A motor, a three-stage compound Wolfrom gearbox and an ODrive controller share one stack 104 mm across and 81 mm long, geared 50.45:1. This printed V1 checks fit and assembly before a steel and aluminium build.</p>
+          <span class="wx-spec">Targets: 30 Nm continuous, 50 Nm peak</span>
         </div>
-        <div class="wx-progress" aria-hidden="true"><i></i></div>
         <div class="wx-controls" aria-label="Model controls">
           <button type="button" data-wx-explore>Interact with model</button>
           <button type="button" data-wx-skip>Skip animation</button>
@@ -3238,6 +3237,8 @@ const wolfromDescription = `
           <button type="button" data-wx-reset hidden>Reset view</button>
           <label class="wx-section-control" hidden>Section view <input type="range" min="0" max="100" value="0" step="1" data-wx-section aria-describedby="wxSectionHint"></label>
           <span id="wxSectionHint" class="wx-sr-only">Moves a cutting plane from the outside of the housing to the actuator axis.</span>
+          <label class="wx-section-control" hidden>Motor speed <input type="range" min="0" max="180" value="0" step="1" data-wx-drive aria-describedby="wxDriveHint"></label>
+          <span id="wxDriveHint" class="wx-sr-only">Runs the motor from stopped to 180 rpm and turns every gear at its real ratio.</span>
         </div>
       </div>
       <div class="wx-fallback">
