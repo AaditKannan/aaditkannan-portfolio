@@ -1545,10 +1545,25 @@
     .reading-prose { max-width: 38em; }
     .reading-prose p { margin: 0 0 18px; }
     .detail-content[data-project-id="wolfrom-actuator"] .detail-top-row { display: none; }
-    .detail-content[data-project-id="wolfrom-actuator"] .detail-header { margin-bottom: 24px; }
+    /* The title keeps its usual place at the top left, but it overlays the empty top of the 3D
+       stage, which therefore starts exactly where it pins,
+       so scrolling never moves it vertically; the title simply scrolls away above it. The opening
+       camera frame keeps the model clear of the title (wolfrom-explode.js). */
+    .detail-content[data-project-id="wolfrom-actuator"] .detail-inner { position: relative; padding-top: 104px; }
+    .detail-content[data-project-id="wolfrom-actuator"] .detail-header {
+      position: absolute; z-index: 3; top: 104px; left: 40px; right: 40px; margin: 0; pointer-events: none;
+    }
+    @media (max-width: 768px) {
+      .detail-content[data-project-id="wolfrom-actuator"] .detail-inner { padding-top: 70px; }
+      .detail-content[data-project-id="wolfrom-actuator"] .detail-body.has-toc { row-gap: 0; }
+      .detail-content[data-project-id="wolfrom-actuator"] .detail-header { top: 128px; left: 24px; right: 72px; }
+      .detail-content[data-project-id="wolfrom-actuator"] .detail-close { top: 124px; }
+      .detail-content[data-project-id="wolfrom-actuator"] .detail-title { font-size: 28px; }
+      .detail-content[data-project-id="wolfrom-actuator"] .project-toc { top: 70px; }
+    }
     .detail-content[data-project-id="wolfrom-actuator"] .project-toc {
-      top: max(104px, calc(50svh - var(--toc-half-height, 240px) + 36px));
-      max-height: calc(100svh - 160px);
+      top: max(var(--wx-title-bottom, 104px), calc(50svh - var(--toc-half-height, 240px) + 36px));
+      max-height: calc(100svh - var(--wx-title-bottom, 104px) - 56px);
       overflow-y: auto;
       scrollbar-width: thin;
     }
@@ -3046,6 +3061,17 @@ function layoutReadingSections(description, evidenceSelectors, placeNode = () =>
   });
 }
 
+// Records where the Wolfrom title ends (relative to the page content) so Contents and the opening
+// camera frame can stay clear of it.
+function alignWolfromTitle() {
+  const content = document.getElementById('detailContent');
+  const header = content?.querySelector('.detail-header');
+  const inner = content?.querySelector('.detail-inner');
+  if (!header || !inner || content.dataset.projectId !== 'wolfrom-actuator') return;
+  inner.style.setProperty('--wx-title-bottom', `${Math.round(header.offsetTop + header.offsetHeight + 28)}px`);
+}
+window.addEventListener('resize', () => requestAnimationFrame(alignWolfromTitle));
+
 function layoutWolfromSections(description) {
   // Each section is a reading row, not a pair of unrelated newspaper columns.
   layoutReadingSections(description, {
@@ -3201,7 +3227,7 @@ const wolfromDescription = `
         <div class="wx-caption" aria-live="polite">
           <p class="wx-step"></p>
           <h3 class="wx-title">50.45:1 in a 104 mm package</h3>
-          <p class="wx-body">I’m designing and building a backdrivable actuator for a humanoid elbow, with the motor, gearbox, and controller in one package. The printed prototype checks the assembly before a load-rated metal build.</p>
+          <p class="wx-body">I am designing and building a backdrivable humanoid-elbow actuator with the motor, gearbox, and controller in one package. The printed prototype checks assembly before a load-rated metal build.</p>
           <span class="wx-spec">30 Nm continuous and 50 Nm peak design targets</span>
         </div>
         <div class="wx-progress" aria-hidden="true"><i></i></div>
@@ -3223,11 +3249,11 @@ const wolfromDescription = `
   <section class="latex-section" id="wolfrom-overview">
     <strong>Overview</strong><br><br>
     <dl class="project-summary">
-      <dt>Goal</dt><dd>A backdrivable actuator for a humanoid elbow, with the motor, gearbox, and controller in one package. Design targets are 30 Nm continuous and 50 Nm peak.</dd>
+      <dt>Goal</dt><dd>A backdrivable humanoid-elbow actuator with the motor, gearbox, and controller in one package, with design targets of 30 Nm continuous and 50 Nm peak.</dd>
       <dt>Design</dt><dd>A three-stage compound Wolfrom gearbox at <b>50.45:1</b> in a 104 mm diameter, 81 mm long package.</dd>
       <dt>My work</dt><dd>Ratio and tooth-count derivation, load cases, hand calculations for mesh forces and bearings, MATLAB efficiency screening, KISSsoft gear-pair rating, ANSYS housing and topology runs, and a printed V1 prototype for fit and assembly.</dd>
-      <dt>Key finding</dt><dd>The planet bearings reach their assumed static rating at about 45 Nm output, so the planet support is being revised before peak-load testing.</dd>
-      <dt>Next</dt><dd>Rate the three stages in KISSsoft and couple them into total forward and backdrive efficiency. If the model clears the targets, move to steel gears and aluminium housings, then bench-test on the proposed dynamometer.</dd>
+      <dt>Key finding</dt><dd>The planet bearings reach their assumed static rating at about 45 Nm output, so I am revising the planet support before any peak-load testing.</dd>
+      <dt>Next</dt><dd>Rate the three stages in KISSsoft and couple them into a total forward and backdrive efficiency. If that model clears the targets, I move to steel gears and aluminium housings and then bench-test on the proposed dynamometer.</dd>
     </dl>
     <table class="project-data-table">
       <thead><tr><th>Specification</th><th>Value</th></tr></thead>
@@ -3247,12 +3273,12 @@ const wolfromDescription = `
 
   <section class="latex-section" id="wolfrom-why">
     <strong>Why this project</strong><br><br>
-    Humanoid joints need high torque in a small package, but the usual answers trade away something important. Strain-wave drives are compact and stiff but lose 10 to 20 percent of input torque just to start moving. Low-ratio planetary drives are efficient and backdrivable but need a large motor. A Wolfrom gearbox (a three-ring compound planetary) reaches high ratios in one compact stage and stays backdrivable if its gear meshes are efficient enough. This project designs one at <b>50:1</b>, in the gap between the two.
+    Humanoid joints need high torque in a small package, and each common option compromises something important. Strain-wave drives are compact and stiff but lose 10 to 20 percent of input torque to start moving, while low-ratio planetary drives are efficient and backdrivable but need a large motor. A Wolfrom gearbox (a three-ring compound planetary) reaches high ratios in one compact stage and stays backdrivable while its gear meshes are efficient enough, so I am designing one at <b>50:1</b> to fill that gap.
     <details class="project-disclosure">
       <summary>Background</summary>
       <div class="project-disclosure-content">
         A Wolfrom drive has a sun gear, compound planets with three gear stages on one body, a fixed ring gear, and an output ring gear. The planet carrier floats and carries no net torque.<br><br>
-        Published robotic Wolfrom gearboxes sit at ratios around 80:1 and above, including R2poweR at 275:1, Bilateral Drive Gear at 102:1, and Omni at 125:1. Quasi-direct drives sit around 6:1 to 20:1. This design targets the band between those families.
+        Published robotic Wolfrom gearboxes sit at ratios around 80:1 and above, including R2poweR at 275:1, Bilateral Drive Gear at 102:1, and Omni at 125:1, while quasi-direct drives sit around 6:1 to 20:1. This design targets the band between them.
       </div>
     </details>
     <div class="wolfrom-gallery-slot"></div>
@@ -3279,24 +3305,24 @@ const wolfromDescription = `
     <details class="project-disclosure">
       <summary>Where the targets came from</summary>
       <div class="project-disclosure-content">
-        The 30 and 50 Nm figures are initial targets. A placeholder elbow case, using 5 kg held at 0.35 m with a 2 g dynamic factor, gives about 40 Nm including the forearm, which sits between them. A requirement derived from a specific arm is still to be written.
-        <p>The greater-than-80% forward-efficiency figure is a target, not a completed three-stage KISSsoft result or a measured result. The next analysis will rate the stages separately and combine them for the overall prediction. The backdrive target is at least 75% at the continuous load case of 30 Nm and 30 rpm. At that point, joint power is 94.2 W, and 80% forward efficiency allows 23.6 W of mechanical loss. Giving backdriving the same loss budget leaves at least 70.7 W reaching the motor shaft.</p>
+        The 30 and 50 Nm figures are initial targets. I used a placeholder elbow case of 5 kg held at 0.35 m with a 2 g dynamic factor, which gives about 40 Nm including the forearm and falls between the two. I still need to derive the requirement from a specific arm.
+        <p>The greater-than-80% forward-efficiency figure is a target, not a completed three-stage KISSsoft result or a measurement. The backdrive target is at least 75% at the continuous load case of 30 Nm and 30 rpm. Joint power there is 94.2 W, so 80% forward efficiency allows 23.6 W of mechanical loss, and applying the same loss budget to backdriving leaves at least 70.7 W at the motor shaft.</p>
         $$\\eta_{b,\\min}=1-\\frac{P_{\\mathrm{loss,max}}}{P_j}=1-\\left(\\frac{1}{0.80}-1\\right)=0.75$$
-        <p>This is a chosen loss-budget requirement, not an identity relating forward and backward efficiency. As a screening check, the MATLAB rolling-power model gives 75.7% backdrive efficiency at 80% forward efficiency when the sun mesh is assumed to be 98% efficient and both ring meshes 98.64% efficient. Those assumptions still need to be checked against the stage-level KISSsoft results. The target covers loaded gearbox efficiency, not motor or inverter electrical losses, and does not replace a separate breakaway-torque check.</p>
+        <p>This is a chosen loss-budget requirement, not an identity relating forward and backward efficiency. As a screening check, the MATLAB rolling-power model gives 75.7% backdrive efficiency at 80% forward efficiency when I assume 98% efficiency at the sun mesh and 98.64% at both ring meshes, and the stage-level KISSsoft results still need to confirm those assumptions. The target covers only loaded gearbox efficiency, so it excludes motor and inverter electrical losses and does not replace a separate breakaway-torque check.</p>
       </div>
     </details>
   </section>
 
   <section class="latex-section" id="wolfrom-first-principles">
     <strong>First principles</strong><br><br>
-    In a Wolfrom gearbox, power circulating through the two ring-gear meshes reaches 8 to 9 times the output power. A small loss per mesh is multiplied, so mesh efficiency decides overall efficiency and whether the joint can be backdriven.
+    In a Wolfrom gearbox, the power circulating through the two ring-gear meshes reaches 8 to 9 times the output power, which amplifies even a small loss per mesh, so mesh efficiency decides both overall efficiency and whether the joint can be backdriven.
     $$\\eta = \\frac{1 + \\eta_a \\eta_s (i_{sc}-1)}{i(1 - \\eta_a \\eta_b i_0)}$$
     Here $i_{sc}=5.606$, $i_0=0.889$, $i=50.45$, and $\\eta_s$, $\\eta_a$, and $\\eta_b$ are the sun, fixed-ring, and output-ring mesh efficiencies.
     <figure class="project-feature-figure">
       <div class="matlab-panel" style="--panel-x: 0%; --panel-y: 0%; --panel-width: 218.1818%; --panel-ratio: 11 / 8"><img src="/assets/wolfrom-load-analysis-clear.png" alt="MATLAB prediction of forward and backdrive efficiency versus ring-mesh efficiency" width="1200" height="1200" loading="lazy" decoding="async" data-lightbox-caption="Full MATLAB analysis sheet: forward and backdrive efficiency, circulating mesh power, planet forces and bearing loads, gear-root stress, and motor envelope."></div>
       <figcaption>Forward and backdrive efficiency versus ring-mesh efficiency. Open the figure for the full MATLAB sheet.</figcaption>
       <div class="matlab-panel" style="--panel-x: -80.3%; --panel-y: 0%; --panel-width: 184.6154%; --panel-ratio: 13 / 8"><img src="/assets/wolfrom-load-analysis-clear.png" alt="MATLAB power-flow calculation showing the fixed-ring and output-ring meshes carry nine and eight times output power" width="1200" height="1200" loading="lazy" decoding="async"></div>
-      <figcaption>Circulating power in the two ring meshes, showing why small mesh losses matter so much.</figcaption>
+      <figcaption>Circulating power in the two ring meshes, which amplifies small mesh losses.</figcaption>
     </figure>
     <table class="project-data-table project-small-table">
       <thead><tr><th>Efficiency of each ring mesh</th><th>Forward</th><th>Backdriven</th></tr></thead>
@@ -3312,14 +3338,14 @@ const wolfromDescription = `
       <div class="project-disclosure-content">
         Tooth counts are sun 33, planet sun-stage 57, planet fixed-ring stage 27, planet output-ring stage 25, fixed ring 72, and output ring 75. Modules 0.5, 1.0, and 0.9 mm give all three meshes the same 22.5 mm centre distance.<br><br>
         $i_{sc}=1+\\frac{57}{33}\\cdot\\frac{72}{27}=5.606$, $i_0=\\frac{72}{27}\\cdot\\frac{25}{75}=0.889$, and $i=\\frac{i_{sc}}{1-i_0}=50.45$.<br><br>
-        In the frame rotating with the carrier, the sun and output ring feed power into the planet while the fixed ring takes it out. Applying one efficiency per mesh gives the forward expression above. Backdriving follows $\\eta'=\\frac{i(\\eta_a-i_0/\\eta_b)}{(i_{sc}-1)/\\eta_s+\\eta_a}$, which reaches zero when $\\eta_a\\eta_b=i_0$. Rolling power relative to output power is 8 at the output-ring mesh and 9 at the fixed-ring mesh.
+        In the frame rotating with the carrier, the sun and output ring feed power into the planet while the fixed ring takes it out, so applying one efficiency per mesh gives the forward expression above. Backdriving follows $\\eta'=\\frac{i(\\eta_a-i_0/\\eta_b)}{(i_{sc}-1)/\\eta_s+\\eta_a}$, which reaches zero when $\\eta_a\\eta_b=i_0$. Rolling power relative to output power is 8 at the output-ring mesh and 9 at the fixed-ring mesh.
       </div>
     </details>
   </section>
 
   <section class="latex-section" id="wolfrom-packaging">
     <strong>Packaging and gear train</strong><br><br>
-    The motor rotor drives the sun directly. Three compound planets mesh with the sun, a fixed ring gear, and an output ring gear with three more teeth. The output ring rides on one thin-section four-point bearing. The motor controller mounts behind the motor and reads rotor angle from a magnet on the shaft.
+    The motor rotor drives the sun directly, and three compound planets mesh with the sun, a fixed ring gear, and an output ring gear with three more teeth. The output ring rides on a single thin-section four-point bearing. The motor controller mounts behind the motor and reads rotor angle from a magnet on the shaft.
     <figure class="project-feature-figure">
       <img src="/assets/half-section-clear.png" alt="Cross-section through the actuator axis showing sun, planets, both ring gears, output bearing, motor and controller" width="1024" height="812" loading="lazy" decoding="async">
       <figcaption>Axial section through the drivetrain, output support, motor, and controller.</figcaption>
@@ -3365,7 +3391,7 @@ const wolfromDescription = `
       <div class="matlab-panel" style="--panel-y: -100%"><img src="/assets/wolfrom-load-analysis-clear.png" alt="MATLAB free-body diagram of tangential mesh forces and bearing reactions along the compound planet axis" width="1200" height="1200" loading="lazy" decoding="async"></div>
       <figcaption>Mesh forces and bearing reactions at 50 Nm output, from the same MATLAB calculation.</figcaption>
     </figure>
-    The fixed ring and output ring push on each planet in opposite directions, 8 mm apart along its axis. The forces nearly cancel, so the carrier carries no net torque. They still leave a tilting moment on every planet: <b>4.2 Nm at 50 Nm output</b>.
+    The fixed ring and output ring push on each planet in opposite directions, 8 mm apart along its axis. Those forces nearly cancel, so the carrier carries no net torque, although they still apply a tilting moment of <b>4.2 Nm at 50 Nm output</b> to every planet.
     <details class="project-disclosure">
       <summary>Mesh forces per planet at 50 Nm</summary>
       <div class="project-disclosure-content">Sun mesh: <b>40 N</b>. Fixed-ring mesh: <b>454 N</b>. Output-ring mesh: <b>494 N</b> tangential. Radial components are these values multiplied by $\\tan 20^\\circ$.</div>
@@ -3375,9 +3401,9 @@ const wolfromDescription = `
   <section class="latex-section" id="wolfrom-hand-calculations">
     <strong>Hand calculations</strong><br><br>
     <div class="project-detail-card-grid">
-      <article class="project-detail-card"><b>Planet bearings are the limiting part.</b> Worst bearing load is <b>235 N at 30 Nm</b> and <b>392 N at 50 Nm</b> against a static rating of about 350 N. Static safety is 1.5 continuous and 0.9 at peak. The rating is reached at 45 Nm output.</article>
-      <article class="project-detail-card"><b>Gear teeth have margin.</b> Nominal root stress at 50 Nm is 269 MPa on the output-ring stage, 261 MPa on the fixed-ring stage, and 44 MPa on the sun stage. Nominal contact stress is 740, 686, and 415 MPa.</article>
-      <article class="project-detail-card"><b>The carrier is not unloaded.</b> Its two plates are twisted against each other by 40% of output torque: 20 Nm at 50 Nm output.</article>
+      <article class="project-detail-card"><b>Planet bearings are the limiting part.</b> The worst bearing load is <b>235 N at 30 Nm</b> and <b>392 N at 50 Nm</b>, against a static rating of about 350 N, which sets static safety at 1.5 continuous and 0.9 at peak, with the rating reached at 45 Nm output.</article>
+      <article class="project-detail-card"><b>Gear teeth have margin.</b> Nominal root stress at 50 Nm is 269 MPa on the output-ring stage, 261 MPa on the fixed-ring stage, and 44 MPa on the sun stage, and nominal contact stress is 740, 686, and 415 MPa.</article>
+      <article class="project-detail-card"><b>The carrier is not unloaded.</b> Its two plates react 40% of output torque against each other, which is 20 Nm at 50 Nm output.</article>
     </div>
     <figure class="project-feature-figure">
       <div class="matlab-panel" style="--panel-x: -84.6154%; --panel-y: -100%; --panel-width: 184.6154%; --panel-ratio: 13 / 8"><img src="/assets/wolfrom-load-analysis-clear.png" alt="MATLAB planet-bearing reaction versus output torque: 235 newtons continuous and 392 newtons peak against a 350 newton static rating" width="1200" height="1200" loading="lazy" decoding="async"></div>
@@ -3386,15 +3412,15 @@ const wolfromDescription = `
     <details class="project-disclosure">
       <summary>Method and caveats</summary>
       <div class="project-disclosure-content">
-        The planet is treated as a beam on two bearings 14 mm apart, with tooth forces at three mesh planes. Root stress uses the Lewis formula and contact stress uses the Hertz line-contact formula, without ISO 6336 load factors. Those are the next step.<br><br>
-        The 604ZZ static rating is a typical catalogue value and remains to be confirmed for the bearings purchased. The calculations are scripted in MATLAB so every number regenerates from the gear table. One design consequence under evaluation is replacing the planet ball bearings with needle rollers on a fixed pin.
+        I treated the planet as a beam on two bearings 14 mm apart, with tooth forces at three mesh planes. Root stress uses the Lewis formula and contact stress uses the Hertz line-contact formula, both without ISO 6336 load factors, which are the next step.<br><br>
+        The 604ZZ static rating is a typical catalogue value, so I still need to confirm it for the purchased bearings. The calculations are scripted in MATLAB, so every number regenerates from the gear table.
       </div>
     </details>
   </section>
 
   <section class="latex-section" id="wolfrom-simulation">
     <strong>Simulation</strong><br><br>
-    The first screening pass checked the integrated housing load path, topology, and a manually configured compound gear pair. Next, I will rate the three gear stages separately in KISSsoft and couple their results through the compound-train kinematics to predict total forward and backdrive efficiency. Profile-shift optimisation and the remaining contact, carrier-stiffness, roundness, and modal checks follow that system-level efficiency gate.
+    The first screening pass checked the integrated housing load path, topology, and a manually configured compound gear pair. Next, I will rate the three gear stages separately in KISSsoft and couple their results through the compound-train kinematics to predict total forward and backdrive efficiency. That system-level efficiency is the gate for profile-shift optimisation and the remaining contact, carrier-stiffness, roundness, and modal checks.
     <div class="project-inline-grid">
       <figure>
         <img src="/assets/wolfrom-ansys-topology-result.png" alt="ANSYS topology density result for the Wolfrom housing" width="2048" height="852" loading="lazy" decoding="async">
@@ -3408,7 +3434,7 @@ const wolfromDescription = `
     <details class="project-disclosure">
       <summary>Boundary conditions</summary>
       <div class="project-disclosure-content">
-        The housing runs model the integrated ring-gear housing on its own. The static structural case restrains it with a fixed support and a frictionless support, then applies two 50 N&middot;m moments and a 500 N output-bearing radial load. The topology run uses that housing as its design region, minimises compliance with 50% of the mass retained, applies a member-size manufacturing constraint, and protects an exclusion region. The gears, bearings, and carrier are not in these runs, so tooth contact and load sharing between planets are outside their scope.
+        The housing runs model the integrated ring-gear housing in isolation. The static structural case restrains it with a fixed support and a frictionless support, then applies two 50 N&middot;m moments and a 500 N output-bearing radial load. The topology run uses that housing as its design region, minimises compliance with 50% of the mass retained, applies a member-size manufacturing constraint, and protects an exclusion region. The gears, bearings, and carrier are absent from these runs, so tooth contact and load sharing between planets are outside their scope.
         <div class="project-inline-grid">
           <figure>
             <img src="/assets/wolfrom-ansys-load-case.png" alt="ANSYS static structural setup for the ring gear housing with fixed support, frictionless support, two 50 newton-metre moments, and a 500 newton output bearing radial load" width="1229" height="669" loading="lazy" decoding="async">
@@ -3441,15 +3467,15 @@ const wolfromDescription = `
 
   <section class="latex-section" id="wolfrom-design-decisions">
     <strong>Design decisions</strong><br><br>
-    <p><b>Different modules on the two ring stages.</b> Module 1.0 on the 72/27 fixed-ring mesh and module 0.9 on the 75/25 output-ring mesh both give a 22.5 mm centre distance. The compound planet can therefore engage both rings using standard, unshifted teeth while producing the 50.45:1 ratio. Mesh efficiency and profile-shift optimization remain separate analysis tasks. The geometry and ratio derivation are in <a href="#wolfrom-first-principles" data-project-section="wolfrom-first-principles">First principles</a>.</p>
-    <p><b>Revising the planet support before peak-load testing.</b> Two 604ZZ bearings fit the package, but the calculated worst reaction is 392 N at 50 Nm output against an assumed 350 N static rating. On that assumption, the support falls short at peak. A fixed-pin and needle-roller arrangement is under evaluation; no replacement has been selected, and the peak-torque target remains unvalidated. See the reactions and rating caveats in <a href="#wolfrom-hand-calculations" data-project-section="wolfrom-hand-calculations">Hand calculations</a>.</p>
-    <p><b>Connecting the carrier plates structurally.</b> The floating carrier carries no net external torque, but its plates still react 20 Nm against each other at 50 Nm output. The posts must transfer that torque as well as set the stack height, so their joints and stiffness need a carrier wind-up check. The existing housing screening does not establish carrier stiffness. See the mesh forces in <a href="#wolfrom-load-cases" data-project-section="wolfrom-load-cases">Load cases</a> and the planned checks in <a href="#wolfrom-simulation" data-project-section="wolfrom-simulation">Simulation</a>.</p>
-    <p><b>Designing the printed parts for assembly.</b> Bearing bores, shaft ends, and press-fits carry lead-in chamfers so parts self-align as the stack goes together. Bottom edges have first-layer chamfers that absorb elephant's foot and keep mating faces true. Each part is oriented so its gear teeth, bores, and load paths print in the strongest layer direction with the least support. Fasteners use common screw sizes with clear tool access, and the stack assembles from one direction. The printed checks are in <a href="#wolfrom-build" data-project-section="wolfrom-build">Build</a>.</p>
+    <p><b>Different modules on the two ring stages.</b> Module 1.0 on the 72/27 fixed-ring mesh and module 0.9 on the 75/25 output-ring mesh both give a 22.5 mm centre distance, so the compound planet engages both rings with standard, unshifted teeth and still produces the 50.45:1 ratio. Mesh efficiency and profile-shift optimization remain separate analysis tasks. The geometry and ratio derivation are in <a href="#wolfrom-first-principles" data-project-section="wolfrom-first-principles">First principles</a>.</p>
+    <p><b>Revising the planet support before peak-load testing.</b> Two 604ZZ bearings fit the package, but the calculated worst reaction is 392 N at 50 Nm output against an assumed 350 N static rating, so on that assumption the support falls short at peak. I am evaluating a fixed-pin and needle-roller arrangement, although no replacement has been selected yet, and the peak-torque target remains unvalidated. See the reactions and rating caveats in <a href="#wolfrom-hand-calculations" data-project-section="wolfrom-hand-calculations">Hand calculations</a>.</p>
+    <p><b>Connecting the carrier plates structurally.</b> The floating carrier carries no net external torque, but its plates still react 20 Nm against each other at 50 Nm output. The posts must transfer that torque as well as set the stack height, so their joints and stiffness need a carrier wind-up check, and the existing housing screening does not establish carrier stiffness. See the mesh forces in <a href="#wolfrom-load-cases" data-project-section="wolfrom-load-cases">Load cases</a> and the planned checks in <a href="#wolfrom-simulation" data-project-section="wolfrom-simulation">Simulation</a>.</p>
+    <p><b>Designing the printed parts for assembly.</b> Bearing bores, shaft ends, and press-fits carry lead-in chamfers so parts self-align during stacking, and bottom edges have first-layer chamfers that absorb elephant's foot and keep mating faces true. I oriented each part so its gear teeth, bores, and load paths print in the strongest layer direction with the least support. Fasteners use common screw sizes with clear tool access, and the whole stack assembles from one direction. The printed checks are in <a href="#wolfrom-build" data-project-section="wolfrom-build">Build</a>.</p>
   </section>
 
   <section class="latex-section" id="wolfrom-build">
     <strong>Build</strong><br><br>
-    Housings and the carrier are printed in FDM, while the gears are printed in SLA resin. I use the printed assembly to check gear timing, bearing fits, stack height, and access before committing those interfaces to metal parts.
+    The housings and carrier are FDM prints and the gears are SLA resin. I use the printed assembly to check gear timing, bearing fits, stack height, and access before committing those interfaces to metal parts.
     <div class="wolfrom-build-board" aria-label="Physical prototype and assembly photos">
       <figure>
         <img src="/assets/wolfrom-bench.jpg" alt="Aadit assembling the printed Wolfrom prototype at the workshop bench" loading="lazy" decoding="async">
@@ -3467,20 +3493,20 @@ const wolfromDescription = `
     <details class="project-disclosure">
       <summary>Prototype iteration</summary>
       <div class="project-disclosure-content">
-        The printed hardware exposed gear-mesh clearance, stack-height, bearing placement, gear timing, fastener access, and split-ring assembly problems while those changes were still cheap. The prototypes are geometry and assembly checks, not load-rated actuator validation.
+        The printed hardware exposed gear-mesh clearance, stack-height, bearing placement, gear timing, fastener access, and split-ring assembly problems while they were still cheap to fix. These prototypes are geometry and assembly checks, not load-rated actuator validation.
       </div>
     </details>
   </section>
 
   <section class="latex-section" id="wolfrom-test">
     <strong>Test and validation</strong><br><br>
-    The planned bench couples the actuator to an output torque transducer and a separately controlled load motor. In forward operation the actuator drives while the load motor absorbs power; for backdrive testing the load motor drives the joint while the actuator resists it. Both units mount on an aligned base, with flexible couplings, a guarded shaft, and a defined path for regenerated energy.
+    The planned bench couples the actuator to an output torque transducer and a separately controlled load motor. In forward operation the actuator drives while the load motor absorbs power, and for backdrive testing the roles reverse. Both units mount on an aligned base with flexible couplings, a guarded shaft, and a defined path for regenerated energy.
     <figure class="project-feature-figure dyno-diagram">
       <img src="/assets/wolfrom-dyno.svg" alt="Proposed dyno layout showing the actuator, output torque transducer, load motor, guarded couplings, DC energy path, and synchronized measurements" width="720" height="650" loading="lazy" decoding="async">
       <figcaption>Proposed instrumentation layout, not a completed or validated bench. Sensor models and the input-torque arrangement remain to be selected.</figcaption>
     </figure>
-    <p>The continuous validation point is 30 Nm at 30 rpm, or 94.2 W at the joint. The gearbox goals are above 80% forward efficiency and at least 75% backdrive efficiency. Torque, angle, temperature, and electrical power need a shared time base so each operating point can be compared with the MATLAB and KISSsoft predictions.</p>
-    <p>The load side must support the joint’s torque and speed range in both directions. A reduction stage can be added if the chosen load motor cannot provide 30 Nm continuously and the required peak torque directly; sensor placement stays on the actuator side of that stage.</p>
+    <p>The continuous validation point is 30 Nm at 30 rpm, or 94.2 W at the joint, and the gearbox goals are above 80% forward efficiency and at least 75% backdrive efficiency. Torque, angle, temperature, and electrical power need a shared time base so I can compare each operating point against the MATLAB and KISSsoft predictions.</p>
+    <p>The load side must cover the joint’s torque and speed range in both directions. If the chosen load motor cannot provide 30 Nm continuously and the required peak torque directly, I can add a reduction stage and keep the sensors on the actuator side of it.</p>
     <details class="project-disclosure">
       <summary>Measurements and instrumentation</summary>
       <div class="project-disclosure-content">
@@ -3495,9 +3521,9 @@ const wolfromDescription = `
             <tr><td>Acquisition</td><td>Synchronized logger with sensor scaling, timestamps, and controller telemetry</td><td>Repeatable runs and uncertainty estimates</td></tr>
           </tbody>
         </table>
-        <p>Output torque and DC power alone measure the integrated actuator, not isolated gearbox efficiency. The motor is inside this package, so accessing input torque requires a dedicated fixture or a calibrated motor-loss characterization. Controller current is useful telemetry but is not a substitute for measured shaft power.</p>
+        <p>Output torque and DC power alone measure the integrated actuator, not isolated gearbox efficiency. Since the motor is inside this package, measuring input torque requires either a dedicated fixture or a calibrated motor-loss characterization. Controller current is useful telemetry, although it cannot substitute for measured shaft power.</p>
         $$P_{\\mathrm{shaft}}=T\\omega,\\qquad \\eta_f=\\frac{|T_o\\omega_o|}{|T_i\\omega_i|},\\qquad \\eta_b=\\frac{|T_i\\omega_i|}{|T_o\\omega_o|}$$
-        <p>The two efficiency expressions apply to separate steady-state runs with opposite power flow. Near zero speed, power ratios become unreliable, so breakaway torque is reported directly in Nm.</p>
+        <p>The two efficiency expressions apply to separate steady-state runs with opposite power flow. Near zero speed the power ratios become unreliable, so breakaway torque is reported directly in Nm.</p>
       </div>
     </details>
     <details class="project-disclosure">
@@ -3513,8 +3539,8 @@ const wolfromDescription = `
             <tr><td>Thermal and endurance</td><td>Hold the continuous case to thermal stabilization, then cycle the specified duty</td><td>Temperature rise, drift, wear, and pre/post-test backlash</td></tr>
           </tbody>
         </table>
-        <p>The printed gears are limited to the 5 Nm prototype case; the 30 and 50 Nm targets are for a load-rated build after the bearing support issue is resolved. Peak torque needs a defined duration and thermal limit before testing. Initial runs stay at reduced torque and speed while the fixture, sensor signs, limits, and energy path are checked.</p>
-        <p>The power supply cannot be assumed to absorb regeneration. The drive and braking hardware need to be configured for the chosen bus and duty, following the <a href="https://docs.odriverobotics.com/v/latest/manual/hardware-config.html" target="_blank" rel="noopener">ODrive hardware guidance</a>. Measurement design follows the distinction between mechanical and electrical power described by <a href="https://www.hbkworld.com/en/knowledge/resource-center/whitepapers/torque-as-parameter-for-better-efficiency-determination-of-electric-motors-and-generators" target="_blank" rel="noopener">HBK’s efficiency measurement guidance</a>.</p>
+        <p>The printed gears are limited to the 5 Nm prototype case, and the 30 and 50 Nm targets apply to a load-rated build once the bearing support problem is resolved. Peak torque also needs a defined duration and thermal limit before I test it, and initial runs stay at reduced torque and speed while I verify the fixture, sensor signs, limits, and energy path.</p>
+        <p>I cannot assume the power supply will absorb regeneration, so I need to configure the drive and braking hardware for the chosen bus and duty, following the <a href="https://docs.odriverobotics.com/v/latest/manual/hardware-config.html" target="_blank" rel="noopener">ODrive hardware guidance</a>. The measurement design follows the distinction between mechanical and electrical power described by <a href="https://www.hbkworld.com/en/knowledge/resource-center/whitepapers/torque-as-parameter-for-better-efficiency-determination-of-electric-motors-and-generators" target="_blank" rel="noopener">HBK’s efficiency measurement guidance</a>.</p>
         <p>No measured efficiency, thermal, or endurance results are claimed yet.</p>
       </div>
     </details>
@@ -3523,9 +3549,9 @@ const wolfromDescription = `
   <section class="latex-section" id="wolfrom-failures">
     <strong>What went wrong</strong><br><br>
     <ul class="project-result-list">
-      <li>The first torque target came from a paper describing a different gearbox at 125:1 and 120 Nm. The load cases were reset before simulation.</li>
-      <li>The planet bearings were sized by fit, without a load calculation. The hand calculation put them below their static rating at peak torque.</li>
-      <li>The fixed housing's ring gear was first held by bolt pillars and a thin vent skin. It read as two parts in CAD, which exposed the missing load path.</li>
+      <li>The first torque target came from a paper describing a different gearbox at 125:1 and 120 Nm, so I reset the load cases before simulation.</li>
+      <li>I originally sized the planet bearings by fit, without a load calculation, and the later hand calculation put them below their static rating at peak torque.</li>
+      <li>The fixed housing's ring gear was first held by bolt pillars and a thin vent skin. CAD showed it as two parts, which exposed the missing load path.</li>
     </ul>
   </section>
 
@@ -3543,7 +3569,7 @@ const wolfromDescription = `
         <tr><td>Envelope</td><td><span class="project-placeholder">To be added</span></td><td>104 mm diameter, 81 mm long</td></tr>
       </tbody>
     </table>
-    The next step is to rate each gear stage separately in KISSsoft, then combine the stage efficiencies through the Wolfrom train to predict total forward and backdrive efficiency. This gives a stronger theoretical efficiency estimate than the screening hand calculation. If the coupled model clears the efficiency targets, I will move to a production-intent model with steel gears and aluminium housings. The printed V1 remains an assembly and fit prototype, not a load-rated design.
+    Next, I will rate each gear stage separately in KISSsoft and combine the stage efficiencies through the Wolfrom train to predict total forward and backdrive efficiency, a stronger theoretical estimate than the screening hand calculation. If the coupled model clears the efficiency targets, I will move to a production-intent model with steel gears and aluminium housings. Until then the printed V1 remains an assembly and fit prototype, not a load-rated design.
   </section>`;
 
 
@@ -3556,18 +3582,18 @@ const formulaElectricCoolingDescription = `
     </figure>
     <dl class="project-summary">
       <dt>Goal</dt><dd>Keep Berkeley Formula Electric's 504 V nominal / 588 V peak SN6 accumulator (420 cells in ten 14s3p modules) under a <b>57 °C design target</b> through a <b>25-minute endurance run at 35 °C ambient</b>.</dd>
-      <dt>Design</dt><dd>Five Sanyo Denki exhaust fans, each pulling air through two modules in series, with a passive louvred inlet and a 15 mm exhaust air gap. Chosen over push-pull, intake-only, and conduction to the casing.</dd>
-      <dt>My work</dt><dd>Heat balance and load cases from SN5 data and 2025 FSAE energy results, MATLAB fan and thermal models, transient ANSYS Icepak CFD, and the inlet and air-gap geometry.</dd>
-      <dt>Result</dt><dd>At the 50 A design case the hottest cell reaches 54.6 °C after 25 minutes, 2.4 K under target. Cell-to-cell spread is 13.9 K against a 5 K goal. See <a href="#sn6-transient" data-project-section="sn6-transient">Transient CFD</a>.</dd>
-      <dt>Next</dt><dd>Redistribute flow through the divider and inlet, then validate with endurance replay, airflow, and cooldown tests.</dd>
+      <dt>Design</dt><dd>Five Sanyo Denki exhaust fans, each pulling air through two modules in series, with a passive louvred inlet and a 15 mm exhaust air gap. We chose this over push-pull, intake-only, and conduction to the casing.</dd>
+      <dt>My work</dt><dd>I derived the heat balance and load cases from SN5 data and 2025 FSAE energy results and built the MATLAB fan and thermal models, the transient ANSYS Icepak CFD, and the inlet and air-gap geometry.</dd>
+      <dt>Result</dt><dd>At the 50 A design case the hottest cell reaches 54.6 °C after 25 minutes, 2.4 K under target. Cell-to-cell spread is still 13.9 K against a 5 K goal. See <a href="#sn6-transient" data-project-section="sn6-transient">Transient CFD</a>.</dd>
+      <dt>Next</dt><dd>Redistribute flow through the divider and inlet, then validate it with endurance replay, airflow, and cooldown tests.</dd>
     </dl>
 
     </section>
     <section class="latex-section" id="sn6-requirements">
     <strong>Requirements</strong><br><br>
     The hottest cell must stay below <b>57 °C</b>, a 5% margin under the 60 °C rules limit. The rules measure that limit at the negative terminal (EV.7.5.2), and 60 °C is also the RS50 charge-temperature ceiling.<br><br>
-    The pack has to hold that through a full <b>25-minute endurance at 35 °C ambient</b>. The 35 °C ambient is deliberate margin: Michigan reaches about 30 °C, and the pack sits over hot asphalt in an enclosed bay.<br><br>
-    Cell-to-cell spread should stay under 5 K across a branch. Two modules in series already give about 4 K of air heating from inlet to exhaust, so the layout leaves little room for uneven flow. The load cases behind the design and stress currents are derived in <a href="#sn6-first-principles" data-project-section="sn6-first-principles">First-Principles Thermal Model</a>.<br><br>
+    The pack must hold that through a full <b>25-minute endurance at 35 °C ambient</b>. We chose 35 °C ambient as deliberate margin, since Michigan reaches about 30 °C and the pack sits over hot asphalt in an enclosed bay.<br><br>
+    Cell-to-cell spread should stay under 5 K across a branch, a tight goal because two modules in series already add about 4 K of air heating from inlet to exhaust, leaving little room for uneven flow. The design and stress load cases are derived in <a href="#sn6-first-principles" data-project-section="sn6-first-principles">First-Principles Thermal Model</a>.<br><br>
     <table class="project-data-table">
       <thead><tr><th>Requirement</th><th>Target</th><th>Current prediction</th></tr></thead>
       <tbody>
@@ -3581,44 +3607,44 @@ const formulaElectricCoolingDescription = `
     </section>
     <section class="latex-section" id="sn6-first-principles">
     <strong>First-Principles Thermal Model</strong><br><br>
-    The flow path set the thermal result. Five high-static-pressure fans offer theoretical capacity. The cells, inlet perforations, divider, and exhaust gaps still create a restrictive path with easy bypass routes.<br><br>
+    Five high-static-pressure fans provide plenty of nominal capacity, but the cells, inlet perforations, divider, and exhaust gaps form a restrictive path with easy bypass routes, so the flow path sets the thermal result.<br><br>
     I started with measured SN5 current, converted it to cell heating, and integrated the transient energy balance:
     $$C_{\\mathrm{cell}}\\frac{\\mathrm{d}T}{\\mathrm{d}t}
     = I_{\\mathrm{cell}}(t)^2 R_{\\mathrm{eff}} - \\dot{Q}_{\\mathrm{conv}}$$
-    With three cells in parallel, $I_{\\mathrm{cell}}=I_{\\mathrm{pack}}/3$. Using 85 J/K per cell and $R_{\\mathrm{eff}}\\approx8.5\\,\\mathrm{m}\\Omega$ gives <b>0.61 K predicted rise against 0.6 K measured</b> on available SN5 data. This checks heat generation within sensor resolution; SN6 hardware validation remains ahead.<br><br>
-    The passive time constant is roughly 3.1 hours, so thermal mass buffers the short event. The sealed-pack estimate reaches the 60 °C endurance limit near <b>39 A RMS</b>; at 60 A, it reaches the limit in 10.5 minutes.<br><br>
+    With three cells in parallel, $I_{\\mathrm{cell}}=I_{\\mathrm{pack}}/3$. Using 85 J/K per cell and $R_{\\mathrm{eff}}\\approx8.5\\,\\mathrm{m}\\Omega$ gives <b>0.61 K predicted rise against 0.6 K measured</b> on SN5 data. That checks heat generation to within sensor resolution, pending confirmation on SN6 hardware.<br><br>
+    The passive time constant is roughly 3.1 hours, so the pack's thermal mass buffers a short event. A sealed pack reaches the 60 °C endurance limit near <b>39 A RMS</b>, and at 60 A in 10.5 minutes.<br><br>
     <figure class="project-feature-figure">
       <img src="/assets/formula-cooling-thermal-handcalcs.jpg" alt="Original hand calculations for cell heat, branch thermal capacitance, SN5 temperature-rise correlation, and the no-fan current limit" width="1322" height="1734" loading="lazy" decoding="async">
-      <figcaption>Original heat-balance notes, including the SN5 correlation and the time-to-limit calculation.</figcaption>
+      <figcaption>My original heat-balance notes, including the SN5 correlation and the time-to-limit calculation.</figcaption>
     </figure>
     <details class="project-disclosure">
       <summary>Heat generation, thermal mass, and the no-fan limit</summary>
       <div class="project-disclosure-content">
-        At 60 A pack current, each parallel cell carries 20 A and dissipates 3.4 W. That gives approximately 286 W per 84-cell branch and 1.43 kW across the pack.
+        At 60 A pack current, each parallel cell carries 20 A and dissipates 3.4 W, for about 286 W per 84-cell branch and 1.43 kW across the pack.
         $$\\begin{gathered}
         \\dot{Q}_{\\mathrm{branch}}=84\\left(\\frac{I_{\\mathrm{pack}}}{3}\\right)^2R_{\\mathrm{eff}}\\\\
         C_{\\mathrm{branch}}=84(85)=7140\\,\\mathrm{J\\,K^{-1}}
         \\end{gathered}$$
-        For an initially 35 °C cell, the 25 K allowance to 60 °C sets the adiabatic 25-minute current bound:
+        Starting a cell at 35 °C, the 25 K of headroom to 60 °C sets the adiabatic 25-minute current bound:
         $$I_{\\mathrm{pack,lim}}=3\\sqrt{\\frac{C_{\\mathrm{cell}}\\Delta T}{R_{\\mathrm{eff}}t}}
         \\approx38.7\\,\\mathrm{A}$$
-        Without a fan, heat leaves through the cell can, across the enclosed air to the wall by natural convection and radiation in parallel, through the wall, and out to ambient. Per branch, in K/W:
+        Without a fan, heat must pass through the cell can, cross the enclosed air to the wall (natural convection and radiation in parallel), conduct through the wall, and reject to ambient. Per branch, in K/W:
         $$R_{\\mathrm{tot}}\\approx\\underbrace{0.01}_{\\text{core to can}}+\\underbrace{\\left(\\tfrac{1}{2.16}+\\tfrac{1}{2.03}\\right)^{-1}}_{\\text{convection}\\,\\parallel\\,\\text{radiation}}+\\underbrace{0.05}_{\\text{wall}}+\\underbrace{0.43}_{\\text{wall to ambient}}\\approx1.54$$
-        That is a conductance of about 0.65 W/K and $\\tau=C_{\\mathrm{branch}}/(UA)\\approx3.1\\,\\mathrm{h}$, so passive loss removes only about 3% of the 60 A heat over 25 minutes. Treating the sealed pack as adiabatic is fair. The bound is sensitive to starting temperature and effective resistance.<br><br>
+        This gives a conductance of about 0.65 W/K and $\\tau=C_{\\mathrm{branch}}/(UA)\\approx3.1\\,\\mathrm{h}$, so passive loss removes about 3% of the 60 A heat over 25 minutes, which justifies treating the sealed pack as adiabatic. The bound remains sensitive to starting temperature and effective resistance.<br><br>
       </div>
     </details>
     <details class="project-disclosure">
       <summary>Endurance energy and RMS load-case derivation</summary>
       <div class="project-disclosure-content">
-        The pack's nominal 140s3p configuration gives 504 V, 14.85 Ah, and approximately 7.48 kWh. Dividing that energy by a 25-minute run gives approximately 18 kW average power and 35.6 A average current. Heating follows the squared current waveform:
+        The pack's nominal 140s3p configuration gives 504 V, 14.85 Ah, and about 7.48 kWh. Over a 25-minute run, that is about 18 kW average power and 35.6 A average current, but heating follows the squared current waveform:
         $$\\begin{gathered}
         I_{\\mathrm{RMS}}=\\sqrt{\\frac{1}{t}\\int_0^t I(\\xi)^2\\,\\mathrm{d}\\xi}\\\\
         F_I=\\frac{I_{\\mathrm{RMS}}}{I_{\\mathrm{avg}}}
         \\end{gathered}$$
-        Average current understates heating, so each case starts from event energy. The 2025 Formula SAE Electric efficiency results give each team's pack energy and lap times:
+        Average current therefore understates heating, so each case starts from event energy. The 2025 Formula SAE Electric efficiency results list each team's pack energy and lap times:
         $$\\bar{P}=\\frac{E}{n_{\\mathrm{laps}}\\,t_{\\mathrm{lap}}},\\qquad \\bar{I}=\\frac{\\bar{P}}{V_{\\mathrm{pack}}}$$
-        San José State used 7.247 kWh over 22 laps of 62.27 s (0.381 h): about 19 kW, or 38 A average at 504 V. Teams just below the top five averaged about 4.3 kWh and 9.5 kW (19 A); the top five averaged about 5.4 kWh and 14 kW (27 A).<br><br>
-        A first form-factor bound came from the 80 kW peak-power cap, $F_I\\le\\sqrt{P_{\\mathrm{peak}}/\\bar{P}}$. It gave 2.4 to 2.9 and RMS currents of 56 to 66 A, implausibly high for an endurance run. The measured SN5 form factor of 1.59 replaced it, giving the four load cases in the table below.<br><br>
+        San José State used 7.247 kWh over 22 laps of 62.27 s (0.381 h), about 19 kW or 38 A average at 504 V. The top five averaged about 5.4 kWh and 14 kW (27 A), and the next tier averaged about 4.3 kWh and 9.5 kW (19 A).<br><br>
+        My first form-factor bound came from the 80 kW peak-power cap, $F_I\\le\\sqrt{P_{\\mathrm{peak}}/\\bar{P}}$. That bound gave 2.4 to 2.9 and RMS currents of 56 to 66 A, unrealistically high for an endurance run, so I replaced it with the measured SN5 form factor of 1.59, which produces the four load cases below.<br><br>
         <table class="project-data-table reading-after">
           <thead><tr><th>Case</th><th>Pack RMS</th><th>Per branch</th><th>Basis</th><th>Used for</th></tr></thead>
           <tbody>
@@ -3628,7 +3654,7 @@ const formulaElectricCoolingDescription = `
             <tr><td>Stress case</td><td>60 A</td><td>286 W</td><td>San José State energy, form factor 1.59</td><td>1-D model</td></tr>
           </tbody>
         </table>
-        The SN5 anchor is logged vehicle data; the other cases scale that measured waveform. The notes below are the earlier pack-energy and event-energy working.<br><br>
+        The SN5 anchor is logged vehicle data, and the other cases scale that measured waveform. The notes below show my earlier pack-energy and event-energy calculations.<br><br>
         <figure class="project-feature-figure">
           <img src="/assets/formula-cooling-pack-energy-handcalcs.jpg" alt="Original working notes deriving nominal pack energy, average endurance current, and an earlier RMS estimate" width="1244" height="1066" loading="lazy" decoding="async">
           <figcaption>Earlier pack-energy calculation and cross-team current estimate.</figcaption>
@@ -3643,54 +3669,54 @@ const formulaElectricCoolingDescription = `
     </section>
     <section class="latex-section" id="sn6-airflow">
     <strong>Airflow Architecture</strong><br><br>
-    Hand calculations and Icepak compared three fan placements on one branch, and a hand calculation checked conduction to the casing.
+    I compared three fan placements on one branch with hand calculations and Icepak, and checked conduction to the casing by hand.
     <table class="project-data-table">
       <thead><tr><th>Configuration</th><th>Result</th><th>Trade-off</th></tr></thead>
       <tbody>
         <tr><td>Exhaust only, one fan on the cooling box</td><td>47 CFM at 689 Pa; hottest cell 57.8 °C</td><td>Selected</td></tr>
-        <tr><td>Push-pull, intake and exhaust fans</td><td>56 CFM at 623 Pa per fan; hottest cell 55.6 °C</td><td>+19% flow for −2 K, with twice the fans and far harder wiring and spacing</td></tr>
+        <tr><td>Push-pull, intake and exhaust fans</td><td>56 CFM at 623 Pa per fan; hottest cell 55.6 °C</td><td>+19% flow for −2 K, with twice the fans and twice the power draw from the LV battery, and far harder wiring and spacing</td></tr>
         <tr><td>Intake only, fan pushing into module 1</td><td>Most air short-circuits around module 1; little reaches module 2</td><td>Module 1 over-cooled, module 2 close to the no-fan case; the fan also sits first in the spray path</td></tr>
-        <tr><td>Conduction to the casing</td><td>About 16 W per module at best, under a fifth of the 99 W load</td><td>Secondary; a path through the sense PCB would bias negative-terminal temperatures</td></tr>
+        <tr><td>Conduction to the casing</td><td>About 16 W per module at best, under a fifth of the 99 W load</td><td>Secondary; a path through the temp-sense PCB would bias negative-terminal temperatures</td></tr>
       </tbody>
     </table>
     <figure class="project-feature-figure">
       <img src="/assets/formula-cooling-push-pull.jpg" alt="Icepak temperature field for the push-pull configuration with intake and exhaust fans, peaking at 55.6 degrees Celsius" width="530" height="360" loading="lazy" decoding="async">
       <figcaption>Push-pull run: 56 CFM per fan and a 55.6 °C hottest cell, about 2 K cooler than exhaust only for twice the fans.</figcaption>
     </figure>
-    Push-pull cooled best, but with one fan per branch an <b>active exhaust alone</b> was enough; the pressure-drop difference between the two was about 30 Pa. The intake-only layout left more than 10 K between cells and put the fan where the louvres and mesh need to be. That trade supported five exhaust fans. Liquid cooling was out of scope: it needs manufacturing processes beyond the team's current capability, is over-specified for this heat load, and needs an inlet and outlet for every module.<br><br>
-    The chosen architecture keeps moving parts off the inlet and the fan outside the casing, in line with FSAE rule EV.6.5.4. Module 2 receives strong flow because it sits next to the fan, but that air has already been warmed by module 1.<br><br>
+    Push-pull cooled best, but with one fan per branch an <b>active exhaust alone</b> is sufficient, since the pressure-drop difference between the two was about 30 Pa. Intake-only left more than 10 K between cells and placed the fan where the louvres and mesh need to be. That trade led us to five exhaust fans. Liquid cooling was out of scope, since it requires manufacturing processes beyond the team's current capability, is over-specified for this heat load, and needs an inlet and outlet for every module.<br><br>
+    The selected architecture has no moving parts at the inlet and keeps the fan outside the casing, in line with FSAE rule EV.6.5.4. Module 2 receives strong flow because it sits next to the fan, but module 1 has already warmed that air.<br><br>
     <figure class="flow-path">
       <ol>
-        <li><b>Passive inlet</b>Ambient air is drawn in by the exhaust fan and the car's motion, through the louvres and mesh.</li>
+        <li><b>Passive inlet</b>The exhaust fan and the car's motion draw ambient air through the louvres and mesh.</li>
         <li><b>Module 1</b>Air enters through a 5 mm perforated hole pattern and crosses the cells perpendicular to their axis.</li>
-        <li><b>Perforated divider</b>Air that has cooled module 1 passes into the second module.</li>
-        <li><b>Module 2</b>High flow from its position next to the fan, but with air already heated upstream.</li>
+        <li><b>Perforated divider</b>Air leaving module 1 passes into the second module.</li>
+        <li><b>Module 2</b>Receives high flow from its position next to the fan, but the air has already been heated upstream.</li>
         <li><b>Outlet panel</b>A perforated wall panel feeds the fan blades.</li>
         <li><b>Active exhaust</b>The fan pulls air out across a 15 mm air gap to ambient.</li>
       </ol>
       <figcaption>Air path through one cooling branch: one exhaust fan pulls air through two modules in series.</figcaption>
     </figure>
-    I built a MATLAB pressure-drop model around the real Sanyo Denki fan curve, representing each fan through its pressure-flow behavior. The model keeps the inlet, module, divider, and outlet losses separate so the dominant restriction is visible. <b>425 CFM at 521 Pa</b> was the earlier system-level operating point, with the cell bank accounting for roughly 79% of modeled pressure loss.<br><br>
+    I built a MATLAB pressure-drop model that represents each fan by its Sanyo Denki pressure-flow curve, with the inlet, module, divider, and outlet losses kept separate to show which restriction dominates. The earlier system-level operating point was <b>425 CFM at 521 Pa</b>, and the cell bank accounted for roughly 79% of the modeled pressure loss.<br><br>
     <details class="project-disclosure">
       <summary>Pack geometry and cooling branch</summary>
       <div class="project-disclosure-content">
-        The modeled pack uses 420 cells in ten 14s3p modules. Two 42-cell modules share each cooling branch, with the perforated divider between them setting how much air reaches the downstream bank.<br><br>
+        The modeled pack uses 420 cells in ten 14s3p modules. Two 42-cell modules share each cooling branch, and the perforated divider between them sets how much air reaches the downstream bank.<br><br>
         <figure class="project-feature-figure">
           <img src="/assets/formula-cooling-module-stackup.png" alt="Exploded 42-cell module showing cell holders, sensing electronics, and covers" width="888" height="409" loading="lazy" decoding="async">
           <figcaption>Reference module stackup used to communicate the cooling path; the cooling geometry and CFD model are my work.</figcaption>
         </figure>
       </div>
     </details>
-    I selected a <b>15 mm exhaust air gap</b>. Gap loss scales roughly as $1/g^2$: going from 20 mm to 15 mm costs about 30 Pa, around 4% of the fan budget and about 1 K on the hottest cell. Going to 10 mm adds another 70 Pa, and the fan hub starts working against the wall. Runs at 20, 15, and 10 mm showed aggressive recirculation in the 10 mm gap, which would also be harder to manufacture. The current model includes the 45° inlet louvres and mesh losses.<br><br>
+    I chose a <b>15 mm exhaust air gap</b>. Gap loss scales roughly as $1/g^2$, so narrowing from 20 mm to 15 mm costs about 30 Pa, around 4% of the fan budget and about 1 K on the hottest cell. Narrowing to 10 mm adds another 70 Pa, at which point the fan hub starts working against the wall. Runs at 20, 15, and 10 mm showed aggressive recirculation in the 10 mm gap, which would also be harder to manufacture. The current model includes the 45° inlet louvres and mesh losses.<br><br>
     <details class="project-disclosure">
       <summary>Rain-inlet geometry and free-area calculations</summary>
       <div class="project-disclosure-content">
-        I worked through louvre angle, pitch, thickness, and depth to keep a direct rain path out of the cell bank while preserving inlet area. For slat length $L$, angle $\\theta$, pitch $p$, and thickness $t_s$:
+        I sized louvre angle, pitch, thickness, and depth to block any direct rain path into the cell bank without sacrificing inlet area. For slat length $L$, angle $\\theta$, pitch $p$, and thickness $t_s$:
         $$\\begin{gathered}
         d=L\\cos\\theta,\\qquad r=L\\sin\\theta\\\\
         f=\\cos\\theta-\\frac{t_s}{p}
         \\end{gathered}$$
-        The working geometry uses 45° slats, 20 mm length, 2 mm thickness, and 12 mm pitch, giving approximately 14 mm depth and rise. The louvre's geometric free-area ratio is roughly 0.55; the combined mesh/louvre grille in the current CFD uses 0.14. The divider uses 0.25.<br><br>
+        The working geometry uses 45° slats, 20 mm long and 2 mm thick at 12 mm pitch, which gives about 14 mm of depth and rise. The louvre alone has a geometric free-area ratio of roughly 0.55, but the combined mesh/louvre grille in the current CFD uses 0.14, and the divider uses 0.25.<br><br>
         <figure class="project-feature-figure">
           <img src="/assets/formula-cooling-inlet-handcalcs.jpg" alt="Original rain-inlet sketches and derivations for louvre angle, pitch, water shielding, free area, and pressure loss" width="1406" height="1796" loading="lazy" decoding="async">
           <figcaption>Inlet hand calculations connecting rain protection, print geometry, and free area.</figcaption>
@@ -3704,10 +3730,10 @@ const formulaElectricCoolingDescription = `
     <details class="project-disclosure">
       <summary>Fan-spacing pressure-loss trade</summary>
       <div class="project-disclosure-content">
-        At fixed flow, narrowing the fan gap increases velocity and dynamic pressure approximately with the inverse square of gap depth:
+        At fixed flow, narrowing the fan gap raises velocity and dynamic pressure roughly with the inverse square of gap depth:
         $$\\Delta p_{\\mathrm{gap}}\\sim\\frac{\\rho}{2}
         \\left(\\frac{Q}{w g}\\right)^2$$
-        The analytical 47 CFM sweep gives approximately 33 Pa at 20 mm, 60 Pa at 15 mm, and 130 Pa at 10 mm. The 15 mm choice keeps total depth near 56 mm, including the 38 mm fan and approximately 3 mm wall. The 10 mm geometry also showed recirculation during iteration.<br><br>
+        The analytical 47 CFM sweep gives about 33 Pa at 20 mm, 60 Pa at 15 mm, and 130 Pa at 10 mm. Choosing 15 mm keeps total depth near 56 mm, including the 38 mm fan and the roughly 3 mm wall, and the 10 mm geometry also showed recirculation during iteration.<br><br>
         <figure class="project-feature-figure">
           <img src="/assets/formula-cooling-airgap-trade.jpg" alt="Analytical exhaust-gap pressure loss versus depth with 10, 15, and 20 millimeter cases" width="1200" height="690" loading="lazy" decoding="async">
           <figcaption>The 15 mm gap balances packaging depth against the rapidly increasing pressure penalty.</figcaption>
@@ -3721,10 +3747,10 @@ const formulaElectricCoolingDescription = `
     <details class="project-disclosure">
       <summary>Conduction to the casing</summary>
       <div class="project-disclosure-content">
-        The shortest conduction path runs from the cell through the temperature-sense PCB, the polycarbonate cell holder, and thermal foam to the casing. Swapping the polycarbonate for a conductor still leaves a multi-layer network, and every interface adds resistance.<br><br>
-        Even with best-case assumptions (foam at 50% compression, full contact area, no contact resistance, and the casing held at 35 °C), the path removes about <b>16 W per module</b>. Using the compressed foam thickness raises that to about 17.5 W, still under a fifth of the 99 W each module generates at the 50 A design case. Imperfect contact under tolerance and vibration, interface resistance, and a warming casing would all lower it.<br><br>
-        Measurement is the larger concern. The rules require cell temperature at the negative terminal, so using the PCB or a copper pour as a heat-spreading path would even out temperatures around the sensors and bias the reading. The cathode side is worse, with wire bonds, voltage sensing, and BMS connections adding interfaces.<br><br>
-        The foam stays for sealing and vibration, and because it fills the air gaps around the modules: welding will leave those gaps uneven, and open gaps would let air bypass the cells.<br><br>
+        The conduction path runs from cell to temperature-sense PCB to polycarbonate cell holder to thermal foam to casing, the minimum possible number of interfaces. Even with a conductor in place of the polycarbonate, the path remains a multi-layer thermal resistance network, and each interface adds resistance.<br><br>
+        Even with best-case assumptions (foam at 50% compression, full contact area, no contact resistance, and the casing held at 35 °C), the path removes about <b>16 W per module</b>. Using the compressed foam thickness raises that to about 17.5 W, still under a fifth of the 99 W each module generates at the 50 A design case. Both figures are optimistic, since contact will be imperfect under tolerance and vibration and the casing will warm up.<br><br>
+        The larger concern is measurement. The rules require cell temperature at the negative terminal, so using the PCB or a copper pour as a heat-spreading path would even out temperatures around the sensors and bias the reading. The cathode side is worse, since wire bonds, voltage sensing, and BMS connections all add interfaces.<br><br>
+        Conduction is therefore secondary. The foam remains useful for sealing and vibration and for filling the air gaps around the modules, which welding will leave uneven and which would otherwise let air bypass the cells.<br><br>
         <figure class="project-feature-figure cooling-conduction-network">
           $$R_i=\\frac{L_i}{k_iA},\\qquad A=\\frac{\\pi(21.7\\,\\mathrm{mm})^2}{4}=3.7\\times10^{-4}\\,\\mathrm{m^2}$$
           <table class="project-data-table">
@@ -3745,12 +3771,12 @@ const formulaElectricCoolingDescription = `
     </section>
     <section class="latex-section" id="sn6-transient">
     <strong>Transient CFD</strong><br><br>
-    The <b>50 A design case</b> uses 35 °C inlet air, a 15 mm fan gap, and a 4% busbar heat allowance. Each branch runs near <b>40 CFM at 780 Pa</b>.<br><br>
-    At 25 minutes, the hottest cell is <b>54.6 °C</b>, the mean is 47.6 °C, and the coolest is 40.7 °C, with a 2.4 K standard deviation. That leaves 2.4 K margin to the target on the conservative CFD heat-transfer coefficient, and about 10 K on the correlation value.<br><br>
-    Air heats along the bank, giving a 7 K front-to-back gradient. The hottest cells sit in the middle of module 2, where most of the already-heated air flows. The max-to-min range of <b>13.9 K</b> is above the 5 K uniformity goal, so redistributing flow through the divider and cell passages is the next geometry priority.<br><br>
+    The <b>50 A design case</b> uses 35 °C inlet air, a 15 mm fan gap, and a 4% busbar heat allowance, and each branch runs near <b>40 CFM at 780 Pa</b>.<br><br>
+    At 25 minutes the hottest cell reaches <b>54.6 °C</b>, the mean is 47.6 °C, and the coolest is 40.7 °C, with a 2.4 K standard deviation. That leaves 2.4 K of margin to the target using the conservative CFD heat-transfer coefficient, and about 10 K using the correlation value.<br><br>
+    Air heats along the bank, producing a 7 K front-to-back gradient, and the hottest cells sit in the middle of module 2, where most of the already-heated air flows. The max-to-min range of <b>13.9 K</b> is still above the 5 K uniformity goal, so the next geometry priority is redistributing flow through the divider and cell passages.<br><br>
     <figure class="project-feature-figure">
       <img src="/assets/formula-cooling-transient-50a-top.jpg" alt="Top view of the 50 A transient CFD showing warmed downstream cells and streamlines through the divider" width="1414" height="800" loading="lazy" decoding="async">
-      <figcaption>Section view: air warms in module 1 before reaching module 2. Divider openings and bypass paths determine which cells receive that flow.</figcaption>
+      <figcaption>Section view: air warms in module 1 before reaching module 2, and the divider openings and bypass paths determine which cells receive that flow.</figcaption>
     </figure>
     <details class="project-disclosure">
       <summary>Model inputs and assumptions</summary>
@@ -3776,25 +3802,25 @@ const formulaElectricCoolingDescription = `
             <tr><td>Busbar and PCB thermal mass omitted</td><td>About 1 K</td></tr>
           </tbody>
         </table>
-        <p class="reading-after">The run reports hottest, mean, and coolest cell temperature and spread over time, time to 60 °C, the fan operating point, the hottest-cell location, and the flow and temperature fields. The 15-minute forced-cooling time constant, against the roughly 3.1-hour passive case, is why the fan-on design approaches steady state during endurance.</p>
+        <p class="reading-after">The run reports hottest, mean, and coolest cell temperature and spread over time, time to 60 °C, the fan operating point, the hottest-cell location, and the flow and temperature fields. The 15-minute forced-cooling time constant, against roughly 3.1 hours for the passive case, lets the fan-on design approach steady state during endurance.</p>
       </div>
     </details>
 
     </section>
     <section class="latex-section" id="sn6-analytical">
     <strong>Analytical and CFD Comparison</strong><br><br>
-    Air near the outlet has already absorbed heat from upstream cells. Even if the local convection coefficient stays reasonable, those cells see a smaller temperature difference to the cooling air. The analytical model gave me the system-level answer; CFD showed where that assumption broke down.<br><br>
-    Early MATLAB sizing predicted <b>425 CFM total at 521 Pa</b> and 234 W fan power. Cell-bank loss dominated. Current CFD includes a more restrictive inlet and plenum.<br><br>
-    Earlier tube-bank correlations gave $h\\approx125\\text{–}160\\,\\mathrm{W\\,m^{-2}\\,K^{-1}}$; representative Icepak geometry gave about $48\\,\\mathrm{W\\,m^{-2}\\,K^{-1}}$. Bypass and uneven flow reduce effective cooling. Boundary-layer mesh resolution remains a modeling uncertainty.<br><br>
+    Air near the outlet has already absorbed heat from the upstream cells, so even with a reasonable local convection coefficient, those cells see a smaller temperature difference to the cooling air. The analytical model gave the system-level answer, and CFD showed where that assumption broke down.<br><br>
+    Early MATLAB sizing predicted <b>425 CFM total at 521 Pa</b> and 234 W fan power, with cell-bank loss dominating. The current CFD includes a more restrictive inlet and plenum.<br><br>
+    Earlier tube-bank correlations gave $h\\approx125\\text{–}160\\,\\mathrm{W\\,m^{-2}\\,K^{-1}}$, while representative Icepak geometry gave about $48\\,\\mathrm{W\\,m^{-2}\\,K^{-1}}$. Bypass and uneven flow reduce the effective cooling, and boundary-layer mesh resolution is still a modeling uncertainty.<br><br>
     <details class="project-disclosure">
       <summary>MATLAB fan/system curve and convection model</summary>
       <div class="project-disclosure-content">
-        I intersected the Sanyo fan pressure-flow curve with the modeled cell-bank and inlet losses. The earlier analytical operating point was approximately 85 CFM per branch. Its pressure split was 412 Pa across the cells, 106 Pa at the inlet, and 3 Pa miscellaneous; the cell bank accounted for about 79% of the loss.<br><br>
+        I intersected the Sanyo fan pressure-flow curve with the modeled cell-bank and inlet losses, which put the earlier analytical operating point at about 85 CFM per branch. The pressure split was 412 Pa across the cells, 106 Pa at the inlet, and 3 Pa miscellaneous, so the cell bank accounted for about 79% of the loss.<br><br>
         <figure class="project-feature-figure">
           <img src="/assets/formula-cooling-fan-system-curve.png" alt="Earlier MATLAB fan and cross-flow system curves intersecting near 12 cubic meters per minute and 521 pascals" width="804" height="530" loading="lazy" decoding="async">
           <figcaption>Earlier analytical sizing model. The current detailed branch CFD predicts a different operating point.</figcaption>
         </figure>
-        The tube-bank calculation uses gap velocity and Reynolds number to estimate Nusselt number, then $h=Nu\\,k_{\\mathrm{air}}/D$. An NTU-effectiveness model accounts for air warming along the cells. Equal branch flow and idealized cell-bank exposure make the correlation sensitive to bypass and confinement.<br><br>
+        The tube-bank calculation uses gap velocity and Reynolds number to estimate Nusselt number, then $h=Nu\\,k_{\\mathrm{air}}/D$. An NTU-effectiveness model accounts for the air warming along the cells. Since it assumes equal branch flow and idealized cell-bank exposure, the correlation is sensitive to bypass and confinement.<br><br>
         <figure class="project-feature-figure">
           <img src="/assets/formula-cooling-h-vs-flow.png" alt="Analytical aligned tube-bank heat-transfer coefficient versus total pack airflow" width="681" height="450" loading="lazy" decoding="async">
           <figcaption>Idealized convection estimate versus flow; the operating-point estimate exceeds representative CFD heat transfer.</figcaption>
@@ -3805,16 +3831,16 @@ const formulaElectricCoolingDescription = `
       <img src="/assets/formula-cooling-endurance-model.jpg" alt="MATLAB plots of temperature versus RMS current, the 60 A transient response, time to the sealed-pack limit, and passive thermal resistance" width="1249" height="866" loading="lazy" decoding="async">
       <figcaption>1D model comparison at 35 °C: the 60 A stress case ends near 64 °C with CFD-derived cooling and 52 °C with the ideal correlation.</figcaption>
     </figure>
-    The <b>12 K model difference</b> makes measured cooldown conductance a priority. Passive CFD with zero imposed flow and buoyancy enabled also checks the no-fan baseline.<br><br>
+    With a <b>12 K model difference</b>, measuring the cooldown conductance is a priority. A passive CFD run with zero imposed flow and buoyancy enabled also checks the no-fan baseline.<br><br>
     <details class="project-disclosure">
       <summary>Heat-budget crossings and cooling limits</summary>
       <div class="project-disclosure-content">
-        The quadratic heat-generation curve is compared with the per-cell energy allowance over 25 minutes. With a 35 °C start and 60 °C ceiling, the adiabatic allowance is approximately 1.42 W per cell, giving the roughly 39 A no-fan bound. The plotted CFD-derived fan allowance gives a crossing near 55 A.<br><br>
+        I compared the quadratic heat-generation curve with the per-cell energy allowance over 25 minutes. With a 35 °C start and 60 °C ceiling, the adiabatic allowance is about 1.42 W per cell, which gives the roughly 39 A no-fan bound, and the plotted CFD-derived fan allowance crosses near 55 A.<br><br>
         <figure class="project-feature-figure">
           <img src="/assets/formula-cooling-heat-budget.jpg" alt="Cell heat versus pack RMS current with passive, CFD-derived fan, and ideal air-side cooling bounds" width="1379" height="1008" loading="lazy" decoding="async">
           <figcaption>Analytical 60 °C-limit comparison. The project uses 50 A as its design case and 60 A as the stress case; these current bounds remain model estimates.</figcaption>
         </figure>
-        These limits change with initial temperature, effective cell resistance, airflow, and measured UA. The ideal air-side line is a theoretical upper bound. Endurance replay and fan-on cooldown are the planned checks on the useful cooling margin.
+        These limits move with initial temperature, effective cell resistance, airflow, and measured UA, and the ideal air-side line is a theoretical upper bound. Endurance replay and fan-on cooldown tests will check the useful cooling margin.
       </div>
     </details>
 
@@ -3823,14 +3849,14 @@ const formulaElectricCoolingDescription = `
     <strong>Design Changes</strong><br><br>
     The next geometry changes follow directly from the CFD and the measured fan curve:
     <ul class="project-result-list">
-      <li><b>Open the divider restriction.</b> Reduce the local pressure penalty between the two module banks and improve the downstream flow split.</li>
-      <li><b>Remove bad inlet paths.</b> Block perforations that feed easy bypass routes. The objective is useful flow through the cells; hole count alone is insufficient.</li>
+      <li><b>Open the divider restriction.</b> This should reduce the local pressure penalty between the two module banks and improve the downstream flow split.</li>
+      <li><b>Remove bad inlet paths.</b> Block the perforations that feed easy bypass routes, since useful flow through the cells matters more than hole count.</li>
       <li><b>Keep the 15 mm exhaust gap.</b> It balances package depth against the rapidly increasing pressure loss at smaller gaps.</li>
     </ul>
     <details class="project-disclosure">
       <summary>Rejected and future airflow changes</summary>
       <div class="project-disclosure-content">
-        Push-pull airflow increased the earlier branch flow, while requiring additional fans, wiring, and packaging. A thin intake fan paired with the existing high-static-pressure exhaust fan remains a future comparison, with inlet and outlet flow solved as one operating point.
+        Push-pull airflow increased the earlier branch flow, but it requires extra fans, wiring, and packaging. I still plan to evaluate a thin intake fan paired with the existing high-static-pressure exhaust fan, with inlet and outlet flow solved as one operating point.
       </div>
     </details>
 
@@ -3843,8 +3869,8 @@ const formulaElectricCoolingDescription = `
       <li><b>Airflow.</b> Check 40–47 CFM using branch pressure taps and an outlet anemometer.</li>
       <li><b>Cooldown.</b> Fit effective UA from fan-on temperature decay after the run.</li>
     </ul>
-    Correlation targets: <b>flow within 10%</b> and <b>temperatures within 3 K</b>. SN5 supplies the uncooled baseline; temporary fan/duct tests and assembled SN6 testing check active cooling.<br><br>
-    Bodywork could shift inlet/exhaust pressure. Comparing pressure and flow versus vehicle speed with bodywork installed will test this integration hypothesis.
+    The correlation targets are <b>flow within 10%</b> and <b>temperatures within 3 K</b>. SN5 provides the uncooled baseline, and temporary fan/duct tests and the assembled SN6 will verify the active cooling.<br><br>
+    Bodywork could also shift inlet/exhaust pressure, so we will compare pressure and flow against vehicle speed with the bodywork installed.
     </section>`;
 
 const formulaElectricAtticDescription = `
@@ -4002,10 +4028,10 @@ const formulaElectricAtticDescription = `
           <section class="latex-section" id="pcb-overview">
           <strong>Overview</strong><br><br>
           <dl class="project-summary">
-            <dt>Goal</dt><dd>A pulse generator in Ramesh Lab for fast electrical characterization of BiFeO<sub>3</sub> and related complex-oxide devices: controlled voltage pulses while a source-measure unit sets bias and an oscilloscope captures both DUT terminals.</dd>
-            <dt>Design</dt><dd>This assembled four-layer instrument is <b>V2</b>: RP2040 control, high-speed gate drive, GaN switching, relay-selected routing, external Keithley biasing, and grounded coaxial interfaces. V1 was the earlier microsecond-only pulse-generator prototype, preserved in <a href="#pcb-next" data-project-section="pcb-next">Next Revision</a>.</dd>
-            <dt>My work</dt><dd>Schematic and four-layer layout in KiCad, LTspice checks, assembly and rework, the enclosure, and staged bench bring-up with Python and LabVIEW.</dd>
-            <dt>Result</dt><dd>Programmable operation through 30 V, down to pulses of about 100 ns. Testing showed that the passive return edge depends on device and fixture capacitance.</dd>
+            <dt>Goal</dt><dd>A pulse generator in Ramesh Lab for fast electrical characterization of BiFeO<sub>3</sub> and related complex-oxide devices. It applies controlled voltage pulses while a source-measure unit sets the bias and an oscilloscope captures both DUT terminals.</dd>
+            <dt>Design</dt><dd>This assembled four-layer instrument is <b>V2</b>: RP2040 control, high-speed gate drive, GaN switching, relay-selected routing, external Keithley biasing, and grounded coaxial interfaces. V1 was the earlier microsecond-only pulse-generator prototype, documented under <a href="#pcb-next" data-project-section="pcb-next">Next Revision</a>.</dd>
+            <dt>My work</dt><dd>I handled the KiCad schematic and four-layer layout, LTspice checks, assembly and rework, the enclosure, and staged bench bring-up with Python and LabVIEW.</dd>
+            <dt>Result</dt><dd>Programmable operation through 30 V, down to pulses of about 100 ns. Testing also showed that the passive return edge depends on device and fixture capacitance, which limits the shortest pulses.</dd>
             <dt>Next</dt><dd>A clean-sheet revision with active control of both edges, fully digital timing, and a 1 ns-class minimum-pulse target.</dd>
           </dl>
           <figure class="project-feature-figure">
@@ -4016,12 +4042,12 @@ const formulaElectricAtticDescription = `
 
           <section class="latex-section" id="pcb-target">
           <strong>Experiment Target</strong><br><br>
-          The instrument covers a wide pulse-width range on one board. V2 has demonstrated operation into the approximately 100 ns regime; the 1 ns endpoint remains a next-revision target.<br><br>
-          The oxide ferroelectric capacitors are far from 50 Ω loads. The expected devices behave roughly like <b>tens of pF</b> in parallel with <b>MΩ-scale</b> leakage resistance, so their impedance changes strongly with frequency:
+          One board should cover a wide pulse-width range. V2 has demonstrated operation into the approximately 100 ns regime, while the 1 ns endpoint remains a next-revision target.<br><br>
+          Oxide ferroelectric capacitors are far from 50 Ω loads. The expected devices behave roughly like <b>tens of pF</b> in parallel with <b>MΩ-scale</b> leakage resistance, so their impedance varies strongly with frequency:
           $$Z_{\\mathrm{DUT}}(\\omega)=\\frac{R}{1+j\\omega RC},\\qquad f_c=\\frac{1}{2\\pi RC}$$
-          Capacitance and leakage vary between devices because film thickness varies. A representative 10 pF and 1 MΩ, with real devices scattered around it, gives $RC=10\\,\\mu\\mathrm{s}$ and $f_c\\approx16\\,\\mathrm{kHz}$. The resistive path matters during slower biasing and retention measurements, while capacitance and fixture parasitics dominate the fastest edges.<br><br>
-          Edges near 1 ns need roughly $f_{\\mathrm{BW}}\\approx0.35/t_r\\approx350\\,\\mathrm{MHz}$ of measurement bandwidth, which sets the oscilloscope floor and makes a short, terminated transmission-line path essential.<br><br>
-          That makes this more than a fast-switching demonstration. It is an experiment interface designed to preserve delivered voltage, timing, source-measure bias state, and measurement visibility while fragile oxide devices are pulsed repeatedly.<br><br>
+          Film thickness varies, so capacitance and leakage also vary between devices. A representative 10 pF and 1 MΩ (real devices scatter around it) gives $RC=10\\,\\mu\\mathrm{s}$ and $f_c\\approx16\\,\\mathrm{kHz}$, so the resistive path matters during slower biasing and retention measurements, while capacitance and fixture parasitics dominate the fastest edges.<br><br>
+          Edges near 1 ns need roughly $f_{\\mathrm{BW}}\\approx0.35/t_r\\approx350\\,\\mathrm{MHz}$ of measurement bandwidth, which sets the oscilloscope floor and requires a short, terminated transmission-line path.<br><br>
+          The board is therefore an experiment interface first and a fast switch second. It must preserve delivered voltage, timing, source-measure bias state, and measurement visibility while fragile oxide devices are pulsed repeatedly.<br><br>
           <table class="project-data-table">
             <thead><tr><th>Parameter</th><th>Target</th><th>V2 status</th></tr></thead>
             <tbody>
@@ -4037,15 +4063,15 @@ const formulaElectricAtticDescription = `
 
           <section class="latex-section" id="pcb-measurement">
           <strong>Measurement Problem</strong><br><br>
-          A captured current waveform contains the useful device response plus leakage, displacement current, fixture capacitance, and the response of the test setup itself:
+          In any captured current waveform, the device response arrives mixed with leakage, displacement current, fixture capacitance, and the response of the test setup:
           $$i_{\\mathrm{meas}}(t)=i_{\\mathrm{device}}(t)+\\frac{v(t)}{R_{\\mathrm{leak}}}+\\left(C_{\\mathrm{DUT}}+C_{\\mathrm{fixture}}\\right)\\frac{\\mathrm{d}v}{\\mathrm{d}t}$$
-          Grounded BNC interfaces, a dedicated scope-sync output, known dummy loads, relay-selected paths, and direct source-measure compatibility make those contributions easier to characterize before connecting a sample.<br><br>
-          I measure both DUT terminals so the delivered waveform can be compared with the source waveform. That distinction became important during V2 testing and directly changed the next architecture.<br><br>
+          The board includes grounded BNC interfaces, a dedicated scope-sync output, known dummy loads, relay-selected paths, and direct source-measure compatibility so those contributions can be characterized before a sample is connected.<br><br>
+          I also measure both DUT terminals to compare the delivered waveform against the source waveform. That distinction proved critical in V2 testing and directly shaped the next architecture.<br><br>
           </section>
 
           <section class="latex-section" id="pcb-architecture">
           <strong>V2 Architecture</strong><br><br>
-          V2 includes separate fast and microsecond signal paths, RP2040-based digital triggering, relay-selected routing, local driver power, a GaN pulldown stage, and dedicated connections for Keithley HI/LO, DUT, external trigger, and oscilloscope synchronization. The Keithley establishes device bias; the fast stage creates the pulse transition; and the scope observes the response at the experiment interfaces.<br><br>
+          V2 has separate fast and microsecond signal paths, RP2040-based digital triggering, relay-selected routing, local driver power, a GaN pulldown stage, and dedicated connections for Keithley HI/LO, DUT, external trigger, and oscilloscope synchronization. The Keithley sets the device bias, the fast stage creates the pulse transition, and the scope records the response at the experiment interfaces.<br><br>
           <figure class="flow-path">
             <ol>
               <li><b>Control</b>RP2040 digital triggering, an external trigger input, and relay selection between the fast and microsecond paths.</li>
@@ -4070,8 +4096,8 @@ const formulaElectricAtticDescription = `
 
           <section class="latex-section" id="pcb-design-loop">
           <strong>Design Loop</strong><br><br>
-          I used KiCad for schematic capture and the four-layer layout, LTspice to check switching and timing assumptions, and staged oscilloscope bring-up to compare simulation assumptions against assembled hardware. Python and LabVIEW support trigger control, capture organization, and repeatable bench measurements.<br><br>
-          Layout work focused on keeping the switching loop compact, giving the fast path a direct return plane, separating noisy control and relay routing from the measurement path, and placing the grounded coaxial interfaces where cables could connect without long flying leads. The board viewer exposes the actual board render, combined layout, copper planes, silkscreen, and bottom routing with more detail than a single screenshot could show.<br><br>
+          I used KiCad for schematic capture and the four-layer layout, LTspice to check switching and timing assumptions, and staged oscilloscope bring-up to compare those assumptions against the assembled hardware, with Python and LabVIEW handling trigger control, capture organization, and repeatable bench measurements.<br><br>
+          Most of the layout effort went into a compact switching loop, a direct return plane for the fast path, separation between noisy control and relay routing and the measurement path, and grounded coaxial interfaces placed so cables connect without long flying leads. The viewer below shows the board render, combined layout, copper planes, silkscreen, and bottom routing.<br><br>
           <div class="board-layer-viewer" data-lightbox-ignore>
             <input type="radio" id="ns-layer-render" name="ns-board-layer" checked>
             <input type="radio" id="ns-layer-layout" name="ns-board-layer">
@@ -4108,7 +4134,7 @@ const formulaElectricAtticDescription = `
 
           <section class="latex-section" id="pcb-build">
           <strong>Physical Implementation</strong><br><br>
-          I assembled and reworked the PCB, integrated it into a custom enclosure, and wired the power, controls, and external connectors for bench use. The clear lid keeps the board inspectable during bring-up, while the BNC interfaces provide grounded, repeatable connections to the source-measure unit, DUT fixture, trigger, and oscilloscope.<br><br>
+          I assembled and reworked the PCB, integrated it into a custom enclosure, and wired the power, controls, and external connectors for bench use. The clear lid keeps the board inspectable during bring-up, and the BNC interfaces provide grounded, repeatable connections to the source-measure unit, DUT fixture, trigger, and oscilloscope.<br><br>
           <figure class="project-feature-figure">
             <picture><source srcset="/assets/pulse-v1-enclosure.webp" type="image/webp"><img src="/assets/pulse-v1-enclosure.jpeg" alt="Assembled V2 pulse-generator hardware inside its clear-topped enclosure" width="2706" height="3096" loading="lazy" decoding="async"></picture>
             <figcaption>Assembled V2 instrument before full bench characterization.</figcaption>
@@ -4121,8 +4147,8 @@ const formulaElectricAtticDescription = `
 
           <section class="latex-section" id="pcb-bringup">
           <strong>Bring-up</strong><br><br>
-          The board was deliberately flexible enough to bring up each subsystem independently. Power, controller logic, trigger conditioning, gate drive, switching, bias routing, and sync could be checked in staged subsystem passes before full-chain debugging.<br><br>
-          Staged oscilloscope bring-up compared the LTspice switching and timing assumptions against the assembled hardware, one subsystem at a time, so a fault could be traced to the stage that introduced it.<br><br>
+          I designed the board so power, controller logic, trigger conditioning, gate drive, switching, bias routing, and sync could each be brought up on their own in staged passes before any full-chain debugging.<br><br>
+          On the scope, I compared the LTspice switching and timing assumptions against the assembled hardware one subsystem at a time, so any fault could be traced to the stage that introduced it.<br><br>
           <figure class="flow-path">
             <ol>
               <li><b>Power</b>Board supplies and local driver power.</li>
@@ -4140,11 +4166,11 @@ const formulaElectricAtticDescription = `
 
           <section class="latex-section" id="pcb-testing">
           <strong>Testing + Key Design Lesson</strong><br><br>
-          I characterized V2 with a Keithley source-measure unit, known dummy loads, and a Tektronix oscilloscope measuring both DUT terminals. The board demonstrated programmable operation through <b>30 V</b>, from the microsecond range into the hundreds of nanoseconds. The shortest repeatable controller commands reached approximately the <b>100 ns scale</b> in the current setup.<br><br>
-          The important limitation appeared as pulses became shorter. The GaN stage actively creates the first transition. After it turns off, the output node returns through the DUT and surrounding bias network through a passive return path:
+          I characterized V2 with a Keithley source-measure unit, known dummy loads, and a Tektronix oscilloscope on both DUT terminals. The board demonstrated programmable operation through <b>30 V</b> from the microsecond range into the hundreds of nanoseconds, and in the current setup the shortest repeatable controller commands reached approximately the <b>100 ns scale</b>.<br><br>
+          The key limitation appeared as pulses shortened. The GaN stage actively drives the first transition, but once it turns off, the output node returns passively through the DUT and the surrounding bias network:
           $$v_{\\mathrm{out}}(t)\\approx V_0\\,e^{-t/\\tau},\\qquad \\tau\\approx R_{\\mathrm{return}}\\left(C_{\\mathrm{DUT}}+C_{\\mathrm{fixture}}\\right)$$
           The delivered pulse width and return edge therefore depend on device and fixture capacitance.<br><br>
-          That result was more useful than simply confirming that the switch worked: it identified a system-level limit that layout optimization alone would not fix. The next revision now starts from active control of both pulse edges.<br><br>
+          That result was more useful than confirming the switch worked, since it exposed a system-level limit that layout optimization alone could not fix. The next revision therefore starts from active control of both pulse edges.<br><br>
           <figure class="project-feature-figure">
             <picture><source srcset="/assets/pulse-v1-bench.webp" type="image/webp"><img src="/assets/pulse-v1-bench.jpeg" alt="Pulse generator connected to Keithley and Tektronix instruments during bench characterization" width="4284" height="5712" loading="lazy" decoding="async"></picture>
             <figcaption>Bench characterization with source-measure biasing and oscilloscope capture at both DUT terminals.</figcaption>
@@ -4153,9 +4179,9 @@ const formulaElectricAtticDescription = `
 
           <section class="latex-section" id="pcb-next">
           <strong>Next Revision</strong><br><br>
-          The next revision is a clean-sheet high-speed pulser. The new architecture removes relay-selected nanosecond/microsecond paths and mechanical pulse-width controls in favor of one optimized signal path, fully digital experiment control, and dedicated Keithley HI/LO and DUT interfaces.<br><br>
-          Its largest electrical change is active control of <b>both output transitions</b>, reducing the influence of DUT capacitance on delivered pulse width. The switching path will remain on the top layer directly above a continuous ground plane to minimize return-loop area and parasitic inductance.<br><br>
-          The design goal is <b>30 V</b> operation with a <b>1 ns-class minimum pulse target</b>, single-shot and repetitive control, and a cleaner automated-experiment interface. That 1 ns-class figure is a next-revision target; V2 has not measured it. Dedicated high-speed timing circuitry will be required, with timing handled outside the RP2040 alone.<br><br>
+          The next revision is a clean-sheet high-speed pulser that replaces the relay-selected nanosecond/microsecond paths and the mechanical pulse-width controls with one optimized signal path, fully digital experiment control, and dedicated Keithley HI/LO and DUT interfaces.<br><br>
+          The biggest electrical change is active control of <b>both output transitions</b>, which should reduce the effect of DUT capacitance on the delivered pulse width. The switching path will stay on the top layer directly above a continuous ground plane to minimize return-loop area and parasitic inductance.<br><br>
+          The design goal is <b>30 V</b> operation with a <b>1 ns-class minimum pulse target</b>, single-shot and repetitive control, and a cleaner automated-experiment interface. The 1 ns-class figure is a next-revision target that V2 has not measured. Reaching it requires dedicated high-speed timing circuitry, so the RP2040 will not handle timing alone.<br><br>
           <table class="project-data-table">
             <thead><tr><th></th><th>V2</th><th>Next revision</th></tr></thead>
             <tbody>
@@ -4171,8 +4197,8 @@ const formulaElectricAtticDescription = `
           <details class="project-disclosure">
             <summary>Next Revision Architecture and Packaging</summary>
             <div class="project-disclosure-content">
-              The next revision removes the relay-selected dual-path architecture and mechanical timing controls so the signal path can be shorter, easier to model, and more repeatable. Dedicated Keithley HI/LO, DUT, trigger, and sync interfaces keep the bench wiring explicit, while the fast switching section stays on the top layer over a continuous ground plane.<br><br>
-              The enclosure package is being redesigned around connector access and a direct internal path, independent of the V2 control layout. These CAD views show the intended control-side access and the dedicated coaxial measurement interfaces.
+              Removing the relay-selected dual-path architecture and mechanical timing controls makes the signal path shorter, easier to model, and more repeatable. Dedicated Keithley HI/LO, DUT, trigger, and sync interfaces keep the bench wiring explicit, while the fast switching section stays on the top layer over a continuous ground plane.<br><br>
+              I am also redesigning the enclosure package around connector access and a direct internal path, independent of the V2 control layout. These CAD views show the intended control-side access and the dedicated coaxial measurement interfaces.
               <div class="project-inline-grid">
                 <figure><picture><source srcset="/assets/pulse-r2-cad-front.webp" type="image/webp"><img src="/assets/pulse-r2-cad-front.png" alt="Next-revision enclosure CAD showing front controls and the populated pulse-generator PCB" width="1251" height="916" loading="lazy" decoding="async"></picture><figcaption>Next-revision package from the control side.</figcaption></figure>
                 <figure><picture><source srcset="/assets/pulse-r2-cad-rear.webp" type="image/webp"><img src="/assets/pulse-r2-cad-rear.png" alt="Next-revision enclosure CAD showing five coaxial interfaces and internal board layout" width="1276" height="865" loading="lazy" decoding="async"></picture><figcaption>Dedicated coaxial interfaces and a cleaner internal signal path.</figcaption></figure>
@@ -4183,8 +4209,8 @@ const formulaElectricAtticDescription = `
           <details class="project-disclosure">
             <summary>Earlier Microsecond Prototype</summary>
             <div class="project-disclosure-content">
-              V1 was the earlier microsecond-only pulse-generator prototype. I built it to make the source-measure workflow concrete using a one-shot timing stage, gate driver, MOSFET output stage, manual/external triggering, and a Keithley interface. Bench work exposed the limits of terminal-block connections, loose wiring, and microsecond-oriented timing as the experiment moved toward cleaner, faster edges.<br><br>
-              The prototype was useful design history, separate from validation of the current board. Its schematic, layout, 3D render, and LTspice work are preserved here because they show the iteration that led to grounded coaxial interfaces, a four-layer PCB, digital control, and staged bring-up.
+              V1 was the earlier microsecond-only pulse-generator prototype. I built it to make the source-measure workflow concrete, using a one-shot timing stage, gate driver, MOSFET output stage, manual/external triggering, and a Keithley interface. As the experiment moved toward cleaner, faster edges, bench work exposed the limits of terminal-block connections, loose wiring, and microsecond-oriented timing.<br><br>
+              It is design history, separate from validation of the current board. I kept its schematic, layout, 3D render, and LTspice work here because they show the iteration that led to grounded coaxial interfaces, a four-layer PCB, digital control, and staged bring-up.
               <figure><picture><source srcset="/assets/pulse-v1-physical.webp" type="image/webp"><img src="/assets/pulse-v1-physical.jpg" alt="Earlier microsecond pulse-generator board under oscilloscope probe during bench testing" width="4032" height="3024" loading="lazy" decoding="async"></picture><figcaption>Earlier microsecond board during bench testing.</figcaption></figure>
               <div class="project-inline-grid">
                 <figure><img src="/assets/pulse-v1-us-schematic.png" alt="Schematic for the earlier microsecond pulse-generator prototype" width="1444" height="787" loading="lazy" decoding="async"><figcaption>Prototype one-shot, driver, MOSFET, trigger, and source-measure circuitry.</figcaption></figure>
@@ -4198,8 +4224,8 @@ const formulaElectricAtticDescription = `
 
           <section class="latex-section" id="pcb-current">
           <strong>Current Stage</strong><br><br>
-          V2 is physically assembled and bench characterized. It validated digital triggering, gate drive, GaN switching, external bias integration, DUT routing, scope synchronization, and programmable operation through <b>30 V</b>. It also revealed the load-dependent recovery behavior that limits very short pulses.<br><br>
-          I am now carrying those measurements into the next revision: active two-edge switching, fully digital timing, dedicated measurement interfaces, and a deliberate high-speed stackup. The immediate work is architecture selection and simulation before the next schematic and layout are finalized.
+          V2 is physically assembled and bench characterized. It validated digital triggering, gate drive, GaN switching, external bias integration, DUT routing, scope synchronization, and programmable operation through <b>30 V</b>, and it revealed the load-dependent recovery behavior that limits very short pulses.<br><br>
+          I am now carrying those measurements into the next revision: active two-edge switching, fully digital timing, dedicated measurement interfaces, and a deliberate high-speed stackup. Current work is architecture selection and simulation before the next schematic and layout are finalized.
           </section>`,
         tags: ['KiCad', 'LTspice', 'Python', 'LabVIEW', 'PCB Design', 'PCB Layout', 'Circuit Design', 'Circuit Simulation', 'Embedded Systems', 'RP2040', 'SMD Soldering', 'Test Automation', 'Oscilloscope Testing'],
         skillGroups: [
@@ -4837,6 +4863,8 @@ const formulaElectricAtticDescription = `
         layoutWolfromSections(descriptionEl);
         descriptionEl.querySelector('.wolfrom-gallery-slot').append(galleryEl);
         descriptionEl.querySelector('.wolfrom-tools-slot').append(document.getElementById('detailSidebar'));
+        alignWolfromTitle();
+        requestAnimationFrame(alignWolfromTitle);
       } else if (project.id === 'formula-electric') {
         layoutFormulaCoolingSections(descriptionEl);
       } else if (project.id === 'ns-us-pulse-generator') {

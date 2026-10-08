@@ -3,69 +3,82 @@ let THREE;
 
 /* ------------------------------------------------------------------ story ---- */
 // Each step: scroll window [from, to] (0..1 of the section), caption, and the parts to highlight.
+// Each step: where it starts in the story (0..1), its caption, the parts it highlights, and
+// the parts it moves. Every part moves in exactly one step, so motion always matches the text.
+// Upper parts lift off top-down; the back of the stack drops away bottom-up (controller, then
+// motor), which is the only order in which nothing has to pass through a part still in place.
 const STEPS = [
   { from: 0.00, title: '50.45:1 in a 104 mm package',
-    body: 'I’m designing and building a backdrivable actuator for a humanoid elbow, with the motor, gearbox, and controller in one package. The printed prototype checks the assembly before a load-rated metal build.',
-    spec: '30 Nm continuous and 50 Nm peak design targets', focus: [] },
-  { from: 0.10, title: 'Bearing retainers',
-    body: 'Two rings clamp the output bearing: the outer one to the housing, the inner one to the output ring gear. Recessed screws keep the top face flush.',
-    spec: '12 x M2 inner, 6 x M3 outer', focus: ['retOuter', 'retInner', 'screws'] },
-  { from: 0.20, title: 'Output bearing',
+    body: 'I am designing and building a backdrivable humanoid-elbow actuator with the motor, gearbox, and controller in one package. The printed prototype checks assembly before a load-rated metal build.',
+    spec: '30 Nm continuous and 50 Nm peak design targets', focus: [], move: [] },
+  { from: 0.083, title: 'Bearing retainers',
+    body: 'Two rings clamp the output bearing, outer to the housing and inner to the output ring gear, with recessed screws so the top face sits flush.',
+    spec: '12 x M2 inner, 6 x M3 outer', focus: ['retOuter', 'retInner', 'screws'], move: ['screws', 'retOuter', 'retInner'] },
+  { from: 0.167, title: 'Output bearing',
     body: 'A single thin-section four-point bearing carries every external load on the joint: radial, axial and overturning moment.',
-    spec: 'Kaydon KA030XP0, 76.2 mm bore', focus: ['bearing'] },
-  { from: 0.29, title: 'Output ring gear',
-    body: 'The output ring meshes with the upper planet stage. Its tooth count and module differ from the fixed ring while preserving the same centre distance.',
-    spec: '75 teeth, module 0.9', focus: ['ringOut'] },
-  { from: 0.38, title: 'Carrier',
-    body: 'The carrier floats: it carries no net torque. Its two plates are still twisted against each other by 40 percent of the output torque, through three posts.',
-    spec: '20 Nm plate-to-plate at 50 Nm output', focus: ['carrierOut', 'carrierIn'] },
-  { from: 0.47, title: 'Compound planets',
-    body: 'Each planet is three gears on one body. The two ring meshes push on it in opposite directions 8 mm apart, which tilts it. The small bearings that resist that tilt are the limiting part of the design.',
-    spec: '57 / 27 / 25 teeth, 4.2 Nm tilt at peak', focus: ['planets', 'planetBrg'] },
-  { from: 0.58, title: 'Sun gear',
-    body: 'The sun gear bolts directly to the motor rotor through a flange, avoiding a press fit in the torque path.',
-    spec: '33 teeth, module 0.5', focus: ['sun'] },
-  { from: 0.66, title: 'Fixed ring gear housing',
-    body: 'Ring-gear reaction torque runs through a solid wall to the mount plate. Power circulating through the two ring meshes is 8 to 9 times the output power, which amplifies mesh losses.',
-    spec: '72 teeth, module 1.0', focus: ['fixed', 'plate'] },
-  { from: 0.76, title: 'Motor',
-    body: 'An outrunner drone motor: the magnet bell lifts off to show the stator and its 24 windings. At 50 Nm output it needs about 42 A of a 59 A peak rating.',
-    spec: 'MAD M6C10, 300 KV', focus: ['motorBell', 'motorStator', 'motorHousing'] },
-  { from: 0.86, title: 'Controller',
+    spec: 'Kaydon KA030XP0, 76.2 mm bore', focus: ['bearing'], move: ['bearing'] },
+  { from: 0.25, title: 'Output ring gear',
+    body: 'The output ring meshes with the upper planet stage, and its tooth count and module differ from the fixed ring but keep the same centre distance.',
+    spec: '75 teeth, module 0.9', focus: ['ringOut'], move: ['ringOut'] },
+  { from: 0.333, title: 'Carrier',
+    body: 'The carrier floats and carries no net torque, but its two plates still react 40 percent of output torque against each other through three posts.',
+    spec: '20 Nm plate-to-plate at 50 Nm output', focus: ['carrierOut', 'carrierIn'], move: ['carrierOut'] },
+  { from: 0.417, title: 'Compound planets',
+    body: 'Each planet is three gears on one body, and the two ring meshes push on it in opposite directions 8 mm apart, which tilts it. The small bearings resisting that tilt are the limiting part.',
+    spec: '57 / 27 / 25 teeth, 4.2 Nm tilt at peak', focus: ['planets', 'planetBrg', 'carrierIn'], move: ['planetBrgTop', 'planets', 'planetBrgBot', 'carrierIn'] },
+  { from: 0.5, title: 'Sun gear',
+    body: 'The sun gear bolts to the motor rotor through a flange, so the torque path has no press fit.',
+    spec: '33 teeth, module 0.5', focus: ['sun'], move: ['sun'] },
+  { from: 0.583, title: 'Fixed ring gear housing',
+    body: 'Ring-gear reaction torque runs through a solid wall to the mount plate. Since the two ring meshes circulate 8 to 9 times the output power, any mesh loss is amplified.',
+    spec: '72 teeth, module 1.0', focus: ['fixed', 'plate'], move: ['fixed'] },
+  { from: 0.667, title: 'Controller',
     body: 'The drive sits behind the motor and reads rotor angle from a magnet on the shaft, 1.5 mm from the encoder chip.',
-    spec: 'ODrive S1', focus: ['board', 'ctrlHousing', 'magnet'] },
-  { from: 0.95, title: 'Exploded assembly',
-    body: 'The retainers, output support, gear train, motor, and controller are separated along the assembly axis.',
-    spec: '3 planets, 3 gear stages, 1 output bearing', focus: [] },
-  { from: 1.00, title: 'Integrated actuator',
-    body: 'The gearbox, motor, and controller return to the assembled package. The sections below cover the load cases, calculations, and physical prototypes behind this design.',
-    spec: '50.45:1 ratio, 30 Nm continuous / 50 Nm peak design targets', focus: [] },
+    spec: 'ODrive S1', focus: ['board', 'ctrlHousing', 'magnet'], move: ['ctrlHousing', 'board', 'magnet'] },
+  { from: 0.75, title: 'Motor',
+    body: 'An outrunner drone motor, with the magnet bell lifted off to show the stator and its 24 windings. At 50 Nm output it needs about 42 A of a 59 A peak rating.',
+    spec: 'MAD M6C10, 300 KV', focus: ['motorBell', 'motorStator', 'motorHousing'], move: ['motorHousing', 'motorStator', 'motorBell'] },
+  { from: 0.833, title: 'Exploded assembly',
+    body: 'The retainers, output support, gear train, motor, and controller come apart along the assembly axis.',
+    spec: '3 planets, 3 gear stages, 1 output bearing', focus: [], move: [] },
+  { from: 0.917, title: 'Integrated actuator',
+    body: 'The gearbox, motor, and controller reassemble into one package. The sections below cover the load cases, calculations, and physical prototypes behind it.',
+    spec: '50.45:1 ratio, 30 Nm continuous / 50 Nm peak design targets', focus: [], move: [] },
 ];
 
 /* --------------------------------------------------------------- explosion --- */
-// dz: travel along the axis when fully exploded [mm]. zc: axial centre of the part when assembled [mm].
-// win: [start, end] of scroll progress over which the part travels.
+// dz: axial travel when fully exploded [mm]. zc, hz: centre and half-height of the part in the
+// assembled Onshape model [mm], used to frame the camera. Travel distances leave 6 to 10 mm of
+// clearance between neighbouring parts, and a part higher in the stack always travels further,
+// so separations only grow while parts move and the reassembly never passes parts through each other.
 const EXPLODE = {
-  screws:       { dz:  207, zc:     23, win: [0.08, 0.20] },
-  retOuter:     { dz:  186, zc:     21, win: [0.09, 0.21] },
-  retInner:     { dz:  174, zc:     21, win: [0.10, 0.22] },
-  bearing:      { dz:  159, zc:     16, win: [0.19, 0.30] },
-  ringOut:      { dz:  141, zc:     15, win: [0.28, 0.39] },
-  carrierOut:   { dz:  120, zc:   21.5, win: [0.37, 0.47] },
-  planetBrgTop: { dz:  111, zc:     16, win: [0.46, 0.56] },
-  planets:      { dz:   99, zc:    9.5, win: [0.46, 0.57] },
-  planetBrgBot: { dz:   87, zc:      2, win: [0.46, 0.58] },
-  carrierIn:    { dz:   69, zc:      5, win: [0.40, 0.58] },
-  sun:          { dz:   42, zc:   -1.5, win: [0.56, 0.66] },
-  fixed:        { dz:   17, zc:      7, win: [0.64, 0.74] },
-  plate:        { dz:    0, zc:   -6.4, win: [0, 1] },
-  motorBell:    { dz:  -14, zc:    -23, win: [0.74, 0.86] },
-  motorStator:  { dz:  -46, zc:    -24, win: [0.74, 0.86] },
-  motorHousing: { dz:  -75, zc:    -22, win: [0.72, 0.86] },
-  magnet:       { dz:  -98, zc:    -35, win: [0.84, 0.94] },
-  board:        { dz:  -135, zc:    -45, win: [0.84, 0.95] },
-  ctrlHousing:  { dz: -180, zc:  -46.6, win: [0.82, 0.95] },
+  screws:       { dz:  233, zc:  18.5,  hz:  5.0 },
+  retOuter:     { dz:  214, zc:  21.45, hz:  2.3 },
+  retInner:     { dz:  214, zc:  21.45, hz:  2.3 },
+  bearing:      { dz:  203, zc:  16.05, hz:  3.2 },
+  ringOut:      { dz:  186, zc:  15.2,  hz:  3.9 },
+  carrierOut:   { dz:  163, zc:   8.7,  hz: 15.0 },
+  planetBrgTop: { dz:  128, zc:  15.9,  hz:  2.0 },
+  planets:      { dz:  116, zc:   9.55, hz:  9.6 },
+  planetBrgBot: { dz:  106, zc:   1.9,  hz:  2.0 },
+  carrierIn:    { dz:   80, zc:   6.35, hz: 13.1 },
+  sun:          { dz:   57, zc:  -2.95, hz:  8.0 },
+  fixed:        { dz:   17, zc:   7.35, hz: 11.8 },
+  plate:        { dz:    0, zc:  -7.9,  hz:  9.5 },
+  motorBell:    { dz:  -26, zc: -15.8,  hz: 14.3 },
+  motorStator:  { dz:  -56, zc: -24.1,  hz:  9.0 },
+  motorHousing: { dz:  -91, zc: -24.4,  hz: 16.0 },
+  magnet:       { dz: -119, zc: -35.35, hz:  2.6 },
+  board:        { dz: -129, zc: -45.75, hz:  9.3 },
+  ctrlHousing:  { dz: -164, zc: -43.6,  hz: 13.5 },
 };
+// Scroll chooses the step; the step's parts then glide out over MOVE_MS, so a component is
+// always separated and in view while its caption is up, however fast or slowly the reader scrolls.
+// Parts move at one shared rate: a part from an earlier step always started earlier and so is
+// always further out, which keeps every gap opening in both scroll directions.
+const MOVE_MS = 360;
+const STEP_OF = {};
+STEPS.forEach((step, i) => { for (const name of step.move) STEP_OF[name] = i; });
 const FOCUS_ALIAS = { planetBrg: ['planetBrgTop', 'planetBrgBot'] };
 
 
@@ -276,9 +289,10 @@ async function init(root) {
 
   const els = { step: root.querySelector('.wx-step'), title: root.querySelector('.wx-title'), body: root.querySelector('.wx-body'), spec: root.querySelector('.wx-spec'), cap: root.querySelector('.wx-caption'), bar: root.querySelector('.wx-progress i') };
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  let progress = 0, shown = -1, dirty = true, swapTimer = 0;
+  // target follows the scroll position; progress eases toward it so wheel steps glide.
+  let progress = 0, target = 0, lastFrame = 0, shown = -1, dirty = true, swapTimer = 0;
   const dim = new THREE.Color(0xc9ccd1);
-  const cam = { mid: -16, span: 81, init: false };
+  const cam = { mid: -16, span: 81, zoom: 1, init: false, key: '', from: null, to: null, t: 1 };
   let mode = 'animation', controls = null, modeRequest = 0;
   const events = new AbortController();
   const buttons = {
@@ -333,7 +347,7 @@ async function init(root) {
       canvas.removeAttribute('aria-label');
     }
     if (controls) controls.enabled = mode === 'cad';
-    progress = mode === 'animation' ? 0 : 1;
+    progress = target = mode === 'animation' ? 0 : 1;
     cam.init = false;
     dirty = true;
   }
@@ -405,6 +419,20 @@ async function init(root) {
   section.input?.addEventListener('input', () => setSection(+section.input.value), { signal: events.signal });
   setMode(reduce ? 'skipped' : 'animation');
 
+  // Phones: size the stage once from the window height. Mobile toolbars change the viewport
+  // height while scrolling; following that would resize the canvas mid-animation.
+  let stageWidth = 0, stageHeight = 0;
+  function fixStageHeight() {
+    const w = window.innerWidth, h = window.innerHeight;
+    if (w === stageWidth && Math.abs(h - stageHeight) < 160) return;
+    stageWidth = w; stageHeight = h;
+    if (window.matchMedia('(max-width: 768px)').matches) root.style.setProperty('--wx-stage-fixed', `${h - 128}px`);
+    else root.style.removeProperty('--wx-stage-fixed');
+    dirty = true;
+  }
+  fixStageHeight();
+  window.addEventListener('resize', fixStageHeight, { signal: events.signal });
+
   // Reserve the tallest caption so the model area never resizes between steps.
   function fitCaptionHeight() {
     const fields = [els.step, els.title, els.body, els.spec];
@@ -432,22 +460,18 @@ async function init(root) {
   }
 
   function readProgress() {
-    const r = root.getBoundingClientRect(); const stage = root.querySelector('.wx-stage').getBoundingClientRect();
-    const travel = r.height - stage.height; const top = parseFloat(getComputedStyle(root.querySelector('.wx-stage')).top) || 0;
-    // Start at the top of the reading row, then settle into the full-height pinned view.
-    // This reveals the opening model and explanation immediately below the title.
-    if (window.matchMedia('(min-width: 769px)').matches) {
-      const entry = ease(clamp01(1 - (r.top - top) / 300));
-      const openingHeight = Math.min(560, stage.height);
-      const viewHeight = openingHeight + (stage.height - openingHeight) * entry;
-      const copyHeight = root.querySelector('.wx-copy').getBoundingClientRect().height;
-      const copyY = Math.max(0, (stage.height - copyHeight) / 2) * entry;
-      const viewValue = `${viewHeight.toFixed(1)}px`, copyValue = `${copyY.toFixed(1)}px`;
-      if (root.style.getPropertyValue('--wx-view-h') !== viewValue) root.style.setProperty('--wx-view-h', viewValue);
-      if (root.style.getPropertyValue('--wx-copy-y') !== copyValue) root.style.setProperty('--wx-copy-y', copyValue);
-    }
-    const p = travel > 0 ? clamp01((top - r.top) / travel) : 0;
-    if (Math.abs(p - progress) > 0.0005) { progress = p; dirty = true; }
+    const stageEl = root.querySelector('.wx-stage');
+    const r = root.getBoundingClientRect(); const stage = stageEl.getBoundingClientRect();
+    const travel = r.height - stage.height; const top = parseFloat(getComputedStyle(stageEl).top) || 0;
+    const scroller = root.closest('.detail-content');
+    let p;
+    if (scroller) {
+      // Count from the top of the page so the first scroll already advances the story while the
+      // title moves away; the stage pins partway through and releases exactly at the end.
+      const stickAt = Math.max(0, r.top - scroller.getBoundingClientRect().top + scroller.scrollTop - top);
+      p = clamp01(scroller.scrollTop / (stickAt + travel));
+    } else p = travel > 0 ? clamp01((top - r.top) / travel) : 0;
+    if (Math.abs(p - target) > 0.0002) { target = p; dirty = true; }
   }
 
   function resize() {
@@ -456,11 +480,57 @@ async function init(root) {
   }
 
   const phoneLayout = window.matchMedia('(max-width: 768px)');
+
+  // Where the camera should end up for step si: framed on the step's parts at their end-of-step
+  // positions (moved parts exploded, the rest where they are), wide enough to keep neighbours in
+  // view on desktop. Steps with nothing highlighted frame the whole actuator.
+  function frameFor(si) {
+    const last = STEPS.length - 1;
+    const outAt = name => STEP_OF[name] !== undefined && si >= STEP_OF[name] && si < last ? 1 : 0;
+    const step = STEPS[si];
+    let names = [...new Set([...step.move, ...step.focus.flatMap(f => FOCUS_ALIAS[f] || [f])])].filter(n => EXPLODE[n]);
+    const overview = names.length === 0;
+    if (overview) names = Object.keys(EXPLODE);
+    let lo = Infinity, hi = -Infinity;
+    for (const n of names) { const e = EXPLODE[n], z = e.zc + e.dz * outAt(n); lo = Math.min(lo, z - e.hz); hi = Math.max(hi, z + e.hz); }
+    const minSpan = overview ? 0 : phoneLayout.matches ? 90 : 220;
+    const span = Math.max(minSpan, hi - lo + 24);
+    const clear = si === 0 ? titleClearance(span) : { shift: 0, zoom: 1 };
+    return { mid: (lo + hi) / 2 + clear.shift, span, zoom: clear.zoom };
+  }
+
+  // The page title overlays the top of the stage on the opening frame. Aim the camera a little
+  // higher, just enough to put the assembled actuator below the title, keeping a bottom margin.
+  function titleClearance(span) {
+    const header = root.closest('.detail-content')?.querySelector('.detail-header');
+    const inner = root.closest('.detail-inner');
+    const h = canvas.clientHeight, w = canvas.clientWidth;
+    if (!header || !inner || !h || !w) return { shift: 0, zoom: 1 };
+    const titleBottom = header.offsetTop + header.offsetHeight + 20
+      - (root.getBoundingClientRect().top - inner.getBoundingClientRect().top);
+    const vFov = camera.fov * Math.PI / 180, hFov = 2 * Math.atan(Math.tan(vFov / 2) * (w / h)), elev = 0.42;
+    const needH = span * Math.cos(elev) + 104 * Math.sin(elev) + 24, needW = 104 + 30;
+    const dist = Math.max(needH / (2 * Math.tan(vFov / 2)), needW / (2 * Math.tan(hFov / 2))) * 1.04;
+    // On short screens the actuator would not fit below the title, so also step the camera back.
+    const fullPx = (81 * Math.cos(elev) + 104 * Math.sin(elev)) * h / (2 * dist * Math.tan(vFov / 2));
+    const zoom = Math.max(1, fullPx / Math.max(1, h - titleBottom - 24));
+    const pxPerMm = h / (2 * dist * zoom * Math.tan(vFov / 2));
+    const above = (h - fullPx / zoom) / 2;
+    const shift = Math.min(Math.max(0, titleBottom - above), Math.max(0, above - 8));
+    return { shift: shift / pxPerMm, zoom };
+  }
   phoneLayout.addEventListener?.('change', () => { dirty = true; }, { signal: events.signal });
 
-  function frame() {
+  function frame(now = performance.now()) {
     if (mode === 'animation') readProgress();
     resize();
+    const dt = Math.min(64, now - (lastFrame || now)); lastFrame = now;
+    if (mode === 'animation' && progress !== target) {
+      // Critically damped follow (about 110 ms) turns discrete wheel steps into smooth motion.
+      progress = reduce ? target : progress + (target - progress) * (1 - Math.exp(-dt / 55));
+      if (Math.abs(target - progress) < 0.00015) progress = target;
+      dirty = true;
+    }
     if (dirty) {
       dirty = false;
       if (mode === 'cad') {
@@ -468,47 +538,50 @@ async function init(root) {
         raf = requestAnimationFrame(frame);
         return;
       }
-      // which step
-      const storyProgress = progress < 0.86 ? progress / 0.86 : 1;
-      let si = 0; for (let i = 0; i < STEPS.length - 1; i++) if (storyProgress >= STEPS[i].from) si = i;
-      if (progress >= 0.98) si = STEPS.length - 1;
+      // which step: from the scroll position itself, so the caption responds immediately
+      // Steps share the scroll evenly; the reassembled actuator holds for the last twelfth.
+      let si = 0; for (let i = 0; i < STEPS.length; i++) if (target >= STEPS[i].from) si = i;
       setCaption(si);
       const focus = new Set(STEPS[si].focus.flatMap(f => FOCUS_ALIAS[f] || [f]));
+      const framed = STEPS[si].move.length ? new Set(STEPS[si].move) : focus;
+      const fade = reduce ? 1 : 1 - Math.exp(-dt / 90);
       // explode
-      let zMin = -57, zMax = 24;
-      const collapse = 1 - ease(clamp01((progress - 0.86) / 0.12));
-      let upwardTravel = 0;
+      const lastStep = STEPS.length - 1;
       for (const [name, st] of Object.entries(state)) {
-        const e = EXPLODE[name]; const t = ease(clamp01((storyProgress - e.win[0]) / (e.win[1] - e.win[0]))) * collapse;
+        const e = EXPLODE[name];
+        const want = STEP_OF[name] !== undefined && si >= STEP_OF[name] && si < lastStep ? 1 : 0;
+        if (st.out === undefined || reduce) st.out = want;
+        else if (st.out !== want) {
+          st.out = want > st.out ? Math.min(want, st.out + dt / MOVE_MS) : Math.max(want, st.out - dt / MOVE_MS);
+          dirty = true;
+        }
+        const t = ease(st.out);
         st.group.position.z = e.dz * t;
-        upwardTravel = Math.max(upwardTravel, st.group.position.z);
-        zMin = Math.min(zMin, -57 + Math.min(0, e.dz * t)); zMax = Math.max(zMax, 24 + Math.max(0, e.dz * t));
-        const lit = focus.size === 0 || focus.has(name);
-        for (const m of st.mats) m.color.copy(m.userData.base).lerp(dim, lit ? 0 : 0.35);
+        // Highlights fade over about 200 ms; an instant colour flip reads as a glitch.
+        const dimTarget = focus.size === 0 || focus.has(name) ? 0 : 0.6;
+        st.dim = st.dim === undefined ? dimTarget : st.dim + (dimTarget - st.dim) * fade;
+        if (Math.abs(dimTarget - st.dim) > 0.004) dirty = true; else st.dim = dimTarget;
+        for (const m of st.mats) m.color.copy(m.userData.base).lerp(dim, st.dim);
         st.z = e.zc + e.dz * t;
       }
-      // Hold the output side in place as the remaining assembly opens downward.
-      model.position.z = -upwardTravel;
-      // Keep every part inside the column; highlighting and captions identify the active component.
-      let gMid = (zMin + zMax) / 2, gSpan = zMax - zMin;
-      // Phones frame the highlighted parts instead of the whole stack, so the actuator fills
-      // the width. Desktop keeps every part in view. Steps with nothing highlighted show it all.
-      if (phoneLayout.matches && focus.size) {
-        let fMin = Infinity, fMax = -Infinity;
-        for (const name of focus) {
-          const st = state[name]; if (!st || st.z === undefined) continue;
-          fMin = Math.min(fMin, st.z - 18); fMax = Math.max(fMax, st.z + 18);
-        }
-        if (fMin < fMax) { gMid = (fMin + fMax) / 2; gSpan = Math.max(fMax - fMin, 70); }
+      // Presenter camera: each step glides to the place its parts end up, over the same time and
+      // easing as their motion, so the component arrives at the centre beside its caption and the
+      // previous one shifts out of the way. Overview steps frame the whole actuator.
+      const goal = frameFor(si);
+      const key = si + (phoneLayout.matches ? 'p' : 'd');
+      if (!cam.init || reduce) { cam.mid = goal.mid; cam.span = goal.span; cam.zoom = goal.zoom; cam.init = true; cam.key = key; cam.t = 1; }
+      else if (cam.key !== key) { cam.from = { mid: cam.mid, span: cam.span, zoom: cam.zoom }; cam.to = goal; cam.t = 0; cam.key = key; }
+      if (cam.t < 1) {
+        cam.t = Math.min(1, cam.t + dt / MOVE_MS); const k = ease(cam.t);
+        cam.mid = cam.from.mid + (cam.to.mid - cam.from.mid) * k; cam.span = cam.from.span + (cam.to.span - cam.from.span) * k;
+        cam.zoom = cam.from.zoom + (cam.to.zoom - cam.from.zoom) * k;
+        dirty = true;
       }
-      if (!cam.init || reduce) { cam.mid = gMid; cam.span = gSpan; cam.init = true; cam.t = performance.now(); }
-      else { const now = performance.now(), k = 1 - Math.exp(-Math.min(250, now - (cam.t || now)) / 160); cam.t = now;
-        cam.mid += (gMid - cam.mid) * k; cam.span += (gSpan - cam.span) * k; if (Math.abs(gMid - cam.mid) > 0.2 || Math.abs(gSpan - cam.span) > 0.2) dirty = true; }
-      const mid = cam.mid + model.position.z, span = cam.span;
+      const mid = cam.mid, span = cam.span;
       const vFov = camera.fov * Math.PI / 180, hFov = 2 * Math.atan(Math.tan(vFov / 2) * camera.aspect);
       const elev = 0.42;                                              // radians above the horizon
       const needH = span * Math.cos(elev) + 104 * Math.sin(elev) + 24, needW = 104 + 30;
-      const dist = Math.max(needH / (2 * Math.tan(vFov / 2)), needW / (2 * Math.tan(hFov / 2))) * 1.04;
+      const dist = Math.max(needH / (2 * Math.tan(vFov / 2)), needW / (2 * Math.tan(hFov / 2))) * 1.04 * cam.zoom;
       const az = -0.9 + progress * 1.5;
       camera.position.set(Math.cos(az) * Math.cos(elev) * dist, Math.sin(az) * Math.cos(elev) * dist, mid + Math.sin(elev) * dist);
       camera.lookAt(0, 0, mid);

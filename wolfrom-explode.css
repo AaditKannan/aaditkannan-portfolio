@@ -1,5 +1,7 @@
 .wx {
-  --wx-height: calc(var(--wx-stage-h) + 110vh);
+  /* 12 steps at 110px each: a little more than one mouse-wheel notch (about 100px), so every
+     notch moves exactly one step and none are skipped, whatever the screen height. */
+  --wx-height: calc(var(--wx-stage-h) + 1320px);
   --wx-stage-h: calc(100svh - 150px);
   --wx-top: 104px;
   position: relative;
@@ -17,7 +19,7 @@
   align-items: center;
 }
 
-.wx-canvas-wrap { position: relative; min-width: 0; height: var(--wx-view-h, min(560px, var(--wx-stage-h))); align-self: start; overflow: hidden; }
+.wx-canvas-wrap { position: relative; min-width: 0; height: var(--wx-stage-h); align-self: start; overflow: hidden; }
 .wx-canvas-wrap canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; transition: opacity .35s ease; }
 /* The poster only appears when the model is slow to load, so fast loads never flash a mismatched still. */
 .wx-canvas-wrap .wx-poster { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; opacity: 0; animation: wx-poster-in .3s ease 1.2s forwards; }
@@ -25,7 +27,7 @@
 .wx.wx-loaded .wx-poster { visibility: hidden; transition: visibility 0s .35s; }
 @keyframes wx-poster-in { to { opacity: 1; } }
 html[data-theme="light"] .wx-poster { mix-blend-mode: multiply; }
-.wx-copy { min-width: 0; align-self: start; transform: translateY(var(--wx-copy-y, 0px)); }
+.wx-copy { min-width: 0; align-self: center; }
 .wx.wx-compact { height: var(--wx-stage-h); }
 .wx.wx-compact .wx-stage { position: relative; top: 0; }
 .wx.wx-compact .wx-canvas-wrap { height: 100%; }
@@ -69,9 +71,9 @@ html[data-theme="light"] .wx-poster { mix-blend-mode: multiply; }
 }
 
 @media (max-width: 768px) {
-  /* Fill the visible screen below the Contents bar; dvh tracks the collapsing browser toolbar. */
-  .wx { --wx-stage-h: calc(100svh - 128px); --wx-top: 116px; margin-bottom: 32px !important; }
-  @supports (height: 100dvh) { .wx { --wx-stage-h: calc(100dvh - 128px); } }
+  /* Fill the screen below the Contents bar. The script fixes the height once per width, so the
+     collapsing browser toolbar never resizes the stage mid-animation. */
+  .wx { --wx-stage-h: var(--wx-stage-fixed, calc(100svh - 128px)); --wx-top: 116px; margin-bottom: 32px !important; }
   .wx-stage { grid-template-columns: 1fr; grid-template-rows: minmax(180px, 1fr) auto; gap: 12px; }
   .wx-canvas-wrap { height: 100%; }
   .wx-copy, .wx.wx-compact .wx-copy { align-self: start; transform: none; }

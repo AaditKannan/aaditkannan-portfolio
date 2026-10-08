@@ -386,3 +386,12 @@ assert.match(projects, /galleryCanvasClass/, 'Gallery renderer should assign sou
 for (const canvasClass of ['gallery-canvas-light', 'gallery-canvas-dark', 'gallery-canvas-render']) {
   assert.match(projects, new RegExp(`#galleryMediaContainer \\.${canvasClass}[\\s\\S]*?background:`), `Pulse gallery should style the ${canvasClass} canvas`);
 }
+
+// Wolfrom scroll animation: every part moves in exactly one step, so motion always matches the caption.
+const explodeSource = readFileSync(join(root, 'wolfrom-explode.js'), 'utf8');
+const moveLists = [...explodeSource.matchAll(/move: \[([^\]]*)\]/g)].map((match) => [...match[1].matchAll(/'([^']+)'/g)].map((name) => name[1]));
+const movedParts = moveLists.flat();
+assert.equal(new Set(movedParts).size, movedParts.length, 'No Wolfrom part should move in more than one animation step');
+const explodeParts = [...explodeSource.slice(explodeSource.indexOf('const EXPLODE = {'), explodeSource.indexOf('};', explodeSource.indexOf('const EXPLODE = {'))).matchAll(/^\s+(\w+):\s+\{ dz:\s+(-?\d+)/gm)].filter((match) => Number(match[2]) !== 0).map((match) => match[1]);
+assert.deepEqual([...explodeParts].sort(), [...movedParts].sort(), 'Every Wolfrom part that travels should belong to exactly one animation step');
+assert.doesNotMatch(readPage('wolfrom-explode.css'), /--wx-view-h|--wx-copy-y|100dvh/, 'The Wolfrom stage should keep a fixed size while scrolling');
