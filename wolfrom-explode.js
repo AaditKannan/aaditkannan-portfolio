@@ -455,6 +455,9 @@ async function init(root) {
     if (canvas.width !== Math.round(w * renderer.getPixelRatio()) || canvas.height !== Math.round(h * renderer.getPixelRatio())) { renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix(); dirty = true; }
   }
 
+  const phoneLayout = window.matchMedia('(max-width: 768px)');
+  phoneLayout.addEventListener?.('change', () => { dirty = true; }, { signal: events.signal });
+
   function frame() {
     if (mode === 'animation') readProgress();
     resize();
@@ -488,9 +491,9 @@ async function init(root) {
       model.position.z = -upwardTravel;
       // Keep every part inside the column; highlighting and captions identify the active component.
       let gMid = (zMin + zMax) / 2, gSpan = zMax - zMin;
-      // Portrait screens frame the highlighted parts instead of the whole stack, so the
-      // actuator fills the width. Steps with nothing highlighted still show everything.
-      if (camera.aspect < 0.9 && focus.size) {
+      // Phones frame the highlighted parts instead of the whole stack, so the actuator fills
+      // the width. Desktop keeps every part in view. Steps with nothing highlighted show it all.
+      if (phoneLayout.matches && focus.size) {
         let fMin = Infinity, fMax = -Infinity;
         for (const name of focus) {
           const st = state[name]; if (!st || st.z === undefined) continue;
