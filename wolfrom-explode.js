@@ -573,7 +573,7 @@ async function init(root) {
     ++modeRequest;
     buttons.explore.textContent = 'Interact with model';
     setMode('skipped');
-    scrollToSection(document.getElementById('wolfrom-why'));
+    scrollToSection(document.getElementById('wolfrom-overview'));
   }, { signal: events.signal });
   buttons.replay.addEventListener('click', () => {
     ++modeRequest;
