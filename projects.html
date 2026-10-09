@@ -4662,18 +4662,32 @@ const formulaElectricAtticDescription = `
       }, 250);
     }
 
+    // Section positions only change with layout, so they are measured once and again after the
+    // description resizes; each scroll then compares numbers without forcing a layout.
+    let tocTargets = null, tocTargetsKey = '', tocFrame = 0, tocActive = null;
+    new ResizeObserver(() => { tocTargets = null; }).observe(document.getElementById('detailDescription'));
+    function measureTocTargets(links) {
+      const detailRect = detailContent.getBoundingClientRect();
+      return links.map(link => {
+        const target = document.getElementById(link.dataset.projectSection);
+        return { link, top: target ? target.getBoundingClientRect().top - detailRect.top + detailContent.scrollTop : null };
+      });
+    }
+    function scheduleProjectTocActive() {
+      if (!tocFrame) tocFrame = requestAnimationFrame(() => { tocFrame = 0; updateProjectTocActive(); });
+    }
+
     function updateProjectTocActive() {
       if (!projectToc || projectToc.hidden) return;
       const links = [...projectToc.querySelectorAll('a[data-project-section]')];
       if (!links.length) return;
-      const detailRect = detailContent.getBoundingClientRect();
+      const key = detailContent.dataset.projectId + ':' + links.length;
+      if (!tocTargets || tocTargetsKey !== key) { tocTargets = measureTocTargets(links); tocTargetsKey = key; }
       const readingLine = detailContent.scrollTop + 140;
       let activeLink = links[0];
       let activeTop = Number.NEGATIVE_INFINITY;
-      links.forEach(link => {
-        const target = document.getElementById(link.dataset.projectSection);
-        if (!target) return;
-        const targetTop = target.getBoundingClientRect().top - detailRect.top + detailContent.scrollTop;
+      tocTargets.forEach(({ link, top: targetTop }) => {
+        if (targetTop === null) return;
         if (targetTop <= readingLine && targetTop >= activeTop) {
           activeLink = link;
           activeTop = targetTop;
@@ -4682,14 +4696,14 @@ const formulaElectricAtticDescription = `
       if (detailContent.scrollTop <= 24) {
         activeLink = links[0];
       } else if (requestedProjectSectionId) {
-        const requestedLink = links.find(link => link.dataset.projectSection === requestedProjectSectionId);
-        const requestedTarget = requestedLink && document.getElementById(requestedProjectSectionId);
-        if (requestedLink && requestedTarget) {
-          const requestedTop = requestedTarget.getBoundingClientRect().top - detailRect.top + detailContent.scrollTop;
-          if (requestedTop - readingLine >= -320) activeLink = requestedLink;
+        const requested = tocTargets.find(({ link }) => link.dataset.projectSection === requestedProjectSectionId);
+        if (requested && requested.top !== null) {
+          if (requested.top - readingLine >= -320) activeLink = requested.link;
           else requestedProjectSectionId = null;
         }
       }
+      if (activeLink === tocActive && activeLink.classList.contains('active')) return;
+      tocActive = activeLink;
       links.forEach(link => {
         const active = link === activeLink;
         link.classList.toggle('active', active);
@@ -5239,13 +5253,9 @@ const formulaElectricAtticDescription = `
     const fabBackToTop = document.getElementById('fabBackToTop');
 
     detailContent.addEventListener('scroll', () => {
-      if (detailContent.scrollTop > 300) {
-        detailFabs.classList.add('visible');
-      } else {
-        detailFabs.classList.remove('visible');
-      }
-      updateProjectTocActive();
-    });
+      detailFabs.classList.toggle('visible', detailContent.scrollTop > 300);
+      scheduleProjectTocActive();
+    }, { passive: true });
 
     fabBackToTop.addEventListener('click', () => {
       detailContent.scrollTo({ top: 0, behavior: 'smooth' });
