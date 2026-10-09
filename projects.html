@@ -456,15 +456,16 @@
       transform: scale(1.03);
     }
 
-    /* Keep the full landscape exploded assembly visible in the card. */
+    /* The cutaway render carries transparent margins; scaling past them lets the actuator fill
+       about 95% of the card height without clipping the flange or base. */
     .project-card[data-id="wolfrom-actuator"] .project-image img {
       object-fit: contain;
       object-position: center center;
-      transform: scale(1.0);
+      transform: scale(1.15);
     }
 
     .project-card[data-id="wolfrom-actuator"]:hover .project-image img {
-      transform: scale(1.03);
+      transform: scale(1.18);
     }
 
     /* Formula Electric - zoom in to remove black bars on CAD render */
