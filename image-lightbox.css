@@ -7,8 +7,8 @@
   align-items: center;
   gap: 16px;
   padding: 64px 24px 28px;
-  background: rgba(8, 9, 11, 0.92);
-  backdrop-filter: blur(12px);
+  /* The page's own paper colour: figures are transparent cut-outs and line work made for it. */
+  background: #f5f2ee;
   opacity: 1;
   transition: opacity 160ms ease;
 }
@@ -44,18 +44,21 @@ body.image-lightbox-open {
   width: auto;
   height: auto;
   object-fit: contain;
-  border-radius: 4px;
-  box-shadow: 0 20px 70px rgba(0, 0, 0, 0.42);
+}
+
+.lightbox-image.is-blended {
+  mix-blend-mode: multiply;
 }
 
 .lightbox-caption {
   max-width: min(900px, 100%);
   min-height: 20px;
   margin-top: 12px;
-  color: rgba(255, 255, 255, 0.82);
+  color: #0f172a;
   font-family: var(--font-latex, 'STIX Two Text', 'Latin Modern Roman', 'Computer Modern', 'Times New Roman', serif);
-  font-size: 13px;
-  line-height: 1.45;
+  font-size: 15px;
+  font-style: italic;
+  line-height: 1.5;
   text-align: center;
 }
 
@@ -70,18 +73,18 @@ body.image-lightbox-open {
   width: 44px;
   height: 44px;
   padding: 0;
-  border: 1px solid rgba(255, 255, 255, 0.28);
+  border: 1px solid rgba(15, 23, 42, 0.18);
   border-radius: 4px;
-  background: rgba(16, 17, 20, 0.76);
-  color: #fff;
+  background: rgba(245, 242, 238, 0.9);
+  color: #0f172a;
   cursor: pointer;
   transition: background 150ms ease, border-color 150ms ease;
 }
 
 .lightbox-button:hover,
 .lightbox-button:focus-visible {
-  border-color: rgba(255, 255, 255, 0.72);
-  background: rgba(40, 42, 48, 0.92);
+  border-color: #0f172a;
+  background: #f5f2ee;
   outline: none;
 }
 
@@ -119,9 +122,10 @@ body.image-lightbox-open {
   position: absolute;
   top: 29px;
   left: 50%;
-  color: rgba(255, 255, 255, 0.68);
+  color: rgba(15, 23, 42, 0.6);
   font-family: var(--font-latex, 'STIX Two Text', 'Latin Modern Roman', 'Computer Modern', 'Times New Roman', serif);
-  font-size: 11px;
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
   letter-spacing: 0;
   transform: translateX(-50%);
 }
@@ -159,7 +163,7 @@ img.is-lightbox-enabled {
   .lightbox-next { right: 8px; }
 
   .lightbox-button {
-    background: rgba(16, 17, 20, 0.88);
+    background: rgba(245, 242, 238, 0.92);
   }
 }
 

@@ -61,6 +61,8 @@
       source: sourceFor(img),
       alt: img.getAttribute('alt') || captionOverride || 'Expanded image',
       caption: captionOverride || captionFor(img),
+      // figures drawn on white blend into the page there, so they blend into the lightbox too
+      blend: getComputedStyle(img).mixBlendMode === 'multiply',
     };
   }
 
@@ -112,6 +114,7 @@
     if (!item) return;
     image.src = item.source;
     image.alt = item.alt;
+    image.classList.toggle('is-blended', Boolean(item.blend));
     caption.textContent = item.caption;
     const hasMultiple = activeItems.length > 1;
     previousButton.hidden = !hasMultiple;
