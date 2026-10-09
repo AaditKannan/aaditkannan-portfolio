@@ -120,7 +120,7 @@ html[data-theme="light"] .wx-poster { mix-blend-mode: multiply; }
 
 /* Touch scrolling has no wheel notches to respect, so each step takes less travel. */
 @media (pointer: coarse) {
-  .wx { --wx-height: calc(var(--wx-stage-h) + 960px); }
+  .wx { --wx-height: calc(var(--wx-stage-h) + 1140px); }   /* 95px per step */
 }
 
 /* Idle hint on "Interact with model": one box per letter, each with its own piece of underline. */
