@@ -86,8 +86,8 @@ html[data-theme="light"] .wx-poster { mix-blend-mode: multiply; }
   .wx[data-wx-mode="cad"] .wx-caption { min-height: 0; }
   .wx-controls { margin-top: 12px; gap: 10px 18px; }
   .wx-controls button { font-size: 16px; }
-  .wx-title { font-size: 21px; }
-  .wx-body { font-size: 16px; line-height: 1.55; }
+  .wx-title { font-size: 19px; margin-bottom: 8px; }
+  .wx-body { font-size: 15px; line-height: 1.5; }
   /* the phone walk-through frames the current parts; neighbours fade out at the canvas edges */
   .wx:not([data-wx-mode="cad"]) .wx-canvas-wrap::before,
   .wx:not([data-wx-mode="cad"]) .wx-canvas-wrap::after {
@@ -97,7 +97,7 @@ html[data-theme="light"] .wx-poster { mix-blend-mode: multiply; }
   .wx:not([data-wx-mode="cad"]) .wx-canvas-wrap::before { top: 0; }
   .wx:not([data-wx-mode="cad"]) .wx-canvas-wrap::after { bottom: 0; transform: scaleY(-1); }
   .wx-step { width: 96px; margin-bottom: 12px; }
-  .wx-spec { font-size: 15px; margin-top: 8px; }
+  .wx-spec { font-size: 14px; margin-top: 6px; }
   .wx.no-webgl .wx-fallback,
   .wx.no-webgl .wx-copy { grid-column: 1; grid-row: auto; }
 }
@@ -116,3 +116,8 @@ html[data-theme="light"] .wx-poster { mix-blend-mode: multiply; }
 
 /* While the interactive model is open, the page title that overlays the stage steps aside. */
 .detail-content:has(.wx[data-wx-mode="cad"]) .detail-header { opacity: 0; visibility: hidden; transition: opacity .2s ease, visibility 0s .2s; }
+
+/* Touch scrolling has no wheel notches to respect, so each step takes less travel. */
+@media (pointer: coarse) {
+  .wx { --wx-height: calc(var(--wx-stage-h) + 960px); }
+}

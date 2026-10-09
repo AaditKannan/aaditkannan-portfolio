@@ -46,6 +46,11 @@ body.image-lightbox-open {
   object-fit: contain;
 }
 
+/* Small figures (single chart crops) are shown at a readable size. */
+.lightbox-image {
+  min-width: min(100%, 820px);
+}
+
 .lightbox-image.is-blended {
   mix-blend-mode: multiply;
 }

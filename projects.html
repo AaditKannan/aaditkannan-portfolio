@@ -3325,9 +3325,9 @@ const wolfromDescription = `
     $$\\eta = \\frac{1 + \\eta_a \\eta_s (i_{sc}-1)}{i(1 - \\eta_a \\eta_b i_0)}$$
     Here $i_{sc}=5.606$, $i_0=0.889$, $i=50.45$, and $\\eta_s$, $\\eta_a$, and $\\eta_b$ are the sun, fixed-ring, and output-ring mesh efficiencies.
     <figure class="project-feature-figure">
-      <div class="matlab-panel" style="--panel-x: 0%; --panel-y: 0%; --panel-width: 218.1818%; --panel-ratio: 11 / 8"><img src="/assets/wolfrom-load-analysis-clear.png" alt="MATLAB prediction of forward and backdrive efficiency versus ring-mesh efficiency" width="1200" height="1200" loading="lazy" decoding="async" data-lightbox-caption="Full MATLAB analysis sheet: forward and backdrive efficiency, circulating mesh power, planet forces and bearing loads, gear-root stress, and motor envelope."></div>
-      <figcaption>Forward and backdrive efficiency versus ring-mesh efficiency. Open the figure for the full MATLAB sheet.</figcaption>
-      <div class="matlab-panel" style="--panel-x: -80.3%; --panel-y: 0%; --panel-width: 184.6154%; --panel-ratio: 13 / 8"><img src="/assets/wolfrom-load-analysis-clear.png" alt="MATLAB power-flow calculation showing the fixed-ring and output-ring meshes carry nine and eight times output power" width="1200" height="1200" loading="lazy" decoding="async"></div>
+      <div class="matlab-panel" style="--panel-x: 0%; --panel-y: 0%; --panel-width: 218.1818%; --panel-ratio: 11 / 8"><img src="/assets/wolfrom-load-analysis-clear.png" alt="MATLAB prediction of forward and backdrive efficiency versus ring-mesh efficiency" width="1200" height="1200" loading="lazy" decoding="async" data-lightbox-src="/assets/wolfrom-matlab-efficiency.png"></div>
+      <figcaption>Forward and backdrive efficiency versus ring-mesh efficiency.</figcaption>
+      <div class="matlab-panel" style="--panel-x: -80.3%; --panel-y: 0%; --panel-width: 184.6154%; --panel-ratio: 13 / 8"><img src="/assets/wolfrom-load-analysis-clear.png" alt="MATLAB power-flow calculation showing the fixed-ring and output-ring meshes carry nine and eight times output power" width="1200" height="1200" loading="lazy" decoding="async" data-lightbox-src="/assets/wolfrom-matlab-mesh-power.png"></div>
       <figcaption>Circulating power in the two ring meshes, which amplifies small mesh losses.</figcaption>
     </figure>
     <table class="project-data-table project-small-table">
@@ -3394,7 +3394,7 @@ const wolfromDescription = `
       <figcaption>Load-case hand calculations setting the 30 Nm continuous and 50 Nm peak design targets.</figcaption>
     </figure>
     <figure class="project-feature-figure">
-      <div class="matlab-panel" style="--panel-y: -100%"><img src="/assets/wolfrom-load-analysis-clear.png" alt="MATLAB free-body diagram of tangential mesh forces and bearing reactions along the compound planet axis" width="1200" height="1200" loading="lazy" decoding="async"></div>
+      <div class="matlab-panel" style="--panel-y: -100%"><img src="/assets/wolfrom-load-analysis-clear.png" alt="MATLAB free-body diagram of tangential mesh forces and bearing reactions along the compound planet axis" width="1200" height="1200" loading="lazy" decoding="async" data-lightbox-src="/assets/wolfrom-matlab-planet-forces.png"></div>
       <figcaption>Mesh forces and bearing reactions at 50 Nm output, from the same MATLAB calculation.</figcaption>
     </figure>
     The fixed ring and output ring push on each planet in opposite directions, 8 mm apart along its axis. Those forces nearly cancel, so the carrier carries no net torque, although they still apply a tilting moment of <b>4.2 Nm at 50 Nm output</b> to every planet.
@@ -3412,7 +3412,7 @@ const wolfromDescription = `
       <article class="project-detail-card"><b>The carrier is not unloaded.</b> Its two plates react 40% of output torque against each other, which is 20 Nm at 50 Nm output.</article>
     </div>
     <figure class="project-feature-figure">
-      <div class="matlab-panel" style="--panel-x: -84.6154%; --panel-y: -100%; --panel-width: 184.6154%; --panel-ratio: 13 / 8"><img src="/assets/wolfrom-load-analysis-clear.png" alt="MATLAB planet-bearing reaction versus output torque: 235 newtons continuous and 392 newtons peak against a 350 newton static rating" width="1200" height="1200" loading="lazy" decoding="async"></div>
+      <div class="matlab-panel" style="--panel-x: -84.6154%; --panel-y: -100%; --panel-width: 184.6154%; --panel-ratio: 13 / 8"><img src="/assets/wolfrom-load-analysis-clear.png" alt="MATLAB planet-bearing reaction versus output torque: 235 newtons continuous and 392 newtons peak against a 350 newton static rating" width="1200" height="1200" loading="lazy" decoding="async" data-lightbox-src="/assets/wolfrom-matlab-bearing-load.png"></div>
       <figcaption>Planet bearing load at the continuous and peak cases, compared with the assumed static rating.</figcaption>
     </figure>
     <details class="project-disclosure">
