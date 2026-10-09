@@ -124,14 +124,16 @@ html[data-theme="light"] .wx-poster { mix-blend-mode: multiply; }
 }
 
 /* Idle hint on "Interact with model": one box per letter, each with its own piece of underline. */
-.wx-controls button.is-hinting { text-decoration: none; text-align: center; white-space: nowrap; }
+.wx-controls button.is-hinting { text-decoration: none; text-align: center; white-space: nowrap; clip-path: inset(-.6em 0 -.8em 0); }
 .wx-hint { display: inline-block; white-space: nowrap; }
 .wx-hint-c {
   position: relative; display: inline-block; white-space: pre; text-align: center; vertical-align: baseline;
-  transition: width .32s cubic-bezier(.4, 0, .2, 1), opacity .28s ease, transform .32s cubic-bezier(.4, 0, .2, 1);
+  /* coming back in: decelerate into place */
+  transition: width .22s cubic-bezier(.2, .7, .3, 1), transform .26s cubic-bezier(.15, .65, .35, 1);
 }
 .wx-hint-c::after { content: ''; position: absolute; left: 0; right: 0; top: var(--wx-ul, 1.3em); height: 1px; background: currentColor; }
-.wx-hint-c.is-gone { width: 0 !important; opacity: 0; }
-.wx-hint-c.is-gone.is-left { transform: translateX(-.45em); }
-.wx-hint-c.is-gone.is-right { transform: translateX(.45em); }
+/* going out: accelerate outward like a throw, past the clipped edge of the button */
+.wx-hint-c.is-gone { width: 0 !important; transition: width .22s cubic-bezier(.5, 0, .8, .4), transform .26s cubic-bezier(.55, 0, .85, .3); }
+.wx-hint-c.is-gone.is-left { transform: translateX(-3.2em); }
+.wx-hint-c.is-gone.is-right { transform: translateX(3.2em); }
 .wx-hint-base { display: inline-block; width: 0; height: 0; vertical-align: baseline; }

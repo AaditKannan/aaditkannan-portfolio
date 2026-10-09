@@ -1610,6 +1610,9 @@
     .detail-content[data-project-id="wolfrom-actuator"] .wolfrom-build-board img { display: block; width: 100%; height: 145px; object-fit: cover; max-height: none; }
     .detail-content[data-project-id="wolfrom-actuator"] .wolfrom-build-board figure:first-child img { height: 310px; object-position: 50% 45%; }
     .wolfrom-build-board figcaption { font-size: 14px; line-height: 1.35; margin-top: 6px; color: var(--text-dim); }
+    /* the looping bench clip runs under the three photos, taped on like them */
+    .wolfrom-build-board .wolfrom-build-clip { grid-column: 1 / -1; transform: rotate(-1deg); }
+    .wolfrom-build-board .wolfrom-build-clip video { display: block; width: 100%; aspect-ratio: 2 / 1; object-fit: cover; }
     .reading-evidence > :first-child { margin-top: 0; }
     .reading-row.prose-only { display: block; }
     .reading-supplement { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px 40px; }
@@ -3503,6 +3506,10 @@ const wolfromDescription = `
       <figure>
         <img src="/assets/wolfrom-stand.jpg" alt="Assembled printed Wolfrom prototype mounted on its stand" loading="lazy" decoding="async">
         <figcaption>Assembled prototype on the stand.</figcaption>
+      </figure>
+      <figure class="wolfrom-build-clip">
+        <video src="/assets/wolfrom-spin.mp4" poster="/assets/wolfrom-spin-poster.jpg" autoplay muted loop playsinline preload="metadata" aria-label="Printed Wolfrom prototype with its carrier spinning on the bench"></video>
+        <figcaption>Printed gear train running on the bench supply.</figcaption>
       </figure>
     </div>
     <details class="project-disclosure">

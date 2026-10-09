@@ -484,13 +484,13 @@ async function init(root) {
 
   // Idle hint. After a few quiet seconds "Interact with model" scrambles from the middle out into
   // "[Click me!]": the middle slots become the new label while the surplus letters at each end
-  // scramble, shrink and fade outward, then two seconds later it plays back. Every letter is its own
+  // are thrown outward past the button's edge, then two seconds later it plays back. Every letter is its own
   // box whose width eases between glyph widths, the button keeps its width, and an underline drawn
   // under each box stands in for the text underline, so nothing around it moves.
   const hint = (() => {
     const btn = buttons.explore, SOURCE = 'Interact with model', TARGET = '[Click me!]';
     const GLYPHS = 'abcdeghknopqsuvxyz', IDLE_MS = 4000, REPEAT_MS = 15000, HOLD_MS = 2000;
-    const STAGGER = 45, SCRAMBLE = 300, FLICKER = 50;
+    const STAGGER = 24, SCRAMBLE = 170, FLICKER = 34;
     let idleTimer = 0, holdTimer = 0, frame = 0, running = false, lastPlayed = -Infinity, slots = [];
     const glyph = () => GLYPHS[Math.floor(Math.random() * GLYPHS.length)];
 
