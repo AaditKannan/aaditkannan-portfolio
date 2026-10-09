@@ -1527,6 +1527,10 @@
       -webkit-column-break-inside: auto;
     }
 
+    /* A continued section is the second row of the section above it: no divider, a smaller gap. */
+    .detail-content[data-project-id="wolfrom-actuator"] .detail-description > .latex-section:has(+ .is-continued) { margin-bottom: 32px; }
+    .detail-content[data-project-id="wolfrom-actuator"] .detail-description > .latex-section.is-continued::before { display: none; }
+
     .detail-content:is([data-project-id="wolfrom-actuator"], [data-project-id="formula-electric"], [data-project-id="ns-us-pulse-generator"]) .detail-description > .latex-section + .latex-section::before {
       content: '';
       display: block;
@@ -3356,7 +3360,7 @@ const wolfromDescription = `
     <details class="project-disclosure">
       <summary>Derivation</summary>
       <div class="project-disclosure-content">
-        Tooth counts are sun 33, planet sun-stage 57, planet fixed-ring stage 27, planet output-ring stage 25, fixed ring 72, and output ring 75. Modules 0.5, 1.0, and 0.9 mm give all three meshes the same 22.5 mm centre distance.<br><br>
+        Tooth counts are sun 33, planet sun-stage 57, planet fixed-ring stage 27, planet output-ring stage 25, fixed ring 72, and output ring 75. Modules 0.5, 1.0, and 0.9 mm give all three meshes the same 22.5 mm centre distance, so one compound planet meets both rings with standard, unshifted teeth.<br><br>
         $i_{sc}=1+\\frac{57}{33}\\cdot\\frac{72}{27}=5.606$, $i_0=\\frac{72}{27}\\cdot\\frac{25}{75}=0.889$, and $i=\\frac{i_{sc}}{1-i_0}=50.45$.<br><br>
         In the frame rotating with the carrier, the sun and output ring feed power into the planet while the fixed ring takes it out, so applying one efficiency per mesh gives the forward expression above. Backdriving follows $\\eta'=\\frac{i(\\eta_a-i_0/\\eta_b)}{(i_{sc}-1)/\\eta_s+\\eta_a}$, which reaches zero when $\\eta_a\\eta_b=i_0$. Rolling power relative to output power is 8 at the output-ring mesh and 9 at the fixed-ring mesh.
       </div>
@@ -3393,7 +3397,7 @@ const wolfromDescription = `
   </section>
 
   <section class="latex-section" id="wolfrom-load-cases">
-    <strong>Load cases</strong><br><br>
+    <strong>Load cases and hand calculations</strong><br><br>
     <table class="project-data-table">
       <thead><tr><th>Case</th><th>Output torque</th><th>Output speed</th><th>Purpose</th></tr></thead>
       <tbody>
@@ -3413,12 +3417,11 @@ const wolfromDescription = `
     </details>
   </section>
 
-  <section class="latex-section" id="wolfrom-hand-calculations">
-    <strong>Hand calculations</strong><br><br>
+  <section class="latex-section is-continued" id="wolfrom-hand-calculations">
     <div class="project-detail-card-grid">
-      <article class="project-detail-card"><b>Planet bearings are the limiting part.</b> The worst bearing load is <b>235 N at 30 Nm</b> and <b>392 N at 50 Nm</b>, against a static rating of about 350 N, which sets static safety at 1.5 continuous and 0.9 at peak, with the rating reached at 45 Nm output.</article>
+      <article class="project-detail-card"><b>Planet bearings are the limiting part.</b> The worst bearing load is <b>235 N at 30 Nm</b> and <b>392 N at 50 Nm</b>, against a static rating of about 350 N, which sets static safety at 1.5 continuous and 0.9 at peak, with the rating reached at 45 Nm output. I am evaluating a fixed pin on needle rollers in their place; no replacement has been selected yet.</article>
       <article class="project-detail-card"><b>Gear teeth have margin.</b> Nominal root stress at 50 Nm is 269 MPa on the output-ring stage, 261 MPa on the fixed-ring stage, and 44 MPa on the sun stage, and nominal contact stress is 740, 686, and 415 MPa.</article>
-      <article class="project-detail-card"><b>The carrier is not unloaded.</b> Its two plates react 40% of output torque against each other, which is 20 Nm at 50 Nm output.</article>
+      <article class="project-detail-card"><b>The carrier is not unloaded.</b> Its two plates react 40% of output torque against each other, which is 20 Nm at 50 Nm output, so the posts that set the stack height also need a wind-up stiffness check.</article>
     </div>
     <figure class="project-feature-figure">
       <div class="matlab-panel" style="--panel-x: -84.6154%; --panel-y: -100%; --panel-width: 184.6154%; --panel-ratio: 13 / 8"><img src="/assets/wolfrom-load-analysis-clear.png" alt="MATLAB planet-bearing reaction versus output torque: 235 newtons continuous and 392 newtons peak against a 350 newton static rating" width="1200" height="1200" loading="lazy" decoding="async" data-lightbox-src="/assets/wolfrom-matlab-bearing-load.png"></div>
@@ -3453,17 +3456,10 @@ const wolfromDescription = `
     </div>
   </section>
 
-  <section class="latex-section" id="wolfrom-design-decisions">
-    <strong>Design decisions</strong><br><br>
-    <p><b>Two modules on the ring stages.</b> Module 1.0 on the 72/27 fixed-ring mesh and 0.9 on the 75/25 output-ring mesh share a 22.5 mm centre distance, so one compound planet meets both rings with standard, unshifted teeth at 50.45:1.</p>
-    <p><b>Planet support.</b> Two 604ZZ bearings fit the package, yet the worst reaction of 392 N at 50 Nm exceeds their assumed 350 N static rating, so I am evaluating a fixed pin on needle rollers; no replacement has been selected yet (<a href="#wolfrom-hand-calculations" data-project-section="wolfrom-hand-calculations">Hand calculations</a>).</p>
-    <p><b>Carrier posts.</b> The floating carrier carries no net torque, yet its plates react 20 Nm against each other at peak, so the posts that set the stack height also need a wind-up stiffness check.</p>
-    <p><b>Printing for assembly.</b> Bores, shaft ends, and press fits carry lead-in chamfers so each part self-aligns as the stack goes together from one direction, first-layer chamfers absorb elephant's foot, and every part prints with its teeth and load paths in the strongest layer direction.</p>
-  </section>
-
   <section class="latex-section" id="wolfrom-build">
     <strong>Build</strong><br><br>
-    The housings and carrier are FDM prints and the gears are SLA resin. I use the printed assembly to check gear timing, bearing fits, stack height, and access before committing those interfaces to metal parts.
+    <p>The housings and carrier are FDM prints and the gears are SLA resin. I use the printed assembly to check gear timing, bearing fits, stack height, and access before committing those interfaces to metal parts.</p>
+    <p>Bores, shaft ends, and press fits carry lead-in chamfers so each part self-aligns as the stack goes together from one direction, first-layer chamfers absorb elephant's foot, and every part prints with its teeth and load paths in the strongest layer direction.</p>
     <div class="wolfrom-build-board" aria-label="Physical prototype and assembly photos">
       <figure>
         <img src="/assets/wolfrom-bench.jpg" alt="Aadit assembling the printed Wolfrom prototype at the workshop bench" loading="lazy" decoding="async">

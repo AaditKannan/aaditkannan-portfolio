@@ -171,7 +171,7 @@ assert.match(projects, /title: 'Wolfrom Robotic Actuator'/, 'Wolfrom project tit
 assert.doesNotMatch(projects, /title: 'Wolfrom Compound Planetary Actuator'/, 'Wolfrom project should not use the old title');
 const wolfromSource = projects.match(/const wolfromDescription = `([\s\S]*?)`;/);
 assert.ok(wolfromSource, 'Projects should define the rebuilt Wolfrom case study');
-for (const heading of ['Why this project', 'Requirements and constraints', 'First principles', 'Architecture', 'Load cases', 'Hand calculations', 'Simulation', 'Design decisions', 'Build', 'Test and validation', 'Results and next steps']) {
+for (const heading of ['Why this project', 'Requirements and constraints', 'First principles', 'Architecture', 'Load cases and hand calculations', 'Simulation', 'Build', 'Test and validation', 'Results and next steps']) {
   assert.match(wolfromSource[1], new RegExp(`<strong[^>]*>${heading.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}`), `Wolfrom page should include ${heading}`);
 }
 assert.match(wolfromSource[1], /id="wolfrom-build"[\s\S]*?<summary>What went wrong<\/summary>/, 'Wolfrom Build should cover what went wrong');
@@ -204,10 +204,10 @@ assert.match(wolfromSource[1], /class="matlab-panel"/, 'The supplied MATLAB resu
 assert.match(wolfromSource[1], /src="\/assets\/wolfrom-dyno\.svg"/, 'Validation should show the proposed dyno architecture');
 assert.match(wolfromSource[1], /not a completed or validated bench/, 'The dyno proposal must not be mistaken for completed work');
 assert.match(wolfromSource[1], /Output torque and DC power alone measure the integrated actuator/, 'Validation should distinguish gearbox and whole-actuator efficiency');
-const wolfromDecisions = wolfromSource[1].match(/id="wolfrom-design-decisions"[\s\S]*?<\/section>/)?.[0];
-assert.doesNotMatch(wolfromDecisions, /project-detail-card|Two builds from one model|Costs a custom gear blank/, 'Design decisions should explain consequential choices without generic part-description cards');
-for (const evidence of ['22.5 mm centre distance', '392 N at 50 Nm', '350 N static rating', '20 Nm', 'no replacement has been selected']) assert.ok(wolfromDecisions.includes(evidence), `Design decisions should retain the evidence and status: ${evidence}`);
-assert.match(wolfromDecisions, /data-project-section="wolfrom-hand-calculations"/, 'Design consequences should link directly to their supporting calculations');
+// Design choices sit beside the evidence that drove them.
+const wolfromHandCalcs = wolfromSource[1].match(/id="wolfrom-hand-calculations"[\s\S]*?<\/section>/)?.[0] || '';
+for (const evidence of ['392 N at 50 Nm', '20 Nm', 'no replacement has been selected', 'wind-up stiffness check']) assert.ok(wolfromHandCalcs.includes(evidence), `Hand calculations should carry the decision and its status: ${evidence}`);
+assert.match(wolfromSource[1], /22\.5 mm centre distance, so one compound planet meets both rings with standard, unshifted teeth/, 'The module choice should be explained with the derivation');
 assert.match(projects, /getElementById\('detailDescription'\)\.addEventListener\('click', scrollToProjectSection\)/, 'Evidence links in the case study should use the same section-jump behavior as Contents');
 assert.match(projects, /topRow\.append\(document\.getElementById\('detailGallery'\), document\.getElementById\('detailSidebar'\)\)/, 'Shared gallery and sidebar should survive switching away from Wolfrom');
 assert.match(projects, /top: max\(104px, calc\(50svh - var\(--toc-half-height/, 'Wolfrom contents should be vertically centered beside the reading area');
@@ -230,7 +230,7 @@ assert.match(wolfromSource[1], /chosen loss-budget requirement, not an identity/
 assert.match(wolfromSource[1], /75\.7% backdrive efficiency at 80% forward efficiency/, 'The backdrive goal should be screened against the existing MATLAB model');
 assert.ok(existsSync(join(root, 'public', 'assets', 'actuator.glb')), 'The actuator GLB should be available to the viewer');
 
-assert.match(wolfromSource[1], /id="wolfrom-design-decisions"[\s\S]*?lead-in chamfers[\s\S]*?first-layer chamfers[\s\S]*?<\/section>/, 'Wolfrom design decisions should cover the DFMA choices in the printed parts');
+assert.match(wolfromSource[1], /id="wolfrom-build"[\s\S]*?lead-in chamfers[\s\S]*?first-layer chamfers[\s\S]*?<\/section>/, 'Wolfrom Build should cover the DFMA choices in the printed parts');
 
 const formulaCooling = projects.match(/const formulaElectricCoolingDescription = `([\s\S]*?)`;\s*const formulaElectricAtticDescription/);
 assert.ok(formulaCooling, 'Projects should define the Formula Electric cooling case study');
