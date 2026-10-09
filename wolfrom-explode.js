@@ -263,8 +263,8 @@ async function init(root) {
   let renderer;
   try { renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true }); }
   catch (e) { root.classList.add('no-webgl'); return; }
-  // Touch screens render at up to 1.5x: past that a phone GPU spends its time on pixels nobody can see.
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, window.matchMedia('(pointer: coarse)').matches ? 1.5 : 2));
+  // Capped at 2x: sharp on 3x phone screens without paying for pixels nobody can see.
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
   renderer.setClearColor(0x000000, 0);
 
   const scene = new THREE.Scene();
