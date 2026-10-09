@@ -89,10 +89,13 @@ html[data-theme="light"] .wx-poster { mix-blend-mode: multiply; }
   .wx-title { font-size: 21px; }
   .wx-body { font-size: 16px; line-height: 1.55; }
   /* the phone walk-through frames the current parts; neighbours fade out at the canvas edges */
-  .wx:not([data-wx-mode="cad"]) canvas {
-    -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 9%, #000 91%, transparent 100%);
-    mask-image: linear-gradient(to bottom, transparent 0, #000 9%, #000 91%, transparent 100%);
+  .wx:not([data-wx-mode="cad"]) .wx-canvas-wrap::before,
+  .wx:not([data-wx-mode="cad"]) .wx-canvas-wrap::after {
+    content: ''; position: absolute; left: 0; right: 0; height: 9%; z-index: 1; pointer-events: none;
+    background: linear-gradient(var(--bg), transparent);
   }
+  .wx:not([data-wx-mode="cad"]) .wx-canvas-wrap::before { top: 0; }
+  .wx:not([data-wx-mode="cad"]) .wx-canvas-wrap::after { bottom: 0; transform: scaleY(-1); }
   .wx-step { width: 96px; margin-bottom: 12px; }
   .wx-spec { font-size: 15px; margin-top: 8px; }
   .wx.no-webgl .wx-fallback,

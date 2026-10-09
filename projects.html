@@ -2640,9 +2640,10 @@
         justify-content: center;
         align-items: flex-start;
         height: 70px;
-        background: var(--nav-bg);
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
+        /* opaque on phones: a backdrop blur over the live 3D canvas costs a full redraw per frame */
+        background: var(--bg);
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
       }
       .nav-link {
         font-size: 14px;
@@ -3216,7 +3217,7 @@ function scheduleReadingBalance(description) {
 }
 
 const wolfromDescription = `
-  <section class="latex-section wx" id="wolfrom-architecture" data-model="/assets/actuator.glb" data-windings="/assets/stator-windings.glb" aria-label="Scroll-driven exploded view of the Wolfrom actuator">
+  <section class="latex-section wx" id="wolfrom-architecture" data-model="/assets/actuator.glb" data-model-lite="/assets/actuator-mobile.glb" data-windings="/assets/stator-windings.glb" data-windings-lite="/assets/stator-windings-mobile.glb" aria-label="Scroll-driven exploded view of the Wolfrom actuator">
     <div class="wx-stage">
       <div class="wx-canvas-wrap">
         <img class="wx-poster" src="/assets/gear-train.png" alt="Wolfrom actuator with the compound planetary gear train exposed and no loose retaining bolts" width="1150" height="863" decoding="async" fetchpriority="high" data-lightbox-ignore>

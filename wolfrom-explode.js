@@ -286,13 +286,16 @@ async function init(root) {
   // (millimetre geometry in metres, Z up, meshopt-compressed). The generated model above stays
   // on screen until it has loaded, and remains if loading fails.
   let disposed = false;
-  const url = root.dataset.model;
+  // Touch devices load lighter meshes of the same assembly (about half the triangles).
+  const lite = window.matchMedia('(pointer: coarse)').matches;
+  const url = (lite && root.dataset.modelLite) || root.dataset.model;
+  const windingsUrl = (lite && root.dataset.windingsLite) || root.dataset.windings;
   const cadReady = url ? Promise.all([
     import('three/addons/loaders/GLTFLoader.js'),
     import('three/addons/libs/meshopt_decoder.module.js'),
   ]).then(async ([{ GLTFLoader }, { MeshoptDecoder }]) => {
       const loader = new GLTFLoader().setMeshoptDecoder(MeshoptDecoder);
-      const windings = root.dataset.windings ? loader.loadAsync(root.dataset.windings).catch(() => null) : Promise.resolve(null);
+      const windings = windingsUrl ? loader.loadAsync(windingsUrl).catch(() => null) : Promise.resolve(null);
       const gltf = await loader.loadAsync(url);
       if (disposed) {
         gltf.scene.traverse(o => {
@@ -634,18 +637,31 @@ async function init(root) {
     els.cap.classList.add('is-swapping'); clearTimeout(swapTimer); swapTimer = setTimeout(write, 80);
   }
 
+  // The scroll range depends only on layout, so it is measured once and again after any resize;
+  // each frame then reads just the scroll position, without forcing a layout.
+  const scroller = root.closest('.detail-content');
+  const stageEl = root.querySelector('.wx-stage');
+  let range = 0;
+  function measureRange() {
+    const r = root.getBoundingClientRect(), stage = stageEl.getBoundingClientRect();
+    const top = parseFloat(getComputedStyle(stageEl).top) || 0;
+    // Count from the top of the page so the first scroll already advances the story while the
+    // title moves away; the stage pins partway through and releases exactly at the end.
+    const stickAt = Math.max(0, r.top - scroller.getBoundingClientRect().top + scroller.scrollTop - top);
+    range = Math.max(1, stickAt + r.height - stage.height);
+  }
+  if (scroller) new ResizeObserver(() => { range = 0; dirty = true; }).observe(root);
+
   function readProgress() {
-    const stageEl = root.querySelector('.wx-stage');
-    const r = root.getBoundingClientRect(); const stage = stageEl.getBoundingClientRect();
-    const travel = r.height - stage.height; const top = parseFloat(getComputedStyle(stageEl).top) || 0;
-    const scroller = root.closest('.detail-content');
     let p;
     if (scroller) {
-      // Count from the top of the page so the first scroll already advances the story while the
-      // title moves away; the stage pins partway through and releases exactly at the end.
-      const stickAt = Math.max(0, r.top - scroller.getBoundingClientRect().top + scroller.scrollTop - top);
-      p = clamp01(scroller.scrollTop / (stickAt + travel));
-    } else p = travel > 0 ? clamp01((top - r.top) / travel) : 0;
+      if (!range) measureRange();
+      p = clamp01(scroller.scrollTop / range);
+    } else {
+      const r = root.getBoundingClientRect(), stage = stageEl.getBoundingClientRect();
+      const travel = r.height - stage.height, top = parseFloat(getComputedStyle(stageEl).top) || 0;
+      p = travel > 0 ? clamp01((top - r.top) / travel) : 0;
+    }
     if (Math.abs(p - target) > 0.0002) { target = p; dirty = true; }
   }
 
@@ -766,7 +782,7 @@ async function init(root) {
   let raf = 0; const io = new IntersectionObserver(([en]) => { cancelAnimationFrame(raf); if (en.isIntersecting) { dirty = true; raf = requestAnimationFrame(frame); } }, { rootMargin: '200px' });
   io.observe(root);
   root.__wx = {
-    state,
+    state, renderer, scene, camera,
     dispose: () => {
       disposed = true;
       events.abort();
