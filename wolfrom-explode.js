@@ -478,7 +478,7 @@ async function init(root) {
   function scrollToSection(section) {
     const scroller = root.closest('.detail-content');
     if (!scroller || !section) return;
-    const inset = parseFloat(getComputedStyle(root).getPropertyValue('--wx-top')) || 104;
+    const inset = parseFloat(getComputedStyle(root).getPropertyValue(section === root ? '--wx-top' : '--wx-read-top')) || 104;
     scroller.scrollTo({ top: Math.max(0, scroller.scrollTop + section.getBoundingClientRect().top - scroller.getBoundingClientRect().top - inset), behavior: 'instant' });
   }
 
@@ -489,6 +489,7 @@ async function init(root) {
     mode = next;
     root.dataset.wxMode = mode;
     root.classList.toggle('wx-compact', mode !== 'animation');
+    setPinned(mode === 'cad');
     buttons.explore.hidden = mode === 'cad';
     buttons.skip.hidden = mode === 'skipped';
     buttons.skip.textContent = mode === 'cad' ? 'Continue reading' : 'Skip animation';
@@ -603,7 +604,7 @@ async function init(root) {
     const w = window.innerWidth, h = window.innerHeight;
     if (w === stageWidth && Math.abs(h - stageHeight) < 160) return;
     stageWidth = w; stageHeight = h;
-    if (window.matchMedia('(max-width: 768px)').matches) root.style.setProperty('--wx-stage-fixed', `${h - 128}px`);
+    if (window.matchMedia('(max-width: 768px)').matches) root.style.setProperty('--wx-stage-fixed', `${h - 82}px`);
     else root.style.removeProperty('--wx-stage-fixed');
     dirty = true;
   }
@@ -652,11 +653,19 @@ async function init(root) {
   }
   if (scroller) new ResizeObserver(() => { range = 0; dirty = true; }).observe(root);
 
+  // While the stage is pinned (or the model is open) the phone Contents bar steps aside so the
+  // model can use its space (projects.html).
+  function setPinned(on) {
+    const value = String(on);
+    if (root.dataset.wxPinned !== value) root.dataset.wxPinned = value;
+  }
+
   function readProgress() {
     let p;
     if (scroller) {
       if (!range) measureRange();
       p = clamp01(scroller.scrollTop / range);
+      setPinned(scroller.scrollTop < range - 1);
     } else {
       const r = root.getBoundingClientRect(), stage = stageEl.getBoundingClientRect();
       const travel = r.height - stage.height, top = parseFloat(getComputedStyle(stageEl).top) || 0;
