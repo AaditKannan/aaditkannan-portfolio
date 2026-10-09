@@ -3955,7 +3955,8 @@ const formulaElectricAtticDescription = `
           ['Prototyping and test', 'FDM printing, SLA printing, dynamometer design'],
         ],
         links: [],
-        images: ['/assets/cutaway-three-quarter-clear.png', '/assets/wolfrom-cover.jpg', '/assets/exploded-landscape-tight-clear.png', '/assets/gear-train-clear.png', '/assets/half-section-clear.png', '/assets/wolfrom-ansys-topology-result.png', '/assets/wolfrom-ansys-stress.png']
+        cardImage: '/assets/cutaway-three-quarter-clear.png',
+        images: ['/assets/exploded-landscape-tight-clear.png', '/assets/wolfrom-cover.jpg', '/assets/gear-train-clear.png', '/assets/cutaway-three-quarter-clear.png', '/assets/half-section-clear.png', '/assets/wolfrom-ansys-topology-result.png', '/assets/wolfrom-ansys-stress.png']
       },
       {
         id: 'formula-electric',
@@ -4624,7 +4625,7 @@ const formulaElectricAtticDescription = `
         <div class="project-card${p.featured ? ' featured' : ''}" data-id="${p.id}">
           <div class="project-image">
             ${p.images && p.images.length > 0
-              ? gridThumb(p.images[0], p.title)
+              ? gridThumb(p.cardImage || p.images[0], p.title)
               : '<span class="project-image-placeholder">Photo</span>'}
           </div>
           <div class="project-content">

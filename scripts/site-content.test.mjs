@@ -177,7 +177,7 @@ for (const heading of ['Why this project', 'Requirements and constraints', 'Firs
 const wolfromGallery = projects.match(/id: 'wolfrom-actuator'[\s\S]*?images: \[([\s\S]*?)\]\s*\n\s*}/)?.[1] || '';
 assert.deepEqual(
   [...wolfromGallery.matchAll(/'([^']+)'/g)].map((match) => match[1]),
-  ['/assets/cutaway-three-quarter-clear.png', '/assets/wolfrom-cover.jpg', '/assets/exploded-landscape-tight-clear.png', '/assets/gear-train-clear.png', '/assets/half-section-clear.png', '/assets/wolfrom-ansys-topology-result.png', '/assets/wolfrom-ansys-stress.png'],
+  ['/assets/exploded-landscape-tight-clear.png', '/assets/wolfrom-cover.jpg', '/assets/gear-train-clear.png', '/assets/cutaway-three-quarter-clear.png', '/assets/half-section-clear.png', '/assets/wolfrom-ansys-topology-result.png', '/assets/wolfrom-ansys-stress.png'],
   'Wolfrom should keep a focused CAD gallery'
 );
 assert.match(wolfromSource[1], /wolfrom-stand|wolfrom-bench|wolfrom-ansys-stress|wolfrom-kisssoft-results/, 'Wolfrom should retain the strongest physical and analysis evidence');
