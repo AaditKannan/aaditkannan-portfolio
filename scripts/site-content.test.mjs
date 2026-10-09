@@ -201,7 +201,7 @@ const wolfromBuild = wolfromSource[1].match(/id="wolfrom-build"[\s\S]*?<\/sectio
 assert.doesNotMatch(wolfromBuild, /cutaway|render-side|gear-train\.png|hero-isometric/, 'Build should contain physical evidence, not CAD');
 for (const photo of ['wolfrom-bench.jpg', 'wolfrom-cover.jpg', 'wolfrom-stand.jpg']) assert.ok(wolfromBuild.includes(photo), `Build should retain ${photo}`);
 assert.match(wolfromSource[1], /class="matlab-panel"/, 'The supplied MATLAB results should be visible beside the physics and hand calculations');
-assert.match(wolfromSource[1], /src="\/assets\/wolfrom-dyno\.svg"/, 'Validation should show the proposed dyno architecture');
+assert.match(wolfromSource[1], /class="dyno-svg"[\s\S]*?Inline torque transducer[\s\S]*?Load \/ brake motor[\s\S]*?Synchronised DAQ/, 'Validation should show the proposed dyno architecture');
 assert.match(wolfromSource[1], /not a completed or validated bench/, 'The dyno proposal must not be mistaken for completed work');
 assert.match(wolfromSource[1], /Output torque and DC power alone measure the integrated actuator/, 'Validation should distinguish gearbox and whole-actuator efficiency');
 // Design choices sit beside the evidence that drove them.
