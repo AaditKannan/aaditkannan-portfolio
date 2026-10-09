@@ -71,7 +71,8 @@ const EXPLODE = {
   ctrlHousing:  { dz: -164, zc: -43.6,  hz: 13.5 },
 };
 // Scroll chooses the step; the parts then glide to that step's layout over MOVE_MS.
-const MOVE_MS = 360;
+// Touch swipes cover several steps at once, so the glide is a little gentler there.
+const MOVE_MS = typeof matchMedia === 'function' && matchMedia('(pointer: coarse)').matches ? 480 : 360;
 
 // Where every part sits at each step, as axial offsets in mm. During the walk-through the current
 // parts rise clear of everything still in place, opened up past their exploded spacing so each
