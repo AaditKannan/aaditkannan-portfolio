@@ -1621,6 +1621,8 @@
       .reading-row { gap: 20px; }
       .reading-evidence { order: -1; }
       .project-disclosure-content .reading-evidence { order: 0; }
+      /* the build gallery and tools follow the reasons for the project, not precede them */
+      #wolfrom-why .reading-evidence { order: 1; }
     }
 
     .detail-content[data-project-id="wolfrom-actuator"] .project-wide-figure {
@@ -4034,7 +4036,7 @@ const formulaElectricAtticDescription = `
           <dl class="project-summary">
             <dt>Goal</dt><dd>A pulse generator in Ramesh Lab for fast electrical characterization of BiFeO<sub>3</sub> and related complex-oxide devices. It applies controlled voltage pulses while a source-measure unit sets the bias and an oscilloscope captures both DUT terminals.</dd>
             <dt>Design</dt><dd>This assembled four-layer instrument is <b>V2</b>: RP2040 control, high-speed gate drive, GaN switching, relay-selected routing, external Keithley biasing, and grounded coaxial interfaces. V1 was the earlier microsecond-only pulse-generator prototype, documented under <a href="#pcb-next" data-project-section="pcb-next">Next Revision</a>.</dd>
-            <dt>My work</dt><dd>I handled the KiCad schematic and four-layer layout, LTspice checks, assembly and rework, the enclosure, and staged bench bring-up with Python and LabVIEW.</dd>
+            <dt>Scope</dt><dd>KiCad schematic and four-layer layout, LTspice checks, assembly and rework, the enclosure, and staged bench bring-up with Python and LabVIEW.</dd>
             <dt>Result</dt><dd>Programmable operation through 30 V, down to pulses of about 100 ns. Testing also showed that the passive return edge depends on device and fixture capacitance, which limits the shortest pulses.</dd>
             <dt>Next</dt><dd>A clean-sheet revision with active control of both edges, fully digital timing, and a 1 ns-class minimum-pulse target.</dd>
           </dl>
