@@ -482,7 +482,109 @@ async function init(root) {
     scroller.scrollTo({ top: Math.max(0, scroller.scrollTop + section.getBoundingClientRect().top - scroller.getBoundingClientRect().top - inset), behavior: 'instant' });
   }
 
+  // Idle hint. After a few quiet seconds "Interact with model" scrambles from the middle out into
+  // "[Click me!]": the middle slots become the new label while the surplus letters at each end
+  // scramble, shrink and fade outward, then two seconds later it plays back. Every letter is its own
+  // box whose width eases between glyph widths, the button keeps its width, and an underline drawn
+  // under each box stands in for the text underline, so nothing around it moves.
+  const hint = (() => {
+    const btn = buttons.explore, SOURCE = 'Interact with model', TARGET = '[Click me!]';
+    const GLYPHS = 'abcdeghknopqsuvxyz', IDLE_MS = 4000, REPEAT_MS = 15000, HOLD_MS = 2000;
+    const STAGGER = 45, SCRAMBLE = 300, FLICKER = 50;
+    let idleTimer = 0, holdTimer = 0, frame = 0, running = false, lastPlayed = -Infinity, slots = [];
+    const glyph = () => GLYPHS[Math.floor(Math.random() * GLYPHS.length)];
+
+    function build() {
+      const box = btn.getBoundingClientRect();
+      btn.style.width = `${box.width}px`;
+      btn.setAttribute('aria-label', SOURCE);
+      btn.classList.add('is-hinting');
+      const line = document.createElement('span');
+      line.className = 'wx-hint'; line.setAttribute('aria-hidden', 'true');
+      btn.replaceChildren(line);
+      const offset = Math.floor((SOURCE.length - TARGET.length) / 2), centre = (SOURCE.length - 1) / 2;
+      // measure each target glyph in place so the boxes can ease to its exact width
+      const widthOf = text => {
+        const probe = document.createElement('span'); probe.className = 'wx-hint-c'; probe.textContent = text;
+        line.appendChild(probe); const w = probe.getBoundingClientRect().width; probe.remove(); return w;
+      };
+      slots = [...SOURCE].map((src, i) => {
+        const target = i >= offset && i < offset + TARGET.length ? TARGET[i - offset] : null;
+        const el = document.createElement('span');
+        el.className = 'wx-hint-c' + (target === null ? (i < offset ? ' is-left' : ' is-right') : '');
+        el.textContent = src;
+        line.appendChild(el);
+        return { el, src, target, dist: Math.abs(i - centre), sw: 0, tw: target === null ? 0 : widthOf(target) };
+      });
+      slots.forEach(s => { s.sw = s.el.getBoundingClientRect().width; s.el.style.width = `${s.sw}px`; });
+      // the underline sits where the text underline did: baseline plus the 4px offset
+      const mark = document.createElement('span'); mark.className = 'wx-hint-base'; slots[0].el.appendChild(mark);
+      line.style.setProperty('--wx-ul', `${mark.getBoundingClientRect().top - slots[0].el.getBoundingClientRect().top + 4}px`);
+      mark.remove();
+    }
+
+    function restore() {
+      cancelAnimationFrame(frame); clearTimeout(holdTimer);
+      btn.textContent = SOURCE;
+      btn.classList.remove('is-hinting'); btn.style.removeProperty('width'); btn.removeAttribute('aria-label');
+      running = false; slots = [];
+    }
+
+    // dir 1 plays the hint, -1 plays it back; slots further from the centre start later going out
+    // and earlier coming back, so the change ripples outward and then folds back in.
+    function run(dir, done) {
+      const maxDist = Math.max(...slots.map(s => s.dist)), t0 = performance.now();
+      slots.forEach(s => { s.started = false; s.settled = false; s.flick = 0; });
+      const step = now => {
+        const t = now - t0; let busy = false;
+        for (const s of slots) {
+          const start = (dir > 0 ? s.dist : maxDist - s.dist) * STAGGER;
+          if (t < start) { busy = true; continue; }
+          if (!s.started) {
+            s.started = true;
+            if (s.target === null) s.el.classList.toggle('is-gone', dir > 0);
+            else s.el.style.width = `${dir > 0 ? s.tw : s.sw}px`;
+          }
+          if (t < start + SCRAMBLE) {
+            busy = true;
+            if (now - s.flick > FLICKER) { s.el.textContent = glyph(); s.flick = now; }
+          } else if (!s.settled) {
+            s.settled = true;
+            s.el.textContent = dir > 0 && s.target !== null ? s.target : s.src;
+          }
+        }
+        if (busy) frame = requestAnimationFrame(step); else done();
+      };
+      frame = requestAnimationFrame(step);
+    }
+
+    function play() {
+      running = true; lastPlayed = performance.now();
+      build();
+      run(1, () => { holdTimer = setTimeout(() => run(-1, () => { restore(); poke(); }), HOLD_MS); });
+    }
+
+    function ready() {
+      if (mode !== 'animation' || reduce || document.hidden || btn.hidden || btn.disabled) return false;
+      if (performance.now() - lastPlayed < REPEAT_MS) return false;
+      const r = btn.getBoundingClientRect();
+      return r.width > 0 && r.top >= 0 && r.bottom <= window.innerHeight;
+    }
+
+    function poke() {
+      clearTimeout(idleTimer);
+      if (!running) idleTimer = setTimeout(() => (ready() ? play() : poke()), IDLE_MS);
+    }
+
+    ['pointermove', 'pointerdown', 'keydown', 'wheel', 'touchstart'].forEach(type => window.addEventListener(type, poke, { passive: true, signal: events.signal }));
+    root.closest('.detail-content')?.addEventListener('scroll', poke, { passive: true, signal: events.signal });
+    events.signal.addEventListener('abort', () => { clearTimeout(idleTimer); clearTimeout(holdTimer); cancelAnimationFrame(frame); });
+    poke();
+    return { cancel() { if (running) restore(); poke(); } };   // poke re-arms; ready() checks the mode
+  })();
+
   function setMode(next) {
+    hint.cancel();
     clearTimeout(swapTimer);
     els.cap.classList.remove('is-swapping');
     shown = -1;
@@ -535,6 +637,7 @@ async function init(root) {
   }
 
   buttons.explore.addEventListener('click', async () => {
+    hint.cancel();
     const request = ++modeRequest;
     buttons.explore.disabled = true;
     buttons.explore.textContent = 'Loading CAD…';
