@@ -171,9 +171,10 @@ assert.match(projects, /title: 'Wolfrom Robotic Actuator'/, 'Wolfrom project tit
 assert.doesNotMatch(projects, /title: 'Wolfrom Compound Planetary Actuator'/, 'Wolfrom project should not use the old title');
 const wolfromSource = projects.match(/const wolfromDescription = `([\s\S]*?)`;/);
 assert.ok(wolfromSource, 'Projects should define the rebuilt Wolfrom case study');
-for (const heading of ['Why this project', 'Requirements and constraints', 'First principles', 'Architecture', 'Load cases', 'Hand calculations', 'Simulation', 'Design decisions', 'Build', 'Test and validation', 'What went wrong', 'Results and next steps']) {
+for (const heading of ['Why this project', 'Requirements and constraints', 'First principles', 'Architecture', 'Load cases', 'Hand calculations', 'Simulation', 'Design decisions', 'Build', 'Test and validation', 'Results and next steps']) {
   assert.match(wolfromSource[1], new RegExp(`<strong[^>]*>${heading.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}`), `Wolfrom page should include ${heading}`);
 }
+assert.match(wolfromSource[1], /id="wolfrom-build"[\s\S]*?<summary>What went wrong<\/summary>/, 'Wolfrom Build should cover what went wrong');
 const wolfromGallery = projects.match(/id: 'wolfrom-actuator'[\s\S]*?images: \[([\s\S]*?)\]\s*\n\s*}/)?.[1] || '';
 assert.deepEqual(
   [...wolfromGallery.matchAll(/'([^']+)'/g)].map((match) => match[1]),
@@ -215,11 +216,13 @@ for (const sectionId of ['wolfrom-requirements', 'wolfrom-results']) {
   const section = wolfromSource[1].match(new RegExp(`<section[^>]*id="${sectionId}"[\\s\\S]*?<\\/section>`))?.[0];
   if (sectionId === 'wolfrom-requirements') {
     assert.match(section, /Forward efficiency<\/td><td>&gt;80%<\/td><td>Three-stage KISSsoft prediction pending; bench validation to follow/, `${sectionId} should keep the overall efficiency target pending until the coupled model is complete`);
+    assert.match(section, /Backdrive efficiency<\/td><td>&ge;75% at 30 Nm, 30 rpm<\/td><td>Derived design target/, `${sectionId} should identify the derived backdrive goal and its operating point`);
   } else {
-    assert.match(section, /Forward efficiency<\/td><td>&gt;80%<\/td><td>Three-stage KISSsoft prediction pending; bench validation follows/, `${sectionId} should keep the coupled efficiency result pending until the stage model is complete`);
-    assert.match(section, /rate each gear stage separately in KISSsoft[\s\S]*?steel gears and aluminium housings/, 'Next steps should prioritize the coupled KISSsoft model before the production-intent material model');
+    // Results summarise what is established, without repeating the requirements table.
+    assert.doesNotMatch(section, /<th>Target<\/th>/, 'Results should not duplicate the requirements table');
+    assert.match(section, /Efficiency<\/td><td>[^<]*three-stage prediction pending/, `${sectionId} should keep the coupled efficiency result pending until the stage model is complete`);
+    assert.match(section, /three-stage KISSsoft model[\s\S]*?steel gears and aluminium housings/, 'Next steps should prioritize the coupled KISSsoft model before the production-intent material model');
   }
-  assert.match(section, /Backdrive efficiency<\/td><td>&ge;75% at 30 Nm, 30 rpm<\/td><td>Derived design target/, `${sectionId} should identify the derived backdrive goal and its operating point`);
 }
 assert.match(projects, /\.wolfrom-build-board figure::after \{ content: 'V1 prototype'/, 'Physical prototype photos should be visibly marked as V1');
 assert.match(projects, /gallery-media-prototype::after[\s\S]*?content: 'V1 prototype'/, 'The assembled prototype gallery image should carry the V1 label');

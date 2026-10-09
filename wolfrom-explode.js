@@ -40,7 +40,7 @@ const STEPS = [
     body: 'The whole stack assembles along one axis from one direction. Bores, shaft ends and press fits carry lead-in chamfers so each part self-aligns as it goes in.',
     spec: '3 planets, 3 gear stages, FDM housings, SLA gears', focus: [], move: [] },
   { from: 0.917, title: 'Integrated actuator',
-    body: 'Next, each stage gets rated in KISSsoft and the three are coupled into total forward and backdrive efficiency. If that model clears the targets, the build moves to steel gears and aluminium housings.',
+    body: 'The gearbox, motor, and controller close back into one package. The sections below cover the targets, calculations, and prototypes behind it.',
     spec: 'Targets: >80% forward, ≥75% backdrive at 30 Nm, 30 rpm', focus: [], move: [] },
 ];
 

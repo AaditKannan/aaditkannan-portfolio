@@ -3103,6 +3103,7 @@ function layoutWolfromSections(description) {
     'wolfrom-simulation': '.project-inline-grid',
     'wolfrom-build': '.wolfrom-build-board',
     'wolfrom-test': 'figure',
+    'wolfrom-results': '.results-next',
   }, (section, node, { prose, evidence, supplement }) => {
     if (section.id === 'wolfrom-build' && node.matches('.project-inline-grid')) {
       [...node.children].forEach(figure => supplement.append(figure));
@@ -3268,11 +3269,11 @@ const wolfromDescription = `
   <section class="latex-section" id="wolfrom-overview">
     <strong>Overview</strong><br><br>
     <dl class="project-summary">
-      <dt>Goal</dt><dd>A backdrivable humanoid-elbow actuator with the motor, gearbox, and controller in one package, with design targets of 30 Nm continuous and 50 Nm peak.</dd>
+      <dt>Goal</dt><dd>A backdrivable humanoid-elbow joint with the motor, gearbox, and controller in one package.</dd>
       <dt>Design</dt><dd>A three-stage compound Wolfrom gearbox at <b>50.45:1</b> in a 104 mm diameter, 81 mm long package.</dd>
       <dt>Scope</dt><dd>Ratio and tooth-count derivation, load cases, hand calculations for mesh forces and bearings, MATLAB efficiency screening, KISSsoft gear-pair rating, ANSYS housing and topology runs, and a printed V1 prototype for fit and assembly.</dd>
       <dt>Key finding</dt><dd>The planet bearings reach their assumed static rating at about 45 Nm output, so I am revising the planet support before any peak-load testing.</dd>
-      <dt>Next</dt><dd>Rate the three stages in KISSsoft and couple them into a total forward and backdrive efficiency. If that model clears the targets, I move to steel gears and aluminium housings and then bench-test on the proposed dynamometer.</dd>
+      <dt>Next</dt><dd>Three-stage KISSsoft efficiency, then a steel and aluminium build for the dynamometer.</dd>
     </dl>
     <table class="project-data-table">
       <thead><tr><th>Specification</th><th>Value</th></tr></thead>
@@ -3385,7 +3386,6 @@ const wolfromDescription = `
           <li>Output bearing: Kaydon KA030XP0, 76.2 mm bore, four-point contact.</li>
           <li>Planet bearings: two 604ZZ per planet.</li>
           <li>Gears: module 0.5 sun stage, 1.0 fixed-ring stage, 0.9 output-ring stage; face widths 5, 5, and 6 mm.</li>
-          <li>Unequal modules on the two ring stages give a three-tooth difference on a common centre distance with standard, unshifted teeth.</li>
           <li>Fully parametric CAD in Onshape, driven from one variable table.</li>
         </ul>
       </div>
@@ -3435,57 +3435,30 @@ const wolfromDescription = `
 
   <section class="latex-section" id="wolfrom-simulation">
     <strong>Simulation</strong><br><br>
-    The first screening pass checked the integrated housing load path, topology, and a manually configured compound gear pair. Next, I will rate the three gear stages separately in KISSsoft and couple their results through the compound-train kinematics to predict total forward and backdrive efficiency. That system-level efficiency is the gate for profile-shift optimisation and the remaining contact, carrier-stiffness, roundness, and modal checks.
+    <p>The first screening pass took the integrated ring-gear housing on its own into ANSYS. A fixed and a frictionless support hold it under two 50 N&middot;m moments and a 500 N radial load at the output bearing, and peak equivalent stress comes out near 5.3 MPa. The topology run keeps 50% of the mass at minimum compliance, with a member-size constraint and a protected exclusion region, and shows which load paths through the housing earn their material. Gears, bearings, and the carrier are left out of these runs, so tooth contact and load sharing are outside their scope.</p>
+    <p>One compound gear pair is rated in KISSsoft so far. The coupled three-stage efficiency gates profile-shift optimisation and the remaining contact, carrier-stiffness, roundness, and modal checks.</p>
     <div class="project-inline-grid">
-      <figure>
-        <img src="/assets/wolfrom-ansys-topology-result.png" alt="ANSYS topology density result for the Wolfrom housing" width="2048" height="852" loading="lazy" decoding="async">
-        <figcaption>Topology result used to identify useful housing load paths.</figcaption>
-      </figure>
       <figure>
         <img src="/assets/wolfrom-kisssoft-results-clear.png" alt="KISSsoft contact ratio and safety result table for the compound gear pair" width="890" height="248" loading="lazy" decoding="async">
         <figcaption>Pair-level KISSsoft contact and safety outputs.</figcaption>
       </figure>
+      <figure>
+        <img src="/assets/wolfrom-ansys-stress.png" alt="ANSYS equivalent von Mises stress result for the integrated Wolfrom housing load case" width="2048" height="855" loading="lazy" decoding="async">
+        <figcaption>Housing stress under the load set above.</figcaption>
+      </figure>
+      <figure>
+        <img src="/assets/wolfrom-ansys-topology-result.png" alt="ANSYS topology density result for the Wolfrom housing" width="2048" height="852" loading="lazy" decoding="async">
+        <figcaption>Topology result used to find the useful housing load paths.</figcaption>
+      </figure>
     </div>
-    <details class="project-disclosure">
-      <summary>Boundary conditions</summary>
-      <div class="project-disclosure-content">
-        The housing runs model the integrated ring-gear housing in isolation. The static structural case restrains it with a fixed support and a frictionless support, then applies two 50 N&middot;m moments and a 500 N output-bearing radial load. The topology run uses that housing as its design region, minimises compliance with 50% of the mass retained, applies a member-size manufacturing constraint, and protects an exclusion region. The gears, bearings, and carrier are absent from these runs, so tooth contact and load sharing between planets are outside their scope.
-        <div class="project-inline-grid">
-          <figure>
-            <img src="/assets/wolfrom-ansys-load-case.png" alt="ANSYS static structural setup for the ring gear housing with fixed support, frictionless support, two 50 newton-metre moments, and a 500 newton output bearing radial load" width="1229" height="669" loading="lazy" decoding="async">
-            <figcaption>Static structural setup: supports A and E, moments B and D, and radial load C.</figcaption>
-          </figure>
-          <figure>
-            <img src="/assets/wolfrom-ansys-topology-setup.png" alt="ANSYS structural optimization setup with topology design region, red exclusion region, minimum compliance objective, 50 percent mass constraint, and member size constraint" width="2048" height="845" loading="lazy" decoding="async">
-            <figcaption>Topology setup: the exclusion region (red) stays out of the optimisation.</figcaption>
-          </figure>
-        </div>
-      </div>
-    </details>
-    <details class="project-disclosure">
-      <summary>Additional screening views</summary>
-      <div class="project-disclosure-content">
-        These are screening results, not final system validation.
-        <div class="project-inline-grid">
-          <figure>
-            <img src="/assets/wolfrom-ansys-stress.png" alt="ANSYS equivalent von Mises stress result for the integrated Wolfrom housing load case" width="2048" height="855" loading="lazy" decoding="async">
-            <figcaption>Housing stress screening under the load set above; peak equivalent stress is about 5.3 MPa.</figcaption>
-          </figure>
-          <figure>
-            <img src="/assets/wolfrom-kisssoft-contact-stiffness-clear.png" alt="KISSsoft contact and mesh stiffness plot over rotation" width="494" height="260" loading="lazy" decoding="async">
-            <figcaption>Contact and mesh stiffness over rotation.</figcaption>
-          </figure>
-        </div>
-      </div>
-    </details>
   </section>
 
   <section class="latex-section" id="wolfrom-design-decisions">
     <strong>Design decisions</strong><br><br>
-    <p><b>Different modules on the two ring stages.</b> Module 1.0 on the 72/27 fixed-ring mesh and module 0.9 on the 75/25 output-ring mesh both give a 22.5 mm centre distance, so the compound planet engages both rings with standard, unshifted teeth and still produces the 50.45:1 ratio. Mesh efficiency and profile-shift optimization remain separate analysis tasks. The geometry and ratio derivation are in <a href="#wolfrom-first-principles" data-project-section="wolfrom-first-principles">First principles</a>.</p>
-    <p><b>Revising the planet support before peak-load testing.</b> Two 604ZZ bearings fit the package, but the calculated worst reaction is 392 N at 50 Nm output against an assumed 350 N static rating, so on that assumption the support falls short at peak. I am evaluating a fixed-pin and needle-roller arrangement, although no replacement has been selected yet, and the peak-torque target remains unvalidated. See the reactions and rating caveats in <a href="#wolfrom-hand-calculations" data-project-section="wolfrom-hand-calculations">Hand calculations</a>.</p>
-    <p><b>Connecting the carrier plates structurally.</b> The floating carrier carries no net external torque, but its plates still react 20 Nm against each other at 50 Nm output. The posts must transfer that torque as well as set the stack height, so their joints and stiffness need a carrier wind-up check, and the existing housing screening does not establish carrier stiffness. See the mesh forces in <a href="#wolfrom-load-cases" data-project-section="wolfrom-load-cases">Load cases</a> and the planned checks in <a href="#wolfrom-simulation" data-project-section="wolfrom-simulation">Simulation</a>.</p>
-    <p><b>Designing the printed parts for assembly.</b> Bearing bores, shaft ends, and press-fits carry lead-in chamfers so parts self-align during stacking, and bottom edges have first-layer chamfers that absorb elephant's foot and keep mating faces true. I oriented each part so its gear teeth, bores, and load paths print in the strongest layer direction with the least support. Fasteners use common screw sizes with clear tool access, and the whole stack assembles from one direction. The printed checks are in <a href="#wolfrom-build" data-project-section="wolfrom-build">Build</a>.</p>
+    <p><b>Two modules on the ring stages.</b> Module 1.0 on the 72/27 fixed-ring mesh and 0.9 on the 75/25 output-ring mesh share a 22.5 mm centre distance, so one compound planet meets both rings with standard, unshifted teeth at 50.45:1.</p>
+    <p><b>Planet support.</b> Two 604ZZ bearings fit the package, yet the worst reaction of 392 N at 50 Nm exceeds their assumed 350 N static rating, so I am evaluating a fixed pin on needle rollers; no replacement has been selected yet (<a href="#wolfrom-hand-calculations" data-project-section="wolfrom-hand-calculations">Hand calculations</a>).</p>
+    <p><b>Carrier posts.</b> The floating carrier carries no net torque, yet its plates react 20 Nm against each other at peak, so the posts that set the stack height also need a wind-up stiffness check.</p>
+    <p><b>Printing for assembly.</b> Bores, shaft ends, and press fits carry lead-in chamfers so each part self-aligns as the stack goes together from one direction, first-layer chamfers absorb elephant's foot, and every part prints with its teeth and load paths in the strongest layer direction.</p>
   </section>
 
   <section class="latex-section" id="wolfrom-build">
@@ -3510,9 +3483,14 @@ const wolfromDescription = `
       </figure>
     </div>
     <details class="project-disclosure">
-      <summary>Prototype iteration</summary>
+      <summary>What went wrong</summary>
       <div class="project-disclosure-content">
-        The printed hardware exposed gear-mesh clearance, stack-height, bearing placement, gear timing, fastener access, and split-ring assembly problems while they were still cheap to fix. These prototypes are geometry and assembly checks, not load-rated actuator validation.
+        <ul class="project-result-list">
+          <li>The printed V1 exposed gear-mesh clearance, stack-height, bearing placement, gear timing, fastener access, and split-ring assembly problems while they were still cheap to fix.</li>
+          <li>The fixed ring gear was first held by bolt pillars and a thin vent skin. CAD showed it as two parts, which exposed the missing load path, so the ring is now part of the housing wall.</li>
+          <li>I first sized the planet bearings by fit, without a load calculation.</li>
+          <li>The first torque target came from a paper describing a different gearbox at 125:1 and 120 Nm, so I reset the load cases before simulation.</li>
+        </ul>
       </div>
     </details>
   </section>
@@ -3524,7 +3502,7 @@ const wolfromDescription = `
       <img src="/assets/wolfrom-dyno.svg" alt="Proposed dyno layout showing the actuator, output torque transducer, load motor, guarded couplings, DC energy path, and synchronized measurements" width="720" height="650" loading="lazy" decoding="async">
       <figcaption>Proposed instrumentation layout, not a completed or validated bench. Sensor models and the input-torque arrangement remain to be selected.</figcaption>
     </figure>
-    <p>The continuous validation point is 30 Nm at 30 rpm, or 94.2 W at the joint, and the gearbox goals are above 80% forward efficiency and at least 75% backdrive efficiency. Torque, angle, temperature, and electrical power need a shared time base so I can compare each operating point against the MATLAB and KISSsoft predictions.</p>
+    <p>The continuous validation point is 30 Nm at 30 rpm, or 94.2 W at the joint. Torque, angle, temperature, and electrical power need a shared time base so I can compare each operating point against the MATLAB and KISSsoft predictions.</p>
     <p>The load side must cover the joint’s torque and speed range in both directions. If the chosen load motor cannot provide 30 Nm continuously and the required peak torque directly, I can add a reduction stage and keep the sensors on the actuator side of it.</p>
     <details class="project-disclosure">
       <summary>Measurements and instrumentation</summary>
@@ -3565,30 +3543,20 @@ const wolfromDescription = `
     </details>
   </section>
 
-  <section class="latex-section" id="wolfrom-failures">
-    <strong>What went wrong</strong><br><br>
-    <ul class="project-result-list">
-      <li>The first torque target came from a paper describing a different gearbox at 125:1 and 120 Nm, so I reset the load cases before simulation.</li>
-      <li>I originally sized the planet bearings by fit, without a load calculation, and the later hand calculation put them below their static rating at peak torque.</li>
-      <li>The fixed housing's ring gear was first held by bolt pillars and a thin vent skin. CAD showed it as two parts, which exposed the missing load path.</li>
-    </ul>
-  </section>
-
   <section class="latex-section" id="wolfrom-results">
     <strong>Results and next steps</strong><br><br>
     <table class="project-data-table">
-      <thead><tr><th>Requirement</th><th>Target</th><th>Status</th></tr></thead>
+      <thead><tr><th>Item</th><th>Where it stands</th></tr></thead>
       <tbody>
-        <tr><td>Continuous output torque</td><td>30 Nm</td><td>Design target; motor needs about 25 A</td></tr>
-        <tr><td>Peak output torque</td><td>50 Nm</td><td>Design target; motor needs about 42 A of a 59.2 A peak</td></tr>
-        <tr><td>Ratio</td><td>About 50:1</td><td>50.45:1 achieved</td></tr>
-        <tr><td>Forward efficiency</td><td>&gt;80%</td><td>Three-stage KISSsoft prediction pending; bench validation follows</td></tr>
-        <tr><td>Backdrivable</td><td>Yes</td><td>Predicted above 94.3% ring-mesh efficiency</td></tr>
-        <tr><td>Backdrive efficiency</td><td>&ge;75% at 30 Nm, 30 rpm</td><td>Derived design target; KISSsoft and bench validation pending</td></tr>
-        <tr><td>Envelope</td><td><span class="project-placeholder">To be added</span></td><td>104 mm diameter, 81 mm long</td></tr>
+        <tr><td>Ratio and package</td><td>50.45:1 in 104 mm by 81 mm, motor and controller included</td></tr>
+        <tr><td>Gear teeth</td><td>Margin at 50 Nm: 269 MPa peak nominal root stress</td></tr>
+        <tr><td>Planet bearings</td><td>Reach the assumed static rating at 45 Nm; support redesign open</td></tr>
+        <tr><td>Housing</td><td>About 5.3 MPa peak equivalent stress in screening</td></tr>
+        <tr><td>Efficiency</td><td>Backdrivable above 94.3% ring-mesh efficiency; three-stage prediction pending</td></tr>
+        <tr><td>Printed V1</td><td>Assembled for fit, timing, and access</td></tr>
       </tbody>
     </table>
-    Next, I will rate each gear stage separately in KISSsoft and combine the stage efficiencies through the Wolfrom train to predict total forward and backdrive efficiency, a stronger theoretical estimate than the screening hand calculation. If the coupled model clears the efficiency targets, I will move to a production-intent model with steel gears and aluminium housings. Until then the printed V1 remains an assembly and fit prototype, not a load-rated design.
+    <p class="results-next">Next, the three-stage KISSsoft model gives a total forward and backdrive efficiency, a stronger estimate than the screening hand calculation. If it clears the targets and the planet support is resolved, the design moves to steel gears and aluminium housings for a load-rated build, which then goes on the proposed dynamometer.</p>
   </section>`;
 
 
@@ -3601,7 +3569,6 @@ const formulaElectricCoolingDescription = `
     </figure>
     <dl class="project-summary">
       <dt>Goal</dt><dd>Keep Berkeley Formula Electric's 504 V nominal / 588 V peak SN6 accumulator (420 cells in ten 14s3p modules) under a <b>57 °C design target</b> through a <b>25-minute endurance run at 35 °C ambient</b>.</dd>
-      <dt>Design</dt><dd>Five Sanyo Denki exhaust fans, each pulling air through two modules in series, with a passive louvred inlet and a 15 mm exhaust air gap. We chose this over push-pull, intake-only, and conduction to the casing.</dd>
       <dt>My work</dt><dd>I derived the heat balance and load cases from SN5 data and 2025 FSAE energy results and built the MATLAB fan and thermal models, the transient ANSYS Icepak CFD, and the inlet and air-gap geometry.</dd>
       <dt>Result</dt><dd>At the 50 A design case the hottest cell reaches 54.6 °C after 25 minutes, 2.4 K under target. Cell-to-cell spread is still 13.9 K against a 5 K goal. See <a href="#sn6-transient" data-project-section="sn6-transient">Transient CFD</a>.</dd>
       <dt>Next</dt><dd>Redistribute flow through the divider and inlet, then validate it with endurance replay, airflow, and cooldown tests.</dd>
