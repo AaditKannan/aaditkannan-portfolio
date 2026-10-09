@@ -1604,26 +1604,30 @@
     .matlab-panel { position: relative; aspect-ratio: var(--panel-ratio, 11 / 8); overflow: hidden; }
     .detail-content[data-project-id="wolfrom-actuator"] .matlab-panel img { position: absolute; width: var(--panel-width, 218.1818%); max-width: none; max-height: none; height: auto; margin: 0; left: var(--panel-x, 0%); top: var(--panel-y, 0%); }
     [data-theme="light"] .matlab-panel img { mix-blend-mode: multiply; }
-    /* Dyno schematic: drawn inline so it takes the page type; three line styles and dashed outlines
-       for planned parts. On phones it keeps a readable width and scrolls sideways in its frame. */
+    /* Dyno schematic: drawn inline so it takes the page type, upright to sit beside the test text;
+       three line styles and dashed outlines for planned parts. On phones it keeps a readable width
+       and scrolls sideways inside its frame. */
     .reading-supplement > figure.reading-after { max-width: none; }
     .dyno-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
     .dyno-svg { display: block; width: 100%; height: auto; font-family: var(--font-latex); }
-    @media (max-width: 760px) { .dyno-svg { width: 760px; } }
+    @media (max-width: 560px) { .dyno-svg { width: 520px; } }
     .dyno-svg text { fill: var(--text); }
-    .dyno-svg .dy-t1 { font-size: 15px; font-weight: 600; }
-    .dyno-svg .dy-t2 { font-size: 13.5px; font-weight: 600; }
-    .dyno-svg .dy-t3 { font-size: 12px; fill: var(--text-dim); }
-    .dyno-svg .dy-t4 { font-size: 11.5px; font-style: italic; fill: var(--text-dim); }
-    .dyno-svg .dy-t5 { font-size: 8px; font-weight: 600; fill: #b4643c; }
+    .dyno-svg .dy-t1 { font-size: 16px; font-weight: 600; }
+    .dyno-svg .dy-t2 { font-size: 14px; font-weight: 600; }
+    .dyno-svg .dy-t3 { font-size: 13px; fill: var(--text-dim); }
+    .dyno-svg .dy-t3b { font-size: 13px; font-weight: 600; }
+    .dyno-svg .dy-t4 { font-size: 12.5px; font-style: italic; fill: var(--text-dim); }
+    .dyno-svg .dy-t5w { font-size: 11.5px; font-style: italic; }
+    .dyno-svg .dy-t6 { font-size: 8px; font-weight: 600; fill: #b4643c; }
     .dyno-svg .dy-box { fill: #fffdf9; stroke: var(--text); stroke-width: 1.2; }
     .dyno-svg .dy-daq { fill: #f0ece6; stroke: var(--text); stroke-width: 1.2; }
     .dyno-svg .dy-tag { fill: none; stroke: var(--text-dim); stroke-width: 1; }
     .dyno-svg .dy-planned rect, .dyno-svg .dy-planned-box { fill: none; stroke: var(--text-dim); stroke-width: 1.2; stroke-dasharray: 5 4; }
-    .dyno-svg .dy-base { fill: #e3ded6; }
+    .dyno-svg .dy-base { fill: #ebe6de; }
     .dyno-svg .dy-guard { fill: none; stroke: var(--text-dim); stroke-width: 1; stroke-dasharray: 2 4; }
     .dyno-svg .dy-shaft { fill: none; stroke: var(--text); stroke-width: 5; stroke-linecap: round; }
     .dyno-svg .dy-gauge { fill: none; stroke: var(--text-dim); stroke-width: 1.2; }
+    .dyno-svg .dy-lead { fill: none; stroke: #a8b0bc; stroke-width: 1; }
     .dyno-svg .dy-sig { fill: none; stroke: #64748b; stroke-width: 1.3; stroke-dasharray: 4 3; }
     .dyno-svg .dy-power { fill: none; stroke: #b4643c; stroke-width: 2.4; stroke-linejoin: round; }
     .dyno-svg .dy-power-thin { stroke: #b4643c; stroke-width: 1.8; stroke-linecap: round; }
@@ -3520,126 +3524,134 @@ const wolfromDescription = `
   <section class="latex-section" id="wolfrom-test">
     <strong>Test and validation</strong><br><br>
     The planned bench couples the actuator to an output torque transducer and a separately controlled load motor. In forward operation the actuator drives while the load motor absorbs power, and for backdrive testing the roles reverse. Both units mount on an aligned base with flexible couplings, a guarded shaft, and a defined path for regenerated energy.
-    <figure class="project-feature-figure dyno-diagram reading-after">
+    <figure class="project-feature-figure dyno-diagram">
       <div class="dyno-scroll">
-      <svg class="dyno-svg" viewBox="0 0 920 548" role="img" aria-labelledby="dynoTitle dynoDesc" xmlns="http://www.w3.org/2000/svg">
+      <svg class="dyno-svg" viewBox="0 0 640 652" role="img" aria-labelledby="dynoTitle dynoDesc" xmlns="http://www.w3.org/2000/svg">
         <title id="dynoTitle">Proposed bidirectional dynamometer for the Wolfrom actuator</title>
         <desc id="dynoDesc">The actuator drives an output encoder, a flexible coupling, an inline torque transducer, a second coupling, an optional reduction stage, and a load motor, all inside a shaft guard on an aligned base plate. The actuator drive and the load-motor drive share a DC bus fed through a disconnect and emergency stop, with a brake resistor for regenerated energy and a power analyser on the bus. Torque, both angles, bus voltage and current, temperatures, and drive telemetry run to one synchronised data acquisition system and host PC. An input-torque fixture between motor and gearbox is planned.</desc>
         <defs>
           <marker id="dynoArrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1 9 5 1 9" fill="none" stroke="#64748b" stroke-width="1.6"/></marker>
         </defs>
 
+        <!-- base plate and guard -->
+        <rect x="150" y="52" width="200" height="478" rx="10" class="dy-base"/>
+        <text x="250" y="524" class="dy-t4" text-anchor="middle">aligned base plate</text>
+        <rect x="218" y="172" width="64" height="236" rx="8" class="dy-guard"/>
+        <text x="288" y="404" class="dy-t4">shaft guard</text>
+
         <!-- planned input-torque fixture -->
         <g class="dy-planned">
-          <rect x="40" y="26" width="190" height="38" rx="5"/>
-          <text x="135" y="42" class="dy-t2" text-anchor="middle">Input-torque fixture</text>
-          <text x="135" y="57" class="dy-t3" text-anchor="middle">motor to gearbox, to be defined</text>
-          <path d="M135 64V84" class="dy-sig"/>
+          <rect x="150" y="6" width="200" height="38" rx="5"/>
+          <text x="250" y="22" class="dy-t3b" text-anchor="middle">Input-torque fixture</text>
+          <text x="250" y="37" class="dy-t4" text-anchor="middle">motor to gearbox, to be defined</text>
+          <path d="M250 44V64" class="dy-sig"/>
         </g>
-
-        <!-- base plate and guard -->
-        <rect x="40" y="206" width="840" height="8" rx="2" class="dy-base"/>
-        <text x="40" y="231" class="dy-t3">Aligned base plate</text>
-        <rect x="252" y="114" width="424" height="62" rx="8" class="dy-guard"/>
-        <text x="676" y="192" class="dy-t3" text-anchor="end">Shaft guard</text>
 
         <!-- shaft -->
-        <path d="M230 145H390M490 145H560M640 145H700" class="dy-shaft"/>
+        <path d="M250 160V420" class="dy-shaft"/>
 
         <!-- actuator under test -->
-        <rect x="40" y="84" width="190" height="112" rx="8" class="dy-box"/>
-        <text x="54" y="106" class="dy-t1">Actuator under test</text>
-        <text x="54" y="125" class="dy-t3">MAD M6C10 motor</text>
-        <text x="54" y="140" class="dy-t3">Wolfrom gearbox, 50.45:1</text>
-        <rect x="52" y="160" width="86" height="22" rx="4" class="dy-tag"/>
-        <text x="95" y="175" class="dy-t4" text-anchor="middle">input encoder</text>
+        <rect x="162" y="64" width="176" height="96" rx="8" class="dy-box"/>
+        <text x="174" y="86" class="dy-t1">Actuator under test</text>
+        <text x="174" y="104" class="dy-t3">MAD M6C10 motor</text>
+        <text x="174" y="120" class="dy-t3">Wolfrom gearbox, 50.45:1</text>
+        <rect x="172" y="130" width="88" height="22" rx="4" class="dy-tag"/>
+        <text x="216" y="145" class="dy-t4" text-anchor="middle">input encoder</text>
         <g class="dy-temp">
-          <circle cx="166" cy="171" r="8"/><circle cx="187" cy="171" r="8"/><circle cx="208" cy="171" r="8"/>
-          <text x="166" y="175" text-anchor="middle">T</text><text x="187" y="175" text-anchor="middle">T</text><text x="208" y="175" text-anchor="middle">T</text>
+          <circle cx="280" cy="141" r="8"/><circle cx="300" cy="141" r="8"/><circle cx="320" cy="141" r="8"/>
+          <text x="280" y="145" text-anchor="middle">T</text><text x="300" y="145" text-anchor="middle">T</text><text x="320" y="145" text-anchor="middle">T</text>
         </g>
 
-        <!-- output encoder -->
-        <ellipse cx="290" cy="145" rx="6" ry="25" class="dy-box"/>
-        <text x="290" y="92" class="dy-t2" text-anchor="middle">Output encoder</text>
-        <text x="290" y="106" class="dy-t3" text-anchor="middle">output angle</text>
+        <!-- drivetrain parts, labelled on the left with leaders -->
+        <ellipse cx="250" cy="192" rx="24" ry="6" class="dy-box"/>
+        <path d="M146 192H224" class="dy-lead"/>
+        <text x="140" y="189" class="dy-t2" text-anchor="end">Output encoder</text>
+        <text x="140" y="205" class="dy-t4" text-anchor="end">output angle</text>
 
-        <!-- couplings -->
-        <rect x="337" y="131" width="6" height="28" rx="1.5" class="dy-box"/><rect x="347" y="131" width="6" height="28" rx="1.5" class="dy-box"/>
-        <text x="345" y="172" class="dy-t4" text-anchor="middle">coupling</text>
-        <rect x="517" y="131" width="6" height="28" rx="1.5" class="dy-box"/><rect x="527" y="131" width="6" height="28" rx="1.5" class="dy-box"/>
-        <text x="525" y="172" class="dy-t4" text-anchor="middle">coupling</text>
+        <rect x="236" y="221" width="28" height="5" rx="1.5" class="dy-box"/><rect x="236" y="230" width="28" height="5" rx="1.5" class="dy-box"/>
+        <path d="M146 228H234" class="dy-lead"/>
+        <text x="140" y="232" class="dy-t4" text-anchor="end">coupling</text>
 
-        <!-- torque transducer -->
-        <rect x="390" y="125" width="100" height="40" rx="5" class="dy-box"/>
-        <path d="M410 145h60M425 133v24M455 133v24" class="dy-gauge"/>
-        <text x="440" y="92" class="dy-t2" text-anchor="middle">Inline torque transducer</text>
-        <text x="440" y="106" class="dy-t3" text-anchor="middle">bidirectional, with amplifier</text>
+        <rect x="228" y="256" width="44" height="64" rx="5" class="dy-box"/>
+        <path d="M238 288H262M244 270V306M256 270V306" class="dy-gauge"/>
+        <path d="M146 288H226" class="dy-lead"/>
+        <text x="140" y="273" class="dy-t2" text-anchor="end">Inline torque</text>
+        <text x="140" y="290" class="dy-t2" text-anchor="end">transducer</text>
+        <text x="140" y="306" class="dy-t4" text-anchor="end">with amplifier</text>
 
-        <!-- optional reduction -->
-        <rect x="560" y="125" width="80" height="40" rx="5" class="dy-planned-box"/>
-        <text x="600" y="149" class="dy-t4" text-anchor="middle">reduction</text>
-        <text x="600" y="92" class="dy-t2" text-anchor="middle">Reduction stage</text>
-        <text x="600" y="106" class="dy-t3" text-anchor="middle">only if needed</text>
+        <rect x="236" y="335" width="28" height="5" rx="1.5" class="dy-box"/><rect x="236" y="344" width="28" height="5" rx="1.5" class="dy-box"/>
+        <path d="M146 342H234" class="dy-lead"/>
+        <text x="140" y="346" class="dy-t4" text-anchor="end">coupling</text>
+
+        <rect x="226" y="362" width="48" height="34" rx="5" class="dy-planned-box"/>
+        <path d="M146 379H224" class="dy-lead"/>
+        <text x="140" y="376" class="dy-t2" text-anchor="end">Reduction stage</text>
+        <text x="140" y="392" class="dy-t4" text-anchor="end">only if needed</text>
 
         <!-- load motor -->
-        <rect x="700" y="84" width="180" height="112" rx="8" class="dy-box"/>
-        <text x="714" y="106" class="dy-t1">Load / brake motor</text>
-        <text x="714" y="125" class="dy-t3">absorbs power in forward runs,</text>
-        <text x="714" y="140" class="dy-t3">drives the joint for backdrive</text>
-        <rect x="712" y="160" width="84" height="22" rx="4" class="dy-tag"/>
-        <text x="754" y="175" class="dy-t4" text-anchor="middle">load encoder</text>
-
-        <!-- measurement -->
-        <rect x="250" y="258" width="430" height="64" rx="8" class="dy-daq"/>
-        <text x="465" y="282" class="dy-t1" text-anchor="middle">Synchronised DAQ and host PC</text>
-        <text x="465" y="300" class="dy-t3" text-anchor="middle">torque, input and output angle, bus voltage and current,</text>
-        <text x="465" y="314" class="dy-t3" text-anchor="middle">temperatures, and drive telemetry on one time base</text>
-        <path d="M290 170V256" class="dy-sig" marker-end="url(#dynoArrow)"/>
-        <text x="296" y="240" class="dy-t4">angle</text>
-        <path d="M440 165V256" class="dy-sig" marker-end="url(#dynoArrow)"/>
-        <text x="446" y="240" class="dy-t4">torque</text>
-        <path d="M208 179V290H248" class="dy-sig" marker-end="url(#dynoArrow)"/>
-        <text x="214" y="244" class="dy-t4">temperature</text>
+        <rect x="162" y="420" width="176" height="90" rx="8" class="dy-box"/>
+        <text x="174" y="441" class="dy-t1">Load / brake motor</text>
+        <text x="174" y="459" class="dy-t3">absorbs power forward,</text>
+        <text x="174" y="474" class="dy-t3">drives the backdrive runs</text>
+        <rect x="172" y="482" width="88" height="20" rx="4" class="dy-tag"/>
+        <text x="216" y="496" class="dy-t4" text-anchor="middle">load encoder</text>
 
         <!-- drives -->
-        <rect x="60" y="360" width="150" height="50" rx="6" class="dy-box"/>
-        <text x="135" y="381" class="dy-t2" text-anchor="middle">ODrive S1</text>
-        <text x="135" y="398" class="dy-t3" text-anchor="middle">actuator drive</text>
-        <rect x="720" y="360" width="150" height="50" rx="6" class="dy-box"/>
-        <text x="795" y="381" class="dy-t2" text-anchor="middle">Load-motor drive</text>
-        <text x="795" y="398" class="dy-t3" text-anchor="middle">torque or speed control</text>
-        <path d="M135 360V198" class="dy-power"/>
-        <text x="141" y="300" class="dy-t4 dy-pw">3-phase</text>
-        <path d="M795 360V198" class="dy-power"/>
-        <text x="801" y="300" class="dy-t4 dy-pw">3-phase</text>
-        <path d="M210 376H232V306H248" class="dy-sig" marker-end="url(#dynoArrow)"/>
-        <text x="226" y="352" class="dy-t4" text-anchor="end">telemetry</text>
-        <path d="M720 386H700V300H682" class="dy-sig" marker-end="url(#dynoArrow)"/>
-        <text x="694" y="352" class="dy-t4" text-anchor="end">telemetry</text>
+        <rect x="380" y="64" width="175" height="52" rx="6" class="dy-box"/>
+        <text x="467" y="86" class="dy-t2" text-anchor="middle">ODrive S1</text>
+        <text x="467" y="104" class="dy-t3" text-anchor="middle">actuator drive</text>
+        <path d="M380 90H338" class="dy-power"/>
+        <text x="359" y="83" class="dy-t5w dy-pw" text-anchor="middle">3-phase</text>
+
+        <rect x="380" y="440" width="175" height="52" rx="6" class="dy-box"/>
+        <text x="467" y="462" class="dy-t2" text-anchor="middle">Load-motor drive</text>
+        <text x="467" y="480" class="dy-t3" text-anchor="middle">torque or speed control</text>
+        <path d="M380 466H338" class="dy-power"/>
+        <text x="359" y="459" class="dy-t5w dy-pw" text-anchor="middle">3-phase</text>
+
+        <!-- measurement -->
+        <rect x="380" y="170" width="175" height="200" rx="8" class="dy-daq"/>
+        <text x="467" y="198" class="dy-t1" text-anchor="middle">Synchronised DAQ</text>
+        <text x="467" y="216" class="dy-t1" text-anchor="middle">and host PC</text>
+        <text x="467" y="246" class="dy-t3" text-anchor="middle">torque</text>
+        <text x="467" y="263" class="dy-t3" text-anchor="middle">input and output angle</text>
+        <text x="467" y="280" class="dy-t3" text-anchor="middle">bus voltage and current</text>
+        <text x="467" y="297" class="dy-t3" text-anchor="middle">temperatures</text>
+        <text x="467" y="314" class="dy-t3" text-anchor="middle">drive telemetry</text>
+        <text x="467" y="346" class="dy-t4" text-anchor="middle">on one time base</text>
+
+        <path d="M274 192H378" class="dy-sig" marker-end="url(#dynoArrow)"/>
+        <text x="330" y="186" class="dy-t4" text-anchor="middle">angle</text>
+        <path d="M272 288H378" class="dy-sig" marker-end="url(#dynoArrow)"/>
+        <text x="330" y="282" class="dy-t4" text-anchor="middle">torque</text>
+        <path d="M338 141H405V168" class="dy-sig" marker-end="url(#dynoArrow)"/>
+        <text x="345" y="135" class="dy-t4">temperature</text>
+        <path d="M467 116V168" class="dy-sig" marker-end="url(#dynoArrow)"/>
+        <text x="461" y="152" class="dy-t4" text-anchor="end">telemetry</text>
+        <path d="M467 440V372" class="dy-sig" marker-end="url(#dynoArrow)"/>
+        <text x="461" y="410" class="dy-t4" text-anchor="end">telemetry</text>
 
         <!-- DC power -->
-        <path d="M135 410V455H795V410" class="dy-power"/>
-        <text x="465" y="447" class="dy-t3 dy-pw" text-anchor="middle">shared DC bus</text>
-        <circle cx="135" cy="432" r="9" class="dy-meter"/>
-        <text x="135" y="436" class="dy-t5" text-anchor="middle">VA</text>
-        <text x="120" y="436" class="dy-t4" text-anchor="end">power analyser</text>
-        <path d="M144 432H242V316H248" class="dy-sig" marker-end="url(#dynoArrow)"/>
+        <path d="M555 90H572V560H405V566M555 466H572" class="dy-power"/>
+        <text x="590" y="320" class="dy-t4 dy-pw" text-anchor="middle" transform="rotate(90 590 320)">shared DC bus</text>
+        <circle cx="572" cy="140" r="9" class="dy-meter"/>
+        <text x="572" y="143.5" class="dy-t6" text-anchor="middle">VA</text>
+        <text x="586" y="128" class="dy-t4">bus V, I</text>
+        <path d="M563 140H525V168" class="dy-sig" marker-end="url(#dynoArrow)"/>
 
-        <path d="M400 455V464M400 480V490" class="dy-power"/>
-        <circle cx="400" cy="466" r="2.5" class="dy-node"/><circle cx="400" cy="478" r="2.5" class="dy-node"/>
-        <path d="M400 466L411 477" class="dy-power-thin"/>
-        <text x="416" y="476" class="dy-t4">disconnect, E-stop</text>
-        <rect x="340" y="490" width="120" height="44" rx="6" class="dy-box"/>
-        <text x="400" y="509" class="dy-t2" text-anchor="middle">DC supply</text>
-        <text x="400" y="525" class="dy-t3" text-anchor="middle">24 V or 48 V bus</text>
-
-        <path d="M600 455V490" class="dy-power"/>
-        <rect x="540" y="490" width="120" height="44" rx="6" class="dy-box"/>
-        <text x="600" y="509" class="dy-t2" text-anchor="middle">Brake resistor</text>
-        <text x="600" y="525" class="dy-t3" text-anchor="middle">absorbs regeneration</text>
+        <circle cx="405" cy="568" r="2.5" class="dy-node"/><circle cx="405" cy="580" r="2.5" class="dy-node"/>
+        <path d="M405 568L416 579" class="dy-power-thin"/>
+        <path d="M405 580V590M544 560V590" class="dy-power"/>
+        <text x="396" y="578" class="dy-t4" text-anchor="end">disconnect, E-stop</text>
+        <rect x="345" y="590" width="120" height="46" rx="6" class="dy-box"/>
+        <text x="405" y="610" class="dy-t2" text-anchor="middle">DC supply</text>
+        <text x="405" y="627" class="dy-t3" text-anchor="middle">24 V or 48 V bus</text>
+        <rect x="480" y="590" width="128" height="46" rx="6" class="dy-box"/>
+        <text x="544" y="610" class="dy-t2" text-anchor="middle">Brake resistor</text>
+        <text x="544" y="627" class="dy-t3" text-anchor="middle">absorbs regeneration</text>
 
         <!-- legend -->
-        <g transform="translate(712 474)">
+        <g transform="translate(16 566)">
           <path d="M0 6H26" class="dy-shaft"/><text x="34" y="10" class="dy-t4">rotating shaft</text>
           <path d="M0 24H26" class="dy-power"/><text x="34" y="28" class="dy-t4">electrical power</text>
           <path d="M0 42H26" class="dy-sig"/><text x="34" y="46" class="dy-t4">measurement signal</text>
