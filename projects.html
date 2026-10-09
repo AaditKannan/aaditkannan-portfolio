@@ -1604,6 +1604,34 @@
     .matlab-panel { position: relative; aspect-ratio: var(--panel-ratio, 11 / 8); overflow: hidden; }
     .detail-content[data-project-id="wolfrom-actuator"] .matlab-panel img { position: absolute; width: var(--panel-width, 218.1818%); max-width: none; max-height: none; height: auto; margin: 0; left: var(--panel-x, 0%); top: var(--panel-y, 0%); }
     [data-theme="light"] .matlab-panel img { mix-blend-mode: multiply; }
+    /* Formula widgets: a tabbed CFD viewer and a live 1-D thermal model, in the page's paper style. */
+    .cfd-tabs, .tx-presets { display: flex; flex-wrap: wrap; gap: 6px 14px; margin: 0 0 12px; }
+    .cfd-tabs button, .tx-presets button { padding: 2px 0; border: 0; border-bottom: 1px solid transparent; background: none; color: var(--text-dim); font: inherit; font-size: 15px; cursor: pointer; }
+    .cfd-tabs button[aria-selected="true"], .tx-presets button[aria-pressed="true"] { color: var(--text); border-bottom-color: var(--text); }
+    .cfd-tabs button:focus-visible, .tx-presets button:focus-visible { outline: 2px solid var(--text); outline-offset: 3px; }
+    .cfd-stage { display: grid; }
+    .cfd-stage img { grid-area: 1 / 1; width: 100%; height: auto; max-height: 360px; object-fit: contain; opacity: 0; visibility: hidden; transition: opacity .25s ease, visibility 0s .25s; }
+    .cfd-stage img.is-active { opacity: 1; visibility: visible; transition: opacity .25s ease; }
+    .tx-controls { margin: 0 0 6px; }
+    .tx-current { display: flex; align-items: center; flex-wrap: wrap; gap: 4px 12px; font-size: 15px; color: var(--text); }
+    .tx-current output { min-width: 3.2em; font-weight: 600; font-variant-numeric: tabular-nums; }
+    .tx-current input { flex: 1 1 200px; accent-color: var(--text); min-height: 30px; cursor: pointer; }
+    .tx-chart { display: block; width: 100%; height: auto; font-family: var(--font-latex); }
+    .tx-chart text { fill: var(--text-dim); font-size: 12px; }
+    .tx-chart .tx-axis { stroke: var(--text); stroke-width: 1; fill: none; }
+    .tx-chart .tx-grid { stroke: #e3ded6; stroke-width: 1; }
+    .tx-chart .tx-limit { stroke: #9f3a2c; stroke-width: 1.2; }
+    .tx-chart .tx-target { stroke: var(--text-dim); stroke-width: 1.2; stroke-dasharray: 5 4; }
+    .tx-chart .tx-sealed { stroke: var(--text); stroke-width: 1.8; stroke-dasharray: 6 4; fill: none; }
+    .tx-chart .tx-fan { stroke: #b4643c; stroke-width: 2.8; fill: none; }
+    .tx-chart .tx-ideal { stroke: #64748b; stroke-width: 1.8; fill: none; }
+    .tx-chart .tx-lab { font-size: 12.5px; font-style: italic; }
+    .tx-readout { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 4px 16px; margin: 10px 0 0; font-size: 14px; }
+    .tx-readout div { min-width: 0; }
+    .tx-readout dt { color: var(--text-dim); font-size: 13px; }
+    .tx-readout dd { margin: 0; color: var(--text); font-weight: 600; font-variant-numeric: tabular-nums; }
+    .tx-readout dd small { display: block; font-weight: 400; color: var(--text-dim); font-size: 12.5px; }
+
     /* Dyno schematic: drawn inline so it takes the page type, upright to sit beside the test text;
        three line styles and dashed outlines for planned parts. On phones it keeps a readable width
        and scrolls sideways inside its frame. */
@@ -3180,6 +3208,104 @@ function layoutFormulaCoolingSections(description) {
   });
 }
 
+// Tabbed CFD views: one image visible at a time, crossfading in place, with its own caption.
+function initCfdViewer(root) {
+  root.querySelectorAll('[data-cfd-viewer]').forEach(viewer => {
+    const tabs = [...viewer.querySelectorAll('[data-cfd-tab]')];
+    const images = [...viewer.querySelectorAll('.cfd-stage img')];
+    const caption = viewer.querySelector('[data-cfd-caption-out]');
+    const show = index => {
+      tabs.forEach((tab, i) => { tab.setAttribute('aria-selected', String(i === index)); tab.tabIndex = i === index ? 0 : -1; });
+      images.forEach((img, i) => { img.classList.toggle('is-active', i === index); if (i === index) img.loading = 'eager'; });
+      caption.textContent = images[index].dataset.cfdCaption;
+    };
+    tabs.forEach((tab, i) => {
+      tab.addEventListener('click', () => show(i));
+      tab.addEventListener('keydown', event => {
+        if (event.key !== 'ArrowRight' && event.key !== 'ArrowLeft') return;
+        const next = (i + (event.key === 'ArrowRight' ? 1 : tabs.length - 1)) % tabs.length;
+        show(next); tabs[next].focus();
+      });
+    });
+    show(0);
+  });
+}
+
+// Live 1-D lumped model of the hottest cell: C dT/dt = q - (C / tau)(T - T0), q = (I / 3)^2 R.
+// Sealed: no cooling. Fan: tau = 15 min from the CFD. Ideal: tau fitted to the correlation's 52 C
+// stress result. These reproduce the page's numbers: 38.7 A sealed limit, 60 C at 10.5 min sealed
+// at 60 A, and about 64 C and 52 C at 25 min for the two cooled cases at 60 A.
+function initThermalExplorer(root) {
+  root.querySelectorAll('[data-thermal-explorer]').forEach(box => {
+    const C = 85, R = 0.0085, T0 = 35, END = 25 * 60, TAU = { fan: 900, ideal: 435 };
+    const W = 520, H = 300, L = 46, Rgt = 88, T = 14, B = 34, YMIN = 30, YMAX = 80;
+    const x = s => L + (s / END) * (W - L - Rgt), y = t => H - B - ((t - YMIN) / (YMAX - YMIN)) * (H - B - T);
+    const svg = box.querySelector('[data-tx-chart]'), input = box.querySelector('[data-tx-current]');
+    const out = box.querySelector('[data-tx-out]'), readout = box.querySelector('[data-tx-readout]');
+    const presets = [...box.querySelectorAll('[data-tx-preset]')];
+    const temp = (q, tau, s) => tau ? T0 + (q * tau / C) * (1 - Math.exp(-s / tau)) : T0 + q * s / C;
+    const reach = (q, tau, limit) => {
+      const need = limit - T0;
+      if (!tau) return need * C / q;
+      const ss = q * tau / C;
+      return ss > need ? -tau * Math.log(1 - need / ss) : null;
+    };
+    const path = (q, tau) => {
+      let d = '';
+      for (let s = 0; s <= END; s += 15) d += (s ? 'L' : 'M') + x(s).toFixed(1) + ' ' + y(temp(q, tau, s)).toFixed(1);
+      return d;
+    };
+    let grid = '';
+    for (let t = YMIN; t <= YMAX; t += 10) grid += `<path class="tx-grid" d="M${L} ${y(t)}H${W - Rgt}"/><text x="${L - 8}" y="${y(t) + 4}" text-anchor="end">${t}</text>`;
+    for (let m = 0; m <= 25; m += 5) grid += `<text x="${x(m * 60)}" y="${H - B + 18}" text-anchor="middle">${m}</text>`;
+    svg.innerHTML = `<defs><clipPath id="txClip"><rect x="${L}" y="${T}" width="${W - L - Rgt}" height="${H - B - T}"/></clipPath></defs>${grid}
+      <path class="tx-axis" d="M${L} ${T}V${H - B}H${W - Rgt}"/>
+      <text x="${(L + W - Rgt) / 2}" y="${H - 4}" text-anchor="middle">minutes into endurance</text>
+      <text x="12" y="${(T + H - B) / 2}" text-anchor="middle" transform="rotate(-90 12 ${(T + H - B) / 2})">hottest cell, °C</text>
+      <path class="tx-limit" d="M${L} ${y(60)}H${W - Rgt}"/><text class="tx-lab" x="${L + 6}" y="${y(60) - 5}">60 °C limit</text>
+      <path class="tx-target" d="M${L} ${y(57)}H${W - Rgt}"/><text class="tx-lab" x="${L + 6}" y="${y(57) + 14}">57 °C target</text>
+      <g clip-path="url(#txClip)"><path class="tx-sealed" data-line="sealed"/><path class="tx-ideal" data-line="ideal"/><path class="tx-fan" data-line="fan"/></g>
+      <text class="tx-lab" data-tag="sealed"></text><text class="tx-lab" data-tag="fan"></text><text class="tx-lab" data-tag="ideal"></text>`;
+    const lines = { sealed: svg.querySelector('[data-line="sealed"]'), fan: svg.querySelector('[data-line="fan"]'), ideal: svg.querySelector('[data-line="ideal"]') };
+    const tags = { sealed: svg.querySelector('[data-tag="sealed"]'), fan: svg.querySelector('[data-tag="fan"]'), ideal: svg.querySelector('[data-tag="ideal"]') };
+    const names = { sealed: 'sealed', fan: 'fan, CFD', ideal: 'ideal' };
+    const fmt = v => v.toFixed(1);
+    const render = amps => {
+      const q = (amps / 3) ** 2 * R;
+      out.textContent = `${amps} A`;
+      presets.forEach(b => b.setAttribute('aria-pressed', String(+b.dataset.txPreset === amps)));
+      const ends = {};
+      for (const key of ['sealed', 'fan', 'ideal']) {
+        const tau = key === 'sealed' ? 0 : TAU[key];
+        lines[key].setAttribute('d', path(q, tau));
+        ends[key] = temp(q, tau, END);
+      }
+      // end labels sit at the right edge, nudged apart so they never overlap
+      const order = Object.keys(ends).sort((a, b) => ends[b] - ends[a]);
+      let last = -Infinity;
+      order.forEach(key => {
+        let ty = Math.max(T + 10, Math.min(H - B - 2, y(Math.min(ends[key], YMAX)) + 4));
+        if (ty - last < 14) ty = last + 14;
+        last = ty;
+        tags[key].setAttribute('x', W - Rgt + 6);
+        tags[key].setAttribute('y', Math.min(ty, H - B + 10));
+        tags[key].textContent = names[key];
+        tags[key].setAttribute('class', 'tx-lab tx-tag-' + key);
+      });
+      const row = (label, key, tau) => {
+        const t60 = reach(q, tau, 60);
+        const end = ends[key];
+        const note = t60 !== null && t60 <= END ? `60 °C at ${fmt(t60 / 60)} min` : 'stays under 60 °C';
+        return `<div><dt>${label}</dt><dd>${end > 99 ? 'above 99' : fmt(end)} °C<small>${note}</small></dd></div>`;
+      };
+      readout.innerHTML = row('Sealed pack at 25 min', 'sealed', 0) + row('Fan, CFD-derived', 'fan', TAU.fan) + row('Ideal correlation', 'ideal', TAU.ideal);
+    };
+    input.addEventListener('input', () => render(+input.value));
+    presets.forEach(b => b.addEventListener('click', () => { input.value = b.dataset.txPreset; render(+input.value); }));
+    render(+input.value);
+  });
+}
+
 function layoutPulseGeneratorSections(description) {
   layoutCaseStudySections(description, {
     'pcb-overview': 'figure',
@@ -3919,9 +4045,22 @@ const formulaElectricCoolingDescription = `
     The <b>50 A design case</b> uses 35 °C inlet air, a 15 mm fan gap, and a 4% busbar heat allowance, and each branch runs near <b>40 CFM at 780 Pa</b>.<br><br>
     At 25 minutes the hottest cell reaches <b>54.6 °C</b>, the mean is 47.6 °C, and the coolest is 40.7 °C, with a 2.4 K standard deviation. That leaves 2.4 K of margin to the target using the conservative CFD heat-transfer coefficient, and about 10 K using the correlation value.<br><br>
     Air heats along the bank, producing a 7 K front-to-back gradient, and the hottest cells sit in the middle of module 2, where most of the already-heated air flows. The max-to-min range of <b>13.9 K</b> is still above the 5 K uniformity goal, so the next geometry priority is redistributing flow through the divider and cell passages.<br><br>
-    <figure class="project-feature-figure">
-      <img src="/assets/formula-cooling-transient-50a-top.jpg" alt="Top view of the 50 A transient CFD showing warmed downstream cells and streamlines through the divider" width="1414" height="800" loading="lazy" decoding="async">
-      <figcaption>Section view: air warms in module 1 before reaching module 2, and the divider openings and bypass paths determine which cells receive that flow.</figcaption>
+    <figure class="project-feature-figure cfd-viewer" data-cfd-viewer>
+      <div class="cfd-tabs" role="tablist" aria-label="CFD views">
+        <button type="button" role="tab" aria-selected="true" data-cfd-tab="0">50 A transient</button>
+        <button type="button" role="tab" aria-selected="false" data-cfd-tab="1">Temperature</button>
+        <button type="button" role="tab" aria-selected="false" data-cfd-tab="2">Air speed</button>
+        <button type="button" role="tab" aria-selected="false" data-cfd-tab="3">Cell map</button>
+        <button type="button" role="tab" aria-selected="false" data-cfd-tab="4">Divider flow</button>
+      </div>
+      <div class="cfd-stage">
+        <img class="is-active" src="/assets/formula-cooling-transient-50a-top.jpg" alt="Top view of the 50 A transient CFD showing warmed downstream cells and streamlines through the divider" width="1414" height="800" loading="lazy" decoding="async" data-cfd-caption="50 A design case at 25 minutes: air warms in module 1 before reaching module 2, and the divider openings and bypass paths decide which cells receive that flow.">
+        <img src="/assets/formula-cooling-temperature-baseline.png" alt="Icepak temperature field through one cooling branch in the baseline run" width="1413" height="850" loading="lazy" decoding="async" data-cfd-caption="Baseline run, temperature: cells and air warm along the branch toward the exhaust fan.">
+        <img src="/assets/formula-cooling-velocity-baseline.png" alt="Icepak air-speed streamlines through one cooling branch in the baseline run" width="1417" height="850" loading="lazy" decoding="async" data-cfd-caption="Baseline run, air speed from the same viewpoint: where the air actually goes, including the paths around the cells.">
+        <img src="/assets/formula-cooling-temperature-map.png" alt="Icepak cell temperature map across both modules of one branch" width="622" height="369" loading="lazy" decoding="async" data-cfd-caption="Cell temperatures across both modules: the warmest cells sit in the downstream module.">
+        <img src="/assets/formula-cooling-divider-velocity.png" alt="Icepak air speed through the perforated divider between the two modules" width="1269" height="791" loading="lazy" decoding="async" data-cfd-caption="Air speed through the perforated divider, the restriction that sets the downstream flow split.">
+      </div>
+      <figcaption data-cfd-caption-out>50 A design case at 25 minutes: air warms in module 1 before reaching module 2, and the divider openings and bypass paths decide which cells receive that flow.</figcaption>
     </figure>
     <details class="project-disclosure">
       <summary>Model inputs and assumptions</summary>
@@ -3972,9 +4111,21 @@ const formulaElectricCoolingDescription = `
         </figure>
       </div>
     </details>
-    <figure class="project-feature-figure">
-      <img src="/assets/formula-cooling-endurance-model.jpg" alt="MATLAB plots of temperature versus RMS current, the 60 A transient response, time to the sealed-pack limit, and passive thermal resistance" width="1249" height="866" loading="lazy" decoding="async">
-      <figcaption>1D model comparison at 35 °C: the 60 A stress case ends near 64 °C with CFD-derived cooling and 52 °C with the ideal correlation.</figcaption>
+    <figure class="project-feature-figure thermal-explorer" data-thermal-explorer>
+      <div class="tx-controls">
+        <label class="tx-current">Pack RMS current <output data-tx-out>50 A</output>
+          <input type="range" min="20" max="70" step="1" value="50" data-tx-current aria-label="Pack RMS current in amps">
+        </label>
+        <div class="tx-presets" role="group" aria-label="Load cases">
+          <button type="button" data-tx-preset="22">SN5 22 A</button>
+          <button type="button" data-tx-preset="38">No-fan limit 38 A</button>
+          <button type="button" data-tx-preset="50" aria-pressed="true">Design 50 A</button>
+          <button type="button" data-tx-preset="60">Stress 60 A</button>
+        </div>
+      </div>
+      <svg class="tx-chart" viewBox="0 0 520 300" role="img" aria-label="Hottest-cell temperature over 25 minutes for the sealed pack, the fan with CFD-derived cooling, and the ideal correlation" data-tx-chart></svg>
+      <dl class="tx-readout" data-tx-readout></dl>
+      <figcaption>1-D lumped model of one cell starting at 35 °C: the sealed pack has no cooling, the fan case uses the 15-minute forced-cooling time constant from CFD, and the ideal case uses the tube-bank correlation, fitted to its 52 °C stress result.</figcaption>
     </figure>
     With a <b>12 K model difference</b>, measuring the cooldown conductance is a priority. A passive CFD run with zero imposed flow and buoyancy enabled also checks the no-fan baseline.<br><br>
     <details class="project-disclosure">
@@ -3985,6 +4136,10 @@ const formulaElectricCoolingDescription = `
           <img src="/assets/formula-cooling-heat-budget.jpg" alt="Cell heat versus pack RMS current with passive, CFD-derived fan, and ideal air-side cooling bounds" width="1379" height="1008" loading="lazy" decoding="async">
           <figcaption>Analytical 60 °C-limit comparison. The project uses 50 A as its design case and 60 A as the stress case; these current bounds remain model estimates.</figcaption>
         </figure>
+      <figure class="project-feature-figure">
+          <img src="/assets/formula-cooling-endurance-model.jpg" alt="MATLAB plots of temperature versus RMS current, the 60 A transient response, time to the sealed-pack limit, and passive thermal resistance" width="1249" height="866" loading="lazy" decoding="async">
+        <figcaption>1D model comparison at 35 °C: the 60 A stress case ends near 64 °C with CFD-derived cooling and 52 °C with the ideal correlation.</figcaption>
+      </figure>
         These limits move with initial temperature, effective cell resistance, airflow, and measured UA, and the ideal air-side line is a theoretical upper bound. Endurance replay and fan-on cooldown tests will check the useful cooling margin.
       </div>
     </details>
@@ -5027,6 +5182,8 @@ const formulaElectricAtticDescription = `
         requestAnimationFrame(alignWolfromTitle);
       } else if (project.id === 'formula-electric') {
         layoutFormulaCoolingSections(descriptionEl);
+        initCfdViewer(descriptionEl);
+        initThermalExplorer(descriptionEl);
       } else if (project.id === 'ns-us-pulse-generator') {
         layoutPulseGeneratorSections(descriptionEl);
       }
