@@ -126,7 +126,7 @@
       z-index: 3;
       background:
         linear-gradient(to bottom, rgba(0, 0, 0, 0.18), rgba(0, 0, 0, 0) 22%),
-        radial-gradient(ellipse 60% 45% at 50% 52%, rgba(0, 0, 0, 0.36), rgba(0, 0, 0, 0.2) 75%, rgba(0, 0, 0, 0.2));
+        radial-gradient(ellipse 52% 34% at 50% 50%, rgba(0, 0, 0, 0.44), rgba(0, 0, 0, 0.2) 80%, rgba(0, 0, 0, 0.2));
       pointer-events: none;
     }
 
@@ -212,33 +212,35 @@
       letter-spacing: 0.12em;
       margin-top: 18px;
       margin-bottom: 0;
-      opacity: 0.95;
+      font-weight: 500;
       font-family: var(--font-latex);
-      color: rgba(255, 255, 255, 0.95);
-      text-shadow: 0 6px 18px rgba(0, 0, 0, 0.45);
+      color: #FFFFFF;
+      /* a tight dark edge plus a soft halo keeps the small caps readable on bright footage */
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8), 0 0 10px rgba(0, 0, 0, 0.55), 0 4px 18px rgba(0, 0, 0, 0.45);
       line-height: 1.5;
     }
 
     .view-resume-btn {
       display: inline-block;
       padding: 8px 20px;
-      border: 1px solid rgba(255, 255, 255, 0.4);
-      color: rgba(255, 255, 255, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.75);
+      color: #FFFFFF;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
       text-decoration: none;
       font-size: 11px;
       font-weight: 500;
       letter-spacing: 0.15em;
       border-radius: 4px;
       transition: all 0.3s ease;
-      background: transparent;
+      background: rgba(8, 10, 14, 0.42);
       position: relative;
       margin-top: 20px;
       font-family: var(--font-latex);
     }
 
     .view-resume-btn:hover {
-      background: rgba(255, 255, 255, 0.08);
-      border-color: rgba(255, 255, 255, 0.8);
+      background: rgba(8, 10, 14, 0.6);
+      border-color: #FFFFFF;
       color: #FFFFFF;
     }
 
