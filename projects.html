@@ -3500,9 +3500,9 @@ const wolfromDescription = `
     Here $i_{sc}=5.606$, $i_0=0.889$, $i=50.45$, and $\\eta_s$, $\\eta_a$, and $\\eta_b$ are the sun, fixed-ring, and output-ring mesh efficiencies.
     <figure class="project-feature-figure">
       <div class="matlab-panel" style="--panel-x: 0%; --panel-y: 0%; --panel-width: 218.1818%; --panel-ratio: 11 / 8"><img src="/assets/wolfrom-load-analysis-clear.png" alt="MATLAB prediction of forward and backdrive efficiency versus ring-mesh efficiency" width="1200" height="1200" loading="lazy" decoding="async" data-lightbox-src="/assets/wolfrom-matlab-efficiency.png"></div>
-      <figcaption>Forward and backdrive efficiency versus ring-mesh efficiency.</figcaption>
+      <figcaption>One point of ring-mesh efficiency costs about ten points of gearbox efficiency, forward and backdriven.</figcaption>
       <div class="matlab-panel" style="--panel-x: -80.3%; --panel-y: 0%; --panel-width: 184.6154%; --panel-ratio: 13 / 8"><img src="/assets/wolfrom-load-analysis-clear.png" alt="MATLAB power-flow calculation showing the fixed-ring and output-ring meshes carry nine and eight times output power" width="1200" height="1200" loading="lazy" decoding="async" data-lightbox-src="/assets/wolfrom-matlab-mesh-power.png"></div>
-      <figcaption>Circulating power in the two ring meshes, which amplifies small mesh losses.</figcaption>
+      <figcaption>Eight to nine times the output power circulates through the two ring meshes, which amplifies small mesh losses.</figcaption>
     </figure>
     <table class="project-data-table project-small-table">
       <thead><tr><th>Efficiency of each ring mesh</th><th>Forward</th><th>Backdriven</th></tr></thead>
@@ -3566,7 +3566,7 @@ const wolfromDescription = `
       <img src="/assets/wolfrom-hand-calcs-clear.png" alt="Hand calculations deriving gravity, acceleration, continuous, and peak torque for the Wolfrom elbow actuator" width="892" height="892" loading="lazy" decoding="async">
       <figcaption>Load-case hand calculations setting the 30 Nm continuous and 50 Nm peak design targets.</figcaption>
     </figure>
-    The fixed ring and output ring push on each planet in opposite directions, 8 mm apart along its axis. Those forces nearly cancel, so the carrier carries no net torque, although they still apply a tilting moment of <b>4.2 Nm at 50 Nm output</b> to every planet.
+    Every planet carries a tilting moment of <b>4.2 Nm at 50 Nm output</b>. The fixed ring and output ring push on it in opposite directions, 8 mm apart along its axis, so the forces nearly cancel and the carrier carries no net torque, while their offset still tilts the planet.
     <details class="project-disclosure">
       <summary>Mesh forces per planet at 50 Nm</summary>
       <div class="project-disclosure-content">Sun mesh: <b>40 N</b>. Fixed-ring mesh: <b>454 N</b>. Output-ring mesh: <b>494 N</b> tangential. Radial components are these values multiplied by $\\tan 20^\\circ$.</div>
@@ -3581,7 +3581,7 @@ const wolfromDescription = `
     </div>
     <figure class="project-feature-figure">
       <div class="matlab-panel" style="--panel-x: -84.6154%; --panel-y: -100%; --panel-width: 184.6154%; --panel-ratio: 13 / 8"><img src="/assets/wolfrom-load-analysis-clear.png" alt="MATLAB planet-bearing reaction versus output torque: 235 newtons continuous and 392 newtons peak against a 350 newton static rating" width="1200" height="1200" loading="lazy" decoding="async" data-lightbox-src="/assets/wolfrom-matlab-bearing-load.png"></div>
-      <figcaption>Planet bearing load at the continuous and peak cases, compared with the assumed static rating.</figcaption>
+      <figcaption>Planet bearings reach their assumed 350 N static rating at 45 Nm: 235 N at the 30 Nm continuous case and 392 N at the 50 Nm peak.</figcaption>
     </figure>
     <details class="project-disclosure">
       <summary>Method and caveats</summary>
@@ -3594,7 +3594,7 @@ const wolfromDescription = `
 
   <section class="latex-section" id="wolfrom-simulation">
     <strong>Simulation</strong><br><br>
-    <p>The first screening pass took the integrated ring-gear housing on its own into ANSYS. A fixed and a frictionless support hold it under two 50 N&middot;m moments and a 500 N radial load at the output bearing, and peak equivalent stress comes out near 5.3 MPa. The topology run keeps 50% of the mass at minimum compliance, with a member-size constraint and a protected exclusion region, and shows which load paths through the housing earn their material. Gears, bearings, and the carrier are left out of these runs, so tooth contact and load sharing are outside their scope.</p>
+    <p>In ANSYS screening, the integrated ring-gear housing peaks near 5.3 MPa equivalent stress. I modelled it on its own, held by a fixed and a frictionless support under two 50 N&middot;m moments and a 500 N radial load at the output bearing. The topology run keeps 50% of the mass at minimum compliance, with a member-size constraint and a protected exclusion region, and shows which load paths through the housing earn their material. Gears, bearings, and the carrier are left out of these runs, so tooth contact and load sharing are outside their scope.</p>
     <p>One compound gear pair is rated in KISSsoft so far. The coupled three-stage efficiency gates profile-shift optimisation and the remaining contact, carrier-stiffness, roundness, and modal checks.</p>
     <div class="project-inline-grid">
       <figure>
@@ -3603,7 +3603,7 @@ const wolfromDescription = `
       </figure>
       <figure>
         <img src="/assets/wolfrom-ansys-stress.png" alt="ANSYS equivalent von Mises stress result for the integrated Wolfrom housing load case" width="2048" height="855" loading="lazy" decoding="async">
-        <figcaption>Housing stress under the load set above.</figcaption>
+        <figcaption>About 5.3 MPa peak equivalent stress in the housing under the screening load set.</figcaption>
       </figure>
       <figure>
         <img src="/assets/wolfrom-ansys-topology-result.png" alt="ANSYS topology density result for the Wolfrom housing" width="2048" height="852" loading="lazy" decoding="async">
@@ -3614,7 +3614,7 @@ const wolfromDescription = `
 
   <section class="latex-section" id="wolfrom-build">
     <strong>Build</strong><br><br>
-    <p>The housings and carrier are FDM prints and the gears are SLA resin. I use the printed assembly to check gear timing, bearing fits, stack height, and access before committing those interfaces to metal parts.</p>
+    <p>The printed V1 checks gear timing, bearing fits, stack height, and access before I commit those interfaces to metal parts. The housings and carrier are FDM prints and the gears are SLA resin.</p>
     <p>Bores, shaft ends, and press fits carry lead-in chamfers so each part self-aligns as the stack goes together from one direction, first-layer chamfers absorb elephant's foot, and every part prints with its teeth and load paths in the strongest layer direction.</p>
     <div class="wolfrom-build-board" aria-label="Physical prototype and assembly photos">
       <figure>
@@ -3634,7 +3634,7 @@ const wolfromDescription = `
         <figcaption>Printed gear train running on the bench supply.</figcaption>
       </figure>
     </div>
-    <details class="project-disclosure">
+    <details class="project-disclosure" open>
       <summary>What went wrong</summary>
       <div class="project-disclosure-content">
         <ul class="project-result-list">
@@ -3787,8 +3787,6 @@ const wolfromDescription = `
       </div>
       <figcaption>Proposed instrumentation layout, not a completed or validated bench. Sensor models and the input-torque arrangement remain to be selected.</figcaption>
     </figure>
-    <p>The continuous validation point is 30 Nm at 30 rpm, or 94.2 W at the joint. Torque, angle, temperature, and electrical power need a shared time base so I can compare each operating point against the MATLAB and KISSsoft predictions.</p>
-    <p>The load side must cover the joint’s torque and speed range in both directions. If the chosen load motor cannot provide 30 Nm continuously and the required peak torque directly, I can add a reduction stage and keep the sensors on the actuator side of it.</p>
     <details class="project-disclosure">
       <summary>Measurements and instrumentation</summary>
       <div class="project-disclosure-content">
@@ -3811,6 +3809,8 @@ const wolfromDescription = `
     <details class="project-disclosure">
       <summary>Test sequence and acceptance checks</summary>
       <div class="project-disclosure-content">
+        <p>The continuous validation point is 30 Nm at 30 rpm, or 94.2 W at the joint. Torque, angle, temperature, and electrical power need a shared time base so I can compare each operating point against the MATLAB and KISSsoft predictions.</p>
+        <p>The load side must cover the joint’s torque and speed range in both directions. If the chosen load motor cannot provide 30 Nm continuously and the required peak torque directly, I can add a reduction stage and keep the sensors on the actuator side of it.</p>
         <table class="project-data-table">
           <thead><tr><th>Test</th><th>Method</th><th>Reported result</th></tr></thead>
           <tbody>
@@ -3876,6 +3876,57 @@ const formulaElectricCoolingDescription = `
       </tbody>
     </table>
     </section>
+    <section class="latex-section" id="sn6-transient">
+    <strong>Transient CFD</strong><br><br>
+    At the <b>50 A design case</b> the hottest cell reaches <b>54.6 °C</b> after 25 minutes, 2.4 K under the target. The run uses 35 °C inlet air, a 15 mm fan gap, and a 4% busbar heat allowance, and each branch runs near <b>40 CFM at 780 Pa</b>.<br><br>
+    The mean is 47.6 °C and the coolest cell is 40.7 °C, with a 2.4 K standard deviation. The 2.4 K margin uses the conservative CFD heat-transfer coefficient; the correlation value gives about 10 K.<br><br>
+    Air heats along the bank, producing a 7 K front-to-back gradient, and the hottest cells sit in the middle of module 2, where most of the already-heated air flows. The max-to-min range of <b>13.9 K</b> is still above the 5 K uniformity goal, so the next geometry priority is redistributing flow through the divider and cell passages.<br><br>
+    <figure class="project-feature-figure cfd-viewer" data-cfd-viewer>
+      <div class="cfd-tabs" role="tablist" aria-label="CFD views">
+        <button type="button" role="tab" aria-selected="true" data-cfd-tab="0">50 A transient</button>
+        <button type="button" role="tab" aria-selected="false" data-cfd-tab="1">Temperature</button>
+        <button type="button" role="tab" aria-selected="false" data-cfd-tab="2">Air speed</button>
+        <button type="button" role="tab" aria-selected="false" data-cfd-tab="3">Cell map</button>
+        <button type="button" role="tab" aria-selected="false" data-cfd-tab="4">Divider flow</button>
+      </div>
+      <div class="cfd-stage">
+        <img class="is-active" src="/assets/formula-cooling-transient-50a-top.jpg" alt="Top view of the 50 A transient CFD showing warmed downstream cells and streamlines through the divider" width="1414" height="800" loading="lazy" decoding="async" data-cfd-caption="50 A design case at 25 minutes: air warms in module 1 before reaching module 2, and the divider openings and bypass paths decide which cells receive that flow.">
+        <img src="/assets/formula-cooling-temperature-baseline.png" alt="Icepak temperature field through one cooling branch in the baseline run" width="1413" height="850" loading="lazy" decoding="async" data-cfd-caption="Baseline run, temperature: cells and air warm along the branch toward the exhaust fan.">
+        <img src="/assets/formula-cooling-velocity-baseline.png" alt="Icepak air-speed streamlines through one cooling branch in the baseline run" width="1417" height="850" loading="lazy" decoding="async" data-cfd-caption="Baseline run, air speed from the same viewpoint: where the air actually goes, including the paths around the cells.">
+        <img src="/assets/formula-cooling-temperature-map.png" alt="Icepak cell temperature map across both modules of one branch" width="622" height="369" loading="lazy" decoding="async" data-cfd-caption="Cell temperatures across both modules: the warmest cells sit in the downstream module.">
+        <img src="/assets/formula-cooling-divider-velocity.png" alt="Icepak air speed through the perforated divider between the two modules" width="1269" height="791" loading="lazy" decoding="async" data-cfd-caption="Air speed through the perforated divider, the restriction that sets the downstream flow split.">
+      </div>
+      <figcaption data-cfd-caption-out>50 A design case at 25 minutes: air warms in module 1 before reaching module 2, and the divider openings and bypass paths decide which cells receive that flow.</figcaption>
+    </figure>
+    <details class="project-disclosure">
+      <summary>Model inputs and assumptions</summary>
+      <div class="project-disclosure-content">
+        <table class="project-data-table">
+          <thead><tr><th>Input</th><th>Value</th></tr></thead>
+          <tbody>
+            <tr><td>Cell</td><td>Ø21.7 × 70.5 mm, 85 J/K; k 25 W/m·K axial and 0.6 W/m·K radial</td></tr>
+            <tr><td>Resistance</td><td>R<sub>eff</sub> 8.5 mΩ from Reliance's energy-balance fit (datasheet DCR 7.5 mΩ)</td></tr>
+            <tr><td>Heat</td><td>Measured SN5 current waveform scaled to the load case: 198 W per branch at 50 A, plus 4% for the busbar loop</td></tr>
+            <tr><td>Fan</td><td>Sanyo Denki 9HV0824 pressure-flow curve, exhaust, 15 mm air gap</td></tr>
+            <tr><td>Grilles</td><td>Free-area ratio 0.14 at the inlet (mesh and louvre) and 0.25 at the divider</td></tr>
+            <tr><td>Ambient</td><td>35 °C, with inlet air at the same temperature</td></tr>
+          </tbody>
+        </table>
+        <table class="project-data-table">
+          <thead><tr><th>Assumption</th><th>Effect</th></tr></thead>
+          <tbody>
+            <tr><td>Transient, 25 min in 5 s steps</td><td>Curves flatten by about 20 min, with a forced-cooling time constant near 15 min</td></tr>
+            <tr><td>Adiabatic outer walls</td><td>Neglects passive loss of about 3%</td></tr>
+            <tr><td>Five identical, independent branches</td><td>No interaction between branches</td></tr>
+            <tr><td>No boundary-layer mesh</td><td>Under-predicts h by about 2×, so fan-on results are conservative</td></tr>
+            <tr><td>Busbar and PCB thermal mass omitted</td><td>About 1 K</td></tr>
+          </tbody>
+        </table>
+        <p class="reading-after">The run reports hottest, mean, and coolest cell temperature and spread over time, time to 60 °C, the fan operating point, the hottest-cell location, and the flow and temperature fields. The 15-minute forced-cooling time constant, against roughly 3.1 hours for the passive case, lets the fan-on design approach steady state during endurance.</p>
+      </div>
+    </details>
+
+    </section>
     <section class="latex-section" id="sn6-first-principles">
     <strong>First-Principles Thermal Model</strong><br><br>
     Five high-static-pressure fans provide plenty of nominal capacity, but the cells, inlet perforations, divider, and exhaust gaps form a restrictive path with easy bypass routes, so the flow path sets the thermal result.<br><br>
@@ -3940,7 +3991,7 @@ const formulaElectricCoolingDescription = `
     </section>
     <section class="latex-section" id="sn6-airflow">
     <strong>Airflow Architecture</strong><br><br>
-    I compared three fan placements on one branch with hand calculations and Icepak, and checked conduction to the casing by hand.
+    One exhaust fan per branch is enough: push-pull cooled best, but only by about 2 K for twice the fans. I compared three fan placements on one branch with hand calculations and Icepak, and checked conduction to the casing by hand.
     <table class="project-data-table">
       <thead><tr><th>Configuration</th><th>Result</th><th>Trade-off</th></tr></thead>
       <tbody>
@@ -3954,7 +4005,7 @@ const formulaElectricCoolingDescription = `
       <img src="/assets/formula-cooling-push-pull.jpg" alt="Icepak temperature field for the push-pull configuration with intake and exhaust fans, peaking at 55.6 degrees Celsius" width="530" height="360" loading="lazy" decoding="async">
       <figcaption>Push-pull run: 56 CFM per fan and a 55.6 °C hottest cell, about 2 K cooler than exhaust only for twice the fans.</figcaption>
     </figure>
-    Push-pull cooled best, but with one fan per branch an <b>active exhaust alone</b> is sufficient, since the pressure-drop difference between the two was about 30 Pa. Intake-only left more than 10 K between cells and placed the fan where the louvres and mesh need to be. That trade led us to five exhaust fans. Liquid cooling was out of scope, since it requires manufacturing processes beyond the team's current capability, is over-specified for this heat load, and needs an inlet and outlet for every module.<br><br>
+    The pressure-drop difference between push-pull and exhaust only was about 30 Pa, so an <b>active exhaust alone</b> is sufficient. Intake-only left more than 10 K between cells and placed the fan where the louvres and mesh need to be. That trade led us to five exhaust fans. Liquid cooling was out of scope, since it requires manufacturing processes beyond the team's current capability, is over-specified for this heat load, and needs an inlet and outlet for every module.<br><br>
     The selected architecture has no moving parts at the inlet and keeps the fan outside the casing, in line with FSAE rule EV.6.5.4. Module 2 receives strong flow because it sits next to the fan, but module 1 has already warmed that air.<br><br>
     <figure class="flow-path">
       <ol>
@@ -3967,7 +4018,6 @@ const formulaElectricCoolingDescription = `
       </ol>
       <figcaption>Air path through one cooling branch: one exhaust fan pulls air through two modules in series.</figcaption>
     </figure>
-    I built a MATLAB pressure-drop model that represents each fan by its Sanyo Denki pressure-flow curve, with the inlet, module, divider, and outlet losses kept separate to show which restriction dominates. The earlier system-level operating point was <b>425 CFM at 521 Pa</b>, and the cell bank accounted for roughly 79% of the modeled pressure loss.<br><br>
     <details class="project-disclosure">
       <summary>Pack geometry and cooling branch</summary>
       <div class="project-disclosure-content">
@@ -3978,7 +4028,7 @@ const formulaElectricCoolingDescription = `
         </figure>
       </div>
     </details>
-    I chose a <b>15 mm exhaust air gap</b>. Gap loss scales roughly as $1/g^2$, so narrowing from 20 mm to 15 mm costs about 30 Pa, around 4% of the fan budget and about 1 K on the hottest cell. Narrowing to 10 mm adds another 70 Pa, at which point the fan hub starts working against the wall. Runs at 20, 15, and 10 mm showed aggressive recirculation in the 10 mm gap, which would also be harder to manufacture. The current model includes the 45° inlet louvres and mesh losses.<br><br>
+    I chose a <b>15 mm exhaust air gap</b>. Gap loss scales roughly as $1/g^2$, so narrowing from 20 mm to 15 mm costs about 30 Pa, around 4% of the fan budget and about 1 K on the hottest cell, while 10 mm adds another 70 Pa, puts the fan hub against the wall, and showed aggressive recirculation. The current model includes the 45° inlet louvres and mesh losses.<br><br>
     <details class="project-disclosure">
       <summary>Rain-inlet geometry and free-area calculations</summary>
       <div class="project-disclosure-content">
@@ -4007,7 +4057,7 @@ const formulaElectricCoolingDescription = `
         The analytical 47 CFM sweep gives about 33 Pa at 20 mm, 60 Pa at 15 mm, and 130 Pa at 10 mm. Choosing 15 mm keeps total depth near 56 mm, including the 38 mm fan and the roughly 3 mm wall, and the 10 mm geometry also showed recirculation during iteration.<br><br>
         <figure class="project-feature-figure">
           <img src="/assets/formula-cooling-airgap-trade.jpg" alt="Analytical exhaust-gap pressure loss versus depth with 10, 15, and 20 millimeter cases" width="1200" height="690" loading="lazy" decoding="async">
-          <figcaption>The 15 mm gap balances packaging depth against the rapidly increasing pressure penalty.</figcaption>
+          <figcaption>About 33 Pa at 20 mm, 60 Pa at 15 mm, and 130 Pa at 10 mm: the 15 mm gap balances packaging depth against the rapidly increasing pressure penalty.</figcaption>
         </figure>
         <figure class="project-feature-figure">
           <img src="/assets/formula-cooling-airgap-streamlines.jpg" alt="Icepak side view of streamlines leaving module 2 through the outlet panel, turning through the 15 millimetre air gap, and entering the exhaust fan" width="330" height="883" loading="lazy" decoding="async">
@@ -4040,60 +4090,9 @@ const formulaElectricCoolingDescription = `
     </details>
 
     </section>
-    <section class="latex-section" id="sn6-transient">
-    <strong>Transient CFD</strong><br><br>
-    The <b>50 A design case</b> uses 35 °C inlet air, a 15 mm fan gap, and a 4% busbar heat allowance, and each branch runs near <b>40 CFM at 780 Pa</b>.<br><br>
-    At 25 minutes the hottest cell reaches <b>54.6 °C</b>, the mean is 47.6 °C, and the coolest is 40.7 °C, with a 2.4 K standard deviation. That leaves 2.4 K of margin to the target using the conservative CFD heat-transfer coefficient, and about 10 K using the correlation value.<br><br>
-    Air heats along the bank, producing a 7 K front-to-back gradient, and the hottest cells sit in the middle of module 2, where most of the already-heated air flows. The max-to-min range of <b>13.9 K</b> is still above the 5 K uniformity goal, so the next geometry priority is redistributing flow through the divider and cell passages.<br><br>
-    <figure class="project-feature-figure cfd-viewer" data-cfd-viewer>
-      <div class="cfd-tabs" role="tablist" aria-label="CFD views">
-        <button type="button" role="tab" aria-selected="true" data-cfd-tab="0">50 A transient</button>
-        <button type="button" role="tab" aria-selected="false" data-cfd-tab="1">Temperature</button>
-        <button type="button" role="tab" aria-selected="false" data-cfd-tab="2">Air speed</button>
-        <button type="button" role="tab" aria-selected="false" data-cfd-tab="3">Cell map</button>
-        <button type="button" role="tab" aria-selected="false" data-cfd-tab="4">Divider flow</button>
-      </div>
-      <div class="cfd-stage">
-        <img class="is-active" src="/assets/formula-cooling-transient-50a-top.jpg" alt="Top view of the 50 A transient CFD showing warmed downstream cells and streamlines through the divider" width="1414" height="800" loading="lazy" decoding="async" data-cfd-caption="50 A design case at 25 minutes: air warms in module 1 before reaching module 2, and the divider openings and bypass paths decide which cells receive that flow.">
-        <img src="/assets/formula-cooling-temperature-baseline.png" alt="Icepak temperature field through one cooling branch in the baseline run" width="1413" height="850" loading="lazy" decoding="async" data-cfd-caption="Baseline run, temperature: cells and air warm along the branch toward the exhaust fan.">
-        <img src="/assets/formula-cooling-velocity-baseline.png" alt="Icepak air-speed streamlines through one cooling branch in the baseline run" width="1417" height="850" loading="lazy" decoding="async" data-cfd-caption="Baseline run, air speed from the same viewpoint: where the air actually goes, including the paths around the cells.">
-        <img src="/assets/formula-cooling-temperature-map.png" alt="Icepak cell temperature map across both modules of one branch" width="622" height="369" loading="lazy" decoding="async" data-cfd-caption="Cell temperatures across both modules: the warmest cells sit in the downstream module.">
-        <img src="/assets/formula-cooling-divider-velocity.png" alt="Icepak air speed through the perforated divider between the two modules" width="1269" height="791" loading="lazy" decoding="async" data-cfd-caption="Air speed through the perforated divider, the restriction that sets the downstream flow split.">
-      </div>
-      <figcaption data-cfd-caption-out>50 A design case at 25 minutes: air warms in module 1 before reaching module 2, and the divider openings and bypass paths decide which cells receive that flow.</figcaption>
-    </figure>
-    <details class="project-disclosure">
-      <summary>Model inputs and assumptions</summary>
-      <div class="project-disclosure-content">
-        <table class="project-data-table">
-          <thead><tr><th>Input</th><th>Value</th></tr></thead>
-          <tbody>
-            <tr><td>Cell</td><td>Ø21.7 × 70.5 mm, 85 J/K; k 25 W/m·K axial and 0.6 W/m·K radial</td></tr>
-            <tr><td>Resistance</td><td>R<sub>eff</sub> 8.5 mΩ from Reliance's energy-balance fit (datasheet DCR 7.5 mΩ)</td></tr>
-            <tr><td>Heat</td><td>Measured SN5 current waveform scaled to the load case: 198 W per branch at 50 A, plus 4% for the busbar loop</td></tr>
-            <tr><td>Fan</td><td>Sanyo Denki 9HV0824 pressure-flow curve, exhaust, 15 mm air gap</td></tr>
-            <tr><td>Grilles</td><td>Free-area ratio 0.14 at the inlet (mesh and louvre) and 0.25 at the divider</td></tr>
-            <tr><td>Ambient</td><td>35 °C, with inlet air at the same temperature</td></tr>
-          </tbody>
-        </table>
-        <table class="project-data-table">
-          <thead><tr><th>Assumption</th><th>Effect</th></tr></thead>
-          <tbody>
-            <tr><td>Transient, 25 min in 5 s steps</td><td>Curves flatten by about 20 min, with a forced-cooling time constant near 15 min</td></tr>
-            <tr><td>Adiabatic outer walls</td><td>Neglects passive loss of about 3%</td></tr>
-            <tr><td>Five identical, independent branches</td><td>No interaction between branches</td></tr>
-            <tr><td>No boundary-layer mesh</td><td>Under-predicts h by about 2×, so fan-on results are conservative</td></tr>
-            <tr><td>Busbar and PCB thermal mass omitted</td><td>About 1 K</td></tr>
-          </tbody>
-        </table>
-        <p class="reading-after">The run reports hottest, mean, and coolest cell temperature and spread over time, time to 60 °C, the fan operating point, the hottest-cell location, and the flow and temperature fields. The 15-minute forced-cooling time constant, against roughly 3.1 hours for the passive case, lets the fan-on design approach steady state during endurance.</p>
-      </div>
-    </details>
-
-    </section>
     <section class="latex-section" id="sn6-analytical">
     <strong>Analytical and CFD Comparison</strong><br><br>
-    Air near the outlet has already absorbed heat from the upstream cells, so even with a reasonable local convection coefficient, those cells see a smaller temperature difference to the cooling air. The analytical model gave the system-level answer, and CFD showed where that assumption broke down.<br><br>
+    The ideal correlation predicts much more cooling than the CFD finds, because air near the outlet has already absorbed heat from the upstream cells, so those cells see a smaller temperature difference to the cooling air even with a reasonable local convection coefficient. The analytical model gave the system-level answer, and CFD showed where that assumption broke down.<br><br>
     Early MATLAB sizing predicted <b>425 CFM total at 521 Pa</b> and 234 W fan power, with cell-bank loss dominating. The current CFD includes a more restrictive inlet and plenum.<br><br>
     Earlier tube-bank correlations gave $h\\approx125\\text{–}160\\,\\mathrm{W\\,m^{-2}\\,K^{-1}}$, while representative Icepak geometry gave about $48\\,\\mathrm{W\\,m^{-2}\\,K^{-1}}$. Bypass and uneven flow reduce the effective cooling, and boundary-layer mesh resolution is still a modeling uncertainty.<br><br>
     <details class="project-disclosure">
@@ -4467,7 +4466,7 @@ const formulaElectricAtticDescription = `
 
           <section class="latex-section" id="pcb-testing">
           <strong>Testing + Key Design Lesson</strong><br><br>
-          I characterized V2 with a Keithley source-measure unit, known dummy loads, and a Tektronix oscilloscope on both DUT terminals. The board demonstrated programmable operation through <b>30 V</b> from the microsecond range into the hundreds of nanoseconds, and in the current setup the shortest repeatable controller commands reached approximately the <b>100 ns scale</b>.<br><br>
+          V2 runs programmably through <b>30 V</b> from the microsecond range into the hundreds of nanoseconds, and in the current setup the shortest repeatable controller commands reached approximately the <b>100 ns scale</b>. I characterized it with a Keithley source-measure unit, known dummy loads, and a Tektronix oscilloscope on both DUT terminals.<br><br>
           The key limitation appeared as pulses shortened. The GaN stage actively drives the first transition, but once it turns off, the output node returns passively through the DUT and the surrounding bias network:
           $$v_{\\mathrm{out}}(t)\\approx V_0\\,e^{-t/\\tau},\\qquad \\tau\\approx R_{\\mathrm{return}}\\left(C_{\\mathrm{DUT}}+C_{\\mathrm{fixture}}\\right)$$
           The delivered pulse width and return edge therefore depend on device and fixture capacitance.<br><br>
@@ -5187,7 +5186,11 @@ const formulaElectricAtticDescription = `
       } else if (project.id === 'ns-us-pulse-generator') {
         layoutPulseGeneratorSections(descriptionEl);
       }
-      descriptionEl.querySelectorAll('details.project-disclosure').forEach(disclosure => { disclosure.open = true; });
+      // Working, derivations, and method notes start closed so a skim reads the story; opening one
+      // re-runs the column balance for the rows inside it.
+      descriptionEl.addEventListener('toggle', event => {
+        if (event.target.matches?.('details.project-disclosure') && event.target.open) requestAnimationFrame(() => balanceReadingRows(event.target));
+      }, true);
       const explicitSections = [...descriptionEl.querySelectorAll(':scope > .latex-section')];
       const tocItems = explicitSections.length > 0
         ? explicitSections
@@ -5506,6 +5509,8 @@ const formulaElectricAtticDescription = `
       const target = document.getElementById(link.dataset.projectSection);
       if (!target) return;
       event.preventDefault();
+      const closedDisclosure = target.closest('details:not([open])');
+      if (closedDisclosure) closedDisclosure.open = true;
       projectToc.classList.remove('is-menu-open');
       projectToc.querySelector('.project-toc-toggle')?.setAttribute('aria-expanded', 'false');
       target.tabIndex = -1;
