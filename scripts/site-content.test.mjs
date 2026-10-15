@@ -315,7 +315,7 @@ assert.doesNotMatch(projects, /Nanosecond Spin Transport Pulse Generator Board|S
 assert.doesNotMatch(projects, /Nanosecond Spin Transport Pulse Generator (?:Board|PCB)/, 'Live project copy should not use the overlong title');
 assert.match(readPage('ns-us-pulse-generator.html'), /HV Nanosecond Pulse Generator PCB/, 'Pulse-generator redirect page should use the high-voltage nanosecond PCB title');
 const pulseDisclosures = pulseGeneratorSource.match(/<details class="project-disclosure">/g) ?? [];
-assert.equal(pulseDisclosures.length, 2, 'Pulse-generator detail should use two relevant secondary-detail disclosures');
+assert.ok(pulseDisclosures.length >= 2 && pulseDisclosures.length <= 4, 'Pulse-generator detail should keep secondary detail in a few disclosures');
 assert.match(pulseGeneratorSource, /<summary>Next Revision Architecture and Packaging<\/summary>/, 'Pulse-generator detail should include the next-revision packaging disclosure');
 assert.match(pulseGeneratorSource, /<summary>Earlier Microsecond Prototype<\/summary>/, 'Pulse-generator detail should include the earlier prototype disclosure');
 assert.doesNotMatch(pulseGeneratorSource, /<summary>(Architecture Validation - V1 Board|Testing \+ Key Design Lesson|Revision 2)<\/summary>/, 'Core V2 technical work should remain visible without opening a disclosure');

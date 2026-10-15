@@ -4343,11 +4343,16 @@ const formulaElectricAtticDescription = `
           <section class="latex-section" id="pcb-target">
           <strong>Experiment Target</strong><br><br>
           One board should cover a wide pulse-width range. V2 has demonstrated operation into the approximately 100 ns regime, while the 1 ns endpoint remains a next-revision target.<br><br>
+          The board is therefore an experiment interface first and a fast switch second. It must preserve delivered voltage, timing, source-measure bias state, and measurement visibility while fragile oxide devices are pulsed repeatedly.<br><br>
+          <details class="project-disclosure">
+            <summary>Device model and measurement bandwidth</summary>
+            <div class="project-disclosure-content">
           Oxide ferroelectric capacitors are far from 50 Ω loads. The expected devices behave roughly like <b>tens of pF</b> in parallel with <b>MΩ-scale</b> leakage resistance, so their impedance varies strongly with frequency:
           $$Z_{\\mathrm{DUT}}(\\omega)=\\frac{R}{1+j\\omega RC},\\qquad f_c=\\frac{1}{2\\pi RC}$$
           Film thickness varies, so capacitance and leakage also vary between devices. A representative 10 pF and 1 MΩ (real devices scatter around it) gives $RC=10\\,\\mu\\mathrm{s}$ and $f_c\\approx16\\,\\mathrm{kHz}$, so the resistive path matters during slower biasing and retention measurements, while capacitance and fixture parasitics dominate the fastest edges.<br><br>
-          Edges near 1 ns need roughly $f_{\\mathrm{BW}}\\approx0.35/t_r\\approx350\\,\\mathrm{MHz}$ of measurement bandwidth, which sets the oscilloscope floor and requires a short, terminated transmission-line path.<br><br>
-          The board is therefore an experiment interface first and a fast switch second. It must preserve delivered voltage, timing, source-measure bias state, and measurement visibility while fragile oxide devices are pulsed repeatedly.<br><br>
+          Edges near 1 ns need roughly $f_{\\mathrm{BW}}\\approx0.35/t_r\\approx350\\,\\mathrm{MHz}$ of measurement bandwidth, which sets the oscilloscope floor and requires a short, terminated transmission-line path.
+            </div>
+          </details>
           <table class="project-data-table">
             <thead><tr><th>Parameter</th><th>Target</th><th>V2 status</th></tr></thead>
             <tbody>
@@ -4371,7 +4376,7 @@ const formulaElectricAtticDescription = `
 
           <section class="latex-section" id="pcb-architecture">
           <strong>V2 Architecture</strong><br><br>
-          V2 has separate fast and microsecond signal paths, RP2040-based digital triggering, relay-selected routing, local driver power, a GaN pulldown stage, and dedicated connections for Keithley HI/LO, DUT, external trigger, and oscilloscope synchronization. The Keithley sets the device bias, the fast stage creates the pulse transition, and the scope records the response at the experiment interfaces.<br><br>
+          V2 splits the job three ways: the Keithley sets the device bias, the fast stage creates the pulse transition, and the scope records the response at the experiment interfaces. Separate fast and microsecond signal paths share dedicated connections for Keithley HI/LO, DUT, external trigger, and oscilloscope synchronization.<br><br>
           <figure class="flow-path">
             <ol>
               <li><b>Control</b>RP2040 digital triggering, an external trigger input, and relay selection between the fast and microsecond paths.</li>
@@ -4396,8 +4401,8 @@ const formulaElectricAtticDescription = `
 
           <section class="latex-section" id="pcb-design-loop">
           <strong>Design Loop</strong><br><br>
-          I used KiCad for schematic capture and the four-layer layout, LTspice to check switching and timing assumptions, and staged oscilloscope bring-up to compare those assumptions against the assembled hardware, with Python and LabVIEW handling trigger control, capture organization, and repeatable bench measurements.<br><br>
           Most of the layout effort went into a compact switching loop, a direct return plane for the fast path, separation between noisy control and relay routing and the measurement path, and grounded coaxial interfaces placed so cables connect without long flying leads. The viewer below shows the board render, combined layout, copper planes, silkscreen, and bottom routing.<br><br>
+          I used KiCad for schematic capture and the four-layer layout, LTspice to check switching and timing assumptions, and staged oscilloscope bring-up to compare those assumptions against the assembled hardware, with Python and LabVIEW handling trigger control, capture organization, and repeatable bench measurements.<br><br>
           <div class="board-layer-viewer" data-lightbox-ignore>
             <input type="radio" id="ns-layer-render" name="ns-board-layer" checked>
             <input type="radio" id="ns-layer-layout" name="ns-board-layer">
@@ -4479,9 +4484,7 @@ const formulaElectricAtticDescription = `
 
           <section class="latex-section" id="pcb-next">
           <strong>Next Revision</strong><br><br>
-          The next revision is a clean-sheet high-speed pulser that replaces the relay-selected nanosecond/microsecond paths and the mechanical pulse-width controls with one optimized signal path, fully digital experiment control, and dedicated Keithley HI/LO and DUT interfaces.<br><br>
-          The biggest electrical change is active control of <b>both output transitions</b>, which should reduce the effect of DUT capacitance on the delivered pulse width. The switching path will stay on the top layer directly above a continuous ground plane to minimize return-loop area and parasitic inductance.<br><br>
-          The design goal is <b>30 V</b> operation with a <b>1 ns-class minimum pulse target</b>, single-shot and repetitive control, and a cleaner automated-experiment interface. The 1 ns-class figure is a next-revision target that V2 has not measured. Reaching it requires dedicated high-speed timing circuitry, so the RP2040 will not handle timing alone.<br><br>
+          The next revision is a clean-sheet high-speed pulser built around active control of <b>both output transitions</b>, which should reduce the effect of DUT capacitance on the delivered pulse width. It aims for <b>30 V</b> operation with a <b>1 ns-class minimum pulse target</b>, single-shot and repetitive control, and a cleaner automated-experiment interface. The 1 ns-class figure is a next-revision target that V2 has not measured, and reaching it requires dedicated high-speed timing circuitry, so the RP2040 will not handle timing alone.<br><br>
           <table class="project-data-table">
             <thead><tr><th></th><th>V2</th><th>Next revision</th></tr></thead>
             <tbody>
@@ -4497,7 +4500,7 @@ const formulaElectricAtticDescription = `
           <details class="project-disclosure">
             <summary>Next Revision Architecture and Packaging</summary>
             <div class="project-disclosure-content">
-              Removing the relay-selected dual-path architecture and mechanical timing controls makes the signal path shorter, easier to model, and more repeatable. Dedicated Keithley HI/LO, DUT, trigger, and sync interfaces keep the bench wiring explicit, while the fast switching section stays on the top layer over a continuous ground plane.<br><br>
+              Removing the relay-selected dual-path architecture and mechanical timing controls makes the signal path shorter, easier to model, and more repeatable. Dedicated Keithley HI/LO, DUT, trigger, and sync interfaces keep the bench wiring explicit, while the fast switching section stays on the top layer over a continuous ground plane to minimize return-loop area and parasitic inductance.<br><br>
               I am also redesigning the enclosure package around connector access and a direct internal path, independent of the V2 control layout. These CAD views show the intended control-side access and the dedicated coaxial measurement interfaces.
               <div class="project-inline-grid">
                 <figure><picture><source srcset="/assets/pulse-r2-cad-front.webp" type="image/webp"><img src="/assets/pulse-r2-cad-front.png" alt="Next-revision enclosure CAD showing front controls and the populated pulse-generator PCB" width="1251" height="916" loading="lazy" decoding="async"></picture><figcaption>Next-revision package from the control side.</figcaption></figure>
@@ -4525,7 +4528,7 @@ const formulaElectricAtticDescription = `
           <section class="latex-section" id="pcb-current">
           <strong>Current Stage</strong><br><br>
           V2 is physically assembled and bench characterized. It validated digital triggering, gate drive, GaN switching, external bias integration, DUT routing, scope synchronization, and programmable operation through <b>30 V</b>, and it revealed the load-dependent recovery behavior that limits very short pulses.<br><br>
-          I am now carrying those measurements into the next revision: active two-edge switching, fully digital timing, dedicated measurement interfaces, and a deliberate high-speed stackup. Current work is architecture selection and simulation before the next schematic and layout are finalized.
+          Current work is architecture selection and simulation for the next revision before its schematic and layout are finalized.
           </section>`,
         tags: ['KiCad', 'LTspice', 'Python', 'LabVIEW', 'PCB Design', 'PCB Layout', 'Circuit Design', 'Circuit Simulation', 'Embedded Systems', 'RP2040', 'SMD Soldering', 'Test Automation', 'Oscilloscope Testing'],
         skillGroups: [
