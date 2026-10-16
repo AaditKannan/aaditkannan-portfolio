@@ -244,7 +244,7 @@ for (const checkpoint of [/57 °C design target/, /0\.61 K predicted rise agains
 assert.doesNotMatch(formulaCooling[1], /56 A RMS|226 W per branch|1\.72 kW|5\.4 °C spread|Current optimized steady-state run/, 'SN6 should retire the outdated steady-state design basis');
 assert.match(projects, /description: formulaElectricCoolingDescription/, 'Formula Electric cooling project should render the Wolfrom-style cooling case study');
 assert.doesNotMatch(formulaCooling[1], /cooling-section-nav|cooling-stat-grid|cooling-decision-grid/, 'Formula Electric content should use the established project-detail components');
-assert.match(formulaCooling[1], /<details class="project-disclosure">/, 'SN6 should use the established disclosures for technical evidence');
+assert.doesNotMatch(formulaCooling[1], /<details/, 'SN6 should show its working directly, without dropdowns');
 assert.ok(formulaCooling[1].indexOf('<strong>Requirements</strong>') < formulaCooling[1].indexOf('<strong>Transient CFD</strong>'), 'SN6 should state the cooling requirement before presenting simulation results');
 assert.match(projects, /\.project-priority-result img\s*{[\s\S]*?width:\s*100%\s*!important[\s\S]*?max-width:\s*760px\s*!important[\s\S]*?max-height:\s*520px/, 'SN6 optimized steady-state image should be prominent');
 assert.match(projects, /\.project-baseline-velocity img\s*{[\s\S]*?max-width:\s*58%\s*!important/, 'SN6 baseline velocity image should stay secondary');
