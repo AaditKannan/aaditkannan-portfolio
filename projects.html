@@ -3121,7 +3121,8 @@ function buildReadingRow(container, { skip = null, evidence: evidenceSelector, p
     if (node === skip) continue;
     if (node.nodeName === 'BR') { finishParagraph(); node.remove(); continue; }
     if (node.nodeType === Node.TEXT_NODE && !node.textContent.trim()) { node.remove(); continue; }
-    if (node.nodeType === Node.ELEMENT_NODE && node.matches('.reading-after')) {
+    // .reading-after spans the row below the prose; .reading-below figures sit side by side there.
+    if (node.nodeType === Node.ELEMENT_NODE && node.matches('.reading-after, .reading-below')) {
       finishParagraph();
       supplement.append(node);
     } else if (evidenceNodes.has(node)) {
@@ -4022,6 +4023,7 @@ const formulaElectricCoolingDescription = `
     <section class="latex-section" id="sn6-analytical">
     <strong>Analytical and CFD Comparison</strong><br><br>
     The ideal correlation predicts much more cooling than the CFD finds, because air near the outlet has already absorbed heat from the upstream cells, so those cells see a smaller temperature difference to the cooling air even with a reasonable local convection coefficient. The analytical model gave the system-level answer, and CFD showed where that assumption broke down.<br><br>
+    The tube-bank calculation uses gap velocity and Reynolds number to estimate Nusselt number, then $h=Nu\\,k_{\\mathrm{air}}/D$, and an NTU-effectiveness model accounts for the air warming along the cells. It gave $h\\approx125$ to $160\\,\\mathrm{W\\,m^{-2}\\,K^{-1}}$, while representative Icepak geometry gives about $48\\,\\mathrm{W\\,m^{-2}\\,K^{-1}}$. The correlation assumes equal branch flow and idealized cell-bank exposure, so bypass and confinement pull the real value down, and boundary-layer mesh resolution is still a modeling uncertainty.<br><br>
     With a <b>12 K model difference</b> at the 60 A stress case, measuring the cooldown conductance is a priority. A passive CFD run with zero imposed flow and buoyancy enabled also checks the no-fan baseline.
     <figure class="project-feature-figure thermal-explorer" data-thermal-explorer>
       <div class="tx-controls">
@@ -4039,13 +4041,14 @@ const formulaElectricCoolingDescription = `
       <dl class="tx-readout" data-tx-readout></dl>
       <figcaption>1-D lumped model of one cell starting at 35 °C: the sealed pack has no cooling, the fan case uses the 15-minute forced-cooling time constant from CFD, and the ideal case uses the tube-bank correlation, fitted to its 52 °C stress result.</figcaption>
     </figure>
-    Early MATLAB sizing intersected the Sanyo fan pressure-flow curve with the modeled cell-bank and inlet losses, which put the operating point at about 85 CFM per branch, <b>425 CFM total at 521 Pa</b>, and 234 W of fan power. The pressure split was 412 Pa across the cells, 106 Pa at the inlet, and 3 Pa miscellaneous, so the cell bank accounted for about 79% of the loss. The current CFD includes a more restrictive inlet and plenum, so it predicts a different operating point.<br><br>
-    The tube-bank calculation uses gap velocity and Reynolds number to estimate Nusselt number, then $h=Nu\\,k_{\\mathrm{air}}/D$, and an NTU-effectiveness model accounts for the air warming along the cells. It gave $h\\approx125$ to $160\\,\\mathrm{W\\,m^{-2}\\,K^{-1}}$, while representative Icepak geometry gives about $48\\,\\mathrm{W\\,m^{-2}\\,K^{-1}}$. The correlation assumes equal branch flow and idealized cell-bank exposure, so bypass and confinement pull the real value down, and boundary-layer mesh resolution is still a modeling uncertainty.
-    <figure class="project-feature-figure">
+    </section>
+    <section class="latex-section is-continued" id="sn6-analytical-matlab">
+    Early MATLAB sizing intersected the Sanyo fan pressure-flow curve with the modeled cell-bank and inlet losses, which put the operating point at about 85 CFM per branch, <b>425 CFM total at 521 Pa</b>, and 234 W of fan power. The pressure split was 412 Pa across the cells, 106 Pa at the inlet, and 3 Pa miscellaneous, so the cell bank accounted for about 79% of the loss. The current CFD includes a more restrictive inlet and plenum, so it predicts a different operating point.
+    <figure class="project-feature-figure reading-below">
       <img src="/assets/formula-cooling-fan-system-curve.png" alt="Earlier MATLAB fan and cross-flow system curves intersecting near 12 cubic meters per minute and 521 pascals" width="804" height="528" loading="lazy" decoding="async">
       <figcaption>Earlier analytical sizing: five fan curves against the cross-flow system curve, meeting near 521 Pa.</figcaption>
     </figure>
-    <figure class="project-feature-figure">
+    <figure class="project-feature-figure reading-below">
       <img src="/assets/formula-cooling-h-vs-flow.png" alt="Analytical aligned tube-bank heat-transfer coefficient versus total pack airflow" width="681" height="450" loading="lazy" decoding="async">
       <figcaption>Idealized convection estimate versus flow; the operating-point estimate exceeds representative CFD heat transfer.</figcaption>
     </figure>
