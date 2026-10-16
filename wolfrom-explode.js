@@ -283,8 +283,12 @@ async function init(root) {
   // Render budget: 2x on desktops and 1.5x on touch screens, capped at about 3.2 million canvas
   // pixels so a large high-DPI window pays only for detail it can show. Every resolution change
   // reallocates the canvas, so it only steps down, and only when the device misses its frames.
-  let dpr = software ? 0.75 : Math.min(window.devicePixelRatio || 1, touch ? 1.5 : 2);
-  const MAX_PIXELS = software ? 0.5e6 : 3.2e6, MIN_DPR = software ? 0.5 : 0.75;
+  let dpr = software ? 1 : Math.min(window.devicePixelRatio || 1, touch ? 1.5 : 2);
+  const MAX_PIXELS = software ? 0.8e6 : 3.2e6, MIN_DPR = software ? 0.5 : 0.75;
+  // Software WebGL renders light frames only while something moves. Once the model has been
+  // still for 200 ms it draws one frame at up to 2x, which the browser scales down into a sharp,
+  // smoothed image, so a resting model looks the same as on a GPU.
+  let still = false, lastMove = 0;
   // Back-to-back frame gaps while the model moves. If the median over 30 frames is slower than
   // about 48 fps, drop a quarter step, at most every 1.5 s.
   const pace = { gaps: [], last: 0, dropped: 0 };
@@ -819,7 +823,9 @@ async function init(root) {
   let sized = '';
   function resize() {
     const w = canvas.clientWidth, h = canvas.clientHeight; if (!w || !h) return;
-    const ratio = Math.min(dpr, Math.sqrt(MAX_PIXELS / (w * h)));
+    const ratio = software && still
+      ? Math.min(2, Math.max(window.devicePixelRatio || 1, 1.5), Math.sqrt(2.4e6 / (w * h)))
+      : Math.min(dpr, Math.sqrt(MAX_PIXELS / (w * h)));
     const key = `${w}x${h}@${ratio}`;
     if (key === sized) return;
     sized = key; renderer.setPixelRatio(ratio); renderer.setSize(w, h, false);
@@ -884,6 +890,10 @@ async function init(root) {
     if (mode === 'cad') {
       controls?.update(dt / 1000);   // idle spin and damping; marks the frame dirty through 'change'
       if (drive.rpm) { drive.angle += drive.rpm * Math.PI / 30 * dt / 1000; applyDrive(); dirty = true; }
+    }
+    if (software) {
+      if (dirty) { lastMove = now; if (still) { still = false; resize(); } }
+      else if (!still && now - lastMove > 200) { still = true; resize(); }
     }
     if (dirty) {
       dirty = false;
