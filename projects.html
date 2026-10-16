@@ -1676,8 +1676,8 @@
     /* the looping bench clip runs under the three photos, taped on like them */
     .wolfrom-build-board .wolfrom-build-clip { transform: rotate(-1deg); }
     .wolfrom-build-board .wolfrom-print-clip { transform: rotate(1.5deg); }
-    .wolfrom-build-board .wolfrom-build-clip video { display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: cover; object-position: 78% 50%; }
-    .wolfrom-build-board .wolfrom-print-clip video { object-position: 50% 50%; }
+    .wolfrom-build-board .wolfrom-build-clip video { display: block; width: 100%; aspect-ratio: 3 / 2; object-fit: cover; object-position: 78% 50%; }
+    .wolfrom-build-board .wolfrom-print-clip video { object-position: 50% 30%; }
     .reading-evidence > :first-child { margin-top: 0; }
     .reading-row.prose-only { display: block; }
     .reading-supplement { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px 40px; }
@@ -3601,8 +3601,8 @@ const wolfromDescription = `
         <figcaption>Printed gear train running on the bench supply.</figcaption>
       </figure>
       <figure class="wolfrom-build-clip wolfrom-print-clip">
-        <video src="/assets/wolfrom-print-timelapse.mp4" poster="/assets/wolfrom-print-timelapse-poster.jpg" autoplay muted loop playsinline preload="metadata" aria-label="Timelapse of V1 parts printing on the Bambu printer, including a carrier plate with its three posts"></video>
-        <figcaption>V1 parts printing, including a carrier plate with its three posts.</figcaption>
+        <video src="/assets/wolfrom-print-timelapse.mp4" poster="/assets/wolfrom-print-timelapse-poster.jpg" autoplay muted loop playsinline preload="metadata" aria-label="Timelapse of the lattice-walled V1 housings printing on a Bambu printer"></video>
+        <figcaption>Printing the lattice-walled V1 housings.</figcaption>
       </figure>
     </div>
     <p>V1 and the CAD reviews caught three mistakes while they were still cheap to fix.</p>
