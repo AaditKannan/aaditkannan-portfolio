@@ -468,8 +468,8 @@
       transform: scale(1.18);
     }
 
-    /* Formula Electric: the transparent Icepak cover sits on the card colour, scaled past its
-       margins so the branch fills the card without clipping. */
+    /* Formula Electric: the transparent Icepak cover is trimmed to the model, so it sits inside
+       the card with a margin and the louvres and fan arrow stay in frame. */
     .project-card[data-id="formula-electric"] .project-image,
     .project-card[data-id="formula-electric"] .project-image img {
       background: var(--bg);
@@ -478,11 +478,11 @@
     .project-card[data-id="formula-electric"] .project-image img {
       object-fit: contain;
       object-position: center center;
-      transform: scale(1.06);
+      transform: scale(0.88);
     }
 
     .project-card[data-id="formula-electric"]:hover .project-image img {
-      transform: scale(1.09);
+      transform: scale(0.91);
     }
 
     /* Formula Electric SN5 - the pack and attic CAD render fills the card */
