@@ -1676,20 +1676,22 @@
     .wolfrom-build-board figure:nth-child(2) { transform: rotate(2deg); }
     .wolfrom-build-board figure::before { content: ''; position: absolute; z-index: 1; width: 56px; height: 17px; top: -8px; left: calc(50% - 28px); background: #c9c0acb3; transform: rotate(-7deg); clip-path: polygon(0 8%, 5% 0, 10% 8%, 95% 0, 100% 12%, 96% 90%, 100% 100%, 4% 92%); pointer-events: none; }
     .wolfrom-build-board figure::after { content: 'V1 prototype'; position: absolute; z-index: 2; top: 13px; left: 13px; padding: 4px 7px; color: #fff; background: #17191dcc; font: 12px/1.2 var(--font-latex); letter-spacing: .01em; text-shadow: 0 1px 2px #0008; pointer-events: none; }
-    .detail-content[data-project-id="wolfrom-actuator"] .wolfrom-build-board img { display: block; width: 100%; height: 145px; object-fit: cover; max-height: none; }
-    .detail-content[data-project-id="wolfrom-actuator"] .wolfrom-build-board figure:first-child img { height: 310px; object-position: 50% 45%; }
+    .detail-content[data-project-id="wolfrom-actuator"] .wolfrom-build-board img { display: block; width: 100%; height: 120px; object-fit: cover; max-height: none; }
+    .detail-content[data-project-id="wolfrom-actuator"] .wolfrom-build-board figure:first-child img { height: 262px; object-position: 50% 45%; }
     .wolfrom-build-board figcaption { font-size: 14px; line-height: 1.35; margin-top: 6px; color: var(--text-dim); }
     /* the looping bench clip runs under the three photos, taped on like them */
     .wolfrom-build-board .wolfrom-build-clip { transform: rotate(-1deg); }
     .wolfrom-build-board .wolfrom-print-clip { transform: rotate(1.5deg); }
     .wolfrom-build-board .wolfrom-print-clip::after { content: none; }   /* a later print, so no V1 label */
-    .wolfrom-build-board .wolfrom-build-clip video { display: block; width: 100%; aspect-ratio: 3 / 2; object-fit: cover; object-position: 78% 50%; }
+    .wolfrom-build-board .wolfrom-build-clip video { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; object-position: 78% 50%; }
     .wolfrom-build-board .wolfrom-print-clip video { object-position: 50% 30%; }
     .reading-evidence > :first-child { margin-top: 0; }
     .reading-row.prose-only { display: block; }
+    /* A row with nothing beside its text runs full width, so no empty column sits next to it. */
+    .reading-row:not(:has(> .reading-evidence)) { display: block; }
     .reading-supplement { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px 40px; }
     .reading-supplement > figure { margin: 0; min-width: 0; }
-    .reading-supplement > details { grid-column: 1 / -1; }
+    .reading-supplement > :is(details, table) { grid-column: 1 / -1; }
     .reading-supplement > .reading-after { grid-column: 1 / -1; max-width: 38em; margin: 0; }
     .reading-supplement > table.reading-after { max-width: none; }
     .reading-row.reading-stacked > .reading-supplement { margin-top: 8px; }
@@ -3172,8 +3174,8 @@ function layoutWolfromSections(description) {
   // Each section is a reading row, not a pair of unrelated newspaper columns.
   layoutReadingSections(description, {
     'wolfrom-overview': 'table, figure',
-    'wolfrom-why': '.wolfrom-gallery-slot, .wolfrom-tools-slot',
-    'wolfrom-requirements': 'table',
+    'wolfrom-why': '.wolfrom-gallery-slot',
+    'wolfrom-requirements': '.reading-aside',
     'wolfrom-first-principles': 'figure',
     'wolfrom-efficiency': 'figure',
     'wolfrom-packaging': 'figure',
@@ -3182,7 +3184,7 @@ function layoutWolfromSections(description) {
     'wolfrom-simulation': '.project-inline-grid',
     'wolfrom-build': '.wolfrom-build-board',
     'wolfrom-test': 'figure',
-    'wolfrom-results': '.results-next',
+    'wolfrom-results': '',
   }, (section, node, { supplement }) => {
     if (section.id === 'wolfrom-build' && node.matches('.project-inline-grid')) {
       [...node.children].forEach(figure => supplement.append(figure));
@@ -3464,10 +3466,6 @@ const wolfromDescription = `
         <tr><td>Prototype</td><td>Printed V1 for geometry, fit, and assembly; not load-rated</td></tr>
       </tbody>
     </table>
-    <figure class="project-feature-figure">
-      <img src="/assets/half-section-clear.png" alt="Half-section CAD of the assembled Wolfrom actuator showing the compound planets, ring gears, motor, and controller stack" width="1013" height="826" loading="lazy" decoding="async">
-      <figcaption>Half section through the assembled actuator: ring gears, compound planets, motor, and controller in one stack.</figcaption>
-    </figure>
   </section>
 
   <section class="latex-section" id="wolfrom-why">
@@ -3481,7 +3479,7 @@ const wolfromDescription = `
 
   <section class="latex-section" id="wolfrom-requirements">
     <strong>Requirements and constraints</strong><br><br>
-    <table class="project-data-table">
+    <table class="project-data-table reading-after">
       <thead><tr><th>Requirement</th><th>Target</th><th>Status</th></tr></thead>
       <tbody>
         <tr><td>Continuous output torque</td><td>30 Nm</td><td>Design target; motor needs about 25 A</td></tr>
@@ -3497,8 +3495,10 @@ const wolfromDescription = `
       </tbody>
     </table>
     <p>The torque figures are initial targets. A placeholder elbow case of 5 kg held at 0.35 m with a 2 g dynamic factor gives about 40 Nm including the forearm, which falls between them, and I still need to derive the requirement from a specific arm.</p>
-    <p>The backdrive target is a loss budget I chose. At 30 Nm and 30 rpm the joint carries 94.2 W, so 80% forward efficiency allows 23.6 W of mechanical loss, and the same loss when backdriving leaves at least 70.7 W at the motor shaft.</p>
-    $$\\eta_{b,\\min}=1-\\frac{P_{\\mathrm{loss,max}}}{P_j}=1-\\left(\\frac{1}{0.80}-1\\right)=0.75$$
+    <div class="reading-aside">
+      <p>The backdrive target is a loss budget I chose. At 30 Nm and 30 rpm the joint carries 94.2 W, so 80% forward efficiency allows 23.6 W of mechanical loss, and the same loss when backdriving leaves at least 70.7 W at the motor shaft.</p>
+      $$\\eta_{b,\\min}=1-\\frac{P_{\\mathrm{loss,max}}}{P_j}=1-\\left(\\frac{1}{0.80}-1\\right)=0.75$$
+    </div>
   </section>
 
   <section class="latex-section" id="wolfrom-first-principles">
@@ -3795,7 +3795,8 @@ const wolfromDescription = `
 
   <section class="latex-section" id="wolfrom-results">
     <strong>Results and next steps</strong><br><br>
-    <table class="project-data-table">
+    <p class="results-next">Next, the three-stage KISSsoft model gives a total forward and backdrive efficiency, a stronger estimate than the screening hand calculation. If it clears the targets and the planet support is resolved, the design moves to steel gears and aluminium housings for a load-rated build, which then goes on the proposed dynamometer.</p>
+    <table class="project-data-table reading-after">
       <thead><tr><th>Item</th><th>Where it stands</th></tr></thead>
       <tbody>
         <tr><td>Ratio and package</td><td>50.45:1 in 104 mm by 81 mm, motor and controller included</td></tr>
@@ -3806,7 +3807,6 @@ const wolfromDescription = `
         <tr><td>Printed V1</td><td>Assembled for fit, timing, and access</td></tr>
       </tbody>
     </table>
-    <p class="results-next">Next, the three-stage KISSsoft model gives a total forward and backdrive efficiency, a stronger estimate than the screening hand calculation. If it clears the targets and the planet support is resolved, the design moves to steel gears and aluminium housings for a load-rated build, which then goes on the proposed dynamometer.</p>
   </section>`;
 
 

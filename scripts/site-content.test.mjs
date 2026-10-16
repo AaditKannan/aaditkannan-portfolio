@@ -192,7 +192,7 @@ assert.match(wolfromSource[1], /class="wx-poster"[^>]*src="\/assets\/gear-train\
 assert.match(readPage('wolfrom-explode.css'), /\.wx-poster\s*{[^}]*opacity:\s*0;[^}]*animation:\s*wx-poster-in[^;]*\ds/, 'The loading poster should appear only after a delay so fast model loads do not flash a still image');
 assert.match(wolfromSource[1], /id="wolfrom-packaging"[\s\S]*?src="\/assets\/gear-train(?:-clear)?.png"[\s\S]*?src="\/assets\/cutaway-three-quarter(?:-clear)?.png"/, 'Packaging should pair the bolt-free gear-train view with a three-quarter section view');
 assert.match(wolfromSource[1], /id="wolfrom-why"[\s\S]*?class="wolfrom-gallery-slot"[\s\S]*?class="wolfrom-tools-slot"[\s\S]*?<\/section>\s*<section class="latex-section" id="wolfrom-requirements"/, 'The gallery and tools should sit with Why this project, directly after the model walkthrough');
-assert.match(projects, /'wolfrom-why': '\.wolfrom-gallery-slot, \.wolfrom-tools-slot'/, 'The gallery should be the evidence column beside the Why prose');
+assert.match(projects, /'wolfrom-why': '\.wolfrom-gallery-slot'/, 'The gallery should be the evidence column beside the Why prose, with the tools under the text');
 assert.match(projects, /\.wolfrom-tools-slot'\)\.append\(document\.getElementById\('detailSidebar'\)\)/, 'Tools should sit below the gallery beside the Why prose');
 assert.match(projects, /class="project-toc-toggle" aria-expanded="false" aria-controls="projectSectionLinks"/, 'Mobile Contents should provide an accessible disclosure control');
 assert.match(projects, /projectToc\.classList\.remove\('is-menu-open'\)/, 'Jumping to a section should close the mobile Contents menu');
