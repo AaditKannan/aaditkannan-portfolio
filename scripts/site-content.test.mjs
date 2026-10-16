@@ -174,7 +174,8 @@ assert.ok(wolfromSource, 'Projects should define the rebuilt Wolfrom case study'
 for (const heading of ['Why this project', 'Requirements and constraints', 'First principles', 'Architecture', 'Load cases and hand calculations', 'Simulation', 'Build', 'Test and validation', 'Results and next steps']) {
   assert.match(wolfromSource[1], new RegExp(`<strong[^>]*>${heading.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}`), `Wolfrom page should include ${heading}`);
 }
-assert.match(wolfromSource[1], /id="wolfrom-build"[\s\S]*?<summary>What went wrong<\/summary>/, 'Wolfrom Build should cover what went wrong');
+assert.match(wolfromSource[1], /id="wolfrom-build"[\s\S]*?caught three mistakes/, 'Wolfrom Build should cover what went wrong');
+assert.doesNotMatch(wolfromSource[1], /<details/, 'Wolfrom should show its content directly, without dropdowns');
 const wolfromGallery = projects.match(/id: 'wolfrom-actuator'[\s\S]*?images: \[([\s\S]*?)\]\s*\n\s*}/)?.[1] || '';
 assert.deepEqual(
   [...wolfromGallery.matchAll(/'([^']+)'/g)].map((match) => match[1]),
@@ -206,7 +207,8 @@ assert.match(wolfromSource[1], /not a completed or validated bench/, 'The dyno p
 assert.match(wolfromSource[1], /Output torque and DC power alone measure the integrated actuator/, 'Validation should distinguish gearbox and whole-actuator efficiency');
 // Design choices sit beside the evidence that drove them.
 const wolfromHandCalcs = wolfromSource[1].match(/id="wolfrom-hand-calculations"[\s\S]*?<\/section>/)?.[0] || '';
-for (const evidence of ['392 N at 50 Nm', '20 Nm', 'no replacement has been selected', 'wind-up stiffness check']) assert.ok(wolfromHandCalcs.includes(evidence), `Hand calculations should carry the decision and its status: ${evidence}`);
+assert.match(readFileSync(join(root, 'wolfrom-explode.js'), 'utf8'), /20 Nm plate-to-plate at 50 Nm output/, 'The model walkthrough should carry the carrier wind-up load');
+for (const evidence of ['392 N at 50 Nm', 'no replacement has been selected']) assert.ok(wolfromHandCalcs.includes(evidence), `Hand calculations should carry the decision and its status: ${evidence}`);
 assert.match(wolfromSource[1], /22\.5 mm centre distance, so one compound planet meets both rings with standard, unshifted teeth/, 'The module choice should be explained with the derivation');
 assert.match(projects, /getElementById\('detailDescription'\)\.addEventListener\('click', scrollToProjectSection\)/, 'Evidence links in the case study should use the same section-jump behavior as Contents');
 assert.match(projects, /topRow\.append\(document\.getElementById\('detailGallery'\), document\.getElementById\('detailSidebar'\)\)/, 'Shared gallery and sidebar should survive switching away from Wolfrom');
@@ -226,8 +228,7 @@ for (const sectionId of ['wolfrom-requirements', 'wolfrom-results']) {
 }
 assert.match(projects, /\.wolfrom-build-board figure::after \{ content: 'V1 prototype'/, 'Physical prototype photos should be visibly marked as V1');
 assert.match(projects, /gallery-media-prototype::after[\s\S]*?content: 'V1 prototype'/, 'The assembled prototype gallery image should carry the V1 label');
-assert.match(wolfromSource[1], /chosen loss-budget requirement, not an identity/, 'The backdrive target derivation must not imply that forward efficiency uniquely determines backdrive efficiency');
-assert.match(wolfromSource[1], /75\.7% backdrive efficiency at 80% forward efficiency/, 'The backdrive goal should be screened against the existing MATLAB model');
+assert.match(wolfromSource[1], /backdrive target is a loss budget I chose/, 'The backdrive target derivation must not imply that forward efficiency uniquely determines backdrive efficiency');
 assert.ok(existsSync(join(root, 'public', 'assets', 'actuator.glb')), 'The actuator GLB should be available to the viewer');
 
 assert.match(wolfromSource[1], /id="wolfrom-build"[\s\S]*?lead-in chamfers[\s\S]*?first-layer chamfers[\s\S]*?<\/section>/, 'Wolfrom Build should cover the DFMA choices in the printed parts');
