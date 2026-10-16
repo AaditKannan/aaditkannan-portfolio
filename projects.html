@@ -2452,6 +2452,12 @@
       transform: none;
     }
 
+    /* While the body fades in it renders as its own layer, so multiplied white-background
+       figures need the page colour inside that layer; without it they flash white until the fade ends. */
+    [data-theme="light"] .detail-content:is([data-project-id="formula-electric"], [data-project-id="ns-us-pulse-generator"]) .detail-body {
+      background: var(--bg);
+    }
+
     .detail-content[data-project-id="wolfrom-actuator"] .detail-top-row {
       opacity: 1;
       transform: none;
