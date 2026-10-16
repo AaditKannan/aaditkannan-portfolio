@@ -3162,6 +3162,7 @@ function layoutWolfromSections(description) {
     'wolfrom-why': '.wolfrom-gallery-slot, .wolfrom-tools-slot',
     'wolfrom-requirements': 'table',
     'wolfrom-first-principles': 'figure',
+    'wolfrom-ratio': 'figure',
     'wolfrom-packaging': 'figure',
     'wolfrom-load-cases': 'figure',
     'wolfrom-hand-calculations': 'figure',
@@ -3503,8 +3504,15 @@ const wolfromDescription = `
       </tbody>
     </table>
     <figcaption>Sun mesh taken as 98.5%, 98%, and 97% in the three rows. Below 94.3% per ring mesh, the gearbox self-locks when backdriven.</figcaption>
-    <p>Tooth counts are sun 33, planet sun-stage 57, planet fixed-ring stage 27, planet output-ring stage 25, fixed ring 72, and output ring 75. Modules 0.5, 1.0, and 0.9 mm give all three meshes the same 22.5 mm centre distance, so one compound planet meets both rings with standard, unshifted teeth.</p>
-    $i_{sc}=1+\\frac{57}{33}\\cdot\\frac{72}{27}=5.606$, $i_0=\\frac{72}{27}\\cdot\\frac{25}{75}=0.889$, and $i=\\frac{i_{sc}}{1-i_0}=50.45$.
+  </section>
+
+  <section class="latex-section is-continued" id="wolfrom-ratio">
+    <p>The ratio comes from writing each mesh relative to the carrier, since every planet stage turns at the same speed. Tooth counts are sun 33, planet sun-stage 57, planet fixed-ring stage 27, planet output-ring stage 25, fixed ring 72, and output ring 75.</p>
+    <p>Holding the fixed ring, the sun turns 5.606 times per carrier turn and the output ring 0.11 times, so the sun turns 50.45 times per output turn. Modules 0.5, 1.0, and 0.9 mm give all three meshes the same 22.5 mm centre distance, so one compound planet meets both rings with standard, unshifted teeth.</p>
+    <figure class="project-feature-figure wolfrom-ratio-notes">
+      <img src="/assets/wolfrom-ratio-derivation.jpg" alt="Handwritten derivation of the 50.45:1 ratio: the sun-planet, fixed-ring, and output-ring mesh equations relative to the carrier" width="1988" height="1438" loading="lazy" decoding="async">
+      <figcaption>My derivation of 50.45:1, one mesh equation per stage relative to the carrier.</figcaption>
+    </figure>
   </section>
 
   <section class="latex-section" id="wolfrom-packaging">
