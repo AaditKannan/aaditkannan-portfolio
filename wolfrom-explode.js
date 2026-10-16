@@ -254,31 +254,49 @@ function buildParts() {
 
 /* ------------------------------------------------------------------ runtime -- */
 const ease = t => t * t * (3 - 2 * t);
+
+// The GPU name WebGL reports, and whether it draws on the CPU (SwiftShader, llvmpipe,
+// Microsoft Basic Render).
+function webglRenderer() {
+  try {
+    const gl = document.createElement('canvas').getContext('webgl');
+    if (!gl) return { name: 'none', software: false };
+    const info = gl.getExtension('WEBGL_debug_renderer_info');
+    const name = String(gl.getParameter(info ? info.UNMASKED_RENDERER_WEBGL : gl.RENDERER));
+    gl.getExtension('WEBGL_lose_context')?.loseContext();
+    return { name, software: /swiftshader|llvmpipe|softpipe|software|basic render/i.test(name) };
+  } catch { return { name: 'unknown', software: false }; }
+}
 const clamp01 = t => Math.min(1, Math.max(0, t));
 
 async function init(root) {
   THREE ??= await import('three');
   if (!root.isConnected) return;
   const canvas = root.querySelector('canvas');
+  const touch = window.matchMedia('(pointer: coarse)').matches;
+  // A browser drawing WebGL without the GPU (graphics acceleration off, or switched off after a
+  // GPU crash) runs every pixel and triangle on the CPU, so it gets the light setup.
+  const gpu = webglRenderer(), software = gpu.software;
   let renderer;
-  try { renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true }); }
+  try { renderer = new THREE.WebGLRenderer({ canvas, antialias: !software, alpha: true, powerPreference: 'high-performance' }); }
   catch (e) { root.classList.add('no-webgl'); return; }
-  // One fixed resolution: 2x on desktops, 1.5x on touch screens. Every resolution change
-  // reallocates the canvas, so it only ever steps down, and only if the device cannot keep up.
-  let dpr = Math.min(window.devicePixelRatio || 1, window.matchMedia('(pointer: coarse)').matches ? 1.5 : 2);
-  renderer.setPixelRatio(dpr);
-  // Back-to-back frame gaps while the model moves. If the median over 45 frames is slower than
-  // about 40 fps, drop a quarter step, at most every 2 s and never below 1x.
+  // Render budget: 2x on desktops and 1.5x on touch screens, capped at about 3.2 million canvas
+  // pixels so a large high-DPI window pays only for detail it can show. Every resolution change
+  // reallocates the canvas, so it only steps down, and only when the device misses its frames.
+  let dpr = software ? 0.75 : Math.min(window.devicePixelRatio || 1, touch ? 1.5 : 2);
+  const MAX_PIXELS = software ? 0.5e6 : 3.2e6, MIN_DPR = software ? 0.5 : 0.75;
+  // Back-to-back frame gaps while the model moves. If the median over 30 frames is slower than
+  // about 48 fps, drop a quarter step, at most every 1.5 s.
   const pace = { gaps: [], last: 0, dropped: 0 };
   function watchPace(now) {
     if (now - pace.last < 100) pace.gaps.push(now - pace.last);   // gaps over 100 ms are pauses, so they are skipped
     pace.last = now;
-    if (pace.gaps.length < 45) return;
-    const median = pace.gaps.sort((a, b) => a - b)[22];
+    if (pace.gaps.length < 30) return;
+    const median = pace.gaps.sort((a, b) => a - b)[15];
     pace.gaps.length = 0;
-    if (median > 25 && dpr > 1 && now - pace.dropped > 2000) {
-      dpr = Math.max(1, dpr - 0.25); pace.dropped = now;
-      renderer.setPixelRatio(dpr); sized = '';
+    pace.median = median;
+    if (median > 21 && dpr > MIN_DPR && now - pace.dropped > 1500) {
+      dpr = Math.max(MIN_DPR, dpr - 0.25); pace.dropped = now; sized = '';
     }
   }
   renderer.setClearColor(0x000000, 0);
@@ -303,10 +321,11 @@ async function init(root) {
   // (millimetre geometry in metres, Z up, meshopt-compressed). The generated model above stays
   // on screen until it has loaded, and remains if loading fails.
   let disposed = false;
-  // Touch devices load lighter meshes of the same assembly (about half the triangles).
-  const lite = window.matchMedia('(pointer: coarse)').matches;
+  // Touch devices and software WebGL load lighter meshes of the same assembly (about a third
+  // fewer triangles). The windings sit inside the motor, so every device gets their light mesh.
+  const lite = touch || software;
   const url = (lite && root.dataset.modelLite) || root.dataset.model;
-  const windingsUrl = (lite && root.dataset.windingsLite) || root.dataset.windings;
+  const windingsUrl = root.dataset.windingsLite || root.dataset.windings;
   const cadReady = url ? Promise.all([
     import('three/addons/loaders/GLTFLoader.js'),
     import('three/addons/libs/meshopt_decoder.module.js'),
@@ -800,9 +819,11 @@ async function init(root) {
   let sized = '';
   function resize() {
     const w = canvas.clientWidth, h = canvas.clientHeight; if (!w || !h) return;
-    const key = `${w}x${h}@${dpr}`;
+    const ratio = Math.min(dpr, Math.sqrt(MAX_PIXELS / (w * h)));
+    const key = `${w}x${h}@${ratio}`;
     if (key === sized) return;
-    sized = key; renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix(); dirty = true;
+    sized = key; renderer.setPixelRatio(ratio); renderer.setSize(w, h, false);
+    camera.aspect = w / h; camera.updateProjectionMatrix(); dirty = true;
   }
 
   const phoneLayout = window.matchMedia('(max-width: 768px)');
@@ -913,6 +934,25 @@ async function init(root) {
       renderer.render(scene, camera);
     }
     raf = requestAnimationFrame(frame);
+  }
+
+  // ?wxdebug shows what this browser renders with, to diagnose a slow machine from a screenshot.
+  if (/[?&]wxdebug\b/.test(location.search)) {
+    const out = Object.assign(document.createElement('pre'), { className: 'wx-debug' });
+    out.style.cssText = 'position:fixed;left:8px;bottom:8px;z-index:9999;margin:0;padding:6px 8px;font:11px/1.4 monospace;color:#fff;background:#000c;pointer-events:none';
+    document.body.append(out);
+    const show = () => {
+      if (disposed) { out.remove(); return; }
+      const fps = pace.median ? Math.round(1000 / pace.median) : '-';
+      out.textContent = [
+        gpu.name,
+        `${software ? 'software WebGL' : 'GPU WebGL'}, ${renderer.getContext().getContextAttributes().antialias ? 'MSAA' : 'no AA'}`,
+        `ratio ${renderer.getPixelRatio().toFixed(2)} (screen ${window.devicePixelRatio}), canvas ${canvas.width}x${canvas.height}`,
+        `${renderer.info.render.triangles} triangles, moving fps ${fps}`,
+      ].join('\n');
+      setTimeout(show, 500);
+    };
+    show();
   }
 
   let raf = 0; const io = new IntersectionObserver(([en]) => { cancelAnimationFrame(raf); if (en.isIntersecting) { dirty = true; raf = requestAnimationFrame(frame); } }, { rootMargin: '200px' });
