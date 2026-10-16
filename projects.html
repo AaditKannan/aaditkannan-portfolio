@@ -1676,6 +1676,7 @@
     /* the looping bench clip runs under the three photos, taped on like them */
     .wolfrom-build-board .wolfrom-build-clip { transform: rotate(-1deg); }
     .wolfrom-build-board .wolfrom-print-clip { transform: rotate(1.5deg); }
+    .wolfrom-build-board .wolfrom-print-clip::after { content: none; }   /* a later print, so no V1 label */
     .wolfrom-build-board .wolfrom-build-clip video { display: block; width: 100%; aspect-ratio: 3 / 2; object-fit: cover; object-position: 78% 50%; }
     .wolfrom-build-board .wolfrom-print-clip video { object-position: 50% 30%; }
     .reading-evidence > :first-child { margin-top: 0; }
@@ -3601,8 +3602,8 @@ const wolfromDescription = `
         <figcaption>Printed gear train running on the bench supply.</figcaption>
       </figure>
       <figure class="wolfrom-build-clip wolfrom-print-clip">
-        <video src="/assets/wolfrom-print-timelapse.mp4" poster="/assets/wolfrom-print-timelapse-poster.jpg" autoplay muted loop playsinline preload="metadata" aria-label="Timelapse of the lattice-walled V1 housings printing on a Bambu printer"></video>
-        <figcaption>Printing the lattice-walled V1 housings.</figcaption>
+        <video src="/assets/wolfrom-print-timelapse.mp4" poster="/assets/wolfrom-print-timelapse-poster.jpg" autoplay muted loop playsinline preload="metadata" aria-label="Timelapse of the redesigned lattice-walled housings printing on a Bambu printer"></video>
+        <figcaption>Printing the redesigned lattice-walled housings.</figcaption>
       </figure>
     </div>
     <p>V1 and the CAD reviews caught three mistakes while they were still cheap to fix.</p>
