@@ -263,17 +263,23 @@ async function init(root) {
   let renderer;
   try { renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true }); }
   catch (e) { root.classList.add('no-webgl'); return; }
-  // Adaptive resolution: frames render lighter while anything moves (scroll, glide, orbit, gear
-  // drive) so a phone GPU keeps up, and one full-resolution frame follows once motion settles.
-  const DPR_REST = Math.min(window.devicePixelRatio || 1, 2);
-  const DPR_MOVING = Math.min(DPR_REST, window.matchMedia('(pointer: coarse)').matches ? 1 : 1.25);
-  let dprNow = DPR_REST, lastMotion = 0, settling = false;
-  renderer.setPixelRatio(DPR_REST);
-  function setDpr(value) {
-    if (value === dprNow) return;
-    dprNow = value;
-    renderer.setPixelRatio(value);
-    if (canvas.clientWidth && canvas.clientHeight) renderer.setSize(canvas.clientWidth, canvas.clientHeight, false);
+  // One fixed resolution: 2x on desktops, 1.5x on touch screens. Every resolution change
+  // reallocates the canvas, so it only ever steps down, and only if the device cannot keep up.
+  let dpr = Math.min(window.devicePixelRatio || 1, window.matchMedia('(pointer: coarse)').matches ? 1.5 : 2);
+  renderer.setPixelRatio(dpr);
+  // Back-to-back frame gaps while the model moves. If the median over 45 frames is slower than
+  // about 40 fps, drop a quarter step, at most every 2 s and never below 1x.
+  const pace = { gaps: [], last: 0, dropped: 0 };
+  function watchPace(now) {
+    if (now - pace.last < 100) pace.gaps.push(now - pace.last);   // gaps over 100 ms are pauses, so they are skipped
+    pace.last = now;
+    if (pace.gaps.length < 45) return;
+    const median = pace.gaps.sort((a, b) => a - b)[22];
+    pace.gaps.length = 0;
+    if (median > 25 && dpr > 1 && now - pace.dropped > 2000) {
+      dpr = Math.max(1, dpr - 0.25); pace.dropped = now;
+      renderer.setPixelRatio(dpr); sized = '';
+    }
   }
   renderer.setClearColor(0x000000, 0);
 
@@ -788,9 +794,15 @@ async function init(root) {
     if (Math.abs(p - target) > 0.0002) { target = p; dirty = true; }
   }
 
+  // Resize only when the CSS size or resolution really changes. Comparing canvas pixels to a
+  // rounded product disagreed with three.js's floor at fractional ratios (1.25x, 1.5x), which
+  // reallocated the canvas on every frame.
+  let sized = '';
   function resize() {
     const w = canvas.clientWidth, h = canvas.clientHeight; if (!w || !h) return;
-    if (canvas.width !== Math.round(w * renderer.getPixelRatio()) || canvas.height !== Math.round(h * renderer.getPixelRatio())) { renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix(); dirty = true; }
+    const key = `${w}x${h}@${dpr}`;
+    if (key === sized) return;
+    sized = key; renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix(); dirty = true;
   }
 
   const phoneLayout = window.matchMedia('(max-width: 768px)');
@@ -852,15 +864,11 @@ async function init(root) {
       controls?.update(dt / 1000);   // idle spin and damping; marks the frame dirty through 'change'
       if (drive.rpm) { drive.angle += drive.rpm * Math.PI / 30 * dt / 1000; applyDrive(); dirty = true; }
     }
-    const idleSpin = mode === 'cad' && controls?.autoRotate && !drive.rpm;
-    if (dirty && !settling && !idleSpin) { lastMotion = now; setDpr(DPR_MOVING); }
-    else if (dirty && idleSpin) setDpr(DPR_REST);
-    else if (!dirty && dprNow !== DPR_REST && now - lastMotion > 180) { setDpr(DPR_REST); settling = true; dirty = true; }
     if (dirty) {
       dirty = false;
+      watchPace(now);
       if (mode === 'cad') {
         renderer.render(scene, camera);
-        settling = false;
         raf = requestAnimationFrame(frame);
         return;
       }
@@ -903,7 +911,6 @@ async function init(root) {
       camera.lookAt(0, 0, mid);
       els.fill.style.transform = `scaleX(${((glide.at + 1) / STEPS.length).toFixed(4)})`;   // follows the parts' glide
       renderer.render(scene, camera);
-      settling = false;
     }
     raf = requestAnimationFrame(frame);
   }
