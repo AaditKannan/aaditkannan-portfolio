@@ -3162,7 +3162,7 @@ function layoutWolfromSections(description) {
     'wolfrom-why': '.wolfrom-gallery-slot, .wolfrom-tools-slot',
     'wolfrom-requirements': 'table',
     'wolfrom-first-principles': 'figure',
-    'wolfrom-ratio': 'figure',
+    'wolfrom-efficiency': 'figure',
     'wolfrom-packaging': 'figure',
     'wolfrom-load-cases': 'figure',
     'wolfrom-hand-calculations': 'figure',
@@ -3487,13 +3487,21 @@ const wolfromDescription = `
   <section class="latex-section" id="wolfrom-first-principles">
     <strong>First principles</strong><br><br>
     In a Wolfrom gearbox, the power circulating through the two ring-gear meshes reaches 8 to 9 times the output power, which amplifies even a small loss per mesh, so mesh efficiency decides both overall efficiency and whether the joint can be backdriven.
+    <p>The ratio comes from writing each mesh relative to the carrier, since every planet stage turns at the same speed. Tooth counts are sun 33, planet sun-stage 57, planet fixed-ring stage 27, planet output-ring stage 25, fixed ring 72, and output ring 75.</p>
+    <p>Holding the fixed ring, the sun turns 5.606 times per carrier turn and the output ring 0.11 times, so the sun turns 50.45 times per output turn. Modules 0.5, 1.0, and 0.9 mm give all three meshes the same 22.5 mm centre distance, so one compound planet meets both rings with standard, unshifted teeth.</p>
+    <figure class="project-feature-figure wolfrom-ratio-notes">
+      <img src="/assets/wolfrom-ratio-derivation.jpg" alt="Handwritten derivation of the 50.45:1 ratio: the sun-planet, fixed-ring, and output-ring mesh equations relative to the carrier" width="1988" height="1438" loading="lazy" decoding="async">
+      <figcaption>My derivation of 50.45:1, one mesh equation per stage relative to the carrier.</figcaption>
+    </figure>
+  </section>
+
+  <section class="latex-section is-continued" id="wolfrom-efficiency">
+    Applying one efficiency to each mesh gives the gearbox efficiency:
     $$\\eta = \\frac{1 + \\eta_a \\eta_s (i_{sc}-1)}{i(1 - \\eta_a \\eta_b i_0)}$$
     Here $i_{sc}=5.606$, $i_0=0.889$, $i=50.45$, and $\\eta_s$, $\\eta_a$, and $\\eta_b$ are the sun, fixed-ring, and output-ring mesh efficiencies.
     <figure class="project-feature-figure">
       <div class="matlab-panel" style="--panel-x: 0%; --panel-y: 0%; --panel-width: 218.1818%; --panel-ratio: 11 / 8"><img src="/assets/wolfrom-load-analysis-clear.png" alt="MATLAB prediction of forward and backdrive efficiency versus ring-mesh efficiency" width="1200" height="1200" loading="lazy" decoding="async" data-lightbox-src="/assets/wolfrom-matlab-efficiency.png"></div>
       <figcaption>One point of ring-mesh efficiency costs about ten points of gearbox efficiency, forward and backdriven.</figcaption>
-      <div class="matlab-panel" style="--panel-x: -80.3%; --panel-y: 0%; --panel-width: 184.6154%; --panel-ratio: 13 / 8"><img src="/assets/wolfrom-load-analysis-clear.png" alt="MATLAB power-flow calculation showing the fixed-ring and output-ring meshes carry nine and eight times output power" width="1200" height="1200" loading="lazy" decoding="async" data-lightbox-src="/assets/wolfrom-matlab-mesh-power.png"></div>
-      <figcaption>Eight to nine times the output power circulates through the two ring meshes, which amplifies small mesh losses.</figcaption>
     </figure>
     <table class="project-data-table project-small-table">
       <thead><tr><th>Efficiency of each ring mesh</th><th>Forward</th><th>Backdriven</th></tr></thead>
@@ -3504,15 +3512,6 @@ const wolfromDescription = `
       </tbody>
     </table>
     <figcaption>Sun mesh taken as 98.5%, 98%, and 97% in the three rows. Below 94.3% per ring mesh, the gearbox self-locks when backdriven.</figcaption>
-  </section>
-
-  <section class="latex-section is-continued" id="wolfrom-ratio">
-    <p>The ratio comes from writing each mesh relative to the carrier, since every planet stage turns at the same speed. Tooth counts are sun 33, planet sun-stage 57, planet fixed-ring stage 27, planet output-ring stage 25, fixed ring 72, and output ring 75.</p>
-    <p>Holding the fixed ring, the sun turns 5.606 times per carrier turn and the output ring 0.11 times, so the sun turns 50.45 times per output turn. Modules 0.5, 1.0, and 0.9 mm give all three meshes the same 22.5 mm centre distance, so one compound planet meets both rings with standard, unshifted teeth.</p>
-    <figure class="project-feature-figure wolfrom-ratio-notes">
-      <img src="/assets/wolfrom-ratio-derivation.jpg" alt="Handwritten derivation of the 50.45:1 ratio: the sun-planet, fixed-ring, and output-ring mesh equations relative to the carrier" width="1988" height="1438" loading="lazy" decoding="async">
-      <figcaption>My derivation of 50.45:1, one mesh equation per stage relative to the carrier.</figcaption>
-    </figure>
   </section>
 
   <section class="latex-section" id="wolfrom-packaging">
