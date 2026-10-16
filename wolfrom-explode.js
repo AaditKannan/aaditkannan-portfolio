@@ -263,8 +263,18 @@ async function init(root) {
   let renderer;
   try { renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true }); }
   catch (e) { root.classList.add('no-webgl'); return; }
-  // Capped at 2x: sharp on 3x phone screens without paying for pixels nobody can see.
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+  // Adaptive resolution: frames render lighter while anything moves (scroll, glide, orbit, gear
+  // drive) so a phone GPU keeps up, and one full-resolution frame follows once motion settles.
+  const DPR_REST = Math.min(window.devicePixelRatio || 1, 2);
+  const DPR_MOVING = Math.min(DPR_REST, window.matchMedia('(pointer: coarse)').matches ? 1 : 1.25);
+  let dprNow = DPR_REST, lastMotion = 0, settling = false;
+  renderer.setPixelRatio(DPR_REST);
+  function setDpr(value) {
+    if (value === dprNow) return;
+    dprNow = value;
+    renderer.setPixelRatio(value);
+    if (canvas.clientWidth && canvas.clientHeight) renderer.setSize(canvas.clientWidth, canvas.clientHeight, false);
+  }
   renderer.setClearColor(0x000000, 0);
 
   const scene = new THREE.Scene();
@@ -842,10 +852,15 @@ async function init(root) {
       controls?.update(dt / 1000);   // idle spin and damping; marks the frame dirty through 'change'
       if (drive.rpm) { drive.angle += drive.rpm * Math.PI / 30 * dt / 1000; applyDrive(); dirty = true; }
     }
+    const idleSpin = mode === 'cad' && controls?.autoRotate && !drive.rpm;
+    if (dirty && !settling && !idleSpin) { lastMotion = now; setDpr(DPR_MOVING); }
+    else if (dirty && idleSpin) setDpr(DPR_REST);
+    else if (!dirty && dprNow !== DPR_REST && now - lastMotion > 180) { setDpr(DPR_REST); settling = true; dirty = true; }
     if (dirty) {
       dirty = false;
       if (mode === 'cad') {
         renderer.render(scene, camera);
+        settling = false;
         raf = requestAnimationFrame(frame);
         return;
       }
@@ -888,6 +903,7 @@ async function init(root) {
       camera.lookAt(0, 0, mid);
       els.fill.style.transform = `scaleX(${((glide.at + 1) / STEPS.length).toFixed(4)})`;   // follows the parts' glide
       renderer.render(scene, camera);
+      settling = false;
     }
     raf = requestAnimationFrame(frame);
   }

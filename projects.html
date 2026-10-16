@@ -5189,8 +5189,8 @@ const formulaElectricAtticDescription = `
       } else if (project.id === 'ns-us-pulse-generator') {
         layoutPulseGeneratorSections(descriptionEl);
       }
-      // Working, derivations, and method notes start closed so a skim reads the story; opening one
-      // re-runs the column balance for the rows inside it.
+      descriptionEl.querySelectorAll('details.project-disclosure').forEach(disclosure => { disclosure.open = true; });
+      // If a reader closes and reopens a disclosure, re-run the column balance for the rows inside it.
       descriptionEl.addEventListener('toggle', event => {
         if (event.target.matches?.('details.project-disclosure') && event.target.open) requestAnimationFrame(() => balanceReadingRows(event.target));
       }, true);
