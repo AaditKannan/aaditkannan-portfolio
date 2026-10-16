@@ -574,7 +574,7 @@
     .detail-content[data-project-id="ns-us-pulse-generator"] #galleryMediaContainer .gallery-canvas-light,
     .detail-content[data-project-id="ns-us-pulse-generator"] #galleryMediaContainer .gallery-canvas-light picture,
     .detail-content[data-project-id="ns-us-pulse-generator"] #galleryMediaContainer .gallery-canvas-light img {
-      background: #f5f4ef;
+      background: #fff;
     }
 
     .detail-content[data-project-id="ns-us-pulse-generator"] #galleryMediaContainer .gallery-canvas-dark,
@@ -586,7 +586,7 @@
     .detail-content[data-project-id="ns-us-pulse-generator"] #galleryMediaContainer .gallery-canvas-render,
     .detail-content[data-project-id="ns-us-pulse-generator"] #galleryMediaContainer .gallery-canvas-render picture,
     .detail-content[data-project-id="ns-us-pulse-generator"] #galleryMediaContainer .gallery-canvas-render img {
-      background: #b6b6d1;
+      background: var(--bg);
     }
 
     .detail-content[data-project-id="ns-us-pulse-generator"] .gallery-thumb.gallery-media-technical img {
@@ -595,7 +595,7 @@
 
     .detail-content[data-project-id="ns-us-pulse-generator"] .gallery-thumb.gallery-canvas-light,
     .detail-content[data-project-id="ns-us-pulse-generator"] .gallery-thumb.gallery-canvas-light img {
-      background: #f5f4ef;
+      background: #fff;
     }
 
     .detail-content[data-project-id="ns-us-pulse-generator"] .gallery-thumb.gallery-canvas-dark,
@@ -605,7 +605,7 @@
 
     .detail-content[data-project-id="ns-us-pulse-generator"] .gallery-thumb.gallery-canvas-render,
     .detail-content[data-project-id="ns-us-pulse-generator"] .gallery-thumb.gallery-canvas-render img {
-      background: #b6b6d1;
+      background: var(--bg);
     }
 
     .project-card[data-id="friendly-fires"] .project-image img,
@@ -1292,6 +1292,12 @@
       max-height: 420px;
     }
 
+    /* The 3D render has a transparent background, so it sits on the page colour while the
+       copper and layout layers keep the dark stage. */
+    .board-layer-stage .layer-render {
+      background: var(--bg);
+    }
+
     .detail-content[data-project-id="ns-us-pulse-generator"] :is(.project-inline-grid, .project-feature-figure, .project-disclosure) img {
       display: block;
       width: auto;
@@ -1868,7 +1874,7 @@
     .flow-path li::before { content: ''; position: absolute; left: 4px; top: 0.5em; width: 9px; height: 9px; border: 1.5px solid var(--text); border-radius: 50%; background: var(--bg); }
     .flow-path li:not(:last-child)::after { content: ''; position: absolute; left: 9px; top: calc(0.5em + 13px); bottom: 4px; border-left: 1px solid var(--border-light); }
     @media (min-width: 901px) {
-      #pcb-bringup .flow-path ol { columns: 2; column-gap: 28px; }
+      #pcb-bringup .flow-path ol { columns: 4; column-gap: 28px; }
       #pcb-bringup .flow-path li { break-inside: avoid; }
     }
     .flow-path figcaption { margin-top: 4px; padding-left: 30px; color: var(--text-muted); font-size: 0.82em; font-style: italic; line-height: 1.5; }
@@ -3337,6 +3343,7 @@ function layoutPulseGeneratorSections(description) {
     'pcb-bringup': 'figure',
     'pcb-testing': 'figure',
     'pcb-next': 'table',
+    'pcb-v1': 'figure',
   });
 }
 
@@ -3388,7 +3395,8 @@ function balanceReadingRows(root) {
       const below = supplement || row.appendChild(Object.assign(document.createElement('div'), { className: 'reading-supplement' }));
       figures.forEach(figure => below.append(figure));
       evidence.remove();
-      row.classList.add('prose-only', 'reading-columns', 'reading-stacked');
+      row.classList.add('prose-only', 'reading-stacked');
+      if (proseBase > 220) row.classList.add('reading-columns');
       return;
     }
     figures.forEach((figure, i) => (best.mask & (1 << i) ? evidence : prose).append(figure));
@@ -4236,7 +4244,7 @@ const formulaElectricAtticDescription = `
           <strong>Overview</strong><br><br>
           <dl class="project-summary">
             <dt>Goal</dt><dd>A pulse generator in Ramesh Lab for fast electrical characterization of BiFeO<sub>3</sub> and related complex-oxide devices. It applies controlled voltage pulses while a source-measure unit sets the bias and an oscilloscope captures both DUT terminals.</dd>
-            <dt>Design</dt><dd>This assembled four-layer instrument is <b>V2</b>: RP2040 control, high-speed gate drive, GaN switching, relay-selected routing, external Keithley biasing, and grounded coaxial interfaces. V1 was the earlier microsecond-only pulse-generator prototype, documented under <a href="#pcb-next" data-project-section="pcb-next">Next Revision</a>.</dd>
+            <dt>Design</dt><dd>This assembled four-layer instrument is <b>V2</b>: RP2040 control, high-speed gate drive, GaN switching, relay-selected routing, external Keithley biasing, and grounded coaxial interfaces. V1 was the earlier microsecond-only pulse-generator prototype, documented under <a href="#pcb-v1" data-project-section="pcb-v1">Earlier Microsecond Prototype</a>.</dd>
             <dt>Scope</dt><dd>KiCad schematic and four-layer layout, LTspice checks, assembly and rework, the enclosure, and staged bench bring-up with Python and LabVIEW.</dd>
             <dt>Result</dt><dd>Programmable operation through 30 V, down to pulses of about 100 ns. Testing also showed that the passive return edge depends on device and fixture capacitance, which limits the shortest pulses.</dd>
             <dt>Next</dt><dd>A clean-sheet revision with active control of both edges, fully digital timing, and a 1 ns-class minimum-pulse target.</dd>
@@ -4251,19 +4259,14 @@ const formulaElectricAtticDescription = `
           <strong>Experiment Target</strong><br><br>
           One board should cover a wide pulse-width range. V2 has demonstrated operation into the approximately 100 ns regime, while the 1 ns endpoint remains a next-revision target.<br><br>
           The board is therefore an experiment interface first and a fast switch second. It must preserve delivered voltage, timing, source-measure bias state, and measurement visibility while fragile oxide devices are pulsed repeatedly.<br><br>
-          <details class="project-disclosure">
-            <summary>Device model and measurement bandwidth</summary>
-            <div class="project-disclosure-content">
           Oxide ferroelectric capacitors are far from 50 Ω loads. The expected devices behave roughly like <b>tens of pF</b> in parallel with <b>MΩ-scale</b> leakage resistance, so their impedance varies strongly with frequency:
           $$Z_{\\mathrm{DUT}}(\\omega)=\\frac{R}{1+j\\omega RC},\\qquad f_c=\\frac{1}{2\\pi RC}$$
           Film thickness varies, so capacitance and leakage also vary between devices. A representative 10 pF and 1 MΩ (real devices scatter around it) gives $RC=10\\,\\mu\\mathrm{s}$ and $f_c\\approx16\\,\\mathrm{kHz}$, so the resistive path matters during slower biasing and retention measurements, while capacitance and fixture parasitics dominate the fastest edges.<br><br>
           Edges near 1 ns need roughly $f_{\\mathrm{BW}}\\approx0.35/t_r\\approx350\\,\\mathrm{MHz}$ of measurement bandwidth, which sets the oscilloscope floor and requires a short, terminated transmission-line path.
-            </div>
-          </details>
           <table class="project-data-table">
             <thead><tr><th>Parameter</th><th>Target</th><th>V2 status</th></tr></thead>
             <tbody>
-              <tr><td>DUT voltage</td><td>0–30 V</td><td>Demonstrated through 30 V</td></tr>
+              <tr><td>DUT voltage</td><td>0 to 30 V</td><td>Demonstrated through 30 V</td></tr>
               <tr><td>Pulse width</td><td>1 ns to 1 ms</td><td>Microseconds down to about 100 ns</td></tr>
               <tr><td>Device load</td><td>About 10 pF with 1 MΩ leakage, varying with film thickness</td><td>Bring-up on known dummy loads</td></tr>
               <tr><td>Interfaces</td><td>50 Ω coaxial</td><td>Grounded BNC</td></tr>
@@ -4294,21 +4297,16 @@ const formulaElectricAtticDescription = `
             </ol>
             <figcaption>V2 signal chain, from digital control to the oscilloscope.</figcaption>
           </figure>
-          <div class="project-inline-grid">
-            <figure>
-              <picture><source srcset="/assets/ns-pulse-schematic-thumbnail.webp" type="image/webp"><img src="/assets/ns-pulse-schematic-thumbnail.png" alt="KiCad schematic for the V2 nanosecond and microsecond pulse-generator board" width="1042" height="713" loading="lazy" decoding="async"></picture>
-              <figcaption>V2 schematic covering control, relay routing, gate drive, GaN switching, bias, and measurement interfaces.</figcaption>
-            </figure>
-            <figure>
-              <picture><source srcset="/assets/ns-pulse-board-layout.webp" type="image/webp"><img src="/assets/ns-pulse-board-layout.png" alt="Combined KiCad layout view of the four-layer V2 pulse-generator PCB" width="1002" height="893" loading="lazy" decoding="async"></picture>
-              <figcaption>Combined four-layer layout used to review routing, planes, interfaces, and the high-speed path together.</figcaption>
-            </figure>
-          </div>
+          <figure>
+            <picture><source srcset="/assets/ns-pulse-schematic-thumbnail.webp" type="image/webp"><img src="/assets/ns-pulse-schematic-thumbnail.png" alt="KiCad schematic for the V2 nanosecond and microsecond pulse-generator board" width="1042" height="713" loading="lazy" decoding="async"></picture>
+            <figcaption>V2 schematic covering control, relay routing, gate drive, GaN switching, bias, and measurement interfaces.</figcaption>
+          </figure>
           </section>
 
           <section class="latex-section" id="pcb-design-loop">
           <strong>Design Loop</strong><br><br>
-          Most of the layout effort went into a compact switching loop, a direct return plane for the fast path, separation between noisy control and relay routing and the measurement path, and grounded coaxial interfaces placed so cables connect without long flying leads. The viewer below shows the board render, combined layout, copper planes, silkscreen, and bottom routing.<br><br>
+          Most of the layout effort went into a compact switching loop, a direct return plane for the fast path, separation between noisy control and relay routing and the measurement path, and grounded coaxial interfaces placed so cables connect without long flying leads. The viewer beside this shows the board render, combined layout, copper planes, silkscreen, and bottom routing.<br><br>
+          I designed the board so power, controller logic, trigger conditioning, gate drive, switching, bias routing, and sync could each be brought up on their own in staged passes before any full-chain debugging.<br><br>
           I used KiCad for schematic capture and the four-layer layout, LTspice to check switching and timing assumptions, and staged oscilloscope bring-up to compare those assumptions against the assembled hardware, with Python and LabVIEW handling trigger control, capture organization, and repeatable bench measurements.<br><br>
           <div class="board-layer-viewer" data-lightbox-ignore>
             <input type="radio" id="ns-layer-render" name="ns-board-layer" checked>
@@ -4352,16 +4350,15 @@ const formulaElectricAtticDescription = `
             <figcaption>Assembled V2 instrument before full bench characterization.</figcaption>
           </figure>
           <figure class="project-feature-figure">
-            <picture><source srcset="/assets/ns-pulse-board-angle.webp" type="image/webp"><img src="/assets/ns-pulse-board-angle.png" alt="Angled 3D render of the pulse-generator PCB and enclosure" width="1656" height="984" loading="lazy" decoding="async"></picture>
+            <picture><source srcset="/assets/ns-pulse-board-angle.webp" type="image/webp"><img src="/assets/ns-pulse-board-angle.png" alt="Angled 3D render of the pulse-generator PCB and enclosure" width="1038" height="980" loading="lazy" decoding="async"></picture>
             <figcaption>Mechanical and connector-access review before assembly.</figcaption>
           </figure>
           </section>
 
           <section class="latex-section" id="pcb-bringup">
           <strong>Bring-up</strong><br><br>
-          I designed the board so power, controller logic, trigger conditioning, gate drive, switching, bias routing, and sync could each be brought up on their own in staged passes before any full-chain debugging.<br><br>
           On the scope, I compared the LTspice switching and timing assumptions against the assembled hardware one subsystem at a time, so any fault could be traced to the stage that introduced it.<br><br>
-          <figure class="flow-path">
+          <figure class="flow-path reading-after">
             <ol>
               <li><b>Power</b>Board supplies and local driver power.</li>
               <li><b>Controller</b>RP2040 logic and trigger commands.</li>
@@ -4404,32 +4401,22 @@ const formulaElectricAtticDescription = `
             </tbody>
           </table>
 
-          <details class="project-disclosure">
-            <summary>Next Revision Architecture and Packaging</summary>
-            <div class="project-disclosure-content">
-              Removing the relay-selected dual-path architecture and mechanical timing controls makes the signal path shorter, easier to model, and more repeatable. Dedicated Keithley HI/LO, DUT, trigger, and sync interfaces keep the bench wiring explicit, while the fast switching section stays on the top layer over a continuous ground plane to minimize return-loop area and parasitic inductance.<br><br>
-              I am also redesigning the enclosure package around connector access and a direct internal path, independent of the V2 control layout. These CAD views show the intended control-side access and the dedicated coaxial measurement interfaces.
-              <div class="project-inline-grid">
-                <figure><picture><source srcset="/assets/pulse-r2-cad-front.webp" type="image/webp"><img src="/assets/pulse-r2-cad-front.png" alt="Next-revision enclosure CAD showing front controls and the populated pulse-generator PCB" width="1251" height="916" loading="lazy" decoding="async"></picture><figcaption>Next-revision package from the control side.</figcaption></figure>
-                <figure><picture><source srcset="/assets/pulse-r2-cad-rear.webp" type="image/webp"><img src="/assets/pulse-r2-cad-rear.png" alt="Next-revision enclosure CAD showing five coaxial interfaces and internal board layout" width="1276" height="865" loading="lazy" decoding="async"></picture><figcaption>Dedicated coaxial interfaces and a cleaner internal signal path.</figcaption></figure>
-              </div>
-            </div>
-          </details>
+          Removing the relay-selected dual-path architecture and mechanical timing controls makes the signal path shorter, easier to model, and more repeatable. Dedicated Keithley HI/LO, DUT, trigger, and sync interfaces keep the bench wiring explicit, while the fast switching section stays on the top layer over a continuous ground plane to minimize return-loop area and parasitic inductance.<br><br>
+          I am also redesigning the enclosure package around connector access and a direct internal path, independent of the V2 control layout. These CAD views show the intended control-side access and the dedicated coaxial measurement interfaces.
+          <figure class="reading-below"><picture><source srcset="/assets/pulse-r2-cad-front.webp" type="image/webp"><img src="/assets/pulse-r2-cad-front.png" alt="Next-revision enclosure CAD showing front controls and the populated pulse-generator PCB" width="1251" height="916" loading="lazy" decoding="async"></picture><figcaption>Next-revision package from the control side.</figcaption></figure>
+          <figure class="reading-below"><picture><source srcset="/assets/pulse-r2-cad-rear.webp" type="image/webp"><img src="/assets/pulse-r2-cad-rear.png" alt="Next-revision enclosure CAD showing five coaxial interfaces and internal board layout" width="1276" height="865" loading="lazy" decoding="async"></picture><figcaption>Dedicated coaxial interfaces and a cleaner internal signal path.</figcaption></figure>
 
-          <details class="project-disclosure">
-            <summary>Earlier Microsecond Prototype</summary>
-            <div class="project-disclosure-content">
-              V1 was the earlier microsecond-only pulse-generator prototype. I built it to make the source-measure workflow concrete, using a one-shot timing stage, gate driver, MOSFET output stage, manual/external triggering, and a Keithley interface. As the experiment moved toward cleaner, faster edges, bench work exposed the limits of terminal-block connections, loose wiring, and microsecond-oriented timing.<br><br>
-              It is design history, separate from validation of the current board. I kept its schematic, layout, 3D render, and LTspice work here because they show the iteration that led to grounded coaxial interfaces, a four-layer PCB, digital control, and staged bring-up.
-              <figure><picture><source srcset="/assets/pulse-v1-physical.webp" type="image/webp"><img src="/assets/pulse-v1-physical.jpg" alt="Earlier microsecond pulse-generator board under oscilloscope probe during bench testing" width="4032" height="3024" loading="lazy" decoding="async"></picture><figcaption>Earlier microsecond board during bench testing.</figcaption></figure>
-              <div class="project-inline-grid">
-                <figure><img src="/assets/pulse-v1-us-schematic.png" alt="Schematic for the earlier microsecond pulse-generator prototype" width="1444" height="787" loading="lazy" decoding="async"><figcaption>Prototype one-shot, driver, MOSFET, trigger, and source-measure circuitry.</figcaption></figure>
-                <figure><img src="/assets/pulse-v1-us-layout.png" alt="PCB layout for the earlier microsecond pulse-generator prototype" width="1513" height="657" loading="lazy" decoding="async"><figcaption>Earlier two-layer PCB layout.</figcaption></figure>
-                <figure><img src="/assets/pulse-v1-us-render.png" alt="3D render of the earlier microsecond pulse-generator prototype" width="1064" height="493" loading="lazy" decoding="async"><figcaption>Prototype board render before fabrication.</figcaption></figure>
-                <figure><img src="/assets/pulse-v1-ltspice.png" alt="LTspice transient simulation for the earlier microsecond pulse-generator prototype" width="1913" height="1077" loading="lazy" decoding="async"><figcaption>Transient simulation used to check timing and output behavior before bench testing.</figcaption></figure>
-              </div>
-            </div>
-          </details>
+          </section>
+
+          <section class="latex-section" id="pcb-v1">
+          <strong>Earlier Microsecond Prototype</strong><br><br>
+          V1 was the earlier microsecond-only pulse-generator prototype. I built it to make the source-measure workflow concrete, using a one-shot timing stage, gate driver, MOSFET output stage, manual/external triggering, and a Keithley interface. As the experiment moved toward cleaner, faster edges, bench work exposed the limits of terminal-block connections, loose wiring, and microsecond-oriented timing.<br><br>
+          It is design history, separate from validation of the current board. I kept its schematic, layout, 3D render, and LTspice work here because they show the iteration that led to grounded coaxial interfaces, a four-layer PCB, digital control, and staged bring-up.
+          <figure><picture><source srcset="/assets/pulse-v1-physical.webp" type="image/webp"><img src="/assets/pulse-v1-physical.jpg" alt="Earlier microsecond pulse-generator board under oscilloscope probe during bench testing" width="4032" height="3024" loading="lazy" decoding="async"></picture><figcaption>Earlier microsecond board during bench testing.</figcaption></figure>
+          <figure class="reading-below"><img src="/assets/pulse-v1-us-schematic.png" alt="Schematic for the earlier microsecond pulse-generator prototype" width="1444" height="787" loading="lazy" decoding="async"><figcaption>Prototype one-shot, driver, MOSFET, trigger, and source-measure circuitry.</figcaption></figure>
+          <figure class="reading-below"><img src="/assets/pulse-v1-us-layout.png" alt="PCB layout for the earlier microsecond pulse-generator prototype" width="1513" height="657" loading="lazy" decoding="async"><figcaption>Earlier two-layer PCB layout.</figcaption></figure>
+          <figure class="reading-below"><img src="/assets/pulse-v1-us-render.png" alt="3D render of the earlier microsecond pulse-generator prototype" width="1064" height="429" loading="lazy" decoding="async"><figcaption>Prototype board render before fabrication.</figcaption></figure>
+          <figure class="reading-below"><img src="/assets/pulse-v1-ltspice.png" alt="LTspice transient simulation for the earlier microsecond pulse-generator prototype" width="1913" height="953" loading="lazy" decoding="async"><figcaption>Transient simulation used to check timing and output behavior before bench testing.</figcaption></figure>
           </section>
 
           <section class="latex-section" id="pcb-current">

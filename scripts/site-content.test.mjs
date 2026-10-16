@@ -315,10 +315,9 @@ assert.match(pulseGeneratorSource, /title: 'HV Nanosecond Pulse Generator PCB'/,
 assert.doesNotMatch(projects, /Nanosecond Spin Transport Pulse Generator Board|Spin Transport Pulse Generator PCB/, 'Live project copy should not use the old spin transport title');
 assert.doesNotMatch(projects, /Nanosecond Spin Transport Pulse Generator (?:Board|PCB)/, 'Live project copy should not use the overlong title');
 assert.match(readPage('ns-us-pulse-generator.html'), /HV Nanosecond Pulse Generator PCB/, 'Pulse-generator redirect page should use the high-voltage nanosecond PCB title');
-const pulseDisclosures = pulseGeneratorSource.match(/<details class="project-disclosure">/g) ?? [];
-assert.ok(pulseDisclosures.length >= 2 && pulseDisclosures.length <= 4, 'Pulse-generator detail should keep secondary detail in a few disclosures');
-assert.match(pulseGeneratorSource, /<summary>Next Revision Architecture and Packaging<\/summary>/, 'Pulse-generator detail should include the next-revision packaging disclosure');
-assert.match(pulseGeneratorSource, /<summary>Earlier Microsecond Prototype<\/summary>/, 'Pulse-generator detail should include the earlier prototype disclosure');
+assert.doesNotMatch(pulseGeneratorSource, /<details/, 'Pulse-generator detail should show its content directly, without dropdowns');
+assert.match(pulseGeneratorSource, /Removing the relay-selected dual-path architecture[\s\S]*?pulse-r2-cad-front[\s\S]*?pulse-r2-cad-rear/, 'Next Revision should keep the architecture and packaging work with its CAD views');
+assert.match(pulseGeneratorSource, /id="pcb-v1">\s*<strong>Earlier Microsecond Prototype<\/strong>/, 'The earlier prototype should be its own visible section');
 assert.doesNotMatch(pulseGeneratorSource, /<summary>(Architecture Validation - V1 Board|Testing \+ Key Design Lesson|Revision 2)<\/summary>/, 'Core V2 technical work should remain visible without opening a disclosure');
 for (const heading of ['Overview', 'Experiment Target', 'Measurement Problem', 'V2 Architecture', 'Design Loop', 'Testing + Key Design Lesson', 'Next Revision', 'Current Stage']) {
   assert.match(pulseGeneratorSource, new RegExp(`<strong>${heading.replace('+', '\\+')}<\\/strong>`), `Pulse-generator detail should visibly include ${heading}`);
@@ -333,7 +332,7 @@ for (const boardLayer of ['render', 'layout', 'top', 'copper', 'in1', 'in2', 'si
 for (const keyNumber of [/30 V/, /100 ns/, /1 ns-class/]) {
   assert.match(pulseGeneratorSource, keyNumber, `Pulse-generator detail should retain ${keyNumber.source}`);
 }
-for (const experimentTarget of [/0–30 V/, /1 ns to 1 ms/, /tens of pF/, /MΩ-scale/, /50 Ω/, /1 kHz/, /100 kHz/, /500 MHz/, /1 GHz/]) {
+for (const experimentTarget of [/0 to 30 V/, /1 ns to 1 ms/, /tens of pF/, /MΩ-scale/, /50 Ω/, /1 kHz/, /100 kHz/, /500 MHz/, /1 GHz/]) {
   assert.match(pulseGeneratorSource, experimentTarget, `Pulse-generator Experiment Target should include ${experimentTarget.source}`);
 }
 for (const image of [
