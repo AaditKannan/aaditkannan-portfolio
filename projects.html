@@ -468,15 +468,21 @@
       transform: scale(1.18);
     }
 
-    /* Formula Electric - zoom in to remove black bars on CAD render */
+    /* Formula Electric: the transparent Icepak cover sits on the card colour, scaled past its
+       margins so the branch fills the card without clipping. */
+    .project-card[data-id="formula-electric"] .project-image,
     .project-card[data-id="formula-electric"] .project-image img {
-      object-fit: cover;
+      background: var(--bg);
+    }
+
+    .project-card[data-id="formula-electric"] .project-image img {
+      object-fit: contain;
       object-position: center center;
-      transform: scale(1.0);
+      transform: scale(1.06);
     }
 
     .project-card[data-id="formula-electric"]:hover .project-image img {
-      transform: scale(1.03);
+      transform: scale(1.09);
     }
 
     /* Formula Electric SN5 - the pack and attic CAD render fills the card */
@@ -3205,9 +3211,12 @@ function layoutFormulaCoolingSections(description) {
     'sn6-airflow': 'figure',
     'sn6-transient': 'figure',
     'sn6-analytical': 'figure',
+    'sn6-no-fan': 'figure',
     'sn6-load-cases': 'figure',
+    'sn6-airflow-gap': 'figure',
     'sn6-airflow-inlet': 'figure',
     'sn6-airflow-casing': 'figure',
+    'sn6-design': 'figure',
   });
 }
 
@@ -3334,7 +3343,7 @@ function balanceReadingRows(root) {
     if (prose && !evidence) {
       // A long run of text with no figure reads as two columns of a paper page.
       row.classList.remove('reading-columns');
-      if (prose.getBoundingClientRect().height > 300 && !prose.querySelector('table, figure')) row.classList.add('reading-columns');
+      if (prose.getBoundingClientRect().height > 300 && !prose.querySelector('table, figure, .katex-display')) row.classList.add('reading-columns');
       return;
     }
     if (!prose || !evidence) return;
@@ -3361,8 +3370,9 @@ function balanceReadingRows(root) {
       if (!best || cost < best.cost) best = { cost, mask };
     }
     // Short text beside several figures: set the text in two columns across the row and the
-    // figures side by side beneath it, when that leaves less empty space.
-    const textOnly = !prose.querySelector('table, figure, .board-layer-viewer');
+    // figures side by side beneath it, when that leaves less empty space. Working with display
+    // equations stays in one column, since a derivation split across columns is hard to follow.
+    const textOnly = !prose.querySelector('table, figure, .board-layer-viewer, .katex-display');
     let stacked = proseBase / 2;
     for (let i = 0; i < heights.length; i += 2) stacked += Math.max(heights[i], heights[i + 1] || 0);
     if (textOnly && !evidenceBase && figures.length >= 2 && stacked + 40 < best.cost) {
@@ -3838,11 +3848,11 @@ const formulaElectricCoolingDescription = `
         <button type="button" role="tab" aria-selected="false" data-cfd-tab="4">Divider flow</button>
       </div>
       <div class="cfd-stage">
-        <img class="is-active" src="/assets/formula-cooling-transient-50a-top.jpg" alt="Top view of the 50 A transient CFD showing warmed downstream cells and streamlines through the divider" width="1414" height="800" loading="lazy" decoding="async" data-cfd-caption="50 A design case at 25 minutes: air warms in module 1 before reaching module 2, and the divider openings and bypass paths decide which cells receive that flow.">
-        <img src="/assets/formula-cooling-temperature-baseline.png" alt="Icepak temperature field through one cooling branch in the baseline run" width="1413" height="850" loading="lazy" decoding="async" data-cfd-caption="Baseline run, temperature: cells and air warm along the branch toward the exhaust fan.">
-        <img src="/assets/formula-cooling-velocity-baseline.png" alt="Icepak air-speed streamlines through one cooling branch in the baseline run" width="1417" height="850" loading="lazy" decoding="async" data-cfd-caption="Baseline run, air speed from the same viewpoint: where the air actually goes, including the paths around the cells.">
-        <img src="/assets/formula-cooling-temperature-map.png" alt="Icepak cell temperature map across both modules of one branch" width="622" height="369" loading="lazy" decoding="async" data-cfd-caption="Cell temperatures across both modules: the warmest cells sit in the downstream module.">
-        <img src="/assets/formula-cooling-divider-velocity.png" alt="Icepak air speed through the perforated divider between the two modules" width="1269" height="791" loading="lazy" decoding="async" data-cfd-caption="Air speed through the perforated divider, the restriction that sets the downstream flow split.">
+        <img class="is-active" src="/assets/formula-cooling-transient-50a-top.jpg" alt="Top view of the 50 A transient CFD showing warmed downstream cells and streamlines through the divider" width="1414" height="785" loading="lazy" decoding="async" data-cfd-caption="50 A design case at 25 minutes: air warms in module 1 before reaching module 2, and the divider openings and bypass paths decide which cells receive that flow.">
+        <img src="/assets/formula-cooling-temperature-baseline.png" alt="Icepak temperature field through one cooling branch in the baseline run" width="1411" height="848" loading="lazy" decoding="async" data-cfd-caption="Baseline run, temperature: cells and air warm along the branch toward the exhaust fan.">
+        <img src="/assets/formula-cooling-velocity-baseline.png" alt="Icepak air-speed streamlines through one cooling branch in the baseline run" width="1413" height="849" loading="lazy" decoding="async" data-cfd-caption="Baseline run, air speed from the same viewpoint: where the air actually goes, including the paths around the cells.">
+        <img src="/assets/formula-cooling-temperature-map.png" alt="Icepak cell temperature map across both modules of one branch" width="603" height="337" loading="lazy" decoding="async" data-cfd-caption="Cell temperatures across both modules: the warmest cells sit in the downstream module.">
+        <img src="/assets/formula-cooling-divider-velocity.png" alt="Icepak air speed through the perforated divider between the two modules" width="1262" height="786" loading="lazy" decoding="async" data-cfd-caption="Air speed through the perforated divider, the restriction that sets the downstream flow split.">
       </div>
       <figcaption data-cfd-caption-out>50 A design case at 25 minutes: air warms in module 1 before reaching module 2, and the divider openings and bypass paths decide which cells receive that flow.</figcaption>
     </figure>
@@ -3867,17 +3877,44 @@ const formulaElectricCoolingDescription = `
     I started with measured SN5 current, converted it to cell heating, and integrated the transient energy balance:
     $$C_{\\mathrm{cell}}\\frac{\\mathrm{d}T}{\\mathrm{d}t}
     = I_{\\mathrm{cell}}(t)^2 R_{\\mathrm{eff}} - \\dot{Q}_{\\mathrm{conv}}$$
-    With three cells in parallel, $I_{\\mathrm{cell}}=I_{\\mathrm{pack}}/3$. Using 85 J/K per cell and $R_{\\mathrm{eff}}\\approx8.5\\,\\mathrm{m}\\Omega$ gives <b>0.61 K predicted rise against 0.6 K measured</b> on SN5 data. That checks heat generation to within sensor resolution, pending confirmation on SN6 hardware.<br><br>
-    Without a fan, heat crosses the enclosed air, the wall, and the outside air, about 1.54 K/W per branch in series. Against 7140 J/K of branch thermal mass that is a time constant of roughly 3.1 hours, so passive loss removes only about 3% of the 60 A heat over 25 minutes and the sealed pack behaves as adiabatic. Its 25 K of headroom from a 35 °C start sets the no-fan limit near <b>39 A RMS</b>, and at 60 A the pack reaches 60 °C in 10.5 minutes.
-    $$I_{\\mathrm{pack,lim}}=3\\sqrt{\\frac{C_{\\mathrm{cell}}\\Delta T}{R_{\\mathrm{eff}}t}}\\approx38.7\\,\\mathrm{A}$$
+    With three cells in parallel, $I_{\\mathrm{cell}}=I_{\\mathrm{pack}}/3$. Using 85 J/K per cell and $R_{\\mathrm{eff}}\\approx8.5\\,\\mathrm{m}\\Omega$ gives <b>0.61 K predicted rise against 0.6 K measured</b> on SN5 data. That checks heat generation to within sensor resolution, pending confirmation on SN6 hardware.
     <figure class="project-feature-figure">
-      <img src="/assets/formula-cooling-thermal-handcalcs.jpg" alt="Original hand calculations for cell heat, branch thermal capacitance, SN5 temperature-rise correlation, and the no-fan current limit" width="1322" height="1734" loading="lazy" decoding="async">
+      <img src="/assets/formula-cooling-thermal-handcalcs.jpg" alt="Original hand calculations for cell heat, branch thermal capacitance, SN5 temperature-rise correlation, and the no-fan current limit" width="1317" height="1712" loading="lazy" decoding="async">
       <figcaption>My original heat-balance notes, including the SN5 correlation and the time-to-limit calculation.</figcaption>
     </figure>
     </section>
+    <section class="latex-section is-continued" id="sn6-no-fan">
+    At 60 A pack current, each parallel cell carries 20 A and dissipates 3.4 W, for about 286 W per 84-cell branch and 1.43 kW across the pack.
+    $$\\begin{gathered}
+    \\dot{Q}_{\\mathrm{branch}}=84\\left(\\frac{I_{\\mathrm{pack}}}{3}\\right)^2R_{\\mathrm{eff}}\\\\
+    C_{\\mathrm{branch}}=84(85)=7140\\,\\mathrm{J\\,K^{-1}}
+    \\end{gathered}$$
+    Starting a cell at 35 °C, the 25 K of headroom to 60 °C sets the adiabatic 25-minute current bound, so a sealed pack reaches the limit near <b>39 A RMS</b>, and at 60 A in 10.5 minutes:
+    $$I_{\\mathrm{pack,lim}}=3\\sqrt{\\frac{C_{\\mathrm{cell}}\\Delta T}{R_{\\mathrm{eff}}t}}
+    \\approx38.7\\,\\mathrm{A}$$
+    Without a fan, heat must pass through the cell can, cross the enclosed air to the wall (natural convection and radiation in parallel), conduct through the wall, and reject to ambient. Per branch, in K/W:
+    $$R_{\\mathrm{tot}}\\approx\\underbrace{0.01}_{\\text{core to can}}+\\underbrace{\\left(\\tfrac{1}{2.16}+\\tfrac{1}{2.03}\\right)^{-1}}_{\\text{convection}\\,\\parallel\\,\\text{radiation}}+\\underbrace{0.05}_{\\text{wall}}+\\underbrace{0.43}_{\\text{wall to ambient}}\\approx1.54$$
+    That is a conductance of about 0.65 W/K and $\\tau=C_{\\mathrm{branch}}/(UA)\\approx3.1\\,\\mathrm{h}$, so passive loss removes only about 3% of the 60 A heat over 25 minutes, which justifies treating the sealed pack as adiabatic. Against the 60 °C ceiling the sealed pack allows about 1.42 W per cell, and the CFD-derived fan allowance crosses the heat curve near 55 A. These limits move with initial temperature, effective cell resistance, airflow, and measured UA, so endurance replay and fan-on cooldown tests will check the useful margin.
+    <figure class="project-feature-figure">
+      <img src="/assets/formula-cooling-heat-budget.jpg" alt="Cell heat versus pack RMS current with passive, CFD-derived fan, and ideal air-side cooling bounds" width="1379" height="833" loading="lazy" decoding="async">
+      <figcaption>Cell heat against each cooling allowance at the 60 °C limit: about 39 A sealed and about 55 A with the CFD-derived fan. The project uses 50 A as its design case and 60 A as the stress case.</figcaption>
+    </figure>
+    <figure class="project-feature-figure">
+      <img src="/assets/formula-cooling-endurance-model.jpg" alt="MATLAB plots of temperature versus RMS current, the 60 A transient response, time to the sealed-pack limit, and passive thermal resistance" width="1249" height="808" loading="lazy" decoding="async">
+      <figcaption>My MATLAB 1-D model: hottest cell against RMS current, time for a sealed pack to reach 60 °C, and the 1.54 K/W passive path. The 60 A stress case ends near 64 °C with CFD-derived cooling.</figcaption>
+    </figure>
+    </section>
     <section class="latex-section is-continued" id="sn6-load-cases">
-    Heating follows the square of current, so average current understates it, and each load case starts from event energy. In the 2025 Formula SAE Electric efficiency results, San José State used 7.247 kWh over 22 laps of 62.27 s, about 19 kW or 38 A average at 504 V. Scaling energy by the measured SN5 RMS-to-average form factor of 1.59 gives the four cases below. An earlier bound from the 80 kW power cap gave 56 to 66 A, unrealistically high for an endurance run, so I dropped it.
-    <table class="project-data-table reading-after">
+    The pack's nominal 140s3p configuration gives 504 V, 14.85 Ah, and about 7.48 kWh. Over a 25-minute run, that is about 18 kW average power and 35.6 A average current, but heating follows the squared current waveform:
+    $$\\begin{gathered}
+    I_{\\mathrm{RMS}}=\\sqrt{\\frac{1}{t}\\int_0^t I(\\xi)^2\\,\\mathrm{d}\\xi}\\\\
+    F_I=\\frac{I_{\\mathrm{RMS}}}{I_{\\mathrm{avg}}}
+    \\end{gathered}$$
+    Average current therefore understates heating, so each case starts from event energy. The 2025 Formula SAE Electric efficiency results list each team's pack energy and lap times:
+    $$\\bar{P}=\\frac{E}{n_{\\mathrm{laps}}\\,t_{\\mathrm{lap}}},\\qquad \\bar{I}=\\frac{\\bar{P}}{V_{\\mathrm{pack}}}$$
+    San José State used 7.247 kWh over 22 laps of 62.27 s (0.381 h), about 19 kW or 38 A average at 504 V. The top five averaged about 5.4 kWh and 14 kW (27 A), and the next tier averaged about 4.3 kWh and 9.5 kW (19 A).<br><br>
+    My first form-factor bound came from the 80 kW peak-power cap, $F_I\\le\\sqrt{P_{\\mathrm{peak}}/\\bar{P}}$. That bound gave 2.4 to 2.9 and RMS currents of 56 to 66 A, unrealistically high for an endurance run, so I replaced it with the measured SN5 form factor of 1.59, which produces the four load cases below.
+    <table class="project-data-table">
       <thead><tr><th>Case</th><th>Pack RMS</th><th>Per branch</th><th>Basis</th><th>Used for</th></tr></thead>
       <tbody>
         <tr><td>SN5 anchor</td><td>22 A</td><td>38 W</td><td>Measured SN5 waveform, as logged</td><td>Hardware correlation</td></tr>
@@ -3887,17 +3924,20 @@ const formulaElectricCoolingDescription = `
       </tbody>
     </table>
     <figure class="project-feature-figure">
-      <img src="/assets/formula-cooling-event-energy.jpg" alt="2025 Formula SAE Electric efficiency results used as the event-energy reference" width="1193" height="841" loading="lazy" decoding="async">
-      <figcaption>2025 FSAE Electric efficiency results: the event energies behind the design and stress cases.</figcaption>
+      <img src="/assets/formula-cooling-pack-energy-handcalcs.jpg" alt="Original working notes deriving nominal pack energy, average endurance current, and an earlier RMS estimate" width="1236" height="1066" loading="lazy" decoding="async">
+      <figcaption>My pack-energy notes: 7.48 kWh nominal and about 35.6 A average over a 25-minute run.</figcaption>
     </figure>
     <figure class="project-feature-figure">
-      <img src="/assets/formula-cooling-pack-energy-handcalcs.jpg" alt="Original working notes deriving nominal pack energy, average endurance current, and an earlier RMS estimate" width="1244" height="1066" loading="lazy" decoding="async">
-      <figcaption>My earlier pack-energy notes: 7.48 kWh nominal and about 35.6 A average over a 25-minute run.</figcaption>
+      <img src="/assets/formula-cooling-event-energy.jpg" alt="2025 Formula SAE Electric efficiency results used as the event-energy reference" width="1193" height="841" loading="lazy" decoding="async">
+      <figcaption>2025 FSAE Electric efficiency results: the event energies behind the design and stress cases.</figcaption>
     </figure>
     </section>
     <section class="latex-section" id="sn6-airflow">
     <strong>Airflow Architecture</strong><br><br>
-    One exhaust fan per branch is enough: push-pull cooled best, but only by about 2 K for twice the fans. I compared three fan placements on one branch with hand calculations and Icepak, and checked conduction to the casing by hand.
+    One exhaust fan per branch is enough: push-pull cooled best, but only by about 2 K for twice the fans. I compared three fan placements on one branch with hand calculations and Icepak, and checked conduction to the casing by hand.<br><br>
+    The modeled pack uses 420 cells in ten 14s3p modules. Two 42-cell modules share each cooling branch, and the perforated divider between them sets how much air reaches the downstream bank.<br><br>
+    The pressure-drop difference between push-pull and exhaust only was about 30 Pa, so an <b>active exhaust alone</b> is sufficient. Intake only left more than 10 K between cells and placed the fan where the louvres and mesh need to be. That trade led us to five exhaust fans. Liquid cooling was out of scope, since it requires manufacturing processes beyond the team's current capability, is over-specified for this heat load, and needs an inlet and outlet for every module.<br><br>
+    The selected architecture has no moving parts at the inlet and keeps the fan outside the casing, in line with FSAE rule EV.6.5.4. Module 2 receives strong flow because it sits next to the fan, but module 1 has already warmed that air.
     <table class="project-data-table reading-after">
       <thead><tr><th>Configuration</th><th>Result</th><th>Trade-off</th></tr></thead>
       <tbody>
@@ -3907,11 +3947,6 @@ const formulaElectricCoolingDescription = `
         <tr><td>Conduction to the casing</td><td>About 16 W per module at best, under a fifth of the 99 W load</td><td>Secondary; a path through the temp-sense PCB would bias negative-terminal temperatures</td></tr>
       </tbody>
     </table>
-    <figure class="project-feature-figure">
-      <img src="/assets/formula-cooling-push-pull.jpg" alt="Icepak temperature field for the push-pull configuration with intake and exhaust fans, peaking at 55.6 degrees Celsius" width="530" height="360" loading="lazy" decoding="async">
-      <figcaption>Push-pull run: 56 CFM per fan and a 55.6 °C hottest cell, about 2 K cooler than exhaust only for twice the fans.</figcaption>
-    </figure>
-    Push-pull and exhaust only differed by about 30 Pa, so an <b>active exhaust alone</b> is sufficient, and intake only left more than 10 K between cells while putting the fan where the louvres and mesh need to be. That trade led us to five exhaust fans, which also keeps each fan outside the casing in line with FSAE rule EV.6.5.4. Liquid cooling was out of scope, since it requires manufacturing processes beyond the team's current capability, is over-specified for this heat load, and needs an inlet and outlet for every module.
     <figure class="flow-path">
       <ol>
         <li><b>Passive inlet</b>The exhaust fan and the car's motion draw ambient air through the louvres and mesh.</li>
@@ -3924,32 +3959,45 @@ const formulaElectricCoolingDescription = `
       <figcaption>Air path through one cooling branch: one exhaust fan pulls air through two modules in series.</figcaption>
     </figure>
     <figure class="project-feature-figure">
-      <img src="/assets/formula-cooling-module-stackup.png" alt="Exploded 42-cell module showing cell holders, sensing electronics, and covers" width="888" height="409" loading="lazy" decoding="async">
+      <img src="/assets/formula-cooling-module-stackup.png" alt="Exploded 42-cell module showing cell holders, sensing electronics, and covers" width="921" height="399" loading="lazy" decoding="async">
       <figcaption>Reference module stackup used to communicate the cooling path; the cooling geometry and CFD model are my work.</figcaption>
     </figure>
     </section>
-    <section class="latex-section is-continued" id="sn6-airflow-inlet">
-    I chose a <b>15 mm exhaust air gap</b>, which keeps total depth near 56 mm including the 38 mm fan and the roughly 3 mm wall. Gap loss scales roughly as $1/g^2$, so narrowing from 20 mm to 15 mm costs about 30 Pa, around 4% of the fan budget and about 1 K on the hottest cell, while 10 mm adds another 70 Pa, puts the fan hub against the wall, and showed aggressive recirculation.<br><br>
-    I sized the inlet louvres to block any direct rain path into the cell bank: 45° slats, 20 mm long and 2 mm thick at 12 mm pitch, with about 14 mm of depth and rise. The louvre alone has a free-area ratio near 0.55, and the combined mesh and louvre grille in the CFD uses 0.14.
+    <section class="latex-section is-continued" id="sn6-airflow-gap">
+    I chose a <b>15 mm exhaust air gap</b>. At fixed flow, narrowing the gap raises velocity and dynamic pressure roughly with the inverse square of its depth:
+    $$\\Delta p_{\\mathrm{gap}}\\sim\\frac{\\rho}{2}
+    \\left(\\frac{Q}{w g}\\right)^2$$
+    The analytical 47 CFM sweep gives about 33 Pa at 20 mm, 60 Pa at 15 mm, and 130 Pa at 10 mm. Narrowing from 20 mm to 15 mm therefore costs about 30 Pa, around 4% of the fan budget and about 1 K on the hottest cell, while 10 mm adds another 70 Pa, puts the fan hub against the wall, and showed aggressive recirculation. The 15 mm gap keeps total depth near 56 mm, including the 38 mm fan and the roughly 3 mm wall.
     <figure class="project-feature-figure">
       <img src="/assets/formula-cooling-airgap-trade.jpg" alt="Analytical exhaust-gap pressure loss versus depth with 10, 15, and 20 millimeter cases" width="1200" height="690" loading="lazy" decoding="async">
       <figcaption>About 33 Pa at 20 mm, 60 Pa at 15 mm, and 130 Pa at 10 mm: the 15 mm gap balances packaging depth against the rapidly increasing pressure penalty.</figcaption>
     </figure>
     <figure class="project-feature-figure">
-      <img src="/assets/formula-cooling-rain-inlet.jpg" alt="Icepak model of one cooling branch with the louvred rain inlet on the intake face and cell temperatures shown in colour" width="1064" height="724" loading="lazy" decoding="async">
-      <figcaption>The louvred rain inlet as modeled in Icepak, on the intake face of the branch.</figcaption>
-    </figure>
-    <figure class="project-feature-figure">
-      <img src="/assets/formula-cooling-inlet-handcalcs.jpg" alt="Original rain-inlet sketches and derivations for louvre angle, pitch, water shielding, free area, and pressure loss" width="1406" height="1796" loading="lazy" decoding="async">
-      <figcaption>Inlet hand calculations connecting rain protection, print geometry, and free area.</figcaption>
-    </figure>
-    <figure class="project-feature-figure">
-      <img src="/assets/formula-cooling-airgap-streamlines.jpg" alt="Icepak side view of streamlines leaving module 2 through the outlet panel, turning through the 15 millimetre air gap, and entering the exhaust fan" width="330" height="883" loading="lazy" decoding="async">
+      <img src="/assets/formula-cooling-airgap-streamlines.jpg" alt="Icepak side view of streamlines leaving module 2 through the outlet panel, turning through the 15 millimetre air gap, and entering the exhaust fan" width="314" height="883" loading="lazy" decoding="async">
       <figcaption>Streamlines through the 15 mm gap (outlined) into the exhaust fan.</figcaption>
     </figure>
     </section>
+    <section class="latex-section is-continued" id="sn6-airflow-inlet">
+    I sized louvre angle, pitch, thickness, and depth to block any direct rain path into the cell bank without sacrificing inlet area. For slat length $L$, angle $\\theta$, pitch $p$, and thickness $t_s$:
+    $$\\begin{gathered}
+    d=L\\cos\\theta,\\qquad r=L\\sin\\theta\\\\
+    f=\\cos\\theta-\\frac{t_s}{p}
+    \\end{gathered}$$
+    The working geometry uses 45° slats, 20 mm long and 2 mm thick at 12 mm pitch, which gives about 14 mm of depth and rise. The louvre alone has a geometric free-area ratio of roughly 0.55, and the combined mesh and louvre grille in the current CFD uses 0.14, with 0.25 at the divider.
+    <figure class="project-feature-figure">
+      <img src="/assets/formula-cooling-inlet-handcalcs.jpg" alt="Original rain-inlet sketches and derivations for louvre angle, pitch, water shielding, free area, and pressure loss" width="1405" height="1796" loading="lazy" decoding="async">
+      <figcaption>Inlet hand calculations connecting rain protection, print geometry, and free area.</figcaption>
+    </figure>
+    <figure class="project-feature-figure">
+      <img src="/assets/formula-cooling-rain-inlet.jpg" alt="Icepak model of one cooling branch with the louvred rain inlet on the intake face and cell temperatures shown in colour" width="1064" height="724" loading="lazy" decoding="async">
+      <figcaption>The louvred rain inlet as modeled in Icepak, on the intake face of the branch.</figcaption>
+    </figure>
+    </section>
     <section class="latex-section is-continued" id="sn6-airflow-casing">
-    Conduction to the casing stays secondary. The shortest path runs from cell to temperature-sense PCB, polycarbonate holder, thermal foam, and casing, and even with best-case assumptions (foam at 50% compression, full contact, no contact resistance, casing held at 35 °C) it removes about <b>16 W per module</b>, under a fifth of the 99 W each module generates at 50 A. Spreading heat through the PCB would also even out temperatures around the negative-terminal sensors the rules require and bias the reading. The foam still earns its place for sealing, vibration, and filling the uneven welded gaps that would otherwise let air bypass the cells.
+    The conduction path runs from cell to temperature-sense PCB to polycarbonate cell holder to thermal foam to casing, the minimum possible number of interfaces. Even with a conductor in place of the polycarbonate, the path remains a multi-layer thermal resistance network, and each interface adds resistance.<br><br>
+    Even with best-case assumptions (foam at 50% compression, full contact area, no contact resistance, and the casing held at 35 °C), the path removes about <b>16 W per module</b>. Using the compressed foam thickness raises that to about 17.5 W, still under a fifth of the 99 W each module generates at the 50 A design case. Both figures are optimistic, since contact will be imperfect under tolerance and vibration and the casing will warm up.<br><br>
+    The larger concern is measurement. The rules require cell temperature at the negative terminal, so using the PCB or a copper pour as a heat-spreading path would even out temperatures around the sensors and bias the reading. The cathode side is worse, since wire bonds, voltage sensing, and BMS connections all add interfaces.<br><br>
+    Conduction is therefore secondary. The foam remains useful for sealing and vibration and for filling the air gaps around the modules, which welding will leave uneven and which would otherwise let air bypass the cells.
     <figure class="project-feature-figure cooling-conduction-network">
       $$R_i=\\frac{L_i}{k_iA},\\qquad A=\\frac{\\pi(21.7\\,\\mathrm{mm})^2}{4}=3.7\\times10^{-4}\\,\\mathrm{m^2}$$
       <table class="project-data-table">
@@ -3968,7 +4016,7 @@ const formulaElectricCoolingDescription = `
     <section class="latex-section" id="sn6-analytical">
     <strong>Analytical and CFD Comparison</strong><br><br>
     The ideal correlation predicts much more cooling than the CFD finds, because air near the outlet has already absorbed heat from the upstream cells, so those cells see a smaller temperature difference to the cooling air even with a reasonable local convection coefficient. The analytical model gave the system-level answer, and CFD showed where that assumption broke down.<br><br>
-    Early MATLAB sizing intersected the Sanyo fan curve with the modeled losses and predicted <b>425 CFM total at 521 Pa</b>, about 85 CFM per branch, and 234 W fan power, with the cell bank taking 79% of the pressure drop. Its tube-bank correlation gave $h\\approx125$ to $160\\,\\mathrm{W\\,m^{-2}\\,K^{-1}}$, while representative Icepak geometry gives about $48\\,\\mathrm{W\\,m^{-2}\\,K^{-1}}$, since the correlation assumes equal branch flow and ideal cell exposure and the real branch has bypass, uneven flow, and a more restrictive inlet and plenum. Boundary-layer mesh resolution is still a modeling uncertainty.<br><br>
+    With a <b>12 K model difference</b> at the 60 A stress case, measuring the cooldown conductance is a priority. A passive CFD run with zero imposed flow and buoyancy enabled also checks the no-fan baseline.
     <figure class="project-feature-figure thermal-explorer" data-thermal-explorer>
       <div class="tx-controls">
         <label class="tx-current">Pack RMS current <output data-tx-out>50 A</output>
@@ -3985,22 +4033,15 @@ const formulaElectricCoolingDescription = `
       <dl class="tx-readout" data-tx-readout></dl>
       <figcaption>1-D lumped model of one cell starting at 35 °C: the sealed pack has no cooling, the fan case uses the 15-minute forced-cooling time constant from CFD, and the ideal case uses the tube-bank correlation, fitted to its 52 °C stress result.</figcaption>
     </figure>
-    With a <b>12 K model difference</b>, measuring the cooldown conductance is a priority. A passive CFD run with zero imposed flow and buoyancy enabled also checks the no-fan baseline. Against the 60 °C ceiling, the sealed pack allows about 1.42 W per cell, and the CFD-derived fan allowance crosses the heat curve near 55 A.
+    Early MATLAB sizing intersected the Sanyo fan pressure-flow curve with the modeled cell-bank and inlet losses, which put the operating point at about 85 CFM per branch, <b>425 CFM total at 521 Pa</b>, and 234 W of fan power. The pressure split was 412 Pa across the cells, 106 Pa at the inlet, and 3 Pa miscellaneous, so the cell bank accounted for about 79% of the loss. The current CFD includes a more restrictive inlet and plenum, so it predicts a different operating point.<br><br>
+    The tube-bank calculation uses gap velocity and Reynolds number to estimate Nusselt number, then $h=Nu\\,k_{\\mathrm{air}}/D$, and an NTU-effectiveness model accounts for the air warming along the cells. It gave $h\\approx125$ to $160\\,\\mathrm{W\\,m^{-2}\\,K^{-1}}$, while representative Icepak geometry gives about $48\\,\\mathrm{W\\,m^{-2}\\,K^{-1}}$. The correlation assumes equal branch flow and idealized cell-bank exposure, so bypass and confinement pull the real value down, and boundary-layer mesh resolution is still a modeling uncertainty.
     <figure class="project-feature-figure">
-      <img src="/assets/formula-cooling-fan-system-curve.png" alt="Earlier MATLAB fan and cross-flow system curves intersecting near 12 cubic meters per minute and 521 pascals" width="804" height="530" loading="lazy" decoding="async">
-      <figcaption>Earlier analytical sizing model. The current detailed branch CFD predicts a different operating point.</figcaption>
+      <img src="/assets/formula-cooling-fan-system-curve.png" alt="Earlier MATLAB fan and cross-flow system curves intersecting near 12 cubic meters per minute and 521 pascals" width="804" height="528" loading="lazy" decoding="async">
+      <figcaption>Earlier analytical sizing: five fan curves against the cross-flow system curve, meeting near 521 Pa.</figcaption>
     </figure>
     <figure class="project-feature-figure">
       <img src="/assets/formula-cooling-h-vs-flow.png" alt="Analytical aligned tube-bank heat-transfer coefficient versus total pack airflow" width="681" height="450" loading="lazy" decoding="async">
       <figcaption>Idealized convection estimate versus flow; the operating-point estimate exceeds representative CFD heat transfer.</figcaption>
-    </figure>
-    <figure class="project-feature-figure">
-      <img src="/assets/formula-cooling-heat-budget.jpg" alt="Cell heat versus pack RMS current with passive, CFD-derived fan, and ideal air-side cooling bounds" width="1379" height="1008" loading="lazy" decoding="async">
-      <figcaption>Analytical 60 °C-limit comparison. The project uses 50 A as its design case and 60 A as the stress case; these current bounds remain model estimates.</figcaption>
-    </figure>
-    <figure class="project-feature-figure">
-      <img src="/assets/formula-cooling-endurance-model.jpg" alt="MATLAB plots of temperature versus RMS current, the 60 A transient response, time to the sealed-pack limit, and passive thermal resistance" width="1249" height="866" loading="lazy" decoding="async">
-      <figcaption>1D model comparison at 35 °C: the 60 A stress case ends near 64 °C with CFD-derived cooling and 52 °C with the ideal correlation.</figcaption>
     </figure>
     </section>
     <section class="latex-section" id="sn6-design">
@@ -4011,7 +4052,11 @@ const formulaElectricCoolingDescription = `
       <li><b>Remove bad inlet paths.</b> Block the perforations that feed easy bypass routes, since useful flow through the cells matters more than hole count.</li>
       <li><b>Keep the 15 mm exhaust gap.</b> It balances package depth against the rapidly increasing pressure loss at smaller gaps.</li>
     </ul>
-    I still plan to evaluate a thin intake fan paired with the existing high-static-pressure exhaust fan, with inlet and outlet flow solved as one operating point.
+    Push-pull airflow increased the branch flow, but it requires extra fans, wiring, and packaging. I still plan to evaluate a thin intake fan paired with the existing high-static-pressure exhaust fan, with inlet and outlet flow solved as one operating point.
+    <figure class="project-feature-figure">
+      <img src="/assets/formula-cooling-push-pull.jpg" alt="Icepak temperature field for the push-pull configuration with intake and exhaust fans, peaking at 55.6 degrees Celsius" width="530" height="359" loading="lazy" decoding="async">
+      <figcaption>Push-pull run: 56 CFM per fan and a 55.6 °C hottest cell, about 2 K cooler than exhaust only for twice the fans.</figcaption>
+    </figure>
     </section>
     <section class="latex-section" id="sn6-validation">
     <strong>Endurance Validation</strong><br><br>
@@ -4032,7 +4077,7 @@ const formulaElectricAtticDescription = `
   It had to survive <b>40g lateral and longitudinal loads</b> and <b>20g vertically</b>, keep the HV system isolated, pass water-ingress checks, and stay easy to inspect and service.<br><br>
 
   <figure class="project-feature-figure">
-    <img src="/assets/formula-cooling-attic.png" alt="Top view of the Formula Electric accumulator attic showing high-voltage electronics and service clearances" width="512" height="512" loading="lazy" decoding="async">
+    <img src="/assets/formula-cooling-attic.png" alt="Top view of the Formula Electric accumulator attic showing high-voltage electronics and service clearances" width="512" height="492" loading="lazy" decoding="async">
     <figcaption>SN5 attic layout with the HV hardware packed above the accumulator.</figcaption>
   </figure>
 
@@ -4110,9 +4155,9 @@ const formulaElectricAtticDescription = `
           { url: 'https://ev.berkeley.edu/', label: 'Team Website' }
         ],
         images: [
-          '/assets/formula-cooling-transient-50a.jpg',
-          '/assets/formula-cooling-transient-50a-top.jpg',
-          '/assets/formula-cooling-rain-inlet.jpg'
+          '/assets/formula-cooling-cover-clear.png',
+          '/assets/formula-cooling-transient-50a-top-clear.png',
+          '/assets/formula-cooling-rain-inlet-clear.png'
         ]
       },
       {

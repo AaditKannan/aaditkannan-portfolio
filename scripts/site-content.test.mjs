@@ -253,7 +253,7 @@ assert.match(projects, /id: 'formula-electric'[\s\S]*?title: 'Formula Electric -
 const formulaCoolingGallery = projects.match(/id: 'formula-electric'[\s\S]*?images: \[([\s\S]*?)\]\s*\n\s*}/)?.[1] || '';
 assert.deepEqual(
   [...formulaCoolingGallery.matchAll(/'([^']+)'/g)].map((match) => match[1]),
-  ['/assets/formula-cooling-transient-50a.jpg', '/assets/formula-cooling-transient-50a-top.jpg', '/assets/formula-cooling-rain-inlet.jpg'],
+  ['/assets/formula-cooling-cover-clear.png', '/assets/formula-cooling-transient-50a-top-clear.png', '/assets/formula-cooling-rain-inlet-clear.png'],
   'SN6 should keep the original CAD cover and a tight four-image gallery'
 );
 assert.doesNotMatch(formulaCoolingGallery, /velocity-baseline|temperature-map|variant-60-8|fan-system-curve/, 'Supporting simulations should stay in the SN6 page body');
@@ -293,7 +293,7 @@ for (const image of [
   'formula-cooling-airgap-trade.jpg',
   'formula-cooling-heat-budget.jpg',
   'formula-cooling-endurance-model.jpg',
-  'formula-cooling-transient-50a.jpg',
+  'formula-cooling-cover-clear.png',
   'formula-cooling-transient-50a-top.jpg',
   'formula-cooling-module-stackup.png',
 ]) {
