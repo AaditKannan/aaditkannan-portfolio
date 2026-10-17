@@ -365,6 +365,16 @@
       object-position: center;
     }
 
+    /* Into the Deep: trimmed to the robot and shown large; any overflow only trims the floor tiles. */
+    .project-card[data-id="dejavu-2024-25"] .project-image img {
+      transform: scale(1.12);
+      object-position: center 40%;
+    }
+
+    .project-card[data-id="dejavu-2024-25"]:hover .project-image img {
+      transform: scale(1.15);
+    }
+
     /* Construction Acclimation - zoom in and center */
     .project-card[data-id="construction-acclimation"] .project-image img {
       object-fit: cover;
@@ -4589,7 +4599,7 @@ const formulaElectricAtticDescription = `
         description: `<strong>The Robot</strong><br><br>INTO THE DEEP (2024-25 FTC game): collect samples from a submersible, score them in baskets and specimen chambers, and hang from a bar for endgame points. As Hardware Lead for Team Deja Vu #13216, I owned the mechanical design, CAD management, and manufacturing coordination. The robot CAD model has over 500 unique parts across mecanum drivetrain, active intake, transfer pathway, arm and lift, end effector, and hang mechanism. We had minimal mechanical failures during matches and advanced through qualifications into elimination rounds.<br><br><strong>The Intake</strong><br><br>Our most iterated subsystem, four revisions total. V1 (passive funnel with compliant wheels) was too slow. V2 (active roller with surgical tubing) had inconsistent grip. V3 (dual-stage roller with speed differential) jammed at odd angles. V4 landed on a single high-speed roller with optimized geometry, and that became our competition design.<br><br><strong>Manufacturing and FEA</strong><br><br>We used Markforged printers for structural nylon, Prusa for prototypes, laser-cut polycarbonate and Delrin plates, CNC-machined aluminum for high-stress parts, and standard manual tools for modifications. For the arm pivot and hang brackets, I ran FEA in Fusion 360, checking stress against yield (safety factor above 2.0) and deflection under load to ensure nothing interfered with mechanism travel.<br><br><strong>Software</strong><br><br>I also wrote the TeleOp code in Java: mecanum drive with field-centric control using IMU heading, arm and lift position control with encoder-based PID loops, intake and transfer sequencing, and driver feedback through gamepad rumble. Writing both the hardware and driver code let me optimize how the mechanisms actually feel to operate, which fed directly back into design decisions.<br><br><em style="opacity: 0.7; font-size: 0.9em;">Note: Team Deja Vu #13216 has since become a legacy team, with a new group of students carrying the name forward.</em>`,
         tags: ['Fusion 360', 'FEA', 'Java', 'FTC SDK', 'PID Control', 'Mecanum Kinematics', 'Laser Cutting', 'Markforged'],
         links: [{ label: 'Team Website', url: 'https://dejavurobotics.org/' }],
-        images: ['/assets/dejavubot-removebg-preview.png', '/assets/newiamge.png', '/assets/intake.png', '/assets/gnag.png']
+        images: ['/assets/dejavubot-clear.png', '/assets/newiamge.png', '/assets/intake.png', '/assets/gnag.png']
       },
       {
         id: 'dejavu-2023-24',
