@@ -246,7 +246,7 @@
       }
 
       .filter-bar {
-        display: none;
+        margin-bottom: 24px;
       }
       .filter-divider {
         display: none;
@@ -694,6 +694,13 @@
       color: var(--text);
     }
 
+    .projects-group-heading.is-first {
+      grid-column: 1 / -1;
+      margin: 0 0 4px;
+      padding-top: 0;
+      border-top: 0;
+    }
+
     .projects-group-grid {
       display: grid;
       grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -935,6 +942,11 @@
       object-fit: contain;
       object-position: center;
       background: #000;
+    }
+
+    /* Light theme: letterboxing and cut-outs sit on the page colour. */
+    [data-theme="light"] #galleryMediaContainer :is(img, picture, video) {
+      background: var(--bg);
     }
 
     .gallery-main-placeholder {
@@ -3069,13 +3081,11 @@
 
     <div class="filter-bar">
       <div class="filter-row">
-      <div class="filter-group">
-        <span class="filter-label">Category</span>
-        <button class="filter-btn active" data-filter="all">All</button>
-        <button class="filter-btn" data-filter="hardware">Hardware</button>
-        <button class="filter-btn" data-filter="software">Software</button>
-        <button class="filter-btn" data-filter="research">Research</button>
-      </div>
+      <nav class="filter-group" aria-label="Project groups">
+        <span class="filter-label">Jump to</span>
+        <button type="button" class="filter-btn active" data-jump="hardwareProjectsHeading">Hardware and Research</button>
+        <button type="button" class="filter-btn" data-jump="softwareProjectsHeading">Software</button>
+      </nav>
       </div>
     </div>
 
@@ -4714,7 +4724,7 @@ const formulaElectricAtticDescription = `
         description: `<strong>The Problem</strong><br><br>Palo Alto projected $118 million over the next decade on construction acclimation probes, devices that track temperature and humidity during concrete curing. These commercial units cost $500 to $2,000 each, and regulations require multiple per site. That seemed high for what is essentially temperature and humidity logging. Concrete curing still needs continuous documentation, though, because temperature history affects strength gain and inspectors need recorded evidence.<br><br><strong>The Prototype</strong><br><br>I built a $47 probe: Arduino Nano, DHT22 (±0.5°C temperature, ±2 to 5% humidity), DS18B20 for redundancy, MicroSD logging every 5 minutes, RTC for accurate timestamps, and a 3.7V LiPo battery. The PETG enclosure used two 30 mm fans for airflow so the sensor could sample moving air inside the enclosure. I tested it alongside a calibrated Humboldt H-4210 ($1,200 commercial unit) for 14 days: temperature deviation ±0.8°C, humidity ±3.2%, 4,028 of 4,032 readings captured (99.7% reliability).<br><br><code>Arduino Nano clone............$8<br>DHT22 sensor...................$6<br>DS18B20 sensor.................$4<br>MicroSD module.................$5<br>RTC module.....................$3<br>LiPo battery...................$12<br>3D printed enclosure...........$5<br>Fans and misc wiring...........$4<br>---------------------------------<br>Total: $47</code><br><br><strong>Dashboard and Presentation</strong><br><br>I built a client-side web dashboard with vanilla JS and Chart.js for uploading SD card CSVs, graphing curing conditions over time, flagging out-of-range periods, and generating PDF reports for inspectors. In April 2023, I presented to City of Palo Alto construction officials. They were interested in the cost savings but raised valid concerns about calibration certification, liability, and durability. One official mentioned they would consider a pilot if the probe could be formally certified.<br><br>This was a proof of concept with no wireless transmission, no weatherproofing, and a 10-day battery life. An 85 to 96% cost reduction over commercial alternatives suggests the approach is worth developing.`,
         tags: ['Arduino Nano', 'DHT22', 'DS18B20', 'RTC Logging', 'MicroSD Data Logging', 'Chart.js', 'PETG Enclosure Design'],
         links: [],
-        images: ['/assets/IMG_0297.png', '/assets/IMG_0313.png']
+        images: ['/assets/IMG_0297.png', '/assets/IMG_0313-clear.png']
       },
       {
         id: 'beachsweep',
@@ -4936,38 +4946,31 @@ const formulaElectricAtticDescription = `
       // compact row under their own heading, so they stay visible without leading the page.
       const engineering = filtered.filter(p => p.group !== 'software');
       const software = filtered.filter(p => p.group === 'software');
-      grid.innerHTML = engineering.length && software.length
-        ? engineering.map(p => card(p)).join('') + `
+      grid.innerHTML = `<h2 class="projects-group-heading is-first" id="hardwareProjectsHeading">Hardware and Research</h2>`
+        + engineering.map(p => card(p)).join('') + `
           <section class="projects-group" aria-labelledby="softwareProjectsHeading">
             <h2 class="projects-group-heading" id="softwareProjectsHeading">Software</h2>
             <div class="projects-group-grid">${software.map(p => card(p, true)).join('')}</div>
-          </section>`
-        : filtered.map(p => card(p)).join('');
+          </section>`;
     }
 
-    // Filter button handlers
-    document.querySelectorAll('.filter-btn[data-filter]').forEach(btn => {
+    // Jump bar: each button scrolls to its group, and the active button follows the scroll.
+    const jumpButtons = [...document.querySelectorAll('.filter-btn[data-jump]')];
+    jumpButtons.forEach(btn => {
       btn.addEventListener('click', () => {
-        document.querySelectorAll('.filter-btn[data-filter]').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        activeFilter = btn.dataset.filter;
-        smoothFilterTransition();
+        const heading = document.getElementById(btn.dataset.jump);
+        if (!heading) return;
+        window.scrollTo({ top: heading.getBoundingClientRect().top + window.scrollY - 104, behavior: 'smooth' });
       });
     });
-
-
-    // Smooth filter transition (same as view toggle)
-    function smoothFilterTransition() {
-      const grid = document.getElementById('projectsGrid');
-      grid.classList.add('view-transitioning');
-      
-      setTimeout(() => {
-        renderGrid();
-        setTimeout(() => {
-          grid.classList.remove('view-transitioning');
-        }, 50);
-      }, 250);
+    function updateJumpActive() {
+      const software = document.getElementById('softwareProjectsHeading');
+      const inSoftware = software && software.getBoundingClientRect().top < window.innerHeight * 0.5;
+      jumpButtons.forEach(btn => btn.classList.toggle('active', (btn.dataset.jump === 'softwareProjectsHeading') === Boolean(inSoftware)));
     }
+    window.addEventListener('scroll', () => requestAnimationFrame(updateJumpActive), { passive: true });
+
+
 
     // Section positions only change with layout, so they are measured once and again after the
     // description resizes; each scroll then compares numbers without forcing a layout.
@@ -5259,7 +5262,14 @@ const formulaElectricAtticDescription = `
 
       // Render LaTeX math with KaTeX. Retry if the deferred auto-render script
       // hasn't loaded yet (happens when deep-linking straight to a project URL).
+      // Only pages with display equations are typeset: on the others a pair of dollar amounts
+      // ("$118 million ... $500") would be read as inline math.
+      const hasMath = /\$\$/.test(project.description || '');
       (function renderMath(tries) {
+        if (!hasMath) {
+          if (project.id === 'formula-electric-attic') scheduleReadingBalance(document.getElementById('detailDescription'));
+          return;
+        }
         if (typeof renderMathInElement === 'function') {
           renderMathInElement(document.getElementById('detailDescription'), {
             delimiters: [
