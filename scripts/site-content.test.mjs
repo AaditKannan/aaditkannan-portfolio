@@ -270,8 +270,8 @@ assert.match(formulaCooling[1], /<td>Conduction to the casing<\/td>/, 'Conductio
 assert.match(formulaCooling[1], /Liquid cooling was out of scope/, 'SN6 should say why liquid cooling was not pursued');
 const formulaAttic = projects.match(/const formulaElectricAtticDescription = `([\s\S]*?)`;\s*\/\/ Projects data/);
 assert.ok(formulaAttic, 'Projects should define a first-class Formula Electric attic case study');
-for (const heading of ['Overview', 'Packaging the HV Hardware', 'Cutting Weight', 'Manufacturing']) {
-  assert.match(formulaAttic[1], new RegExp(`<strong>${heading}<\\/strong>`), `Formula Electric attic page should visibly include ${heading}`);
+for (const heading of ['Overview', 'Packaging the HV Hardware', 'Materials and Sealing', 'Manufacturing']) {
+  assert.match(formulaAttic[1], new RegExp(`<strong[^>]*>${heading}<\\/strong>`), `Formula Electric attic page should visibly include ${heading}`);
 }
 for (const checkpoint of [/588 V/, /40g lateral/, /20g vertically/, /18%/, /6 mm polycarbonate/, /3 mm neoprene/]) {
   assert.match(formulaAttic[1], checkpoint, `Formula Electric attic case study should retain ${checkpoint.source}`);

@@ -495,11 +495,11 @@
     .project-card[data-id="formula-electric-attic"] .project-image img {
       object-fit: contain;
       object-position: center center;
-      transform: scale(0.9);
+      transform: scale(1.0);
     }
 
     .project-card[data-id="formula-electric-attic"]:hover .project-image img {
-      transform: scale(0.93);
+      transform: scale(1.03);
     }
 
     /* Pear Volunteering - zoom in from center */
@@ -1234,7 +1234,7 @@
       text-decoration-thickness: 2px;
     }
 
-    .detail-content[data-project-id="formula-electric"] .detail-description {
+    .detail-content:is([data-project-id="formula-electric"], [data-project-id="formula-electric-attic"]) .detail-description {
       font-family: var(--font-latex);
       font-size: 16px;
       line-height: 1.72;
@@ -1242,14 +1242,26 @@
       display: block;
     }
 
-    .detail-content[data-project-id="formula-electric"] .latex-section {
+    .detail-content:is([data-project-id="formula-electric"], [data-project-id="formula-electric-attic"]) .latex-section {
       min-width: 0;
       margin: 0 0 48px;
       break-inside: auto;
     }
 
-    .detail-content[data-project-id="formula-electric"] .latex-section > strong {
+    .detail-content:is([data-project-id="formula-electric"], [data-project-id="formula-electric-attic"]) .latex-section > strong {
       margin-top: 0;
+    }
+
+    /* SN5 sections are short, so their figures stay compact beside the text; the lightbox shows
+       them full size. */
+    .detail-content[data-project-id="formula-electric-attic"] .detail-description :is(.reading-evidence, .reading-prose, .reading-supplement) .project-feature-figure img {
+      max-height: 300px !important;
+      width: auto;
+      max-width: 100% !important;
+    }
+
+    .detail-content[data-project-id="formula-electric-attic"] :is(#sn5-overview, #sn5-manufacturing) .project-feature-figure img {
+      max-height: 250px !important;
     }
 
     .detail-content[data-project-id="ns-us-pulse-generator"] .detail-description {
@@ -2440,16 +2452,20 @@
       aspect-ratio: 1416 / 807;
     }
 
-    .detail-content[data-project-id="formula-electric"] :is(.gallery-main, #galleryMediaContainer, #galleryMediaContainer picture, #galleryMediaContainer img, .gallery-thumb) {
+    .detail-content:is([data-project-id="formula-electric"], [data-project-id="formula-electric-attic"]) :is(.gallery-main, #galleryMediaContainer, #galleryMediaContainer picture, #galleryMediaContainer img, .gallery-thumb) {
       background: var(--bg);
       border: 0;
     }
 
-    [data-theme="light"] .detail-content[data-project-id="formula-electric"] :is(#galleryMediaContainer img, .gallery-thumb img) {
+    [data-theme="light"] .detail-content:is([data-project-id="formula-electric"], [data-project-id="formula-electric-attic"]) :is(#galleryMediaContainer img, .gallery-thumb img) {
       mix-blend-mode: multiply;
     }
 
-    [data-theme="light"] .detail-content[data-project-id="formula-electric"] :is(.gallery-main, .gallery-media-frame, .gallery-thumb) {
+    .detail-content:is([data-project-id="formula-electric"], [data-project-id="formula-electric-attic"]) :is(#galleryMediaContainer picture, #galleryMediaContainer img, .gallery-thumb img) {
+      background: transparent;
+    }
+
+    [data-theme="light"] .detail-content:is([data-project-id="formula-electric"], [data-project-id="formula-electric-attic"]) :is(.gallery-main, .gallery-media-frame, .gallery-thumb) {
       isolation: isolate;
     }
 
@@ -2484,7 +2500,7 @@
 
     /* White-background technical exports (CAD, scans, plots, solver screenshots) take on the
        cream page colour. Multiply keeps every dark line and colour; photographs are left alone. */
-    [data-theme="light"] .detail-content:is([data-project-id="wolfrom-actuator"], [data-project-id="formula-electric"]) .detail-description img:not(.wolfrom-build-board img, #galleryMediaContainer img, .gallery-thumb img, .wx-poster),
+    [data-theme="light"] .detail-content:is([data-project-id="wolfrom-actuator"], [data-project-id="formula-electric"], [data-project-id="formula-electric-attic"]) .detail-description img:not(.wolfrom-build-board img, #galleryMediaContainer img, .gallery-thumb img, .wx-poster),
     [data-theme="light"] .detail-content[data-project-id="ns-us-pulse-generator"] .detail-description img:is([src$=".png"], [src$=".svg"]):not(#galleryMediaContainer img, .gallery-thumb img, .board-layer-viewer img) {
       background: transparent;
       mix-blend-mode: multiply;
@@ -4094,42 +4110,42 @@ const formulaElectricCoolingDescription = `
     </section>`;
 
 const formulaElectricAtticDescription = `
+  <section class="latex-section" id="sn5-overview">
   <strong>Overview</strong><br><br>
   For SN5, I designed and manufactured the attic casing for Formula Electric at Berkeley's <b>588 V accumulator</b>. The attic holds the contactors, current sensor, busbars, connectors, and low-voltage controls above the cells.<br><br>
-
-  It had to survive <b>40g lateral and longitudinal loads</b> and <b>20g vertically</b>, keep the HV system isolated, pass water-ingress checks, and stay easy to inspect and service.<br><br>
-
+  The revised casing came out <b>18% lighter</b>. It had to survive <b>40g lateral and longitudinal loads</b> and <b>20g vertically</b>, keep the HV system isolated, pass water-ingress checks, and stay easy to inspect and service.
   <figure class="project-feature-figure">
-    <img src="/assets/formula-cooling-attic.png" alt="Top view of the Formula Electric accumulator attic showing high-voltage electronics and service clearances" width="512" height="492" loading="lazy" decoding="async">
-    <figcaption>SN5 attic layout with the HV hardware packed above the accumulator.</figcaption>
+    <img src="/assets/formula-cooling-attic-clear.png" alt="Top view of the Formula Electric accumulator attic showing high-voltage electronics and service clearances" width="492" height="506" loading="lazy" decoding="async">
+    <figcaption>SN5 attic layout: contactors, busbars, current sensor, and controls packed above the accumulator with room to reach each one.</figcaption>
   </figure>
+  </section>
 
+  <section class="latex-section" id="sn5-packaging">
   <strong>Packaging the HV Hardware</strong><br><br>
-  I built the enclosure around the real contactor, current-sensor, busbar, connector, and harness geometry. I checked copper clearance, wire bends, tool access, inspection sightlines, and the order the panels could come apart.<br><br>
-
-  <div class="project-inline-grid">
-    <figure>
-      <img src="/assets/formula-e-hv-hardware.jpg" alt="Formula Electric high-voltage contactors, busbars, current sensing, connectors, and low-voltage harnessing" loading="lazy" decoding="async">
-      <figcaption>The actual contactors, busbars, current sensor, connectors, and harnessing.</figcaption>
-    </figure>
-    <figure>
-      <img src="/assets/formula-cooling-accumulator-render.png" alt="Formula Electric accumulator and attic enclosure render" width="760" height="602" loading="lazy" decoding="async">
-      <figcaption>The complete accumulator with the attic above the cell enclosure.</figcaption>
-    </figure>
+  I built the enclosure around the real contactor, current-sensor, busbar, connector, and harness geometry. I checked copper clearance, wire bends, tool access, inspection sightlines, and the order the panels could come apart.
+  <div class="reading-aside">
+    <strong id="sn5-materials">Materials and Sealing</strong>
+    I used 6061-T6 aluminum because it fit our welding, heat-treatment, and shop constraints. The floor is <b>6 mm polycarbonate</b> for electrical isolation and visual inspection. A <b>3 mm neoprene gasket</b> seals the perimeter, and Nomex 410 lines surfaces near the HV hardware.
   </div>
+  <figure class="project-feature-figure reading-below">
+    <img src="/assets/formula-e-hv-hardware.jpg" alt="Formula Electric high-voltage contactors, busbars, current sensing, connectors, and low-voltage harnessing" loading="lazy" decoding="async">
+    <figcaption>The actual contactors, busbars, current sensor, connectors, and harnessing the enclosure was built around.</figcaption>
+  </figure>
+  <figure class="project-feature-figure reading-below">
+    <img src="/assets/formula-cooling-accumulator-render-clear.png" alt="Formula Electric accumulator and attic enclosure render" width="627" height="540" loading="lazy" decoding="async">
+    <figcaption>The complete accumulator with the attic above the cell enclosure.</figcaption>
+  </figure>
+  </section>
 
-  <strong>Cutting Weight</strong><br><br>
-  The revised casing came out <b>18% lighter</b>. I used 6061-T6 aluminum because it fit our welding, heat-treatment, and shop constraints. The floor is <b>6 mm polycarbonate</b> for electrical isolation and visual inspection. A <b>3 mm neoprene gasket</b> seals the perimeter, and Nomex 410 lines surfaces near the HV hardware.<br><br>
-
+  <section class="latex-section" id="sn5-manufacturing">
   <strong>Manufacturing</strong><br><br>
-  I designed every panel around the processes we actually had: FabLight laser cutting, TIG welding, heat treatment, and waterjet cutting for the polycarbonate and gasket. That meant planning weld access, datums, fastener reach, fit-up, and assembly order in CAD.<br><br>
-
+  I designed every panel around the processes we had: FabLight laser cutting, TIG welding, heat treatment, and waterjet cutting for the polycarbonate and gasket. That meant planning weld access, datums, fastener reach, fit-up, and assembly order in CAD.<br><br>
+  The casing still goes through structural review, dielectric testing, water-ingress checks, and gasket-compression inspection before running in the car.
   <figure class="project-feature-figure">
     <img src="/assets/formula-e-attic-fabrication.jpg" alt="Formula Electric accumulator attic panel clamped during fabrication fit-up" loading="lazy" decoding="async">
     <figcaption>Checking panel fit-up and hardware clearance during fabrication.</figcaption>
   </figure>
-
-  The final casing is lighter, sealed, electrically isolated, and easy for the team to open and inspect. It still goes through structural review, dielectric testing, water-ingress checks, and gasket-compression inspection before running in the car.`;
+  </section>`;
 
     // Projects data
     const projects = [
@@ -4204,13 +4220,6 @@ const formulaElectricAtticDescription = `
         images: [
           '/assets/accumimg-clear.png',
           '/assets/img1.png',
-          '/assets/formula-cooling-attic.png',
-          '/assets/formula-e-hv-hardware.jpg',
-          '/assets/formula-cooling-accumulator-render.png',
-          '/assets/formula-e-attic-fabrication.jpg',
-          '/assets/img2.png',
-          '/assets/img3.png',
-          '/assets/accumsa.png',
           '/assets/formula-e-accumulator-interior.jpg'
         ]
       },
@@ -5088,6 +5097,8 @@ const formulaElectricAtticDescription = `
         initThermalExplorer(descriptionEl);
       } else if (project.id === 'ns-us-pulse-generator') {
         layoutPulseGeneratorSections(descriptionEl);
+      } else if (project.id === 'formula-electric-attic') {
+        layoutCaseStudySections(descriptionEl, { 'sn5-overview': 'figure', 'sn5-packaging': '.reading-aside', 'sn5-manufacturing': 'figure' });
       }
       descriptionEl.querySelectorAll('details.project-disclosure').forEach(disclosure => { disclosure.open = true; });
       // If a reader closes and reopens a disclosure, re-run the column balance for the rows inside it.
@@ -5139,7 +5150,7 @@ const formulaElectricAtticDescription = `
             throwOnError: false
           });
           // Equation fonts change line heights, so measure only once they have loaded.
-          if (project.id === 'formula-electric' || project.id === 'ns-us-pulse-generator') scheduleReadingBalance(document.getElementById('detailDescription'));
+          if (['formula-electric', 'formula-electric-attic', 'ns-us-pulse-generator'].includes(project.id)) scheduleReadingBalance(document.getElementById('detailDescription'));
         } else if (tries < 40) {
           setTimeout(function () { renderMath(tries + 1); }, 100);
         }
