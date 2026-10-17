@@ -1727,19 +1727,21 @@
     .dyno-svg .dy-temp text { font-size: 9px; font-weight: 600; }
     .wolfrom-build-board { display: grid; grid-template-columns: 1fr 1fr; gap: 22px 16px; padding: 16px 8px; align-items: start; }
     .wolfrom-build-board figure { position: relative; margin: 0; padding: 6px; background: var(--bg); box-shadow: 0 2px 6px #00000018; }
-    .wolfrom-build-board figure:first-child { grid-row: span 2; transform: rotate(-2deg); }
+    .wolfrom-build-board figure:first-child { transform: rotate(-2deg); }
     .wolfrom-build-board figure:nth-child(2) { transform: rotate(2deg); }
     .wolfrom-build-board figure::before { content: ''; position: absolute; z-index: 1; width: 56px; height: 17px; top: -8px; left: calc(50% - 28px); background: #c9c0acb3; transform: rotate(-7deg); clip-path: polygon(0 8%, 5% 0, 10% 8%, 95% 0, 100% 12%, 96% 90%, 100% 100%, 4% 92%); pointer-events: none; }
     .wolfrom-build-board figure::after { content: 'V1 prototype'; position: absolute; z-index: 2; top: 13px; left: 13px; padding: 4px 7px; color: #fff; background: #17191dcc; font: 12px/1.2 var(--font-latex); letter-spacing: .01em; text-shadow: 0 1px 2px #0008; pointer-events: none; }
-    .detail-content[data-project-id="wolfrom-actuator"] .wolfrom-build-board img { display: block; width: 100%; height: 120px; object-fit: cover; max-height: none; }
-    .detail-content[data-project-id="wolfrom-actuator"] .wolfrom-build-board figure:first-child img { height: 262px; object-position: 50% 45%; }
+    .detail-content[data-project-id="wolfrom-actuator"] .wolfrom-build-board :is(img, video) { display: block; width: 100%; height: 170px; object-fit: cover; max-height: none; }
+    .detail-content[data-project-id="wolfrom-actuator"] .wolfrom-build-board figure:first-child img { object-position: 50% 45%; }
     .wolfrom-build-board figcaption { font-size: 14px; line-height: 1.35; margin-top: 6px; color: var(--text-dim); }
     /* the looping bench clip runs under the three photos, taped on like them */
     .wolfrom-build-board .wolfrom-build-clip { transform: rotate(-1deg); }
     .wolfrom-build-board .wolfrom-print-clip { transform: rotate(1.5deg); }
     .wolfrom-build-board .wolfrom-print-clip::after { content: none; }   /* a later print, so no V1 label */
-    .wolfrom-build-board .wolfrom-build-clip video { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; object-position: 78% 50%; }
     .wolfrom-build-board .wolfrom-print-clip video { object-position: 50% 30%; }
+    .wolfrom-overview-clip { margin: 0; }
+    .wolfrom-overview-clip video { display: block; width: 100%; aspect-ratio: 1 / 1; object-fit: cover; object-position: 80% 50%; }
+    .wolfrom-overview-clip figcaption { margin-top: 8px; font-size: 0.9em; font-style: italic; line-height: 1.5; color: var(--text-dim); }
     .reading-evidence > :first-child { margin-top: 0; }
     .reading-row.prose-only { display: block; }
     /* A row with nothing beside its text runs full width, so no empty column sits next to it. */
@@ -3230,7 +3232,7 @@ window.addEventListener('resize', () => requestAnimationFrame(alignWolfromTitle)
 function layoutWolfromSections(description) {
   // Each section is a reading row, not a pair of unrelated newspaper columns.
   layoutReadingSections(description, {
-    'wolfrom-overview': 'table, figure',
+    'wolfrom-overview': 'figure',
     'wolfrom-why': '.wolfrom-gallery-slot',
     'wolfrom-requirements': '.reading-aside',
     'wolfrom-first-principles': 'figure',
@@ -3611,9 +3613,13 @@ const wolfromDescription = `
         <tr><td>Package</td><td>104 mm diameter, 81 mm long</td></tr>
         <tr><td>Output torque</td><td>30 Nm continuous, 50 Nm peak (design targets)</td></tr>
         <tr><td>Efficiency</td><td>&gt;80% forward, &ge;75% backdrive at 30 Nm and 30 rpm (targets)</td></tr>
-        <tr><td>Prototype</td><td>Printed V1 for geometry, fit, and assembly; not load-rated</td></tr>
+        <tr><td>Prototype</td><td>Printed V1 for geometry, fit, and assembly; not load-rated (see <a href="#wolfrom-build" data-project-section="wolfrom-build">Build</a>)</td></tr>
       </tbody>
     </table>
+    <figure class="project-feature-figure wolfrom-overview-clip">
+      <video src="/assets/wolfrom-spin.mp4" poster="/assets/wolfrom-spin-poster.jpg" autoplay muted loop playsinline preload="metadata" aria-label="Printed Wolfrom prototype with its carrier spinning on the bench"></video>
+      <figcaption>The printed V1 gear train running on the bench supply. Photos of the build are under <a href="#wolfrom-build" data-project-section="wolfrom-build">Build</a>.</figcaption>
+    </figure>
   </section>
 
   <section class="latex-section" id="wolfrom-why">
@@ -3768,10 +3774,6 @@ const wolfromDescription = `
       <figure>
         <img src="/assets/wolfrom-stand.jpg" alt="Assembled printed Wolfrom prototype mounted on its stand" loading="lazy" decoding="async">
         <figcaption>Assembled prototype on the stand.</figcaption>
-      </figure>
-      <figure class="wolfrom-build-clip">
-        <video src="/assets/wolfrom-spin.mp4" poster="/assets/wolfrom-spin-poster.jpg" autoplay muted loop playsinline preload="metadata" aria-label="Printed Wolfrom prototype with its carrier spinning on the bench"></video>
-        <figcaption>Printed gear train running on the bench supply.</figcaption>
       </figure>
       <figure class="wolfrom-build-clip wolfrom-print-clip">
         <video src="/assets/wolfrom-print-timelapse.mp4" poster="/assets/wolfrom-print-timelapse-poster.jpg" autoplay muted loop playsinline preload="metadata" aria-label="Timelapse of the redesigned lattice-walled housings printing on a Bambu printer"></video>
@@ -4287,7 +4289,7 @@ const formulaElectricAtticDescription = `
         ],
         links: [],
         cardImage: '/assets/cutaway-three-quarter-clear.png',
-        images: ['/assets/exploded-landscape-tight-clear.png', '/assets/wolfrom-cover.jpg', '/assets/gear-train-clear.png', '/assets/cutaway-three-quarter-clear.png', '/assets/half-section-clear.png', '/assets/wolfrom-ansys-topology-result.png', '/assets/wolfrom-ansys-stress.png']
+        images: ['/assets/wolfrom-cover.jpg', '/assets/exploded-landscape-tight-clear.png', '/assets/gear-train-clear.png', '/assets/cutaway-three-quarter-clear.png', '/assets/half-section-clear.png', '/assets/wolfrom-ansys-topology-result.png', '/assets/wolfrom-ansys-stress.png']
       },
       {
         id: 'formula-electric',
