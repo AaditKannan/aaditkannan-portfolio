@@ -350,17 +350,17 @@
     }
 
     /* Robot cut-outs sit whole on the site colour; robot photos fill the card. */
-    .project-card:is([data-id="dejavu-2024-25"], [data-id="zenith-2022-23"], [data-id="serenity-2021-22"]) .project-image img {
+    .project-card:is([data-id="dejavu-2024-25"], [data-id="zenith-2022-23"], [data-id="zenith-2021-22"], [data-id="serenity-2021-22"]) .project-image img {
       object-fit: contain;
       object-position: center;
       transform: scale(0.94);
     }
 
-    .project-card:is([data-id="dejavu-2024-25"], [data-id="zenith-2022-23"], [data-id="serenity-2021-22"]):hover .project-image img {
+    .project-card:is([data-id="dejavu-2024-25"], [data-id="zenith-2022-23"], [data-id="zenith-2021-22"], [data-id="serenity-2021-22"]):hover .project-image img {
       transform: scale(0.97);
     }
 
-    .project-card:is([data-id="dejavu-2023-24"], [data-id="zenith-2021-22"]) .project-image img {
+    .project-card[data-id="dejavu-2023-24"] .project-image img {
       object-fit: cover;
       object-position: center;
     }
@@ -4577,7 +4577,7 @@ const formulaElectricAtticDescription = `
       },
       {
         id: 'dejavu-2024-25',
-        title: 'Deja Vu - INTO THE DEEP',
+        title: 'Deja Vu - Into the Deep',
         category: 'Hardware/Software',
         filterCategory: ['hardware', 'software'],
         years: [2024, 2025],
@@ -4593,7 +4593,7 @@ const formulaElectricAtticDescription = `
       },
       {
         id: 'dejavu-2023-24',
-        title: 'Deja Vu - CENTERSTAGE',
+        title: 'Deja Vu - CenterStage',
         category: 'Hardware/Software',
         filterCategory: ['hardware', 'software'],
         years: [2023, 2024],
@@ -4609,7 +4609,7 @@ const formulaElectricAtticDescription = `
       },
       {
         id: 'zenith-2022-23',
-        title: 'Zenith - POWERPLAY',
+        title: 'Zenith - PowerPlay',
         category: 'Hardware/Software',
         filterCategory: ['hardware', 'software'],
         years: [2022, 2023],
@@ -4691,7 +4691,7 @@ const formulaElectricAtticDescription = `
       },
       {
         id: 'zenith-2021-22',
-        title: 'Zenith - FREIGHT FRENZY',
+        title: 'Zenith - Freight Frenzy',
         category: 'Hardware/Software',
         filterCategory: ['hardware', 'software'],
         years: [2021, 2022],
@@ -4699,15 +4699,15 @@ const formulaElectricAtticDescription = `
         date: 'Aug 2021 - Jun 2022',
         active: false,
         featured: false,
-        excerpt: 'First year on FTC #20424. Learned CAD and manufacturing.',
+        excerpt: 'First year on FTC #20424. Learned CAD, manufacturing, and robot software.',
         description: `<strong>First Season</strong><br><br>FREIGHT FRENZY was my first season in FTC. I joined Zenith #20424 as a freshman with no CAD or drill press experience, and I barely knew what a motor controller was. The game: collect freight (balls and cubes) from a warehouse, deposit into a multi-level shipping hub, and spin a duck carousel for bonus points.<br><br><strong>Learning CAD and Manufacturing</strong><br><br>I started learning Fusion 360 and my first models were rough. I did not understand constraints, so parts broke unpredictably during modification. I designed everything as separate parts and hoped they would fit together when manufactured. By mid-season I could design simple brackets with confidence; by the end I could model complete subassemblies that worked on the first try. On the shop side, I learned drill press technique, bandsaw operation, and 3D printing fundamentals through snapped drill bits, warped prints, and holes in the wrong place.<br><br><strong>Software</strong><br><br>I started learning Java and the FTC SDK, writing basic gamepad input handling, arm and intake motor control, encoder-based autonomous movements, and duck carousel timing. The code was hard-coded and full of magic numbers, with no PID and no state machines. It still got us through matches and gave me the foundation for much more sophisticated code later.<br><br><strong>Competition</strong><br><br>My first competition was overwhelming. Our robot was nothing spectacular, but it scored freight, delivered ducks, and parked successfully. What stuck with me most was the pit atmosphere: seeing other teams' approaches to the same problem up close and realizing FTC is a community as much as a competition.<br><br><em style="opacity: 0.7; font-size: 0.9em;">Note: Team Zenith #20424 has since dissolved.</em>`,
         tags: ['Fusion 360', 'Java', 'FTC SDK', 'Encoder Autonomous', '3D Printing', 'Drill Press', 'Bandsaw'],
         links: [{ label: 'Team Website', url: 'https://zenithftc.wixsite.com/zenithftc' }],
-        images: ['/assets/IMG_7934.png', '/assets/haulrobot-removebg-preview.png', '/assets/IMG_9617.png']
+        images: ['/assets/haulrobot-removebg-preview.png', '/assets/IMG_7934.png', '/assets/IMG_9617.png']
       },
       {
         id: 'serenity-2021-22',
-        title: 'Serenity - FREIGHT FRENZY',
+        title: 'Serenity - Freight Frenzy',
         category: 'Hardware/Software',
         filterCategory: ['hardware', 'software'],
         years: [2021, 2022],
@@ -4715,8 +4715,8 @@ const formulaElectricAtticDescription = `
         date: 'Aug 2021 - Jun 2022',
         active: false,
         featured: false,
-        excerpt: 'Team Lead for FTC #13215. Managed design and build process.',
-        description: `<strong>Two Teams, One Season</strong><br><br>During FREIGHT FRENZY, I was simultaneously on Zenith (learning fundamentals) and Serenity #13215 (as Team Lead). Serenity was a newer team that needed experienced members to help establish their program. On one team I was the student; on the other I was expected to guide decisions and mentor others. We competed in several league meets and did not advance far.<br><br><strong>Building Infrastructure</strong><br><br>Serenity had no established processes. I helped create weekly design review meetings, a shared CAD workspace with naming conventions, manufacturing priority lists, and engineering notebook assignments. It was my first time building team infrastructure from the ground up. Teaching new members was challenging because I was still learning myself, but explaining concepts to others forced me to understand them more deeply.<br><br><strong>The Robot</strong><br><br>Simpler than Zenith's, reflecting our experience level: tank drive, basic arm for freight placement, passive intake with compliant wheels, and a carousel spinner for duck delivery. The philosophy was to build something that worked every match with dependable mechanisms and simple match execution.`,
+        excerpt: 'Team Lead for FTC #13215. Managed the design and build process and worked on the software.',
+        description: `<strong>Two Teams, One Season</strong><br><br>During FREIGHT FRENZY, I was simultaneously on Zenith (learning fundamentals) and Serenity #13215 (as Team Lead). Serenity was a newer team that needed experienced members to help establish their program. On one team I was the student; on the other I was expected to guide decisions and mentor others. We competed in several league meets and did not advance far.<br><br><strong>Building Infrastructure</strong><br><br>Serenity had no established processes. I helped create weekly design review meetings, a shared CAD workspace with naming conventions, manufacturing priority lists, and engineering notebook assignments. It was my first time building team infrastructure from the ground up. Teaching new members was challenging because I was still learning myself, but explaining concepts to others forced me to understand them more deeply.<br><br><strong>The Robot</strong><br><br>I worked on both the hardware and the software. The robot was simpler than Zenith's, reflecting our experience level: tank drive, basic arm for freight placement, passive intake with compliant wheels, and a carousel spinner for duck delivery. The philosophy was to build something that worked every match with dependable mechanisms and simple match execution.`,
         tags: ['Fusion 360', 'Robot CAD', 'Manufacturing Planning', 'Engineering Notebook', 'Tank Drive', 'Carousel Mechanism'],
         links: [],
         images: ['/assets/serenity-robot-clear.png']
