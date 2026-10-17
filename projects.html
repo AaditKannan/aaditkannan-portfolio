@@ -350,19 +350,14 @@
     }
 
     /* Robot cut-outs sit whole on the site colour; robot photos fill the card. */
-    .project-card:is([data-id="dejavu-2024-25"], [data-id="zenith-2022-23"], [data-id="zenith-2021-22"], [data-id="serenity-2021-22"]) .project-image img {
+    .project-card:is([data-id="dejavu-2024-25"], [data-id="dejavu-2023-24"], [data-id="zenith-2022-23"], [data-id="zenith-2021-22"], [data-id="serenity-2021-22"]) .project-image img {
       object-fit: contain;
       object-position: center;
       transform: scale(0.94);
     }
 
-    .project-card:is([data-id="dejavu-2024-25"], [data-id="zenith-2022-23"], [data-id="zenith-2021-22"], [data-id="serenity-2021-22"]):hover .project-image img {
+    .project-card:is([data-id="dejavu-2024-25"], [data-id="dejavu-2023-24"], [data-id="zenith-2022-23"], [data-id="zenith-2021-22"], [data-id="serenity-2021-22"]):hover .project-image img {
       transform: scale(0.97);
-    }
-
-    .project-card[data-id="dejavu-2023-24"] .project-image img {
-      object-fit: cover;
-      object-position: center;
     }
 
     /* Into the Deep: trimmed to the robot and shown large; any overflow only trims the floor tiles. */
@@ -4665,7 +4660,7 @@ const formulaElectricAtticDescription = `
         description: `<strong>The Season</strong><br><br>CENTERSTAGE (2023-24 FTC): robots collected hexagonal "pixels" and placed them on a vertical backdrop to create mosaic patterns, with bonus points for specific arrangements and launching paper airplane drones during endgame. I joined Deja Vu #13216 as Hardware Lead after Zenith dissolved when its founder graduated. We qualified for the NorCal regional championship with minimal mechanical failures during matches.<br><br><strong>The Claw</strong><br><br>The hardest mechanism to get right. Hexagonal pixels interlock in weird ways, and the claw had to grip them reliably without blocking the vision system. The final design used compliant TPU fingers that conform to pixel geometry, spring-loaded hinges for passive grip, and servo-actuated release. Dual-pixel capacity was critical, since grabbing two per trip to the backdrop doubled our scoring potential.<br><br><strong>Vision and Software</strong><br><br>The robot used AprilTags on the backdrop for autonomous alignment and a camera for detecting pixel positions. I wrote the TeleOp code in Java: mecanum drive with configurable speed curves, arm position presets for different backdrop heights, claw control with pixel detection feedback, drone launcher arming sequence, and intake and transfer coordination. Writing both hardware and driver code meant I could tune the controls specifically for our drivers' preferences.<br><br><em style="opacity: 0.7; font-size: 0.9em;">Note: Team Deja Vu #13216 has since become a legacy team, with a new group of students carrying the name forward.</em>`,
         tags: ['Fusion 360', 'Java', 'FTC SDK', 'AprilTags', 'OpenCV', 'PID Control', 'Mecanum Kinematics'],
         links: [{ label: 'Team Website', url: 'https://dejavurobotics.org/' }],
-        images: ['/assets/IMG_2714.png', '/assets/Deja_Vu_Bot_Assemble_Version_1_v4_v1112.png', '/assets/dejapp.png']
+        images: ['/assets/Deja_Vu_Bot_Assemble_Version_1_v4_v1112-clear.png', '/assets/IMG_2714.png', '/assets/dejapp.png']
       },
       {
         id: 'zenith-2022-23',
