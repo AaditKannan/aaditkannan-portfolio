@@ -1223,6 +1223,24 @@
       opacity: 1;
     }
 
+    /* Older pages: whole sections two to a row, read left to right; one column on phones. */
+    .detail-description.generic-grid {
+      columns: auto;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 36px 48px;
+      align-items: start;
+    }
+
+    .detail-description.generic-grid > .generic-section > strong {
+      margin-top: 0;
+      margin-bottom: 8px;
+    }
+
+    @media (max-width: 900px) {
+      .detail-description.generic-grid { grid-template-columns: minmax(0, 1fr); gap: 28px; }
+    }
+
     .detail-description a {
       color: inherit;
       text-decoration: underline;
@@ -3240,6 +3258,31 @@ function layoutCaseStudySections(description, evidenceSelectors) {
   });
 }
 
+// The older pages are a run of <strong> headings and text. Each heading and the text under it
+// become one section, laid out two to a row, so a section never splits across columns and the
+// Contents can link to it.
+function layoutGenericSections(description, projectId) {
+  if (description.querySelector(':scope > .latex-section')) return;
+  const blank = node => node.nodeName === 'BR' || (node.nodeType === Node.TEXT_NODE && !node.textContent.trim());
+  let section = null;
+  for (const node of [...description.childNodes]) {
+    if (!section || node.nodeName === 'STRONG') {
+      section = document.createElement('section');
+      section.className = 'latex-section generic-section';
+      description.insertBefore(section, node);
+    }
+    section.append(node);
+  }
+  description.querySelectorAll(':scope > .generic-section').forEach((sec, i) => {
+    sec.id = `project-${projectId}-section-${i + 1}`;
+    const heading = sec.querySelector(':scope > strong');
+    while (heading?.nextSibling && blank(heading.nextSibling)) heading.nextSibling.remove();
+    while (sec.lastChild && blank(sec.lastChild)) sec.lastChild.remove();
+    if (!sec.childNodes.length) sec.remove();
+  });
+  description.classList.add('generic-grid');
+}
+
 function layoutFormulaCoolingSections(description) {
   layoutCaseStudySections(description, {
     'sn6-overview': 'figure',
@@ -5099,6 +5142,8 @@ const formulaElectricAtticDescription = `
         layoutPulseGeneratorSections(descriptionEl);
       } else if (project.id === 'formula-electric-attic') {
         layoutCaseStudySections(descriptionEl, { 'sn5-overview': 'figure', 'sn5-packaging': '.reading-aside', 'sn5-manufacturing': 'figure' });
+      } else {
+        layoutGenericSections(descriptionEl, project.id);
       }
       descriptionEl.querySelectorAll('details.project-disclosure').forEach(disclosure => { disclosure.open = true; });
       // If a reader closes and reopens a disclosure, re-run the column balance for the rows inside it.
