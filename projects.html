@@ -678,6 +678,37 @@
       overflow: hidden;
     }
 
+    /* Software projects follow the hardware and research work as a compact row. */
+    .projects-group {
+      grid-column: 1 / -1;
+      margin-top: 40px;
+    }
+
+    .projects-group-heading {
+      margin: 0 0 16px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+      font-family: var(--font-latex);
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .projects-group-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .project-card.compact .project-content { padding: 16px 18px 18px; }
+    .project-card.compact .project-meta { margin-bottom: 8px; }
+    .project-card.compact .project-title { font-size: 16px; margin-bottom: 6px; }
+    .project-card.compact .project-excerpt { font-size: 13px; }
+
+    @media (max-width: 900px) {
+      .projects-group-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+    }
+
     /* Featured styling (but not full width anymore) */
     .project-card.featured .project-title {
       font-size: 20px;
@@ -4560,6 +4591,7 @@ const formulaElectricAtticDescription = `
         date: 'Oct 2025 - Jan 2026',
         active: false,
         featured: false,
+        group: 'software',
         excerpt: 'An interactive tool for evaluating nuclear reactor site feasibility, with the research paper behind it.',
         description: `<strong>The Research</strong><br><br>Atlas SMR started as my AP Research capstone, and I turned it into an interactive tool. Rural America pays about 25% more for electricity than urban areas and relies on aging infrastructure. I investigated whether hybrid Small Modular Reactor and solar systems could address this inequity. Solar costs have dropped 89% since 2010 but cannot generate at night; SMRs provide around-the-clock low-carbon baseload, so each covers the other's gap. Almost all existing SMR research focuses on urban implementation, which leaves a clear gap for rural applications.<br><br><strong>The Tool</strong><br><br>Atlas SMR is an interactive web platform pulling data from the NRC, EIA, and USGS seismic databases. It displays 89 operating reactors, 13 shutdown facilities, and 119 candidate sites scored by a weighted algorithm. The scoring model weighs population inside the NRC emergency planning zone, seismic-fault proximity, cooling-water access, and grid interconnection capacity. Users can change the weights and immediately compare candidate rankings under different assumptions.<br><br><strong>Scenario Builder</strong><br><br>Users configure 50 to 300 MWe per module, 1 to 12 modules per site, and deployment year. For hybrid systems, the tool compares SMR baseload against solar capacity factor and curtailment assumptions. In solar-rich regions like Navajo Nation, larger solar arrays reduce SMR daytime load. In cloudier areas like Nome, Alaska, the system leans on SMR output. My analysis showed a properly configured hybrid could meet about 24% of rural energy needs, with clear scalability beyond that.<br><br><strong>Limitations</strong><br><br>SMR cost estimates still lack large-scale U.S. operational data. Public stigma around nuclear power is also a barrier. This tool is a prototype visualization. Actual site selection requires Environmental Impact Statements and full NRC licensing, which go far beyond what a scoring algorithm captures.`,
         tags: ['Web Dev', 'GIS', 'Energy', 'Data Viz', 'Nuclear', 'Policy Research', 'AP Research'],
@@ -4579,6 +4611,7 @@ const formulaElectricAtticDescription = `
         date: 'Mar 2026',
         active: false,
         featured: false,
+        group: 'software',
         excerpt: 'YC x DeepMind hackathon winner. Real-time generative music for visually impaired people.',
         description: `<strong>YC x DeepMind Hackathon Winner</strong><br><br>We built Leitmotif at the YC x Google DeepMind hackathon in San Francisco. Leitmotif generates adaptive, real-time background music for visually impaired users. A webcam watches the scene, and every person who enters gets assigned a unique musical motif, a short melodic signature that weaves into an evolving soundtrack reflecting the room's mood. When someone leaves, their motif plays back inverted as a farewell cue. The whole system is designed to give spatial awareness through sound alone, no screen needed.<br><br><strong>The Pipeline</strong><br><br>Everything runs in a continuous loop. A webcam frame gets captured and base64-encoded, then sent to Gemini 2.5 Flash for vision analysis: who is visible, what the room feels like, and what changed since the last frame. That scene data goes to the Music Engine, which pulls each person's stored motif from Supabase (PostgreSQL). A prompt builder turns the scene state into a Lyria-compatible music prompt, Gemini refines the tempo, key, and instrumentation choices, and the Google Lyria RealTime API streams PCM audio directly to speakers.<br><br>Crossfading between emotional states uses a 4 to 6 second blend window. Without smooth transitions, mood shifts sounded jarring, like someone changing the radio station mid-song. The crossfade duration is a tradeoff: too short and the transitions feel abrupt, too long and the system feels unresponsive to actual scene changes.<br><br><strong>The Motif System</strong><br><br>Each person's musical signature is stored as structured JSON: note count, interval patterns, rhythm sequences, melodic contours, and character descriptors. On entry, the motif plays once as a bright solo phrase over a ducked background. On exit, the motif plays descending and inverted. That gives users a learnable association between people and sounds, with a clearer cue than a generic notification beep.<br><br>Motif management enforces musical rules in code. If two people enter within a short window, the system queues motifs because simultaneous melodic lines become indistinguishable. The prompt builder also keeps motifs compatible with the current background key and mood so the accessibility cue stays clear.<br><br><strong>Architecture</strong><br><br>The backend runs as two servers. The Music Engine handles real-time scene orchestration, adaptive prompt generation, entry and exit transitions, and crossfading. The Camera Server runs Gemini vision analysis on webcam frames and auto-forwards results. We split them because vision analysis and music generation have very different latency profiles, and decoupling lets each run at its own pace without blocking the other.<br><br>Backend is Node.js with TypeScript, native HTTP server, Gemini 2.5 Flash for vision and orchestration, Lyria RealTime for generative music, Supabase for persistence. The React Native companion app has Monitor, Contacts, Visualizer, and Settings screens for real-time entity tracking and motif management. The web mockup was built with React, Vite, and Tailwind so we could demo the interaction quickly during the hackathon.`,
         tags: ['TypeScript', 'Node.js', 'React Native', 'Gemini API', 'Lyria Realtime', 'Supabase', 'Computer Vision'],
@@ -4643,6 +4676,7 @@ const formulaElectricAtticDescription = `
         date: 'Jun 2025 - Dec 2025',
         active: false,
         featured: false,
+        group: 'software',
         excerpt: 'A robotics parts inventory, lending network, and marketplace for FTC teams, with AI invoice parsing.',
         description: `<strong>The Problem</strong><br><br>On an FTC team, a motor can burn out two nights before competition, and overnight shipping on a $15 part can cost more than $150. My team scrambled through group chats and outdated spreadsheets to find nearby teams with spares. On Zenith I first built ZenLender, a basic spreadsheet lending system, but manual data entry killed adoption. Inventry is the real version.<br><br><strong>What It Does</strong><br><br>Three components: inventory management (track parts, quantities, conditions), a part lending network (find nearby teams with what you need), and a marketplace (in development). The stack is React and TypeScript with Tailwind on the frontend, Node.js, Express, and PostgreSQL on the backend, OAuth 2.0 with team verification through FIRST's public data, hosted on Vercel and Railway.<br><br><strong>AI Invoice Parsing</strong><br><br>The biggest friction with inventory tools is data entry. Nobody wants to type in 200 parts from a GoBilda order. Users upload invoice PDFs or photos and the system extracts part numbers, quantities, prices, and dates using Tesseract OCR and GPT-4 for structured parsing. Accuracy is about 94% on clean invoices and about 85% on photographed receipts. I also built weekly scrapers for GoBilda, REV, ServoCity, and AndyMark, which feed more than 3,000 unique SKUs into the search system with current pricing and availability.<br><br><strong>The Lending System</strong><br><br>The hardest problem was getting teams to lend parts to strangers. The solution is a reputation system where lender points unlock priority borrowing access, distance matching prioritizes teams within driving range (default 30 miles), and requests get flagged as urgent if a competition is within 7 days. For privacy, exact addresses are never shown, communication stays on-platform, and all data is encrypted and GDPR-deletable.`,
         tags: ['React', 'TypeScript', 'Node.js', 'Express', 'PostgreSQL', 'Tesseract OCR', 'Web Scraping', 'OAuth 2.0'],
@@ -4659,6 +4693,7 @@ const formulaElectricAtticDescription = `
         date: 'Aug 2023 - May 2025',
         active: false,
         featured: false,
+        group: 'software',
         excerpt: 'A platform that connected over 2000 students with volunteer opportunities.',
         description: `<strong>What Pear Is</strong><br><br>Pear connected high school volunteers with the people running events: over 2000 registered student volunteers, over 20 event organizers (nonprofits, school clubs, and community organizations), and school administrators who needed verified hour logs. I built it because finding volunteer opportunities as a high school student was frustrating: word of mouth, missed deadlines, and full events. Organizers coordinating through email chains and Google Forms had no way to verify students or track participation.<br><br><strong>How It Works</strong><br><br>Three user types: students browse and sign up for events, organizers create listings and manage volunteers, administrators verify hours for school records. I built it on Wix with custom Velo code for business logic and webhook integrations. When a student signs up, the system validates their student ID, checks for schedule conflicts, notifies the organizer, and updates capacity. For high-volume events (some filled more than 50 spots in under an hour), I built an async webhook queue:<br><br><code>Event Signup → Wix Backend → Webhook Queue → Email Service → Database Update</code><br><br>This prevents timeouts during traffic spikes and handles about 10 requests per second.<br><br><strong>Hour Tracking</strong><br><br>The biggest pain point for students was proving volunteer hours for college applications. Organizers check in volunteers via QR code scan, hours auto-log with event details, and students can request official verification letters auto-generated as PDFs with school letterhead. This saved counselors significant paperwork. All communication flows through Pear. Student contact info is never shown to organizers, data is encrypted, and parents can request deletion at any time.<br><br>I handed off Pear when I left for college in 2025.`,
         tags: ['Wix Velo', 'JavaScript', 'Webhook Queues', 'QR Check-In', 'PDF Generation', 'Role-Based Access', 'Data Privacy'],
@@ -4880,8 +4915,8 @@ const formulaElectricAtticDescription = `
           <img src="${src}" alt="${alt}" loading="lazy" decoding="async">
         </picture>`;
       };
-      grid.innerHTML = filtered.map(p => `
-        <div class="project-card${p.featured ? ' featured' : ''}" data-id="${p.id}">
+      const card = (p, compact = false) => `
+        <div class="project-card${p.featured ? ' featured' : ''}${compact ? ' compact' : ''}" data-id="${p.id}">
           <div class="project-image">
             ${p.images && p.images.length > 0
               ? gridThumb(p.cardImage || p.images[0], p.title)
@@ -4896,7 +4931,18 @@ const formulaElectricAtticDescription = `
             <p class="project-excerpt">${p.excerpt}</p>
           </div>
         </div>
-      `).join('');
+      `;
+      // Hardware, research, and manufacturing lead at full size; software projects follow in a
+      // compact row under their own heading, so they stay visible without leading the page.
+      const engineering = filtered.filter(p => p.group !== 'software');
+      const software = filtered.filter(p => p.group === 'software');
+      grid.innerHTML = engineering.length && software.length
+        ? engineering.map(p => card(p)).join('') + `
+          <section class="projects-group" aria-labelledby="softwareProjectsHeading">
+            <h2 class="projects-group-heading" id="softwareProjectsHeading">Software</h2>
+            <div class="projects-group-grid">${software.map(p => card(p, true)).join('')}</div>
+          </section>`
+        : filtered.map(p => card(p)).join('');
     }
 
     // Filter button handlers
