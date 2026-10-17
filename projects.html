@@ -336,6 +336,11 @@
       transform: scale(1.03);
     }
 
+    [data-theme="light"] .project-image,
+    [data-theme="light"] .project-image img {
+      background: var(--bg);
+    }
+
     .project-card[data-id="ramesh-lab"] .project-image img {
       object-fit: cover;
     }
@@ -344,94 +349,26 @@
       transform: scale(1.05);
     }
 
-    /* Deja Vu INTO THE DEEP - match purple background */
-    .project-card[data-id="dejavu-2024-25"] .project-image {
-      background: #d0c0cf !important;
-    }
-
-    .project-card[data-id="dejavu-2024-25"] .project-image img {
-      object-fit: cover;
-      transform: scale(1.0);
-      background: #d0c0cf !important;
-    }
-
-    .project-card[data-id="dejavu-2024-25"]:hover .project-image img {
-      transform: scale(1.03);
-    }
-
-    /* Deja Vu CENTERSTAGE - light grey background */
-    .project-card[data-id="dejavu-2023-24"] .project-image {
-      background: #e8e8e8 !important;
-    }
-
-    /* Zenith POWERPLAY - light grey background, centered */
-    .project-card[data-id="zenith-2022-23"] .project-image {
-      background: #e8e8e8 !important;
-    }
-
-    .project-card[data-id="zenith-2022-23"] .project-image img {
+    /* Robot cut-outs sit whole on the site colour; robot photos fill the card. */
+    .project-card:is([data-id="dejavu-2024-25"], [data-id="zenith-2022-23"], [data-id="serenity-2021-22"]) .project-image img {
       object-fit: contain;
       object-position: center;
-      transform: scale(0.95);
-      background: #e8e8e8;
+      transform: scale(0.94);
     }
 
-    .project-card[data-id="zenith-2022-23"]:hover .project-image img {
-      transform: scale(0.98);
+    .project-card:is([data-id="dejavu-2024-25"], [data-id="zenith-2022-23"], [data-id="serenity-2021-22"]):hover .project-image img {
+      transform: scale(0.97);
     }
 
-    /* Zenith FREIGHT FRENZY - light grey background */
-    .project-card[data-id="zenith-2021-22"] .project-image {
-      background: #e8e8e8 !important;
-    }
-
-    .project-card[data-id="zenith-2021-22"] .project-image img {
-      object-fit: contain;
-      transform: scale(1.1);
-      background: #e8e8e8 !important;
-    }
-
-    .project-card[data-id="zenith-2021-22"]:hover .project-image img {
-      transform: scale(1.13);
-    }
-
-    /* Deja Vu CENTERSTAGE - zoom in and center, shift robot right and down */
-    .project-card[data-id="dejavu-2023-24"] .project-image img {
-      object-fit: contain;
-      object-position: 60% 40%;
-      transform: scale(1.3);
-      background: #e8e8e8 !important;
-    }
-
-    .project-card[data-id="dejavu-2023-24"]:hover .project-image img {
-      transform: scale(1.33);
+    .project-card:is([data-id="dejavu-2023-24"], [data-id="zenith-2021-22"]) .project-image img {
+      object-fit: cover;
+      object-position: center;
     }
 
     /* Construction Acclimation - zoom in and center */
     .project-card[data-id="construction-acclimation"] .project-image img {
       object-fit: cover;
       object-position: center;
-      transform: scale(1.3);
-    }
-
-    .project-card[data-id="construction-acclimation"]:hover .project-image img {
-      transform: scale(1.33);
-    }
-
-    /* Serenity FREIGHT FRENZY - light grey background, move down and zoom */
-    .project-card[data-id="serenity-2021-22"] .project-image {
-      background: #e8e8e8 !important;
-    }
-
-    .project-card[data-id="serenity-2021-22"] .project-image img {
-      object-fit: contain;
-      object-position: center 60%;
-      transform: scale(1.2);
-      background: #e8e8e8 !important;
-    }
-
-    .project-card[data-id="serenity-2021-22"]:hover .project-image img {
-      transform: scale(1.23);
     }
 
     /* Leitmotif - cover, slight zoom */
@@ -628,9 +565,8 @@
     }
 
     .project-card[data-id="field-station-toolbox"] .project-image img {
-      object-fit: contain;
+      object-fit: cover;
       object-position: center center;
-      transform: scale(0.94);
     }
 
     .detail-content[data-project-id="field-station-toolbox"] :is(#galleryMediaContainer img, .gallery-thumb img) {
@@ -2444,11 +2380,11 @@
     }
 
     [data-theme="light"] .gallery-main {
-      background: #f0ede9;
+      background: var(--bg);
     }
 
     [data-theme="light"] .gallery-main img {
-      background: #f0ede9;
+      background: var(--bg);
     }
 
     .detail-content[data-project-id="formula-electric-attic"] #galleryMediaContainer img[src$="/img1.png"] {
@@ -4783,7 +4719,7 @@ const formulaElectricAtticDescription = `
         description: `<strong>Two Teams, One Season</strong><br><br>During FREIGHT FRENZY, I was simultaneously on Zenith (learning fundamentals) and Serenity #13215 (as Team Lead). Serenity was a newer team that needed experienced members to help establish their program. On one team I was the student; on the other I was expected to guide decisions and mentor others. We competed in several league meets and did not advance far.<br><br><strong>Building Infrastructure</strong><br><br>Serenity had no established processes. I helped create weekly design review meetings, a shared CAD workspace with naming conventions, manufacturing priority lists, and engineering notebook assignments. It was my first time building team infrastructure from the ground up. Teaching new members was challenging because I was still learning myself, but explaining concepts to others forced me to understand them more deeply.<br><br><strong>The Robot</strong><br><br>Simpler than Zenith's, reflecting our experience level: tank drive, basic arm for freight placement, passive intake with compliant wheels, and a carousel spinner for duck delivery. The philosophy was to build something that worked every match with dependable mechanisms and simple match execution.`,
         tags: ['Fusion 360', 'Robot CAD', 'Manufacturing Planning', 'Engineering Notebook', 'Tank Drive', 'Carousel Mechanism'],
         links: [],
-        images: ['/assets/View_recent_photos-removebg-preview.png']
+        images: ['/assets/serenity-robot-clear.png']
       },
       {
         id: 'friendly-fires',
