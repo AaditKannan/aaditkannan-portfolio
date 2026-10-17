@@ -279,8 +279,8 @@ for (const checkpoint of [/588 V/, /40g lateral/, /20g vertically/, /18%/, /6 mm
 assert.doesNotMatch(formulaAttic[1], /<details/, 'Formula Electric attic should stay fully visible without jumpy disclosures');
 assert.doesNotMatch(formulaAttic[1], /shorted two segment busbars|Nobody was hurt/, 'Formula Electric attic should omit the busbar-short incident');
 assert.match(projects, /id: 'formula-electric-attic'[\s\S]*?title: 'Formula Electric - SN5 HV Attic'[\s\S]*?date: '2025 - 2026'[\s\S]*?active: false[\s\S]*?displayOrder: 4/, 'Attic should be a distinct completed SN5 Formula Electric project');
-assert.match(projects, /id: 'formula-electric-attic'[\s\S]*?images: \[\s*'\/assets\/accumimg\.png',\s*'\/assets\/img1\.png'/, 'SN5 should lead with the pack and attic CAD render, then the car photo');
-assert.match(projects, /\.project-card\[data-id="formula-electric-attic"\] \.project-image img\s*{[\s\S]*?object-fit:\s*cover;/, 'SN5 should fill its card with the cover render');
+assert.match(projects, /id: 'formula-electric-attic'[\s\S]*?images: \[\s*'\/assets\/accumimg-clear\.png',\s*'\/assets\/img1\.png'/, 'SN5 should lead with the pack and attic CAD render, then the car photo');
+assert.match(projects, /\.project-card\[data-id="formula-electric-attic"\] \.project-image img\s*{[\s\S]*?object-fit:\s*contain;/, 'SN5 should show the whole cut-out render on the card colour');
 assert.match(projects, /data-project-id="formula-electric-attic"\][\s\S]*?img\[src\$="\/img1\.png"\][\s\S]*?transform:\s*scale\(1\.32\)/, 'SN5 should zoom the car image in its project gallery');
 assert.match(projects, /id: 'formula-electric'[\s\S]*?url: '#formula-electric-attic'/, 'Cooling should link to the prior attic project');
 assert.match(projects, /id: 'formula-electric-attic'[\s\S]*?url: '#formula-electric'/, 'Attic should link to the current cooling project');
